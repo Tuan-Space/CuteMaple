@@ -1,0 +1,145 @@
+{
+  "idle": [
+    "idle_01.png",
+    "idle_02.png",
+    "idle_03.png",
+    "idle_04.png",
+    "idle_05.png",
+    "idle_06.png"
+  ],
+  "walk_right": [
+    "walk_right_01.png",
+    "walk_right_02.png",
+    "walk_right_03.png",
+    "walk_right_04.png",
+    "walk_right_05.png",
+    "walk_right_06.png",
+    "walk_right_07.png",
+    "walk_right_08.png"
+  ],
+  "drag_left": [
+    "drag_left_01.png",
+    "drag_left_02.png",
+    "drag_left_03.png"
+  ],
+  "drag_right": [
+    "drag_right_01.png",
+    "drag_right_02.png",
+    "drag_right_03.png"
+  ],
+  "happy": [
+    "happy_01.png",
+    "happy_02.png",
+    "happy_03.png",
+    "happy_04.png",
+    "happy_05.png",
+    "happy_06.png"
+  ],
+  "climb_right": [
+    "climb_right_01.png",
+    "climb_right_02.png",
+    "climb_right_03.png",
+    "climb_right_04.png",
+    "climb_right_05.png",
+    "climb_right_06.png"
+  ],
+  "petting": [
+    "petting_01.png",
+    "petting_02.png",
+    "petting_03.png",
+    "petting_04.png"
+  ],
+  "talk": [
+    "talk_01.png",
+    "talk_02.png",
+    "talk_03.png",
+    "talk_04.png"
+  ],
+  "fall_float": [
+    "fall_float_01.png",
+    "fall_float_02.png",
+    "fall_float_03.png"
+  ],
+  "swing_idle": [
+    "swing_idle_01.png",
+    "swing_idle_02.png",
+    "swing_idle_03.png",
+    "swing_idle_04.png"
+  ],
+  "sleep_enter": [
+    "sleep_enter_01.png",
+    "sleep_enter_02.png",
+    "sleep_enter_03.png",
+    "sleep_enter_04.png"
+  ],
+  "sleep_loop": [
+    "sleep_loop_01.png",
+    "sleep_loop_02.png",
+    "sleep_loop_03.png",
+    "sleep_loop_04.png"
+  ],
+  "sleep_exit": [
+    "sleep_exit_01.png",
+    "sleep_exit_02.png",
+    "sleep_exit_03.png",
+    "sleep_exit_04.png"
+  ],
+  "swing_cycle": [
+    "swing_cycle_01.png",
+    "swing_cycle_02.png",
+    "swing_cycle_03.png",
+    "swing_cycle_04.png",
+    "swing_cycle_05.png",
+    "swing_cycle_06.png"
+  ],
+  "land": [
+    "land_01.png",
+    "land_02.png",
+    "land_03.png",
+    "land_04.png"
+  ],
+  "walk_left": [
+    "walk_left_01.png",
+    "walk_left_02.png",
+    "walk_left_03.png",
+    "walk_left_04.png",
+    "walk_left_05.png",
+    "walk_left_06.png",
+    "walk_left_07.png",
+    "walk_left_08.png"
+  ],
+  "climb_left": [
+    "climb_left_01.png",
+    "climb_left_02.png",
+    "climb_left_03.png",
+    "climb_left_04.png",
+    "climb_left_05.png",
+    "climb_left_06.png"
+  ],
+  "clean_ground": [
+    "clean_ground_01.png",
+    "clean_ground_02.png",
+    "clean_ground_03.png",
+    "clean_ground_04.png",
+    "clean_ground_05.png",
+    "clean_ground_06.png"
+  ],
+  "clean_climb_left": [
+    "clean_climb_left_01.png",
+    "clean_climb_left_02.png",
+    "clean_climb_left_03.png",
+    "clean_climb_left_04.png"
+  ],
+  "clean_climb_right": [
+    "clean_climb_right_01.png",
+    "clean_climb_right_02.png",
+    "clean_climb_right_03.png",
+    "clean_climb_right_04.png"
+  ],
+  "clean_top": [
+    "clean_top_01.png",
+    "clean_top_02.png",
+    "clean_top_03.png",
+    "clean_top_04.png"
+  ]
+}
