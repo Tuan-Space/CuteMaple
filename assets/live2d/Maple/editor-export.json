@@ -1,0 +1,1959 @@
+{
+  "status": "editor-export-installed-runtime-visual-verification-pending",
+  "installedAt": "2026-09-11T15:16:43.349733+00:00",
+  "editorExport": "Maple.model3.json",
+  "destination": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\live2d\\Maple",
+  "runtimeSource": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime",
+  "fragment": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\Maple.model3-fragment.json",
+  "backup": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\live2d\\Maple.backup-20260911T151641.993611Z-4e8335a5",
+  "files": {
+    "Maple.moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+    "Maple.physics3.json": "7fe83fda4a86139704638cb3861ae5680f9cc5566abb7804f827391471f2fb03",
+    "Maple.cdi3.json": "c3727036c74b9913646f3213533d9faa46eeb33e8a3eb4bfac06ff5e9bb0acf5",
+    "Maple.4096/texture_00.png": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+    "motions/idle.motion3.json": "ea4f8ded80c797f9d23ab316755f7ff2a687786261714e8fb8547fb1eccdfc59",
+    "motions/walk_right.motion3.json": "0f0e0305e24c66dd222801ee4f72b4548b23db87f82f05009b509ed355005f99",
+    "motions/walk_left.motion3.json": "c4bf429d09c77dab8a198370e9b3afa8d3c9c823c6239725c9452c250aa2f56b",
+    "motions/drag_left.motion3.json": "21d0839580394df84e408d5f4234d8740e3f0391f6631a05364f39f6e6aa4c09",
+    "motions/drag_right.motion3.json": "3402c57eb4cc6a0225d0c749dc384e8c563ec963f8bd776fb3c517f99fbba12e",
+    "motions/happy.motion3.json": "60712d2fe195607529a4466c9dc05d0a6ec10c6a9f7e19bd628aa8e097908bd3",
+    "motions/talk.motion3.json": "7b482b714fb2937d35c59665ca6cd3bb2a3a594bf60b4e58850b4c51a748e86d",
+    "motions/petting.motion3.json": "96aec9912b28130aa553b87ee27fc9574a4a615931299883f9ef77b294d8360d",
+    "motions/fall_float.motion3.json": "d7e841b6a91c23ffec4ee106bf1b25c474ef75032c7d0111077d692bb702c449",
+    "motions/land.motion3.json": "ca9b1b8491db0cec3931f7f027ad7bd860c487883d171809a2b684e2f56d54ea",
+    "motions/climb_right.motion3.json": "95475b47631bf824d7628272eeac88618fa97cca6a92e442db56e7bf281996d5",
+    "motions/climb_left.motion3.json": "9e7cb7aba039a71796cf82672891e3c554058cff428786bf10b1c1aa9f903455",
+    "motions/swing_cycle.motion3.json": "a3f28b3833b93c59992f97b6897cdd62237d74c2c9d066e6609790850c5fbfff",
+    "motions/swing_idle.motion3.json": "888c7848383af78363b8c4dca72cb33a88cd2eaf616fe3b62de3f3bfbf24538f",
+    "motions/sleep_enter.motion3.json": "8580414f3c13f37f6829b054971d02d29ddaec43668a8b98c9de22dac1ff6807",
+    "motions/sleep_loop.motion3.json": "a6ca19fbc544875f8457af7f521342c752ddde741213fe1e523520f0a11b7424",
+    "motions/sleep_exit.motion3.json": "0061a76e5f8e6557441c8da8d708a0e964153c5379a1e4129f1dc5e8ad5617d9",
+    "motions/clean_ground.motion3.json": "0cf47bb3a9a8fcee9dada7175566d2c193d04906209cb01cdf0fcbbc0ec7cb7b",
+    "motions/clean_climb_left.motion3.json": "a660268b77517e554c5a44b07ae77796c70a0f9ced0245f35120c8cec2a0b373",
+    "motions/clean_climb_right.motion3.json": "2b57dd96183009c80c5f6f9c949dc0a3cd431a9e1c44621fe4f629da35f29f64",
+    "motions/clean_top.motion3.json": "9999ec9aeb49b5a7b7fbd1a9bea1bbfbfb0a094d4466a48243bb8ec9e0b11037",
+    "motions/climb_to_top_left.motion3.json": "90f294455fdd2ed3f240fb96e8ff9360a32421bbb133be933b2cceaa609ee394",
+    "motions/climb_to_top_right.motion3.json": "336031ad32fab5d304158bd648b8bbffb01f6c433cfb90f286213154e7194e15",
+    "motions/clean_ground_enter.motion3.json": "7adc11cdba8e50839f97d9f8c5d6d88fbb3859065372b7ba829d3acba27171dc",
+    "motions/clean_ground_exit.motion3.json": "020d464fbbe2b621ce59b16b39685a5690215a77718dc898a1e36c575dcbbad6",
+    "motions/clean_climb_left_enter.motion3.json": "eb1530bdf42d7ad7bf816b74b4d6620b069c03b1b024bdb6d20df04440bbc704",
+    "motions/clean_climb_left_exit.motion3.json": "064c77273baad64d9366483a0c64965fa6f51dab1b4f6af5b736ade55a5a0926",
+    "motions/clean_climb_right_enter.motion3.json": "549651b2f58f3a099eb1e140b79a05f6c7e01c0adb75e0fccd38943fb8a3190e",
+    "motions/clean_climb_right_exit.motion3.json": "fa347c7f3be7fae0f052c3272f1339e9406fc27d36c5bc2dedca29055c96b948",
+    "motions/clean_top_enter.motion3.json": "d356d6c84ac4b2e1aa5cdd19a161a0f774183dec5b24624767ce074a16e525bf",
+    "motions/clean_top_exit.motion3.json": "3eeb2ec13ec3165bc5e9665164b6e8fb10cb739752bd790460319e3e02c9109c",
+    "Maple.pet.json": "0adac2b7c736718aedec8d144807f7e77bb38b854a779f1ef27694372035f6d4",
+    "Maple.model3.json": "219b4091775a9126195df32e45424d83f210799a61e821fa952396fe0548fd4c"
+  },
+  "resources": {
+    "Maple.moc3": {
+      "source": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.moc3",
+      "sourceSha256": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+      "installedSha256": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689"
+    },
+    "Maple.physics3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\Maple.physics3.json",
+      "sourceSha256": "7fe83fda4a86139704638cb3861ae5680f9cc5566abb7804f827391471f2fb03",
+      "installedSha256": "7fe83fda4a86139704638cb3861ae5680f9cc5566abb7804f827391471f2fb03"
+    },
+    "Maple.cdi3.json": {
+      "source": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.cdi3.json",
+      "sourceSha256": "c3727036c74b9913646f3213533d9faa46eeb33e8a3eb4bfac06ff5e9bb0acf5",
+      "installedSha256": "c3727036c74b9913646f3213533d9faa46eeb33e8a3eb4bfac06ff5e9bb0acf5"
+    },
+    "Maple.4096/texture_00.png": {
+      "source": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-00.png",
+      "sourceSha256": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+      "origin": "verified-packed-atlas",
+      "originalEditorTexture": {
+        "source": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.4096\\texture_00.png",
+        "sha256": "b8894ec46892bce33c7ca19839b094261e1ce90e687319146561b5c75073edfd"
+      },
+      "installedSha256": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73"
+    },
+    "motions/idle.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\idle.motion3.json",
+      "sourceSha256": "ea4f8ded80c797f9d23ab316755f7ff2a687786261714e8fb8547fb1eccdfc59",
+      "installedSha256": "ea4f8ded80c797f9d23ab316755f7ff2a687786261714e8fb8547fb1eccdfc59"
+    },
+    "motions/walk_right.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\walk_right.motion3.json",
+      "sourceSha256": "0f0e0305e24c66dd222801ee4f72b4548b23db87f82f05009b509ed355005f99",
+      "installedSha256": "0f0e0305e24c66dd222801ee4f72b4548b23db87f82f05009b509ed355005f99"
+    },
+    "motions/walk_left.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\walk_left.motion3.json",
+      "sourceSha256": "c4bf429d09c77dab8a198370e9b3afa8d3c9c823c6239725c9452c250aa2f56b",
+      "installedSha256": "c4bf429d09c77dab8a198370e9b3afa8d3c9c823c6239725c9452c250aa2f56b"
+    },
+    "motions/drag_left.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\drag_left.motion3.json",
+      "sourceSha256": "21d0839580394df84e408d5f4234d8740e3f0391f6631a05364f39f6e6aa4c09",
+      "installedSha256": "21d0839580394df84e408d5f4234d8740e3f0391f6631a05364f39f6e6aa4c09"
+    },
+    "motions/drag_right.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\drag_right.motion3.json",
+      "sourceSha256": "3402c57eb4cc6a0225d0c749dc384e8c563ec963f8bd776fb3c517f99fbba12e",
+      "installedSha256": "3402c57eb4cc6a0225d0c749dc384e8c563ec963f8bd776fb3c517f99fbba12e"
+    },
+    "motions/happy.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\happy.motion3.json",
+      "sourceSha256": "60712d2fe195607529a4466c9dc05d0a6ec10c6a9f7e19bd628aa8e097908bd3",
+      "installedSha256": "60712d2fe195607529a4466c9dc05d0a6ec10c6a9f7e19bd628aa8e097908bd3"
+    },
+    "motions/talk.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\talk.motion3.json",
+      "sourceSha256": "7b482b714fb2937d35c59665ca6cd3bb2a3a594bf60b4e58850b4c51a748e86d",
+      "installedSha256": "7b482b714fb2937d35c59665ca6cd3bb2a3a594bf60b4e58850b4c51a748e86d"
+    },
+    "motions/petting.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\petting.motion3.json",
+      "sourceSha256": "96aec9912b28130aa553b87ee27fc9574a4a615931299883f9ef77b294d8360d",
+      "installedSha256": "96aec9912b28130aa553b87ee27fc9574a4a615931299883f9ef77b294d8360d"
+    },
+    "motions/fall_float.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\fall_float.motion3.json",
+      "sourceSha256": "d7e841b6a91c23ffec4ee106bf1b25c474ef75032c7d0111077d692bb702c449",
+      "installedSha256": "d7e841b6a91c23ffec4ee106bf1b25c474ef75032c7d0111077d692bb702c449"
+    },
+    "motions/land.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\land.motion3.json",
+      "sourceSha256": "ca9b1b8491db0cec3931f7f027ad7bd860c487883d171809a2b684e2f56d54ea",
+      "installedSha256": "ca9b1b8491db0cec3931f7f027ad7bd860c487883d171809a2b684e2f56d54ea"
+    },
+    "motions/climb_right.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\climb_right.motion3.json",
+      "sourceSha256": "95475b47631bf824d7628272eeac88618fa97cca6a92e442db56e7bf281996d5",
+      "installedSha256": "95475b47631bf824d7628272eeac88618fa97cca6a92e442db56e7bf281996d5"
+    },
+    "motions/climb_left.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\climb_left.motion3.json",
+      "sourceSha256": "9e7cb7aba039a71796cf82672891e3c554058cff428786bf10b1c1aa9f903455",
+      "installedSha256": "9e7cb7aba039a71796cf82672891e3c554058cff428786bf10b1c1aa9f903455"
+    },
+    "motions/swing_cycle.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\swing_cycle.motion3.json",
+      "sourceSha256": "a3f28b3833b93c59992f97b6897cdd62237d74c2c9d066e6609790850c5fbfff",
+      "installedSha256": "a3f28b3833b93c59992f97b6897cdd62237d74c2c9d066e6609790850c5fbfff"
+    },
+    "motions/swing_idle.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\swing_idle.motion3.json",
+      "sourceSha256": "888c7848383af78363b8c4dca72cb33a88cd2eaf616fe3b62de3f3bfbf24538f",
+      "installedSha256": "888c7848383af78363b8c4dca72cb33a88cd2eaf616fe3b62de3f3bfbf24538f"
+    },
+    "motions/sleep_enter.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\sleep_enter.motion3.json",
+      "sourceSha256": "8580414f3c13f37f6829b054971d02d29ddaec43668a8b98c9de22dac1ff6807",
+      "installedSha256": "8580414f3c13f37f6829b054971d02d29ddaec43668a8b98c9de22dac1ff6807"
+    },
+    "motions/sleep_loop.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\sleep_loop.motion3.json",
+      "sourceSha256": "a6ca19fbc544875f8457af7f521342c752ddde741213fe1e523520f0a11b7424",
+      "installedSha256": "a6ca19fbc544875f8457af7f521342c752ddde741213fe1e523520f0a11b7424"
+    },
+    "motions/sleep_exit.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\sleep_exit.motion3.json",
+      "sourceSha256": "0061a76e5f8e6557441c8da8d708a0e964153c5379a1e4129f1dc5e8ad5617d9",
+      "installedSha256": "0061a76e5f8e6557441c8da8d708a0e964153c5379a1e4129f1dc5e8ad5617d9"
+    },
+    "motions/clean_ground.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_ground.motion3.json",
+      "sourceSha256": "0cf47bb3a9a8fcee9dada7175566d2c193d04906209cb01cdf0fcbbc0ec7cb7b",
+      "installedSha256": "0cf47bb3a9a8fcee9dada7175566d2c193d04906209cb01cdf0fcbbc0ec7cb7b"
+    },
+    "motions/clean_climb_left.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_left.motion3.json",
+      "sourceSha256": "a660268b77517e554c5a44b07ae77796c70a0f9ced0245f35120c8cec2a0b373",
+      "installedSha256": "a660268b77517e554c5a44b07ae77796c70a0f9ced0245f35120c8cec2a0b373"
+    },
+    "motions/clean_climb_right.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_right.motion3.json",
+      "sourceSha256": "2b57dd96183009c80c5f6f9c949dc0a3cd431a9e1c44621fe4f629da35f29f64",
+      "installedSha256": "2b57dd96183009c80c5f6f9c949dc0a3cd431a9e1c44621fe4f629da35f29f64"
+    },
+    "motions/clean_top.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_top.motion3.json",
+      "sourceSha256": "9999ec9aeb49b5a7b7fbd1a9bea1bbfbfb0a094d4466a48243bb8ec9e0b11037",
+      "installedSha256": "9999ec9aeb49b5a7b7fbd1a9bea1bbfbfb0a094d4466a48243bb8ec9e0b11037"
+    },
+    "motions/climb_to_top_left.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\climb_to_top_left.motion3.json",
+      "sourceSha256": "90f294455fdd2ed3f240fb96e8ff9360a32421bbb133be933b2cceaa609ee394",
+      "installedSha256": "90f294455fdd2ed3f240fb96e8ff9360a32421bbb133be933b2cceaa609ee394"
+    },
+    "motions/climb_to_top_right.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\climb_to_top_right.motion3.json",
+      "sourceSha256": "336031ad32fab5d304158bd648b8bbffb01f6c433cfb90f286213154e7194e15",
+      "installedSha256": "336031ad32fab5d304158bd648b8bbffb01f6c433cfb90f286213154e7194e15"
+    },
+    "motions/clean_ground_enter.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_ground_enter.motion3.json",
+      "sourceSha256": "7adc11cdba8e50839f97d9f8c5d6d88fbb3859065372b7ba829d3acba27171dc",
+      "installedSha256": "7adc11cdba8e50839f97d9f8c5d6d88fbb3859065372b7ba829d3acba27171dc"
+    },
+    "motions/clean_ground_exit.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_ground_exit.motion3.json",
+      "sourceSha256": "020d464fbbe2b621ce59b16b39685a5690215a77718dc898a1e36c575dcbbad6",
+      "installedSha256": "020d464fbbe2b621ce59b16b39685a5690215a77718dc898a1e36c575dcbbad6"
+    },
+    "motions/clean_climb_left_enter.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_left_enter.motion3.json",
+      "sourceSha256": "eb1530bdf42d7ad7bf816b74b4d6620b069c03b1b024bdb6d20df04440bbc704",
+      "installedSha256": "eb1530bdf42d7ad7bf816b74b4d6620b069c03b1b024bdb6d20df04440bbc704"
+    },
+    "motions/clean_climb_left_exit.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_left_exit.motion3.json",
+      "sourceSha256": "064c77273baad64d9366483a0c64965fa6f51dab1b4f6af5b736ade55a5a0926",
+      "installedSha256": "064c77273baad64d9366483a0c64965fa6f51dab1b4f6af5b736ade55a5a0926"
+    },
+    "motions/clean_climb_right_enter.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_right_enter.motion3.json",
+      "sourceSha256": "549651b2f58f3a099eb1e140b79a05f6c7e01c0adb75e0fccd38943fb8a3190e",
+      "installedSha256": "549651b2f58f3a099eb1e140b79a05f6c7e01c0adb75e0fccd38943fb8a3190e"
+    },
+    "motions/clean_climb_right_exit.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_right_exit.motion3.json",
+      "sourceSha256": "fa347c7f3be7fae0f052c3272f1339e9406fc27d36c5bc2dedca29055c96b948",
+      "installedSha256": "fa347c7f3be7fae0f052c3272f1339e9406fc27d36c5bc2dedca29055c96b948"
+    },
+    "motions/clean_top_enter.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_top_enter.motion3.json",
+      "sourceSha256": "d356d6c84ac4b2e1aa5cdd19a161a0f774183dec5b24624767ce074a16e525bf",
+      "installedSha256": "d356d6c84ac4b2e1aa5cdd19a161a0f774183dec5b24624767ce074a16e525bf"
+    },
+    "motions/clean_top_exit.motion3.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_top_exit.motion3.json",
+      "sourceSha256": "3eeb2ec13ec3165bc5e9665164b6e8fb10cb739752bd790460319e3e02c9109c",
+      "installedSha256": "3eeb2ec13ec3165bc5e9665164b6e8fb10cb739752bd790460319e3e02c9109c"
+    },
+    "Maple.pet.json": {
+      "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\Maple.pet.json",
+      "sourceSha256": "0598b4a9fd0604a7b3b055730c6df5f0f2a8953f476619c6a796076c007d725a",
+      "origin": "verified-native-material-anchors",
+      "derivedSha256": "0adac2b7c736718aedec8d144807f7e77bb38b854a779f1ef27694372035f6d4",
+      "installedSha256": "0adac2b7c736718aedec8d144807f7e77bb38b854a779f1ef27694372035f6d4"
+    }
+  },
+  "sourceInputs": {
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\climb_right.motion3.json": "95475b47631bf824d7628272eeac88618fa97cca6a92e442db56e7bf281996d5",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\happy.motion3.json": "60712d2fe195607529a4466c9dc05d0a6ec10c6a9f7e19bd628aa8e097908bd3",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\Maple.pet.json": "0598b4a9fd0604a7b3b055730c6df5f0f2a8953f476619c6a796076c007d725a",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\sleep_exit.motion3.json": "0061a76e5f8e6557441c8da8d708a0e964153c5379a1e4129f1dc5e8ad5617d9",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\swing_cycle.motion3.json": "a3f28b3833b93c59992f97b6897cdd62237d74c2c9d066e6609790850c5fbfff",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\walk_left.motion3.json": "c4bf429d09c77dab8a198370e9b3afa8d3c9c823c6239725c9452c250aa2f56b",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_ground_exit.motion3.json": "020d464fbbe2b621ce59b16b39685a5690215a77718dc898a1e36c575dcbbad6",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\climb_to_top_left.motion3.json": "90f294455fdd2ed3f240fb96e8ff9360a32421bbb133be933b2cceaa609ee394",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_left_enter.motion3.json": "eb1530bdf42d7ad7bf816b74b4d6620b069c03b1b024bdb6d20df04440bbc704",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\climb_left.motion3.json": "9e7cb7aba039a71796cf82672891e3c554058cff428786bf10b1c1aa9f903455",
+    "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.physics3.json": "134f81706b3490282dc93389783fd049cfc977d5295f5214100fb31637e39014",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\sleep_enter.motion3.json": "8580414f3c13f37f6829b054971d02d29ddaec43668a8b98c9de22dac1ff6807",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\talk.motion3.json": "7b482b714fb2937d35c59665ca6cd3bb2a3a594bf60b4e58850b4c51a748e86d",
+    "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_right_exit.motion3.json": "fa347c7f3be7fae0f052c3272f1339e9406fc27d36c5bc2dedca29055c96b948",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\drag_left.motion3.json": "21d0839580394df84e408d5f4234d8740e3f0391f6631a05364f39f6e6aa4c09",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\Maple.physics3.json": "7fe83fda4a86139704638cb3861ae5680f9cc5566abb7804f827391471f2fb03",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_top_enter.motion3.json": "d356d6c84ac4b2e1aa5cdd19a161a0f774183dec5b24624767ce074a16e525bf",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_right_enter.motion3.json": "549651b2f58f3a099eb1e140b79a05f6c7e01c0adb75e0fccd38943fb8a3190e",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_ground_enter.motion3.json": "7adc11cdba8e50839f97d9f8c5d6d88fbb3859065372b7ba829d3acba27171dc",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\climb_to_top_right.motion3.json": "336031ad32fab5d304158bd648b8bbffb01f6c433cfb90f286213154e7194e15",
+    "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.4096\\texture_00.png": "b8894ec46892bce33c7ca19839b094261e1ce90e687319146561b5c75073edfd",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\walk_right.motion3.json": "0f0e0305e24c66dd222801ee4f72b4548b23db87f82f05009b509ed355005f99",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\idle.motion3.json": "ea4f8ded80c797f9d23ab316755f7ff2a687786261714e8fb8547fb1eccdfc59",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_right.motion3.json": "2b57dd96183009c80c5f6f9c949dc0a3cd431a9e1c44621fe4f629da35f29f64",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\petting.motion3.json": "96aec9912b28130aa553b87ee27fc9574a4a615931299883f9ef77b294d8360d",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\sleep_loop.motion3.json": "a6ca19fbc544875f8457af7f521342c752ddde741213fe1e523520f0a11b7424",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_top_exit.motion3.json": "3eeb2ec13ec3165bc5e9665164b6e8fb10cb739752bd790460319e3e02c9109c",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_left.motion3.json": "a660268b77517e554c5a44b07ae77796c70a0f9ced0245f35120c8cec2a0b373",
+    "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.cdi3.json": "c3727036c74b9913646f3213533d9faa46eeb33e8a3eb4bfac06ff5e9bb0acf5",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\fall_float.motion3.json": "d7e841b6a91c23ffec4ee106bf1b25c474ef75032c7d0111077d692bb702c449",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_top.motion3.json": "9999ec9aeb49b5a7b7fbd1a9bea1bbfbfb0a094d4466a48243bb8ec9e0b11037",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\swing_idle.motion3.json": "888c7848383af78363b8c4dca72cb33a88cd2eaf616fe3b62de3f3bfbf24538f",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\land.motion3.json": "ca9b1b8491db0cec3931f7f027ad7bd860c487883d171809a2b684e2f56d54ea",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_ground.motion3.json": "0cf47bb3a9a8fcee9dada7175566d2c193d04906209cb01cdf0fcbbc0ec7cb7b",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\clean_climb_left_exit.motion3.json": "064c77273baad64d9366483a0c64965fa6f51dab1b4f6af5b736ade55a5a0926",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\runtime\\motions\\drag_right.motion3.json": "3402c57eb4cc6a0225d0c749dc384e8c563ec963f8bd776fb3c517f99fbba12e",
+    "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.model3.json": "60c29233825423aeefc0c3351e57219f966a84a3591e5a57524fdd1704e639c7",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\Maple.model3-fragment.json": "526bb4ba583658d03d10ebed15a6783bd4b8f5a8996c061c4a54e0409b7f05dc",
+    "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-native-02\\native-geometry.json": "af017ab05be1aa000cba45217a1a9bfa5b43165a81347f2e0ad7b4c83257250d",
+    "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-audit.json": "90602ed551b3feef48ef89f990437612a37f7cb487664fc0ab7a159d47864f73",
+    "F:\\cutemaple\\CuteMaple-Live2D\\third_party\\CubismSdkForWeb-5-r.5\\Core\\live2dcubismcore.min.js": "8741f739779b5d5210872bd3d7d99f0f1e56e6c87409e7d26d6bb4b80aa1ef47",
+    "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.cmo3": "f4bb9bbb57bde521623f57b41dbb8c17c126487de1031a3b16f7c94a965e19b0",
+    "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\Maple.cmo3": "3060fa8f9619b1e2e779011478246cd561dec87d2bc814f57bf33a770441fba2",
+    "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-00.png": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+    "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-native-02\\native-uv.json": "316eb7e310a558f4999becf70555f5c121463c5ed62aa01c623c810a064971da"
+  },
+  "motionGroups": 31,
+  "nativeValidation": {
+    "valid": true,
+    "coreVersion": 100663297,
+    "mocVersion": 1,
+    "parameters": [
+      "ParamAngleX",
+      "ParamBodyAngleX",
+      "ParamAngleY",
+      "ParamBodyAngleY",
+      "ParamAngleZ",
+      "ParamBodyAngleZ",
+      "ParamEyeLOpen",
+      "ParamEyeLSmile",
+      "ParamBrowLY",
+      "ParamBrowLForm",
+      "ParamArmLA",
+      "ParamArmLB",
+      "ParamLegLA",
+      "ParamLegLB",
+      "ParamEyeROpen",
+      "ParamEyeRSmile",
+      "ParamBrowRY",
+      "ParamBrowRForm",
+      "ParamArmRA",
+      "ParamArmRB",
+      "ParamLegRA",
+      "ParamLegRB",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamMouthForm",
+      "ParamHairFront",
+      "ParamHairSide",
+      "ParamHairBack",
+      "ParamSkirt",
+      "ParamMouthOpenY",
+      "ParamCheek",
+      "ParamBreath",
+      "ParamTyping",
+      "ParamTypingPulse",
+      "ParamListening",
+      "ParamDizzy",
+      "ParamGlasses",
+      "ParamFan",
+      "ParamMaple",
+      "ParamPoseSleep",
+      "ParamPoseSwing",
+      "ParamPoseTop",
+      "ParamCrouch",
+      "ParamBounce",
+      "ParamSwingVisible",
+      "ParamCleaning",
+      "ParamPoseClimb",
+      "ParamSwing",
+      "ParamHeadTurn",
+      "ParamBodyTurn",
+      "ParamHandLShape",
+      "ParamSleeveLHang",
+      "ParamHandRShape",
+      "ParamSleeveRHang",
+      "ParamTransitionProgress",
+      "ParamArmPoseMode",
+      "ParamRibbonLX",
+      "ParamRibbonLY",
+      "ParamCleanFanL",
+      "ParamRibbonRX",
+      "ParamRibbonRY",
+      "ParamCleanFanR",
+      "ParamCleaningSweep",
+      "ParamCleanGround",
+      "ParamClimbPhase",
+      "ParamClimbActive",
+      "ParamClimbDirection",
+      "ParamCleanContext",
+      "ParamCleanStroke",
+      "ParamCleanPoseL",
+      "ParamCleanBrushL",
+      "ParamCleanPoseR",
+      "ParamCleanBrushR",
+      "ParamFreeArmActive",
+      "ParamFreeArmPose",
+      "ParamFreeArmBrace",
+      "ParamArmSupportBlend",
+      "ParamClimbRefine",
+      "ParamClimbHandoff",
+      "ParamClimbDrapeBlend"
+    ],
+    "drawables": [
+      "costume_underlay",
+      "profile_r_costume_underlay",
+      "costume_underlay_skirt",
+      "profile_l_costume_underlay",
+      "profile_r_costume_underlay_skirt",
+      "mid_r_costume_underlay",
+      "profile_l_costume_underlay_skirt",
+      "mid_l_costume_underlay",
+      "mid_r_costume_underlay_skirt",
+      "mid_l_costume_underlay_skirt",
+      "seat",
+      "leg_l",
+      "profile_r_leg_r",
+      "profile_l_leg_l",
+      "leg_r",
+      "mid_r_leg_r",
+      "profile_r_leg_l",
+      "mid_l_leg_l",
+      "profile_l_leg_r",
+      "mid_r_leg_l",
+      "mid_l_leg_r",
+      "neck",
+      "profile_r_neck",
+      "profile_l_neck",
+      "torso",
+      "mid_r_neck",
+      "profile_r_torso",
+      "mid_l_neck",
+      "profile_l_torso",
+      "leg_l_swing",
+      "leg_r_swing",
+      "leg_l_sleep",
+      "leg_l_climb",
+      "leg_r_sleep",
+      "leg_r_climb",
+      "leg_r_climb_refined",
+      "leg_r_climb_handoff",
+      "mid_r_torso",
+      "leg_l_climb_refined",
+      "leg_l_climb_handoff",
+      "mid_l_torso",
+      "skirt",
+      "profile_r_skirt",
+      "profile_l_skirt",
+      "profile_r_skirt_climb_drape",
+      "mid_r_skirt",
+      "profile_l_skirt_climb_drape",
+      "mid_l_skirt",
+      "skirt_swing",
+      "skirt_sleep",
+      "ribbon_l",
+      "profile_r_ribbon_l",
+      "profile_l_ribbon_l",
+      "ribbon_r",
+      "mid_r_ribbon_l",
+      "profile_r_ribbon_r",
+      "mid_l_ribbon_l",
+      "profile_l_ribbon_r",
+      "mid_r_ribbon_r",
+      "mid_l_ribbon_r",
+      "arm_l",
+      "arm_r",
+      "hand_l_grip_palm",
+      "hand_r_grip_palm",
+      "rope_l",
+      "rope_r",
+      "sleeve_l_upper",
+      "sleeve_l_lower",
+      "sleeve_r_upper",
+      "sleeve_r_lower",
+      "clean_sleeve_l_lower",
+      "clean_sleeve_r_lower",
+      "hand_l",
+      "hand_r",
+      "hand_l_relaxed",
+      "hand_l_support",
+      "hand_r_relaxed",
+      "hand_r_support",
+      "clean_hand_l_palm",
+      "clean_hand_r_palm",
+      "clean_ground_hand_r_palm",
+      "clean_ground_hand_r_relaxed",
+      "maple",
+      "clean_fan_l",
+      "clean_fan_r",
+      "clean_brush_l",
+      "clean_brush_r",
+      "clean_ground_brush_r",
+      "hand_l_grip_fingers",
+      "hand_r_grip_fingers",
+      "clean_hand_l_fingers",
+      "clean_hand_r_fingers",
+      "clean_ground_hand_r_fingers",
+      "fan",
+      "profile_r_hair_back",
+      "profile_l_hair_back",
+      "mid_r_hair_back",
+      "mid_l_hair_back",
+      "face_base",
+      "hair_front",
+      "ornament_l",
+      "ornament_r",
+      "profile_r_ear_near",
+      "profile_r_face_base",
+      "profile_r_hair_front",
+      "profile_r_ornament_l",
+      "profile_l_ear_near",
+      "profile_l_face_base",
+      "profile_l_hair_front",
+      "profile_l_ornament_r",
+      "mid_r_ear_near",
+      "mid_r_face_base",
+      "mid_r_hair_front",
+      "mid_r_ornament_r",
+      "mid_r_ornament_l",
+      "mid_l_ear_near",
+      "mid_l_face_base",
+      "mid_l_hair_front",
+      "mid_l_ornament_l",
+      "mid_l_ornament_r",
+      "eye_l",
+      "eye_r",
+      "profile_r_eye_l",
+      "profile_l_eye_r",
+      "mid_r_eye_l",
+      "mid_r_eye_r",
+      "mid_l_eye_r",
+      "mid_l_eye_l",
+      "eyebrow_l",
+      "eyebrow_r",
+      "mouth",
+      "profile_r_eyebrow_l",
+      "profile_r_mouth",
+      "profile_l_eyebrow_r",
+      "profile_l_mouth",
+      "mid_r_eyebrow_l",
+      "mid_r_eyebrow_r",
+      "mid_r_mouth",
+      "mid_l_eyebrow_r",
+      "mid_l_eyebrow_l",
+      "mid_l_mouth",
+      "pupil_l",
+      "pupil_r",
+      "profile_r_pupil_l",
+      "profile_l_pupil_r",
+      "eye_closed_l",
+      "eye_closed_r",
+      "mid_r_pupil_l",
+      "mid_r_pupil_r",
+      "profile_r_eye_closed_l",
+      "mid_l_pupil_r",
+      "mid_l_pupil_l",
+      "profile_l_eye_closed_r",
+      "mid_r_eye_closed_l",
+      "mid_r_eye_closed_r",
+      "mid_l_eye_closed_r",
+      "mid_l_eye_closed_l",
+      "blush",
+      "glasses"
+    ],
+    "parts": [
+      "PartRoot"
+    ],
+    "textureIndices": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "noMocGenerated": true,
+  "stagingValidated": true,
+  "textureInstallation": {
+    "mode": "verified-packed-atlas",
+    "originalEditorFilesModified": false,
+    "reason": "Restore original authored texture bytes using the actual exported MOC and complete verified native UV coordinates",
+    "nativeUvAudit": {
+      "verified": true,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-native-02\\native-uv.json",
+      "sha256": "316eb7e310a558f4999becf70555f5c121463c5ed62aa01c623c810a064971da",
+      "tool": "native-uv-pairing-audit",
+      "mocSha256": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+      "atlasAuditPath": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-audit.json",
+      "atlasAuditSha256": "90602ed551b3feef48ef89f990437612a37f7cb487664fc0ab7a159d47864f73",
+      "meshCount": 159,
+      "matchedMeshCount": 159,
+      "pixelTolerance": 0.001,
+      "maximumAtlasPixelError": 0.0007240773440362347,
+      "sourcesUnchanged": true,
+      "inputHashesAtStart": {
+        "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-native-02\\native-geometry.json": "af017ab05be1aa000cba45217a1a9bfa5b43165a81347f2e0ad7b4c83257250d",
+        "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-audit.json": "90602ed551b3feef48ef89f990437612a37f7cb487664fc0ab7a159d47864f73",
+        "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+        "F:\\cutemaple\\CuteMaple-Live2D\\third_party\\CubismSdkForWeb-5-r.5\\Core\\live2dcubismcore.min.js": "8741f739779b5d5210872bd3d7d99f0f1e56e6c87409e7d26d6bb4b80aa1ef47",
+        "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.cmo3": "f4bb9bbb57bde521623f57b41dbb8c17c126487de1031a3b16f7c94a965e19b0",
+        "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\Maple.cmo3": "3060fa8f9619b1e2e779011478246cd561dec87d2bc814f57bf33a770441fba2",
+        "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-00.png": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+        "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-native-02\\native-uv.json": "316eb7e310a558f4999becf70555f5c121463c5ed62aa01c623c810a064971da"
+      },
+      "inputHashesAtEnd": {
+        "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-native-02\\native-geometry.json": "af017ab05be1aa000cba45217a1a9bfa5b43165a81347f2e0ad7b4c83257250d",
+        "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-audit.json": "90602ed551b3feef48ef89f990437612a37f7cb487664fc0ab7a159d47864f73",
+        "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+        "F:\\cutemaple\\CuteMaple-Live2D\\third_party\\CubismSdkForWeb-5-r.5\\Core\\live2dcubismcore.min.js": "8741f739779b5d5210872bd3d7d99f0f1e56e6c87409e7d26d6bb4b80aa1ef47",
+        "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.cmo3": "f4bb9bbb57bde521623f57b41dbb8c17c126487de1031a3b16f7c94a965e19b0",
+        "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\Maple.cmo3": "3060fa8f9619b1e2e779011478246cd561dec87d2bc814f57bf33a770441fba2",
+        "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-00.png": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+        "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-native-02\\native-uv.json": "316eb7e310a558f4999becf70555f5c121463c5ed62aa01c623c810a064971da"
+      }
+    },
+    "atlasAuditPath": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-audit.json",
+    "atlasAuditSha256": "90602ed551b3feef48ef89f990437612a37f7cb487664fc0ab7a159d47864f73",
+    "sourceCmo3Sha256": "3060fa8f9619b1e2e779011478246cd561dec87d2bc814f57bf33a770441fba2",
+    "packedCmo3Sha256": "f4bb9bbb57bde521623f57b41dbb8c17c126487de1031a3b16f7c94a965e19b0",
+    "pages": [
+      {
+        "textureIndex": 0,
+        "runtimeReference": "Maple.4096/texture_00.png",
+        "originalEditorTexture": {
+          "source": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.4096\\texture_00.png",
+          "sha256": "b8894ec46892bce33c7ca19839b094261e1ce90e687319146561b5c75073edfd"
+        },
+        "installedTexture": {
+          "source": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-00.png",
+          "sha256": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+          "size": [
+            4096,
+            4096
+          ]
+        },
+        "editorVsPackedComparison": {
+          "actualSize": [
+            4096,
+            4096
+          ],
+          "sourceSize": [
+            4096,
+            4096
+          ],
+          "sizesIdentical": true,
+          "rawPixelsIdentical": false,
+          "alphaIdentical": false,
+          "opaqueRGBIdentical": true,
+          "premulAbove8Identical": true,
+          "coordinateMappingVerified": false,
+          "lowAlphaThreshold": 8,
+          "premultiplication": "(rgb * alpha + 127) // 255",
+          "counts": {
+            "pixels": 16777216,
+            "visiblePixels": 2572441,
+            "opaquePixels": 2107562,
+            "alphaChangedPixels": 3837,
+            "opaqueRGBChangedPixels": 0,
+            "premulAbove8ChangedPixels": 0,
+            "premulAbove8ChangedChannels": 0,
+            "lowAlphaPixels": 8976,
+            "lowAlphaRGBChangedPixels": 8795,
+            "lowAlphaPremulChangedPixels": 7819,
+            "lowAlphaPremulChangedChannels": 17699
+          },
+          "lowAlphaMaxContribution8Bit": 7,
+          "lowAlphaMaxContributionNormalized": 0.027450980392156862,
+          "visualReview": "pending-human-review",
+          "actualPath": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.4096\\texture_00.png",
+          "sourcePath": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-00.png",
+          "actualSha256": "b8894ec46892bce33c7ca19839b094261e1ce90e687319146561b5c75073edfd",
+          "sourceSha256": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73"
+        }
+      }
+    ]
+  },
+  "materialAnchorConversion": {
+    "conversions": [
+      {
+        "anchor": "states.climb_left.anchors.left",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_left.anchors.farGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.47900390625,
+            0.50341796875
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_left.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left.anchors.left",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_l_fingers",
+          "sourceUv": [
+            0.496953125,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_l_fingers",
+          "atlasUv": [
+            0.17794921875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left.anchors.farGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.47900390625,
+            0.50341796875
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_l",
+          "sourceUv": [
+            0.496953125,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_l",
+          "sourceUv": [
+            0.496953125,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_to_top_left.anchors.farGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.47900390625,
+            0.50341796875
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_to_top_left.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_right.anchors.right",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_right.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_right.anchors.farGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.54248046875,
+            0.50439453125
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right.anchors.right",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right.anchors.farGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.54248046875,
+            0.50439453125
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_to_top_right.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.climb_to_top_right.anchors.farGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.54248046875,
+            0.50439453125
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground.anchors.freeHand",
+        "source": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "atlasUv": [
+            0.1520078125,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground.anchors.brushTip",
+        "source": {
+          "drawable": "clean_ground_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_ground_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground_enter.anchors.freeHand",
+        "source": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "atlasUv": [
+            0.1520078125,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground_enter.anchors.brushTip",
+        "source": {
+          "drawable": "clean_ground_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground_enter.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_ground_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground_exit.anchors.freeHand",
+        "source": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "atlasUv": [
+            0.1520078125,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground_exit.anchors.brushTip",
+        "source": {
+          "drawable": "clean_ground_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_ground_exit.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_ground_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top_enter.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top_enter.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top_enter.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top_exit.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top_exit.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_top_exit.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_enter.anchors.left",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_enter.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_l_fingers",
+          "sourceUv": [
+            0.496953125,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_l_fingers",
+          "atlasUv": [
+            0.17794921875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_enter.anchors.farGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.47900390625,
+            0.50341796875
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_enter.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_enter.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_l",
+          "sourceUv": [
+            0.496953125,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_enter.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_l",
+          "sourceUv": [
+            0.496953125,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_exit.anchors.left",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_exit.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_l_fingers",
+          "sourceUv": [
+            0.496953125,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_l_fingers",
+          "atlasUv": [
+            0.17794921875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_exit.anchors.farGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.47900390625,
+            0.50341796875
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_exit.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.51025390625,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_exit.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_l",
+          "sourceUv": [
+            0.496953125,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_left_exit.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_l",
+          "sourceUv": [
+            0.496953125,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_enter.anchors.right",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_enter.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_enter.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_enter.anchors.farGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.54248046875,
+            0.50439453125
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_enter.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_enter.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_exit.anchors.right",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_exit.anchors.freeHand",
+        "source": {
+          "drawable": "clean_hand_r_fingers",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_exit.anchors.nearGrip",
+        "source": {
+          "drawable": "hand_l_support",
+          "sourceUv": [
+            0.51123046875,
+            0.50146484375
+          ]
+        },
+        "installed": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_exit.anchors.farGrip",
+        "source": {
+          "drawable": "hand_r_support",
+          "sourceUv": [
+            0.54248046875,
+            0.50439453125
+          ]
+        },
+        "installed": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_exit.anchors.brushTip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.4623359375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "texturePage": 0
+      },
+      {
+        "anchor": "states.clean_climb_right_exit.anchors.brushGrip",
+        "source": {
+          "drawable": "clean_brush_r",
+          "sourceUv": [
+            0.524046875,
+            0.502375
+          ]
+        },
+        "installed": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        },
+        "texturePage": 0
+      }
+    ],
+    "mocSha256": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+    "nativeUvAuditSha256": "316eb7e310a558f4999becf70555f5c121463c5ed62aa01c623c810a064971da",
+    "sourceMetadataUnchanged": true,
+    "nativeUvConvention": "Core U/V; V equals one minus packed PNG V"
+  }
+}

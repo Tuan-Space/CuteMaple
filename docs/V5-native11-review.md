@@ -1,0 +1,19 @@
+# Native11 review — rejected candidate
+
+Native11 is an isolated review build, not the installed runtime or final deliverable. The exact original export is archived in `assets/authoring/archives/v5-native-material-native-20260910`; its MOC SHA256 is `e77c4f40e03cf9daa8b9707f8d305fdd0538cfd10826455bec23e15da4894f89`.
+
+The original texture/UV audit passed for all 145 drawables, with maximum error 0.0007241 atlas pixels. The 145-frame painted-head audit reproduced neutral pupil, mouth and bun correspondences within 0.000039 pixels at a 384-pixel canvas. This validates those material addresses, not the entire painted outline.
+
+The continuous left climb recording completed 131 native frames and its full final resting observation. Direct review of original frames 0043, 0045 and 0047 still found overlapping hair and ornament outlines in frame 0047. Its actual HeadTurn is about -0.278, with neutral eye-ball and hair parameters, so this defect cannot be dismissed as an extreme mouse-gaze combination. Frame 0045 uses only the intermediate painted view; a second pupil has not been independently established there. The remaining head contours require correction and another native recording.
+
+Original climb-cycle frames 0020, 0024 and 0028 show the front skirt lifting over alternating bent knees while the rear cloth hangs down. The fixed shoe material measurements are unchanged from native10 across all 168 measured rows. These observations preserve the existing cloth/shoe work but are not a substitute for final left/right continuous, screen-contact and user interaction review.
+
+The fan/shoe audit completed 383 frames, but the fan failed: the newly introduced rotation frame mixed normalized parent coordinates and pixel child lengths. The fan shaft can leave the canvas and its material shrinks by about three orders of magnitude. No cleanup visual acceptance is claimed. A separate four-variant, nine-frame native rotation probe establishes the correct coordinate conversion before the next full build.
+
+The original CAN was opened, played and saved under a separate filename by Cubism. Its strict before/after comparison remains false. An independent diagnosis accounts for its differences using the same native rounding behavior reproduced in native10; no tolerance was relaxed and the original CMO was preserved.
+
+Production gaze can remain enabled during climbing and climb-to-top. The neutral recording disables gaze. Sustained-gaze native11 recordings exercised the ordinary host command, smoothing and head response with inward/downward targets on both walls. The left recording and the right startup-observation retry completed 151 frames each. The first right attempt failed initial idle coverage and is preserved separately; a longer initial observation fixed recording coverage without changing model playback or relaxing validation. Directly inspected transfer frames did not establish an additional double-pupil defect, but the painted outline overlap remains. `artifacts/native-v5-material-gaze-11/review.json` binds the original reports and inspected PNG hashes. This is renderer input, not hardware mouse activity, and the final model still needs its own combined check.
+
+The subsequent eight-frame native11 contour diagnosis reproduces the full hair, ornament and ribbon child hierarchies within 0.000051 pixels at 384 pixels. The existing coarse child grids can displace paint by about 5.07 pixels. Independently bound original painted landmarks also reveal about 12.84 pixels between the two hair-part locations in original frame 0047 and 3.92–4.82 pixels between three corresponding nearby pink beads. These are separate measured issues; increasing grid density alone does not establish painted correspondence.
+
+No final runtime promotion, final compiled-helper cleanup acceptance, final directory-package regression or final 60-minute desktop acceptance is claimed by this review.

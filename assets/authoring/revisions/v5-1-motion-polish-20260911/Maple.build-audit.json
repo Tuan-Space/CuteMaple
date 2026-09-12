@@ -1,0 +1,531 @@
+{
+  "version": 5,
+  "status": "offline candidate, native Editor and visual validation pending",
+  "parts": 159,
+  "parameters": 80,
+  "deformers": 397,
+  "geometryAxes": {
+    "costume_underlay": [],
+    "profile_r_costume_underlay": [],
+    "profile_l_costume_underlay": [],
+    "mid_r_costume_underlay": [],
+    "mid_l_costume_underlay": [],
+    "costume_underlay_skirt": [],
+    "profile_r_costume_underlay_skirt": [],
+    "profile_l_costume_underlay_skirt": [],
+    "mid_r_costume_underlay_skirt": [],
+    "mid_l_costume_underlay_skirt": [],
+    "seat": [],
+    "leg_l": [],
+    "profile_r_leg_r": [],
+    "profile_l_leg_l": [],
+    "mid_r_leg_r": [],
+    "mid_l_leg_l": [],
+    "leg_r": [],
+    "profile_r_leg_l": [],
+    "profile_l_leg_r": [],
+    "mid_r_leg_l": [],
+    "mid_l_leg_r": [],
+    "neck": [
+      "ParamHeadTurn",
+      "ParamBodyTurn"
+    ],
+    "profile_r_neck": [
+      "ParamHeadTurn",
+      "ParamBodyTurn"
+    ],
+    "profile_l_neck": [
+      "ParamHeadTurn",
+      "ParamBodyTurn"
+    ],
+    "mid_r_neck": [
+      "ParamHeadTurn",
+      "ParamBodyTurn"
+    ],
+    "mid_l_neck": [
+      "ParamHeadTurn",
+      "ParamBodyTurn"
+    ],
+    "torso": [],
+    "profile_r_torso": [],
+    "profile_l_torso": [],
+    "mid_r_torso": [],
+    "mid_l_torso": [],
+    "leg_l_swing": [],
+    "leg_r_swing": [],
+    "leg_l_sleep": [],
+    "leg_l_climb": [],
+    "leg_r_sleep": [],
+    "leg_r_climb": [],
+    "skirt": [],
+    "profile_r_skirt": [],
+    "profile_l_skirt": [],
+    "mid_r_skirt": [],
+    "mid_l_skirt": [],
+    "profile_r_skirt_climb_drape": [],
+    "profile_l_skirt_climb_drape": [],
+    "skirt_swing": [],
+    "skirt_sleep": [],
+    "ribbon_l": [],
+    "profile_r_ribbon_l": [],
+    "profile_l_ribbon_l": [],
+    "mid_r_ribbon_l": [],
+    "mid_l_ribbon_l": [],
+    "ribbon_r": [],
+    "profile_r_ribbon_r": [],
+    "profile_l_ribbon_r": [],
+    "mid_r_ribbon_r": [],
+    "mid_l_ribbon_r": [],
+    "arm_l": [],
+    "arm_r": [],
+    "hand_l_grip_palm": [
+      "ParamArmPoseMode"
+    ],
+    "hand_r_grip_palm": [
+      "ParamArmPoseMode"
+    ],
+    "rope_l": [
+      "ParamSwing"
+    ],
+    "rope_r": [
+      "ParamSwing"
+    ],
+    "sleeve_l_upper": [],
+    "sleeve_l_lower": [],
+    "sleeve_r_upper": [],
+    "sleeve_r_lower": [],
+    "hand_l": [],
+    "hand_r": [],
+    "hand_l_relaxed": [
+      "ParamArmPoseMode"
+    ],
+    "hand_l_support": [
+      "ParamArmPoseMode"
+    ],
+    "hand_r_relaxed": [
+      "ParamArmPoseMode"
+    ],
+    "hand_r_support": [
+      "ParamArmPoseMode"
+    ],
+    "clean_hand_l_palm": [
+      "ParamCleanBrushL"
+    ],
+    "clean_hand_r_palm": [
+      "ParamCleanBrushR"
+    ],
+    "maple": [],
+    "clean_fan_l": [
+      "ParamCleanFanL"
+    ],
+    "clean_fan_r": [
+      "ParamCleanFanR"
+    ],
+    "clean_brush_l": [
+      "ParamCleanContext",
+      "ParamCleanBrushL"
+    ],
+    "clean_brush_r": [
+      "ParamCleanContext",
+      "ParamCleanBrushR"
+    ],
+    "hand_l_grip_fingers": [
+      "ParamArmPoseMode"
+    ],
+    "hand_r_grip_fingers": [
+      "ParamArmPoseMode"
+    ],
+    "clean_hand_l_fingers": [
+      "ParamCleanBrushL"
+    ],
+    "clean_hand_r_fingers": [
+      "ParamCleanBrushR"
+    ],
+    "fan": [],
+    "profile_r_hair_back": [],
+    "profile_l_hair_back": [],
+    "mid_r_hair_back": [],
+    "mid_l_hair_back": [],
+    "profile_r_ear_near": [],
+    "profile_l_ear_near": [],
+    "mid_r_ear_near": [],
+    "mid_l_ear_near": [],
+    "face_base": [],
+    "profile_r_face_base": [],
+    "profile_l_face_base": [],
+    "mid_r_face_base": [],
+    "mid_l_face_base": [],
+    "hair_front": [],
+    "profile_r_hair_front": [],
+    "profile_l_hair_front": [],
+    "mid_r_hair_front": [],
+    "mid_l_hair_front": [],
+    "ornament_l": [
+      "ParamHeadTurn"
+    ],
+    "mid_r_ornament_r": [],
+    "mid_l_ornament_l": [],
+    "ornament_r": [
+      "ParamHeadTurn"
+    ],
+    "profile_r_ornament_l": [
+      "ParamHeadTurn"
+    ],
+    "profile_l_ornament_r": [
+      "ParamHeadTurn"
+    ],
+    "mid_r_ornament_l": [
+      "ParamHeadTurn"
+    ],
+    "mid_l_ornament_r": [
+      "ParamHeadTurn"
+    ],
+    "eye_l": [
+      "ParamEyeLOpen",
+      "ParamEyeLSmile"
+    ],
+    "eye_r": [
+      "ParamEyeROpen",
+      "ParamEyeRSmile"
+    ],
+    "profile_r_eye_l": [
+      "ParamEyeLOpen",
+      "ParamEyeLSmile"
+    ],
+    "profile_l_eye_r": [
+      "ParamEyeROpen",
+      "ParamEyeRSmile"
+    ],
+    "mid_r_eye_l": [
+      "ParamEyeLOpen",
+      "ParamEyeLSmile"
+    ],
+    "mid_r_eye_r": [
+      "ParamEyeROpen",
+      "ParamEyeRSmile"
+    ],
+    "mid_l_eye_r": [
+      "ParamEyeROpen",
+      "ParamEyeRSmile"
+    ],
+    "mid_l_eye_l": [
+      "ParamEyeLOpen",
+      "ParamEyeLSmile"
+    ],
+    "eyebrow_l": [
+      "ParamBrowLY",
+      "ParamBrowLForm",
+      "ParamCleaning"
+    ],
+    "eyebrow_r": [
+      "ParamBrowRY",
+      "ParamBrowRForm",
+      "ParamCleaning"
+    ],
+    "mouth": [
+      "ParamMouthForm",
+      "ParamMouthOpenY"
+    ],
+    "profile_r_eyebrow_l": [
+      "ParamBrowLY",
+      "ParamBrowLForm",
+      "ParamCleaning"
+    ],
+    "profile_r_mouth": [
+      "ParamMouthForm",
+      "ParamMouthOpenY"
+    ],
+    "profile_l_eyebrow_r": [
+      "ParamBrowRY",
+      "ParamBrowRForm",
+      "ParamCleaning"
+    ],
+    "profile_l_mouth": [
+      "ParamMouthForm",
+      "ParamMouthOpenY"
+    ],
+    "mid_r_eyebrow_l": [
+      "ParamBrowLY",
+      "ParamBrowLForm",
+      "ParamCleaning"
+    ],
+    "mid_r_eyebrow_r": [
+      "ParamBrowRY",
+      "ParamBrowRForm",
+      "ParamCleaning"
+    ],
+    "mid_r_mouth": [
+      "ParamMouthForm",
+      "ParamMouthOpenY"
+    ],
+    "mid_l_eyebrow_r": [
+      "ParamBrowRY",
+      "ParamBrowRForm",
+      "ParamCleaning"
+    ],
+    "mid_l_eyebrow_l": [
+      "ParamBrowLY",
+      "ParamBrowLForm",
+      "ParamCleaning"
+    ],
+    "mid_l_mouth": [
+      "ParamMouthForm",
+      "ParamMouthOpenY"
+    ],
+    "pupil_l": [
+      "ParamEyeLOpen",
+      "ParamEyeLSmile",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamDizzy"
+    ],
+    "pupil_r": [
+      "ParamEyeROpen",
+      "ParamEyeRSmile",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamDizzy"
+    ],
+    "profile_r_pupil_l": [
+      "ParamEyeLOpen",
+      "ParamEyeLSmile",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamDizzy"
+    ],
+    "profile_l_pupil_r": [
+      "ParamEyeROpen",
+      "ParamEyeRSmile",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamDizzy"
+    ],
+    "mid_r_pupil_l": [
+      "ParamEyeLOpen",
+      "ParamEyeLSmile",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamDizzy"
+    ],
+    "mid_r_pupil_r": [
+      "ParamEyeROpen",
+      "ParamEyeRSmile",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamDizzy"
+    ],
+    "mid_l_pupil_r": [
+      "ParamEyeROpen",
+      "ParamEyeRSmile",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamDizzy"
+    ],
+    "mid_l_pupil_l": [
+      "ParamEyeLOpen",
+      "ParamEyeLSmile",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamDizzy"
+    ],
+    "eye_closed_l": [
+      "ParamEyeLSmile"
+    ],
+    "eye_closed_r": [
+      "ParamEyeRSmile"
+    ],
+    "profile_r_eye_closed_l": [
+      "ParamEyeLSmile"
+    ],
+    "profile_l_eye_closed_r": [
+      "ParamEyeRSmile"
+    ],
+    "mid_r_eye_closed_l": [
+      "ParamEyeLSmile"
+    ],
+    "mid_r_eye_closed_r": [
+      "ParamEyeRSmile"
+    ],
+    "mid_l_eye_closed_r": [
+      "ParamEyeRSmile"
+    ],
+    "mid_l_eye_closed_l": [
+      "ParamEyeLSmile"
+    ],
+    "blush": [],
+    "glasses": [],
+    "leg_l_climb_refined": [
+      "ParamClimbPhase"
+    ],
+    "leg_r_climb_refined": [
+      "ParamClimbPhase"
+    ],
+    "leg_l_climb_handoff": [
+      "ParamPoseClimb"
+    ],
+    "leg_r_climb_handoff": [
+      "ParamPoseClimb"
+    ],
+    "clean_sleeve_l_lower": [],
+    "clean_sleeve_r_lower": [],
+    "clean_ground_brush_r": [
+      "ParamCleanBrushR"
+    ],
+    "clean_ground_hand_r_palm": [
+      "ParamCleanBrushR"
+    ],
+    "clean_ground_hand_r_fingers": [
+      "ParamCleanBrushR"
+    ],
+    "clean_ground_hand_r_relaxed": [
+      "ParamCleanBrushR"
+    ]
+  },
+  "inputSha256": {
+    "layers/costume_underlay.png": "9729b9b0f9f4c5f3a399f4f6eca46566c5ab330703ae25481d5aa728e269ec78",
+    "layers/profile_r_costume_underlay.png": "c53e2cc13196e5421de2a7e5df75d7b1329e6856645f56762b05c7534017b3c2",
+    "layers/profile_l_costume_underlay.png": "3ee8788b2c1f22580e32b4e129bffdf515f9ab85d37f88dc3acf7f6e4aa18fc1",
+    "layers/mid_r_costume_underlay.png": "fc53d4ebee3d35ad17a588f287bb543bd65f506da9a97863216d2c2f9f719ef2",
+    "layers/mid_l_costume_underlay.png": "d0f2cc9ce7911dfa54d73ec775a6273dad35b1c2d4e9ac1b6e638a753450e19d",
+    "layers/costume_underlay_skirt.png": "5629137e1d790231db6fae9dd61efb3a47fda30f0027f5e6d92a53174acc2f52",
+    "layers/profile_r_costume_underlay_skirt.png": "08130f0fce3efbaefef774f28f8afa57d72ef732069ae9598951e2eaf999ba34",
+    "layers/profile_l_costume_underlay_skirt.png": "80d1215739075d12c5f93689d90247fcd956a5724f8b494ac77221908e456295",
+    "layers/mid_r_costume_underlay_skirt.png": "e48c6c3e1a69b8efa4c794017bda4d16aa454ca638db205a648722310e76b774",
+    "layers/mid_l_costume_underlay_skirt.png": "b56015527a8b70922f5af700af88e784fe365ad9116a0830f8c8d47628699b30",
+    "layers/seat.png": "54d3498cf1d8f80a7d538fcb8733995cf9ad55305de113277a715cce7dab19d4",
+    "layers/leg_l.png": "27d0181b6bc7158b84d0bfc08022c31bc08b2cb42b0d001e8f47d46f786b4353",
+    "layers/profile_r_leg_r.png": "745b0d89bafaa70f1fd4cbdb000df510a4ab9bc46f9fd47b9ea6838da5b555ef",
+    "layers/profile_l_leg_l.png": "3b6e48abd20eef503a1a82d9b144f5ff724becc6eec8dc1003315580436b4b4d",
+    "layers/mid_r_leg_r.png": "a7bf195e204864ea90728cdb253f4d3a63b91bc0ca46ca6bfa8ee4d16c779bea",
+    "layers/mid_l_leg_l.png": "0c5cc80c3d95ed7d4ad2e51a22dfc9832fe4b50ac735af371fa5a4f99e91ec7e",
+    "layers/leg_r.png": "899c6feb18f6c5a60055401f619bb2928022245108d278946da338858587bf97",
+    "layers/profile_r_leg_l.png": "fb48f6e833c6a15c7f38d8ed15e9ecdb702461211973debc6e512604959382a5",
+    "layers/profile_l_leg_r.png": "c776e9fdd51307f83ba63b611448eca3a2e3ea6a4a8b064df2e3c7fc22e1f73e",
+    "layers/mid_r_leg_l.png": "866e2e6720be704eda7bb4a99b806d89e295537b96b40fab6186d3539da6af2f",
+    "layers/mid_l_leg_r.png": "ecce78452081939b4bf37ee95dae3388b3a16c23327a1f5b2bda8fa45ad82fcb",
+    "layers/neck.png": "84cabeb2571f8c8e7c88d11cd463a02a09c22a582fcc187ee7de64ee90db14b6",
+    "layers/profile_r_neck.png": "3a7f722d06582f4358c08bb96a9b5ecd738e6ea81cfec404223fdae6086848b7",
+    "layers/profile_l_neck.png": "252b888531ebb4406bcdd14cf398c5327c2fd0c126bd2909de03c7bc650cba8a",
+    "layers/mid_r_neck.png": "a6bd37213c71dbf8940fd69f57bc5136d7daf7c41815332bfa0c1df64897ef41",
+    "layers/mid_l_neck.png": "d1d0d88102e61a5612986622251d5993ed3760809a57f39820eb812d6022755e",
+    "layers/torso.png": "e63a8aacb2fc347b92843333e5ece2d1dda5dffa6997a3671c3e16eb617436e5",
+    "layers/profile_r_torso.png": "c53e2cc13196e5421de2a7e5df75d7b1329e6856645f56762b05c7534017b3c2",
+    "layers/profile_l_torso.png": "3ee8788b2c1f22580e32b4e129bffdf515f9ab85d37f88dc3acf7f6e4aa18fc1",
+    "layers/mid_r_torso.png": "fc53d4ebee3d35ad17a588f287bb543bd65f506da9a97863216d2c2f9f719ef2",
+    "layers/mid_l_torso.png": "d0f2cc9ce7911dfa54d73ec775a6273dad35b1c2d4e9ac1b6e638a753450e19d",
+    "layers/leg_l_swing.png": "093ab011edbbb2365d263f7c2ddacb8cc2842aaa62f93b90057f9453b1c86645",
+    "layers/leg_r_swing.png": "91d8d0662f3ea8781ca5db0533a3dfb89709050a3aa5496b90250d64340711e7",
+    "layers/skirt.png": "daba330f51f6908d16f4d341e7eaa9e9398236d9b45b4fddefb9a55696a74ae6",
+    "layers/profile_r_skirt.png": "08130f0fce3efbaefef774f28f8afa57d72ef732069ae9598951e2eaf999ba34",
+    "layers/profile_l_skirt.png": "80d1215739075d12c5f93689d90247fcd956a5724f8b494ac77221908e456295",
+    "layers/mid_r_skirt.png": "e48c6c3e1a69b8efa4c794017bda4d16aa454ca638db205a648722310e76b774",
+    "layers/mid_l_skirt.png": "b56015527a8b70922f5af700af88e784fe365ad9116a0830f8c8d47628699b30",
+    "layers/skirt_swing.png": "f7e245ae1639481864180d47af9f87b69d67f12ea91a353553a0b7c4fb7235f2",
+    "layers/ribbon_l.png": "e91cac01d43717ddee041478ecafacd955f726035352ffb9e8829e704911a73c",
+    "layers/profile_r_ribbon_l.png": "b61025caa748100425a91301e2bb69a343d3d34a7ff684385eb6752fb46bc480",
+    "layers/profile_l_ribbon_l.png": "7e145d524b4dd8945de75c6dc16590e2ec4ba2e75fe9f36c02435831bd01f845",
+    "layers/mid_r_ribbon_l.png": "f7dd21ac187fd5b9c8564903799cf2b932a08a47c4c447f8b82003dbbd667d18",
+    "layers/mid_l_ribbon_l.png": "99c249cca9cee1faab290240584a18df404ae2ebb7d2b955ec1761ebf7aa3e63",
+    "layers/ribbon_r.png": "3a470954f863f5a3327591ca98e729cb553a8da5a494314c06cf97a87ee8e91c",
+    "layers/profile_r_ribbon_r.png": "6e589181acc089d6558ab7b8fd02962749d61946ca83a2c349d1e32ebedaff75",
+    "layers/profile_l_ribbon_r.png": "59cf84a2535530c47eef99c28cfecee42fd7d2b946b50e566d0a49d924e019d6",
+    "layers/mid_r_ribbon_r.png": "38e0e4b12a93cea14555fb91c6e6a484cfb10f95da8e388d82f875f6c5f19a16",
+    "layers/mid_l_ribbon_r.png": "4fa485f630d390795e3ea2348a184a74926cb2eb4e76eceb2c3be6d644f2ce7f",
+    "layers/arm_l.png": "8fe96de7b6b08b2265c775b743ba40ad9c3365a16278d64dd41508593a16ad13",
+    "layers/arm_r.png": "783e150a9d1447fb5bd2f6c8042bbac439ed38822b910b53c25fc030f7837a22",
+    "layers/hand_l_grip_palm.png": "4c4066580aaa98edd723a1c3dfe1c891e07014080404b899c69f37ec0eb7771f",
+    "layers/hand_r_grip_palm.png": "f4f9a70fa9281c5e2890dd8c8b860d45df76bc26889769e0142b86fcd6cbc448",
+    "layers/rope_l.png": "74be70e8642544b24ffe289519f3589e1cff5629b0815b83c86bead74e702936",
+    "layers/rope_r.png": "e84231ec5b104baa46b61660ccb21ed287b6fa0e9249abfb011e36ae011c631f",
+    "layers/sleeve_l_upper.png": "9c37bded4194e626c5bf8cc9bba48279425f3020bcc2da712a9fe5757827e895",
+    "layers/sleeve_l_lower.png": "c481cc742f670682c00dc10a44a9c346a12d1d1c2c8ead3def6cc3650119ad37",
+    "layers/sleeve_r_upper.png": "248189b522bdd5673c2648fa519d606bd3c9c14663f58619bb0c1ab10cb9a341",
+    "layers/sleeve_r_lower.png": "b26754182a7cdf8006446afc86d8e292cf5676d631819c486c7c1caf84ebc807",
+    "layers/hand_l.png": "d811d22016655c0e84be8a75600803f7d522df6a81fdb1119403b059bbe31872",
+    "layers/hand_r.png": "66de3538e3ab12dc2fd1c40a490864b05de454f1d2b2565c98b99edfefdcb0ef",
+    "layers/hand_l_relaxed.png": "9b5a8b4a65d35b9f15f85662142c7ad54525375d365589bf688ba49c5331641d",
+    "layers/hand_l_support.png": "304ffdcae7da59d86b50160f032ec5e52c6a35311969e7982623845efc89057b",
+    "layers/hand_r_relaxed.png": "7d998a5d7491faedeadd7ef63540321dbd7e6615752d47eea525d9d293d1dc0f",
+    "layers/hand_r_support.png": "6b8308cd160dd79d9c71ceaeea6b6f6cd639814b0ec6f5294a6e8165795b60e4",
+    "layers/maple.png": "d193998738974b984a471615985a39e0196748e5fffe3bda9396131480310313",
+    "layers/hand_l_grip_fingers.png": "ee53ce557e99f62ceeff0e0e3005ad7b47e1eef16da92981cb1eff9508a2a0f3",
+    "layers/hand_r_grip_fingers.png": "114cbf33728d3b26c844931498ccd3a7ab91d7cdca7a033e4bfd6741242565ca",
+    "layers/fan.png": "46a9b014d3e3af5bf1b5044b34a783d4b995cac38a51ad13877b424430ec5bb8",
+    "layers/profile_r_hair_back.png": "88628ca4a93a292d405f6aa49b20d64be195e32d5f4153260d9665f369461bd7",
+    "layers/profile_l_hair_back.png": "5e9267283c83b09611ef2ae91d79cdde5696d8058690b8309cda786127763801",
+    "layers/mid_r_hair_back.png": "fbac29be3dcd83b50656bae1578b48bf7d3fc041dc28ae64f1f928b43a869bf5",
+    "layers/mid_l_hair_back.png": "e5e9c183178509d0d75f193f0c0185ed77a06183ccafb68274d053f3421fdb9d",
+    "layers/profile_r_ear_near.png": "efadc7500dcfe7da3ce48e5f21d5776358fc3c98b9461825ebbc81304833dede",
+    "layers/profile_l_ear_near.png": "0de2f7e72b59d46a59e70e53e4ef7ceb250ac0b2fd07840544d29ede8c253647",
+    "layers/mid_r_ear_near.png": "e00df62d4a026efdda393bcc8a04f18e15257e91d47e98c72fc7e86de0665242",
+    "layers/mid_l_ear_near.png": "b403fb2a2e0b5f692763ff0137f6dfe45a0c36ae36367fb4b6d77ca39967ff61",
+    "layers/face_base.png": "599f6edc1c6ebf719eeac1f861b7c82ef17c3b7dd4f006eb019e3b546585577b",
+    "layers/profile_r_face_base.png": "c5986dcfd2d143df562b79f831fb36050c24cce04a6b620e66c02771b08ae8f4",
+    "layers/profile_l_face_base.png": "94df307e1b9df1be7cabf059949e7d4330c1b659be9951a9288e5bf24edace6a",
+    "layers/mid_r_face_base.png": "9c1b3fe799e90c9ba9def32bb07fdcfb79e98355b8ce86a4e1edc68b433643c2",
+    "layers/mid_l_face_base.png": "537c92ffa40a0043b7e45a99ac43d1c0e57dfb0e0918038b380fd927e7b62ac3",
+    "layers/hair_front.png": "8905d95ca8dc0718b494ea550776bc6dcb30dba0dbd959d81db609c8815e2e49",
+    "layers/profile_r_hair_front.png": "a18c6f0bcf732b26540de66460d98329cc5ac4e62305a19ec59e9e5e718b12bd",
+    "layers/profile_l_hair_front.png": "808e6b7bb83b76071d2de84aa6eb76337e3a3d99ce03fab3fdfc95bb05d83090",
+    "layers/mid_r_hair_front.png": "45fad19d736783e13ec54bef02325409224f6fb34ddd3d54f2f0f5d0646ede54",
+    "layers/mid_l_hair_front.png": "54d955e1f26677d31109a906c93eaabb0983c0aab2f26afa532958f158037678",
+    "layers/ornament_l.png": "30ac7a576419fd3b6aa9ec909ee3f537da05b11e829123a9ea21eb9613f02f68",
+    "layers/mid_r_ornament_r.png": "0a5dcd1af9b2cc2dff6499b00c5cf1c23a403550aae16ca0fde2364b6a0553ef",
+    "layers/mid_l_ornament_l.png": "bcacb2a018a0451804421e35f911f8d99dfdedf515649e9d2605208cea8e6b3a",
+    "layers/ornament_r.png": "7bb465998db960cc70a838c7d9d1c939276aabc172df9211554beb88fe97e01e",
+    "layers/profile_r_ornament_l.png": "c763e9a7e87d345183b569bf7d20f4135853261702c3804f7ec4f44a7644fe8e",
+    "layers/profile_l_ornament_r.png": "8cb008ae51cb2886b04ba1378f20d27039d9086660613c28ca7b0c9605f10bd9",
+    "layers/mid_r_ornament_l.png": "cb409bad11ab49e45c18c76a5ae884a7118f2cc1367ebf4564ac90d850366e68",
+    "layers/mid_l_ornament_r.png": "5c3a5d9d1069521bbe203feadba564750c50fd201d9f9fd47bb8e61bb87a650f",
+    "layers/eye_l.png": "836e3532c529b37236345124927078b3a026eccc0116dbca45727d32a68ba6de",
+    "layers/eye_r.png": "40e94fbf18ef5b91cdaba4e3bc2b3d1ab6e6b740d1d793242a3063727c891027",
+    "layers/profile_r_eye_l.png": "0e4c984b00a3137cd30a79289346a5e7585bcce2fef681e1ff7f571896accd2d",
+    "layers/profile_l_eye_r.png": "8fdff160e83eabaa27514a81301b0aa387e8a71247ec949664eb9b0e78f8ccbd",
+    "layers/mid_r_eye_l.png": "0feb726b4cf8424860bac359e3bb39c5002915f563b66b96cbe0c3507069ff10",
+    "layers/mid_r_eye_r.png": "613234cf688701fa505b2a236aab00609c9e888dec8c729c4ead74cdcdd05421",
+    "layers/mid_l_eye_r.png": "6c8b2999716de35de257bc609b4e73feb63d2a5c7fca410c7669c548c64c5b27",
+    "layers/mid_l_eye_l.png": "dbd5a09f84e8101a025303e48c79c82d81ecc2b8c863af62df81590a2f8441e8",
+    "layers/eyebrow_l.png": "85b55e8e8f8f5642b4c1668deb41aeb70915ef094e873b1e872c9f3420c0e84e",
+    "layers/eyebrow_r.png": "58db002dcea631f515d6f37dd8877c10cde5a3272a0660508fc9fdcb8ec92282",
+    "layers/mouth.png": "ed7baffc86054ec60ecf5d9212fad9467c0e91d1ee8fc8c6ae1d7d6e4033d8c6",
+    "layers/profile_r_eyebrow_l.png": "0d1a924015cd1461cc69f07581deca750ec5749c0582626e533187e743e22e4d",
+    "layers/profile_r_mouth.png": "956833faa477d9ade78d4bfdfa9e835126d695f83c963ae1c470e7b943d40ca2",
+    "layers/profile_l_eyebrow_r.png": "5e706b073a322c94d19b2b6d7468e76127cb67ff80acfbcd5b99b5a3da85233b",
+    "layers/profile_l_mouth.png": "c26842f38c21fc4be5bb4750ebeadcb5ff4852d6d626702405f1d96c92cae87f",
+    "layers/mid_r_eyebrow_l.png": "d42315eaf465479cbdbe700dd31c45e82e9f4e007dd2b764b8a4132f1fc4d3f1",
+    "layers/mid_r_eyebrow_r.png": "46f42f516ec1ad0925ed90456b827f76663e2ad5bd78239a93b282fd47984a67",
+    "layers/mid_r_mouth.png": "beb27977c50f6c7b37453293fb0cd9eb6c3b887fb7eb7add85bee142c7c017f5",
+    "layers/mid_l_eyebrow_r.png": "76de141e9b9245d4a4ec567c2a43be685bbae92abf2812fca49a26ac4ddbbd8e",
+    "layers/mid_l_eyebrow_l.png": "9aa3e6c2977bb8bed3ebb324bee7cecfe93941a9e3542953ee133b6db17b98de",
+    "layers/mid_l_mouth.png": "e474baf76f8679de3f074a4a4199070c8a4c66ac90fd60d36cad214fea6a522e",
+    "layers/pupil_l.png": "b81e642483f72dfc63b3326f09b6144452e1c04162a64f44cfe99f24bdc896ad",
+    "layers/pupil_r.png": "b6976f3d5fa7235230e17b1d270bdf9542453b3082f9b8a469bb251b343c056b",
+    "layers/profile_r_pupil_l.png": "2fd8d316986f5ef2b32db0285cf3f2b1c9fceaa88363f65db674e87da2076eaf",
+    "layers/profile_l_pupil_r.png": "0b9a3af9ddc59ffb2e83fee085d0d96aa3fcef283572b22902452571a8c32a1e",
+    "layers/mid_r_pupil_l.png": "a3bd298ed3ee6fc928b24aae36ff232eac73dda7587e9ecacd6d30a82d88330b",
+    "layers/mid_r_pupil_r.png": "a5e3ad1925733a119f21806101fa8be51f47719667fc59f787afcf01a35dc5f9",
+    "layers/mid_l_pupil_r.png": "be120ffa4941499fe72c9515b570064f68d68ec794a43fc9f7651fbd0865d9c5",
+    "layers/mid_l_pupil_l.png": "1a31e96720f4907c85aa553ba7be207d8405b0bbd21e009e9272754b6212d061",
+    "layers/eye_closed_l.png": "70f364e0da2d47a60962a9065a02c634f978a1a1c616ca55401b7cd407951f7e",
+    "layers/eye_closed_r.png": "f9c5dd0e82461911611492846824b5bed4fe43e7399c25331af2714054d5fcb3",
+    "layers/profile_r_eye_closed_l.png": "477f22e8c753f2c98b6c05026e6b4065e0bb2aec8ec1aed83787d3ecc6b95586",
+    "layers/profile_l_eye_closed_r.png": "4ecf307bd752bfd89abf6a983ace310245ef048e62c7f9fbdd9bd1ac72167575",
+    "layers/mid_r_eye_closed_l.png": "e11a1cd1db8077f674549adfa037cc2e0e3ad2e093ec24958f8f67c5e6156d41",
+    "layers/mid_r_eye_closed_r.png": "18af935fad9024f794ff449e269161d0e0c3eeb176ea5461e67a663422e42e2a",
+    "layers/mid_l_eye_closed_r.png": "a1230df67b743b5b84cf72cadd51e872727f56b022ed2854c05251a140939ddc",
+    "layers/mid_l_eye_closed_l.png": "5223b042a0604a9ef8dbd91459f271fec0b4d1dfb1c8689724490ac91d6f76f7",
+    "layers/blush.png": "55ebc405ea6c723238fabda56d8b25b6496fb61295d22fdbacc0e9c06494633c",
+    "layers/glasses.png": "8d9876ecc9c3ec9ddde02067fc346449c091bdac82347b9a17900d1c5c0bc903",
+    "layers/skirt_sleep.png": "f7e245ae1639481864180d47af9f87b69d67f12ea91a353553a0b7c4fb7235f2",
+    "layers/leg_l_sleep.png": "093ab011edbbb2365d263f7c2ddacb8cc2842aaa62f93b90057f9453b1c86645",
+    "layers/leg_l_climb.png": "093ab011edbbb2365d263f7c2ddacb8cc2842aaa62f93b90057f9453b1c86645",
+    "layers/clean_fan_l.png": "2c92638dcd63a8b7d88b1434bd5542ef5e21781110efc08ca5ea451771e00d12",
+    "layers/leg_r_sleep.png": "91d8d0662f3ea8781ca5db0533a3dfb89709050a3aa5496b90250d64340711e7",
+    "layers/leg_r_climb.png": "91d8d0662f3ea8781ca5db0533a3dfb89709050a3aa5496b90250d64340711e7",
+    "layers/clean_fan_r.png": "9480a7bd77795082411f451df8e25380cd673ec0d4a45ab9e0310d85cacac384",
+    "layers/clean_brush_l.png": "38cdcfab4bc4573fcd0d2d24ea3c71a1e13ff83d284b1be58cda0ece936930ac",
+    "layers/clean_brush_r.png": "fcf5eee885a53dde74e6bf8c80363d343d5eac6fb7b2d79fd22ffaf579b97865",
+    "layers/profile_r_skirt_climb_drape_v2.png": "d2bdb7584dc8fd90aab142ae290eda72619d97304b894eb19f8e9730dbebd174",
+    "layers/profile_l_skirt_climb_drape_v2.png": "ed47ffb4ddc80c0cfcecafe5fb66af0bb94f9d5966226402167f142fbe74b5ce"
+  }
+}

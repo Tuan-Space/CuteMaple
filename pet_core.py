@@ -4,11 +4,13 @@ import json
 import os
 import random
 import sys
+from datetime import datetime, timezone
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
 
 APP_NAME = "美腻枫"
+SETTINGS_SCHEMA_VERSION = 3
 
 
 def _frames(state: str, count: int) -> list[str]:
@@ -31,14 +33,14 @@ ANIMATIONS = {
     "walk_left": AnimationSpec(8, (125,) * 8),
     "drag_left": AnimationSpec(3, (180,) * 3),
     "drag_right": AnimationSpec(3, (180,) * 3),
-    "happy": AnimationSpec(6, (180,) * 6, "counted_loop", cycles=2),
+    "happy": AnimationSpec(6, (180, 240, 350, 320, 250, 260), "one_shot"),
     "talk": AnimationSpec(4, (220,) * 4),
     "petting": AnimationSpec(4, (240,) * 4, "counted_loop", cycles=2),
-    "fall_float": AnimationSpec(3, (190,) * 3),
-    "land": AnimationSpec(4, (180, 240, 220, 260), "one_shot"),
-    "climb_right": AnimationSpec(6, (150,) * 6, contact_margin=0.18,
+    "fall_float": AnimationSpec(3, (600,) * 3),
+    "land": AnimationSpec(4, (180, 240, 420, 420), "one_shot"),
+    "climb_right": AnimationSpec(6, (162, 169, 169, 162, 169, 169), contact_margin=0.18,
                                   contact_anchors=(408, 424, 398, 421, 415, 418)),
-    "climb_left": AnimationSpec(6, (150,) * 6, contact_margin=0.18,
+    "climb_left": AnimationSpec(6, (162, 169, 169, 162, 169, 169), contact_margin=0.18,
                                  contact_anchors=(103, 87, 113, 90, 96, 93)),
     "swing_cycle": AnimationSpec(6, (170,) * 6, "counted_loop", cycles=3,
                                   contact_margin=40 / 512),
@@ -109,9 +111,16 @@ HAPPY_DIALOGUES = [
 
 @dataclass
 class PetSettings:
+    settings_schema_version: int = SETTINGS_SCHEMA_VERSION
     paused: bool = False
     scale: float = 1.0
-    autostart: bool = True
+    autostart: bool = False
+    roaming_enabled: bool = False
+    gaze_enabled: bool = True
+    keyboard_enabled: bool = True
+    audio_enabled: bool = True
+    audio_endpoint: str = "default"
+    particles_enabled: bool = True
     last_x: int | None = None
     last_y: int | None = None
     monitor_always_visible: bool = False
@@ -120,6 +129,7 @@ class PetSettings:
     auto_clean_memory_enabled: bool = False
     auto_clean_memory_percent: int = 80
     last_clean_timestamp: float = 0.0
+    last_clean_attempt_timestamp: float = 0.0
     clean_task_prompted: bool = False
     clean_task_schema_version: int = 0
     clean_task_executable: str = ""
@@ -130,7 +140,7 @@ class PetSettings:
             return cls()
         paused = value.get("paused", False)
         scale = value.get("scale", 1.0)
-        autostart = value.get("autostart", True)
+        autostart = value.get("autostart", False)
         last_x = value.get("last_x")
         last_y = value.get("last_y")
         interval = value.get("auto_clean_interval_minutes", 60)
@@ -138,7 +148,13 @@ class PetSettings:
         return cls(
             paused=paused if isinstance(paused, bool) else False,
             scale=float(scale) if isinstance(scale, (int, float)) and 0.6 <= float(scale) <= 1.8 else 1.0,
-            autostart=autostart if isinstance(autostart, bool) else True,
+            autostart=autostart if isinstance(autostart, bool) else False,
+            **{name: value.get(name, default) if isinstance(value.get(name, default), bool) else default
+               for name, default in (("roaming_enabled", False), ("gaze_enabled", True),
+                                     ("keyboard_enabled", True), ("audio_enabled", True),
+                                     ("particles_enabled", True))},
+            audio_endpoint=value.get("audio_endpoint", "default")
+            if isinstance(value.get("audio_endpoint"), str) and 0 < len(value["audio_endpoint"]) <= 512 else "default",
             last_x=last_x if isinstance(last_x, int) else None,
             last_y=last_y if isinstance(last_y, int) else None,
             monitor_always_visible=value.get("monitor_always_visible", False)
@@ -152,6 +168,8 @@ class PetSettings:
             and threshold % 5 == 0 else 80,
             last_clean_timestamp=float(value.get("last_clean_timestamp", 0.0))
             if isinstance(value.get("last_clean_timestamp", 0.0), (int, float)) else 0.0,
+            last_clean_attempt_timestamp=float(value.get("last_clean_attempt_timestamp", 0.0))
+            if isinstance(value.get("last_clean_attempt_timestamp", 0.0), (int, float)) else 0.0,
             clean_task_prompted=value.get("clean_task_prompted", False)
             if isinstance(value.get("clean_task_prompted", False), bool) else False,
             clean_task_schema_version=value.get("clean_task_schema_version", 0)
@@ -162,6 +180,9 @@ class PetSettings:
 
 
 def config_path() -> Path:
+    profile = os.environ.get("MEINIFENG_PROFILE_DIRECTORY")
+    if profile:
+        return Path(profile).resolve() / "settings.json"
     base = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
     return base / APP_NAME / "settings.json"
 
@@ -169,9 +190,38 @@ def config_path() -> Path:
 def load_settings(path: Path | None = None) -> PetSettings:
     target = path or config_path()
     try:
-        return PetSettings.from_mapping(json.loads(target.read_text(encoding="utf-8")))
-    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        original = target.read_bytes()
+    except OSError:
         return PetSettings()
+    try:
+        value = json.loads(original.decode("utf-8-sig"))
+    except (ValueError, TypeError):
+        value = {}  # Keep the damaged bytes in the same migration backup.
+    settings = PetSettings.from_mapping(value)
+    version = value.get("settings_schema_version", 0) if isinstance(value, dict) else 0
+    if not isinstance(version, int) or version < SETTINGS_SCHEMA_VERSION:
+        # Preserve the original before changing permissions-related preferences.
+        # This never edits Run keys, tasks, or security settings.
+        settings.autostart = False
+        settings.auto_clean_interval_enabled = False
+        settings.auto_clean_memory_enabled = False
+        settings.clean_task_prompted = False
+        settings.clean_task_schema_version = 0
+        settings.clean_task_executable = ""
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        backup = target.with_name(f"{target.stem}.pre-v3.{stamp}.json")
+        try:
+            with backup.open("xb") as stream:
+                stream.write(original)
+            save_settings(settings, target)
+            from diagnostics import event
+            event("settings_migrated", schema=SETTINGS_SCHEMA_VERSION, backup=backup,
+                  automaticSystemIntegrationDisabled=True)
+        except OSError as exc:
+            # Even a read-only profile must not reactivate old implicit consent.
+            from diagnostics import event
+            event("settings_migration_not_saved", message=str(exc))
+    return settings
 
 
 def save_settings(settings: PetSettings, path: Path | None = None) -> None:
@@ -190,10 +240,29 @@ def is_compiled() -> bool:
     return "__compiled__" in globals() or bool(getattr(sys, "frozen", False))
 
 
+def stable_application_path() -> Path:
+    """Resolve the installed launcher, never a onefile extraction payload."""
+    if not is_compiled():
+        return (resource_root() / "main.py").resolve()
+    argument = Path(sys.argv[0])
+    containing = getattr(globals().get("__compiled__"), "containing_dir", None)
+    candidate = argument.resolve()
+    # Nuitka standalone may expose containing_dir as the parent of its .dist
+    # directory. The observed absolute argv0 is the authoritative launcher.
+    if not argument.is_absolute() and not candidate.is_file() and containing:
+        candidate = (Path(containing) / argument.name).resolve()
+    if not argument.name or any(part.lower().startswith("onefile_") for part in candidate.parts):
+        raise ValueError("Cannot register a temporary extraction executable; use the installed directory application")
+    if candidate.suffix.lower() != ".exe":
+        raise ValueError("The installed application launcher must be an executable")
+    return candidate
+
+
 def startup_command() -> str:
+    application = stable_application_path()
     if is_compiled():
-        return f'"{Path(sys.executable).resolve()}"'
-    return f'"{Path(sys.executable).resolve()}" "{(resource_root() / "main.py").resolve()}"'
+        return f'"{application}"'
+    return f'"{Path(sys.executable).resolve()}" "{application}"'
 
 
 def set_autostart(enabled: bool) -> bool:
@@ -203,16 +272,21 @@ def set_autostart(enabled: bool) -> bool:
 
     key_path = r"Software\Microsoft\Windows\CurrentVersion\Run"
     try:
+        command = startup_command() if enabled else None
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path, 0, winreg.KEY_SET_VALUE) as key:
             if enabled:
-                winreg.SetValueEx(key, APP_NAME, 0, winreg.REG_SZ, startup_command())
+                winreg.SetValueEx(key, APP_NAME, 0, winreg.REG_SZ, command)
             else:
                 try:
                     winreg.DeleteValue(key, APP_NAME)
                 except FileNotFoundError:
                     pass
+        from diagnostics import event
+        event("autostart_updated", enabled=enabled, command=command)
         return True
-    except OSError:
+    except (OSError, ValueError) as exc:
+        from diagnostics import event
+        event("autostart_update_failed", enabled=enabled, message=str(exc))
         return False
 
 
@@ -227,7 +301,7 @@ def choose_happy_dialogue(rng: random.Random | None = None) -> str:
 def auto_cleanup_due(settings: PetSettings, memory_percent: float, now: float, cycle_started: float) -> bool:
     baseline = settings.last_clean_timestamp or cycle_started
     elapsed = max(0.0, now - baseline)
-    if elapsed < 600:
+    if elapsed < 600 or now - settings.last_clean_attempt_timestamp < 600:
         return False
     interval_due = settings.auto_clean_interval_enabled and elapsed >= settings.auto_clean_interval_minutes * 60
     memory_due = settings.auto_clean_memory_enabled and memory_percent >= settings.auto_clean_memory_percent

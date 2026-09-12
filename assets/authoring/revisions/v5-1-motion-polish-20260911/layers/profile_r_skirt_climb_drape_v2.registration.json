@@ -1,0 +1,38 @@
+{
+  "generated": "C:\\Users\\Micheal_Tuan\\.codex\\generated_images\\01a08056-cb38-7641-a494-d5e1f74b11f4\\exec-4a3ed730-ad6b-4496-98f9-6599f4727936.png",
+  "generatedSha256": "cc3641b6118e9f92a82cb71ff819e06fd3ad70f9519a2d20f391fdadc57dc340",
+  "original": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\layers\\profile_r_skirt.png",
+  "originalSha256": "08130f0fce3efbaefef774f28f8afa57d72ef732069ae9598951e2eaf999ba34",
+  "output": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\layers\\profile_r_skirt_climb_drape_v2.png",
+  "outputSha256": "d2bdb7584dc8fd90aab142ae290eda72619d97304b894eb19f8e9730dbebd174",
+  "method": "imagegen art with deterministic chroma matte and waist registration",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "outputSize": [
+    1024,
+    1024
+  ],
+  "sourceSeam": {
+    "y": 643,
+    "left": 530,
+    "right": 675
+  },
+  "targetSeam": {
+    "y": 530,
+    "left": 430,
+    "right": 558
+  },
+  "scale": 0.7575150300601202,
+  "translation": [
+    37.59719438877755,
+    42.91783567134269
+  ],
+  "literalOriginalRows": 555,
+  "waistPixelsIdentical": true,
+  "clearedBackgroundPixels": 1414420,
+  "edgePixels": 1699,
+  "creativePainting": "image_gen built-in",
+  "nativeVisualAcceptance": false
+}

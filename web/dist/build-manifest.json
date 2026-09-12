@@ -1,0 +1,21 @@
+{
+  "sdk": "5-r.5",
+  "files": {
+    "index.html": "f6323962bed8ad9a13da25c5f171cc328e3b0403559c9b692a9d71705b7ea061",
+    "app.js": "e656b0ee31d7e967bb5d920f20f20bc85a55e04e47730fbb6dfb99bb18948b08",
+    "live2dcubismcore.min.js": "8741f739779b5d5210872bd3d7d99f0f1e56e6c87409e7d26d6bb4b80aa1ef47",
+    "shaders/fragshadersrcalphablend.frag": "855b247f02042a808a41e282ee4d7de7cc4533abeb5032b4ab8fe84f7dec107f",
+    "shaders/fragshadersrccolorblend.frag": "01d4bf6a14b4a738976e9a538767a21da0defa8816f3845a7df08a7713327538",
+    "shaders/fragshadersrccopy.frag": "15c67a4ec3adda4c849aff2a8319a3f6aceef8a84d5e5e1f3fb7fd9cd681193c",
+    "shaders/fragshadersrcmaskinvertedpremultipliedalpha.frag": "1005cff8113de587cf1c0e295288d04d85f0f4ebc223684c8340e017fd8fc788",
+    "shaders/fragshadersrcmaskpremultipliedalpha.frag": "f84ff615393d26ea6ab7c28747803db6472524c92567c0ad01e8225fbab36a3b",
+    "shaders/fragshadersrcpremultipliedalpha.frag": "c93abe215357cc782a25fc4ef20f5fe1f34e2cc193ee23d763b56b81fae5fce1",
+    "shaders/fragshadersrcpremultipliedalphablend.frag": "2155076275199a2946959838391dfb856e9d1db91b6ca3abd19ed70d4ff27e15",
+    "shaders/fragshadersrcsetupmask.frag": "3cccc0b68a56cfbf4bd4841b0a759431dd159812c38dc280981ba633fa0afe7a",
+    "shaders/vertshadersrc.vert": "291ed3f35f71f1e71e6df33fb055f009a8a9b36ee664f74f24f6cefef0c4029b",
+    "shaders/vertshadersrcblend.vert": "2589837bd7a6a550a1c3af41b4fa776011e6e71f2531320fa39afcb83b209bf4",
+    "shaders/vertshadersrccopy.vert": "b7bc4ba7517f405af4812ac47d99bc2b633c99f463c1224029556b00e8dff3cf",
+    "shaders/vertshadersrcmasked.vert": "6704a9df2e6d3ee5176c72fca4ba59358ba4827a07054b1e0a72a3c574e281fd",
+    "shaders/vertshadersrcsetupmask.vert": "649aad2f6c0af55a7a4adcf33dbf78937ef9d77ed6ba917fd716176adce25afe"
+  }
+}

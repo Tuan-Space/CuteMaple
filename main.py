@@ -1,31 +1,48 @@
+"""Establish diagnostics before importing Qt or native providers."""
+from __future__ import annotations
 import sys
-import traceback
+import os
+from pathlib import Path
 
-from memory_cleaner import helper_main, install_task
 
-from pet_app import run
-from pet_core import config_path
+def main() -> int:
+    if "--verify-desktop" in sys.argv:
+        # Parse only the explicit profile before logging/native imports. The QA
+        # module owns the rest of its argument validation.
+        try:
+            index = sys.argv.index("--profile")
+            profile = Path(sys.argv[index + 1])
+            real_profile = Path(os.environ.get("APPDATA", Path.home() / "AppData/Roaming")) / "美腻枫"
+            if (not profile.is_absolute() or profile.resolve().is_relative_to(real_profile.resolve())
+                    or real_profile.resolve().is_relative_to(profile.resolve())):
+                return 2
+            os.environ["MEINIFENG_PROFILE_DIRECTORY"] = str(profile.resolve())
+        except (ValueError, IndexError, OSError):
+            return 2
+    from diagnostics import event, exception, initialize
+    initialize("audio" if "--audio-probe-child" in sys.argv else "app")
+    try:
+        if "--audio-probe-child" in sys.argv:
+            from audio_probe import audio_child_main
+            return int(audio_child_main())
+        if any(flag in sys.argv for flag in ("--install-clean-task", "--memory-clean-helper")):
+            event("obsolete_helper_entry_rejected")
+            return 2
+        if "--verify-desktop" in sys.argv:
+            from desktop_check import run
+            return int(run(sys.argv[sys.argv.index("--verify-desktop") + 1:]))
+        if "--verify-live2d" in sys.argv:
+            from runtime_check import run
+            result = run(sys.argv[sys.argv.index("--verify-live2d") + 1:])
+        else:
+            from pet_app import run
+            result = run()
+        event("exit", code=result)
+        return int(result)
+    except Exception as exc:
+        exception("startup_or_runtime_failure", exc)
+        raise
 
 
 if __name__ == "__main__":
-    try:
-        if "--install-clean-task" in sys.argv:
-            operation_id = ""
-            if "--install-operation" in sys.argv:
-                index = sys.argv.index("--install-operation")
-                if index + 1 < len(sys.argv):
-                    operation_id = sys.argv[index + 1]
-            raise SystemExit(install_task(operation_id))
-        if "--memory-clean-helper" in sys.argv:
-            raise SystemExit(helper_main())
-        raise SystemExit(run())
-    except SystemExit:
-        raise
-    except Exception:
-        try:
-            crash_log = config_path().with_name("crash.log")
-            crash_log.parent.mkdir(parents=True, exist_ok=True)
-            crash_log.write_text(traceback.format_exc(), encoding="utf-8")
-        except OSError:
-            pass
-        raise
+    raise SystemExit(main())

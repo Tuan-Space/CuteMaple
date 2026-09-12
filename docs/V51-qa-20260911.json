@@ -1,0 +1,190 @@
+{
+  "product": "美腻枫 v5.1 动作优化版",
+  "createdUtc": "2026-09-11T15:19:55.044477+00:00",
+  "moc3Sha256": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+  "publicActions": 21,
+  "nativeClips": 31,
+  "drawables": 159,
+  "parameters": 80,
+  "nativeRenderer": {
+    "passed": true,
+    "clips": 31,
+    "captures": 69,
+    "errors": 0,
+    "path": "artifacts/v51-native-model-06/report.json",
+    "sha256": "1d594e7491da230b252d3eec755e1f2975a83a53e66f865dcec4103625d46b6d"
+  },
+  "supplementalCore": {
+    "passed": true,
+    "frames": 594,
+    "topologies": 35,
+    "path": "artifacts/v51-refined-native-02/report.json",
+    "sha256": "5d0969eb4e19ed7ad9265a63eaeff45b7c8a4989bee060eac9e242f480740069"
+  },
+  "nativeUv": {
+    "passed": true,
+    "matchedMeshes": 159,
+    "maximumAtlasPixelError": 0.0007240773440362347,
+    "path": "artifacts/v51-native-02/native-uv.json",
+    "sha256": "316eb7e310a558f4999becf70555f5c121463c5ed62aa01c623c810a064971da"
+  },
+  "nativeCanRoundtrip": {
+    "passed": true,
+    "parameterTracks": 2480,
+    "unexplainedDifferences": 0,
+    "path": "artifacts/v51-can-native02/native-roundtrip-report.json",
+    "sha256": "977342042f87b131b123f9586f8d528158da585fb485c32ceb42ee53695896a7"
+  },
+  "canonicalRuntimePromotion": {
+    "passed": true,
+    "comparedPayloadFiles": 37,
+    "path": "artifacts/v51-runtime-promotion.json",
+    "sha256": "56f83e8f7ed228562d68a756569dce77b39f33eab5a5071a2730e36b8c165a40"
+  },
+  "visualReview": {
+    "accepted": true,
+    "scope": "All saved frames in six fixed-canvas native recordings, not OS-window/hardware acceptance.",
+    "savedFramesReviewed": 875,
+    "recordings": [
+      {
+        "path": "artifacts/v51-continuous-03/drop-land-idle.json",
+        "sha256": "286002027e887f9262adaa20c0bebb4795dbc49f27bd7b1a1792b2552dd480b7",
+        "scenario": "drop-land-idle",
+        "frames": 100,
+        "seconds": 19.518133899662644,
+        "actualCaptureFps": 5.072206211358717,
+        "presentation": "white background composited behind native transparent canvas for review",
+        "resourcesUnchanged": true
+      },
+      {
+        "path": "artifacts/v51-continuous-03/climb-left.json",
+        "sha256": "23fa7ea0910b06639785ac453fbf15e7a67ae4b2461ee4f1389d00524b28f9db",
+        "scenario": "climb-left",
+        "frames": 104,
+        "seconds": 20.313298299908638,
+        "actualCaptureFps": 5.070569952712369,
+        "presentation": "checkerboard background composited behind native transparent canvas for review",
+        "resourcesUnchanged": true
+      },
+      {
+        "path": "artifacts/v51-continuous-03/climb-right.json",
+        "sha256": "5258b217415256ec4ac4efb2305248cd9824b199fbf421ce20f681897c50ee52",
+        "scenario": "climb-right",
+        "frames": 111,
+        "seconds": 20.09513120027259,
+        "actualCaptureFps": 5.4739627675836156,
+        "presentation": "black background composited behind native transparent canvas for review",
+        "resourcesUnchanged": true
+      },
+      {
+        "path": "artifacts/v51-continuous-04/cleanup.json",
+        "sha256": "b265ac94722016a9e9db69a569f06f77c507e11b809de54aadff1d42e9fb3a79",
+        "scenario": "cleanup",
+        "frames": 162,
+        "seconds": 32.28213769989088,
+        "actualCaptureFps": 4.9872781504350066,
+        "presentation": "checkerboard background composited behind native transparent canvas for review",
+        "resourcesUnchanged": true
+      },
+      {
+        "path": "artifacts/v51-continuous-04/swing-petting.json",
+        "sha256": "ac8d250d1e4189695a4c886796cd1bc69803c25ef7f36f19ff9a995ae2c14b2f",
+        "scenario": "swing-petting",
+        "frames": 126,
+        "seconds": 22.221737899817526,
+        "actualCaptureFps": 5.625122596780625,
+        "presentation": "white background composited behind native transparent canvas for review",
+        "resourcesUnchanged": true
+      },
+      {
+        "path": "artifacts/v51-continuous-04/supported-drag.json",
+        "sha256": "23142cf5da04b55a6ef1caa6528b1572ae72b13d756c1e9b250ab1c50f2dfeb0",
+        "scenario": "supported-drag",
+        "frames": 272,
+        "seconds": 55.37145969970152,
+        "actualCaptureFps": 4.894218094840307,
+        "presentation": "black background composited behind native transparent canvas for review",
+        "resourcesUnchanged": true
+      }
+    ],
+    "reviews": [
+      {
+        "path": "artifacts/v51-final-visual-root.json",
+        "sha256": "600baff03caa1454a8603f83b57cc750aa742dac060335955a7c68badf0490c4"
+      },
+      {
+        "path": "artifacts/v51-continuous-03/climb-independent-visual-review.json",
+        "sha256": "cade9df0d537eddfc0891a349488158269242f01cd0b438690c33a3eb0a8df0f"
+      },
+      {
+        "path": "artifacts/v51-continuous-04/cleanup-visual-review.json",
+        "sha256": "9eeb8167f5ba1b6e4072321d0a616de2074ab3b772f11c5f606bdc9d0eb4a2a6"
+      },
+      {
+        "path": "artifacts/v51-continuous-04/supported-drag-independent-review.json",
+        "sha256": "1b443f1f2fa355cac2ab6a87232960edf2d610286e375e787f762c873b0de797"
+      }
+    ],
+    "limitations": [
+      "Capture actually achieved roughly 5 FPS; it does not capture every native RAF update. Controller continuity at 30/60/144 Hz and uneven dt is covered separately by automated tests.",
+      "Climb-to-top retains a brief painted profile-to-mid head/cloth dissolve; this is not a fully three-dimensional turn.",
+      "Abrupt top-cleaning detachment has a single tight chestward sleeve exchange (supported-drag frame 222) before normal hanging cloth (223). No claim that all intermediate shapes are distortion-free.",
+      "Gesture previews do not establish actual ToDesk input, desktop attachment/travel, audio detection, particles or privileged cleanup results."
+    ]
+  },
+  "webTests": {
+    "passed": true,
+    "tests": 59,
+    "build": {
+      "path": "artifacts/v51-web-final02-build.log",
+      "sha256": "45905b0bf7c06d7007d9df8c447eec30adb5f182e0f48942cd05fcd4956d37e4"
+    },
+    "test": {
+      "path": "artifacts/v51-web-final02-test.log",
+      "sha256": "8d8b22589644a54cc05cbbe7e9c0050d12a364de1c7d018dba65e95077a21e62"
+    }
+  },
+  "rejectedEvidenceRetained": [
+    "build03 and native export02 visual defects",
+    "continuous03 cleanup observation coverage failure; only recorder dwell extended for continuous04"
+  ],
+  "userValidationPending": [
+    "actual ToDesk petting and window dragging/contact",
+    "system audio/device switching",
+    "real cleanup and manual authorization repair if needed",
+    "repeated starts and extended desktop run"
+  ],
+  "buildAndPackagedSmoke": "Will be recorded separately against the final clean source commit; not asserted by this model review.",
+  "regressionCompatibilityCorrections": {
+    "firstBuild": "stage-20260911-232145; stopped after 45 passes in climb and 27 passes / 2 failures in free-arm; no package",
+    "changedScope": "Tests and documentation only; actual runtime/artwork unchanged. Landing checks now use the approved .85 settle time, retaining intermediate contacts. Sleeve geometry guard now checks bounded cloth gathering instead of near-rigidity.",
+    "readOnlyEvidence": [
+      {
+        "path": "artifacts/v51-free-regression-diagnosis01/existing-native-area-alpha.json",
+        "sha256": "45d624b819b88be6919ea438515430ad7f3543c8638e51c5ecc8f57770c90fe1"
+      },
+      {
+        "path": "artifacts/v51-free-regression-diagnosis01/saved-ir-31-phase-areas.json",
+        "sha256": "5186b4afdc8d8cfca408e64289cc9a5750465c20d7ffd717154653a0efa6a329"
+      },
+      {
+        "path": "artifacts/v51-free-regression-diagnosis01/saved-ir-wrist-travel-15-poses.json",
+        "sha256": "32c0b9595bac9a2603dc38b2a0b61343924ccf9b76c63e84d6e383918eeae75d"
+      }
+    ],
+    "scope": "31 saved-IR phases and 21 existing native Core samples; alpha-positive coverage with conservative one-pixel filter footprint. IR thresholds are not claimed as Core thresholds.",
+    "secondBuild": "stage-20260911-234607: climbing45 and free-arm29 passed; model-authoring16 passed/1 failed on legacy minimum wrist displacement .04 vs actual .0372735. Updated close-body movement guard .02 < travel < .12; original contacts, visibility, fixed-bone and restoration checks retained. No runtime or artwork changes."
+  },
+  "v4CompatibilityCorrection": {
+    "thirdBuild": "stage-20260912-000435: 1166 passed, 1 failed, 1 skipped. Standalone V4 source compatibility failure resolved without changing strict cuff tolerances.",
+    "evidence": {
+      "path": "artifacts/v51-v4-compatibility01/compatibility-review.json",
+      "sha256": "1d02ae7e25988f13a047da2b4e5acbf51ba3024c24c01d8760da119d1a47e5cf"
+    },
+    "v5ComponentBytesUnchanged": true,
+    "componentSha256": "3a7c251437e3ff461235319e9574eec625496d97cfaa4339d63c81c1efb9084a",
+    "targetedTestsPassed": 27,
+    "runtimeAssetsChanged": false,
+    "nextStep": "Complete suite and compilation from the clean compatibility-fix commit."
+  }
+}

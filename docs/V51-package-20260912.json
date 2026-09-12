@@ -1,0 +1,501 @@
+{
+  "build": {
+    "product": "CuteMaple-Live2D",
+    "mode": "Directory",
+    "compatibility": false,
+    "builtAt": "2026-09-12T00:59:42.0261828+08:00",
+    "sourceRevision": "40c0e0c1c9740abf9040c9bd9b8e3a26e7033b22",
+    "sourceHasUncommittedChanges": false,
+    "buildStage": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432",
+    "releaseStatus": "UNVERIFIED",
+    "candidateLabel": "v5.1 motion polish - user desktop validation pending",
+    "normalDesktopRunVerified": false,
+    "securityReviewStatus": "pending",
+    "privilegedCleanup": "separate cleaner/CuteMaple-Cleaner.exe; explicit user authorization only",
+    "modelValidation": "runtime inventory passed; visual QA remains required"
+  },
+  "regression": {
+    "complete": true,
+    "completedGroups": 7,
+    "finishedAt": "2026-09-11T16:53:59.850344+00:00",
+    "groups": [
+      {
+        "basetemp": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t01",
+        "command": [
+          "F:\\cutemaple\\CuteMaple-Live2D\\.venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "tests/test_climb_refinement.py",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "-o",
+          "addopts=",
+          "--basetemp",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t01",
+          "--junitxml",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\01-climb_refinement\\junit.xml"
+        ],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 45,
+          "skipped": 0,
+          "tests": 45
+        },
+        "directory": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\01-climb_refinement",
+        "elapsedSeconds": 247.514,
+        "finishedAt": "2026-09-11T16:38:40.951382+00:00",
+        "junit": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\01-climb_refinement\\junit.xml",
+        "name": "climb_refinement",
+        "returncode": 0,
+        "sourceSha256": "8e758b354238f0d0a475e74d9c012bd1a75a3cc60dcb9b36d364480b1c85e47d",
+        "sourceUnchanged": true,
+        "startedAt": "2026-09-11T16:34:33.430536+00:00",
+        "status": "passed",
+        "stderr": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\01-climb_refinement\\stderr.log",
+        "stdout": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\01-climb_refinement\\stdout.log"
+      },
+      {
+        "basetemp": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t02",
+        "command": [
+          "F:\\cutemaple\\CuteMaple-Live2D\\.venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "tests/test_free_arm_refinement.py",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "-o",
+          "addopts=",
+          "--basetemp",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t02",
+          "--junitxml",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\02-free_arm_refinement\\junit.xml"
+        ],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 29,
+          "skipped": 0,
+          "tests": 29
+        },
+        "directory": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\02-free_arm_refinement",
+        "elapsedSeconds": 319.804,
+        "finishedAt": "2026-09-11T16:44:00.912420+00:00",
+        "junit": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\02-free_arm_refinement\\junit.xml",
+        "name": "free_arm_refinement",
+        "returncode": 0,
+        "sourceSha256": "8e758b354238f0d0a475e74d9c012bd1a75a3cc60dcb9b36d364480b1c85e47d",
+        "sourceUnchanged": true,
+        "startedAt": "2026-09-11T16:38:41.101018+00:00",
+        "status": "passed",
+        "stderr": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\02-free_arm_refinement\\stderr.log",
+        "stdout": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\02-free_arm_refinement\\stdout.log"
+      },
+      {
+        "basetemp": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t03",
+        "command": [
+          "F:\\cutemaple\\CuteMaple-Live2D\\.venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "tests/test_maple_v5_authoring.py",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "-o",
+          "addopts=",
+          "--basetemp",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t03",
+          "--junitxml",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\03-maple_v5_authoring\\junit.xml"
+        ],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 17,
+          "skipped": 0,
+          "tests": 17
+        },
+        "directory": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\03-maple_v5_authoring",
+        "elapsedSeconds": 177.27,
+        "finishedAt": "2026-09-11T16:46:58.348422+00:00",
+        "junit": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\03-maple_v5_authoring\\junit.xml",
+        "name": "maple_v5_authoring",
+        "returncode": 0,
+        "sourceSha256": "8e758b354238f0d0a475e74d9c012bd1a75a3cc60dcb9b36d364480b1c85e47d",
+        "sourceUnchanged": true,
+        "startedAt": "2026-09-11T16:44:01.068997+00:00",
+        "status": "passed",
+        "stderr": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\03-maple_v5_authoring\\stderr.log",
+        "stdout": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\03-maple_v5_authoring\\stdout.log"
+      },
+      {
+        "basetemp": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t04",
+        "command": [
+          "F:\\cutemaple\\CuteMaple-Live2D\\.venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "tests/test_sleep_contact_refinement.py",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "-o",
+          "addopts=",
+          "--basetemp",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t04",
+          "--junitxml",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\04-sleep_contact_refinement\\junit.xml"
+        ],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 9,
+          "skipped": 0,
+          "tests": 9
+        },
+        "directory": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\04-sleep_contact_refinement",
+        "elapsedSeconds": 34.179,
+        "finishedAt": "2026-09-11T16:47:32.687084+00:00",
+        "junit": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\04-sleep_contact_refinement\\junit.xml",
+        "name": "sleep_contact_refinement",
+        "returncode": 0,
+        "sourceSha256": "8e758b354238f0d0a475e74d9c012bd1a75a3cc60dcb9b36d364480b1c85e47d",
+        "sourceUnchanged": true,
+        "startedAt": "2026-09-11T16:46:58.499490+00:00",
+        "status": "passed",
+        "stderr": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\04-sleep_contact_refinement\\stderr.log",
+        "stdout": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\04-sleep_contact_refinement\\stdout.log"
+      },
+      {
+        "basetemp": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t05",
+        "command": [
+          "F:\\cutemaple\\CuteMaple-Live2D\\.venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "tests/test_native_atlas.py",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "-o",
+          "addopts=",
+          "--basetemp",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t05",
+          "--junitxml",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\05-native_atlas\\junit.xml"
+        ],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 9,
+          "skipped": 0,
+          "tests": 9
+        },
+        "directory": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\05-native_atlas",
+        "elapsedSeconds": 55.08,
+        "finishedAt": "2026-09-11T16:48:27.925276+00:00",
+        "junit": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\05-native_atlas\\junit.xml",
+        "name": "native_atlas",
+        "returncode": 0,
+        "sourceSha256": "8e758b354238f0d0a475e74d9c012bd1a75a3cc60dcb9b36d364480b1c85e47d",
+        "sourceUnchanged": true,
+        "startedAt": "2026-09-11T16:47:32.837396+00:00",
+        "status": "passed",
+        "stderr": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\05-native_atlas\\stderr.log",
+        "stdout": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\05-native_atlas\\stdout.log"
+      },
+      {
+        "basetemp": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t06",
+        "command": [
+          "F:\\cutemaple\\CuteMaple-Live2D\\.venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "tests/test_transition_geometry.py",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "-o",
+          "addopts=",
+          "--basetemp",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t06",
+          "--junitxml",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\06-transition_geometry\\junit.xml"
+        ],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 8,
+          "skipped": 0,
+          "tests": 8
+        },
+        "directory": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\06-transition_geometry",
+        "elapsedSeconds": 20.266,
+        "finishedAt": "2026-09-11T16:48:48.344481+00:00",
+        "junit": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\06-transition_geometry\\junit.xml",
+        "name": "transition_geometry",
+        "returncode": 0,
+        "sourceSha256": "8e758b354238f0d0a475e74d9c012bd1a75a3cc60dcb9b36d364480b1c85e47d",
+        "sourceUnchanged": true,
+        "startedAt": "2026-09-11T16:48:28.069935+00:00",
+        "status": "passed",
+        "stderr": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\06-transition_geometry\\stderr.log",
+        "stdout": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\06-transition_geometry\\stdout.log"
+      },
+      {
+        "basetemp": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t07",
+        "command": [
+          "F:\\cutemaple\\CuteMaple-Live2D\\.venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "tests",
+          "--ignore=tests/test_climb_refinement.py",
+          "--ignore=tests/test_free_arm_refinement.py",
+          "--ignore=tests/test_maple_v5_authoring.py",
+          "--ignore=tests/test_sleep_contact_refinement.py",
+          "--ignore=tests/test_native_atlas.py",
+          "--ignore=tests/test_transition_geometry.py",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider",
+          "-o",
+          "addopts=",
+          "--basetemp",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\t07",
+          "--junitxml",
+          "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\07-rest\\junit.xml"
+        ],
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "passed": 1050,
+          "skipped": 1,
+          "tests": 1051
+        },
+        "directory": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\07-rest",
+        "elapsedSeconds": 311.046,
+        "finishedAt": "2026-09-11T16:53:59.568087+00:00",
+        "junit": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\07-rest\\junit.xml",
+        "name": "rest",
+        "returncode": 0,
+        "sourceSha256": "8e758b354238f0d0a475e74d9c012bd1a75a3cc60dcb9b36d364480b1c85e47d",
+        "sourceUnchanged": true,
+        "startedAt": "2026-09-11T16:48:48.513484+00:00",
+        "status": "passed",
+        "stderr": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\07-rest\\stderr.log",
+        "stdout": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression\\07-rest\\stdout.log"
+      }
+    ],
+    "outputDirectory": "F:\\cutemaple\\CuteMaple-Live2D\\.build\\stage-20260912-003432\\regression",
+    "projectRoot": "F:\\cutemaple\\CuteMaple-Live2D",
+    "pytestAddoptsOverridden": true,
+    "sourceScope": "Git-listed Python, tests/fixtures and test/build config; excludes .build, dist, .venv and model assets",
+    "sourceSha256": "8e758b354238f0d0a475e74d9c012bd1a75a3cc60dcb9b36d364480b1c85e47d",
+    "startedAt": "2026-09-11T16:34:33.303477+00:00",
+    "status": "passed",
+    "totals": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 1167,
+      "skipped": 1,
+      "tests": 1168
+    }
+  },
+  "skippedTests": [
+    {
+      "test": "tests.test_cleanup_protocol_io.test_symlink_is_rejected_even_if_path_precheck_races",
+      "reason": "Host cannot create test symlinks: [WinError 1314] 客户端没有所需的特权。: 'F:\\\\cutemaple\\\\CuteMaple-Live2D\\\\.build\\\\stage-20260912-003432\\\\regression\\\\t07\\\\test_symlink_is_rejected_even_0\\\\actual.json' -> 'F:\\\\cutemaple\\\\CuteMaple-Live2D\\\\.build\\\\stage-20260912-003432\\\\regression\\\\t07\\\\test_symlink_is_rejected_even_0\\\\link.json'"
+    }
+  ],
+  "packagedSmoke": {
+    "executable": "F:\\cutemaple\\CuteMaple-Live2D\\dist\\CuteMaple-Live2D-Directory-20260912-003432\\CuteMaple-Live2D\\CuteMaple-Live2D.exe",
+    "sha256": "627787D39BD273AD99A41F1AEC3FF7202EF9C6B3553FBB20A647095605E980E4",
+    "bytes": 11718144,
+    "applicationSmokeExit": 0,
+    "helperSmokeExit": 0,
+    "helperSha256": "E67432D620EF7D53D4D8916F83336FA0AB2A631458341B11FBBAD91FEAD16474",
+    "helperDiagnosticPassed": true,
+    "runtimeSmokeExit": 0,
+    "live2dPassed": true,
+    "nativeIdleCycles": 1,
+    "nativeLandingFinished": true,
+    "states": 31,
+    "visiblePixels": 87247,
+    "errors": [],
+    "verificationScope": "offscreen-renderer-and-short-startup-only",
+    "normalDesktopRunVerified": false,
+    "securityReviewStatus": "not-assessed",
+    "sensorsEnabled": false,
+    "startupAndCleanupTaskCreationEnabled": false,
+    "applicationSmokeDurationSeconds": 1.6,
+    "isolatedProfile": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-package-smoke-01\\profile",
+    "isolatedSettingsDirectory": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v51-package-smoke-01\\profile\\美腻枫",
+    "completedAt": "2026-09-12T01:01:10.0424045+08:00"
+  },
+  "handoff": {
+    "product": "美腻枫 v5.1 动作优化版",
+    "handoffAt": "2026-09-11T17:01:23.029975+00:00",
+    "sourceRevision": "40c0e0c1c9740abf9040c9bd9b8e3a26e7033b22",
+    "sourceCleanAtBuild": true,
+    "handoffStatus": "ready-for-user-testing",
+    "formalReleaseStatus": "UNVERIFIED",
+    "executable": "CuteMaple-Live2D\\CuteMaple-Live2D.exe",
+    "sha256": {
+      "executable": "627787d39bd273ad99a41f1aec3ff7202ef9c6b3553fbb20a647095605e980e4",
+      "helper": "e67432d620ef7d53d4d8916f83336fa0ab2a631458341b11fbbad91fead16474",
+      "moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+      "sourceSnapshot": "4dce9e7140e70e13d61d2ce8008e5d70df275e3d0916445e82af80aef414410b",
+      "nativeVisualReview": "bd415fcc31607591fe13651ed5880f6c9b023dff7c356b46dd0c6da7979b22e7",
+      "regression": "97d953c43f6e9d056992d82b178923a366241308cc773de22d08002463ead2f7",
+      "packagedSmoke": "cf66df066d9a41ec54947cff25a1ea50a388564533f22db7090c6680ee0fd18a"
+    },
+    "verified": {
+      "pythonRegression": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 1167,
+        "skipped": 1,
+        "tests": 1168
+      },
+      "nativeRenderer": {
+        "passed": true,
+        "clips": 31,
+        "captures": 69,
+        "errors": 0,
+        "path": "artifacts/v51-native-model-06/report.json",
+        "sha256": "1d594e7491da230b252d3eec755e1f2975a83a53e66f865dcec4103625d46b6d"
+      },
+      "fixedCanvasVisualReview": {
+        "accepted": true,
+        "scope": "All saved frames in six fixed-canvas native recordings, not OS-window/hardware acceptance.",
+        "savedFramesReviewed": 875,
+        "recordings": [
+          {
+            "path": "artifacts/v51-continuous-03/drop-land-idle.json",
+            "sha256": "286002027e887f9262adaa20c0bebb4795dbc49f27bd7b1a1792b2552dd480b7",
+            "scenario": "drop-land-idle",
+            "frames": 100,
+            "seconds": 19.518133899662644,
+            "actualCaptureFps": 5.072206211358717,
+            "presentation": "white background composited behind native transparent canvas for review",
+            "resourcesUnchanged": true
+          },
+          {
+            "path": "artifacts/v51-continuous-03/climb-left.json",
+            "sha256": "23fa7ea0910b06639785ac453fbf15e7a67ae4b2461ee4f1389d00524b28f9db",
+            "scenario": "climb-left",
+            "frames": 104,
+            "seconds": 20.313298299908638,
+            "actualCaptureFps": 5.070569952712369,
+            "presentation": "checkerboard background composited behind native transparent canvas for review",
+            "resourcesUnchanged": true
+          },
+          {
+            "path": "artifacts/v51-continuous-03/climb-right.json",
+            "sha256": "5258b217415256ec4ac4efb2305248cd9824b199fbf421ce20f681897c50ee52",
+            "scenario": "climb-right",
+            "frames": 111,
+            "seconds": 20.09513120027259,
+            "actualCaptureFps": 5.4739627675836156,
+            "presentation": "black background composited behind native transparent canvas for review",
+            "resourcesUnchanged": true
+          },
+          {
+            "path": "artifacts/v51-continuous-04/cleanup.json",
+            "sha256": "b265ac94722016a9e9db69a569f06f77c507e11b809de54aadff1d42e9fb3a79",
+            "scenario": "cleanup",
+            "frames": 162,
+            "seconds": 32.28213769989088,
+            "actualCaptureFps": 4.9872781504350066,
+            "presentation": "checkerboard background composited behind native transparent canvas for review",
+            "resourcesUnchanged": true
+          },
+          {
+            "path": "artifacts/v51-continuous-04/swing-petting.json",
+            "sha256": "ac8d250d1e4189695a4c886796cd1bc69803c25ef7f36f19ff9a995ae2c14b2f",
+            "scenario": "swing-petting",
+            "frames": 126,
+            "seconds": 22.221737899817526,
+            "actualCaptureFps": 5.625122596780625,
+            "presentation": "white background composited behind native transparent canvas for review",
+            "resourcesUnchanged": true
+          },
+          {
+            "path": "artifacts/v51-continuous-04/supported-drag.json",
+            "sha256": "23142cf5da04b55a6ef1caa6528b1572ae72b13d756c1e9b250ab1c50f2dfeb0",
+            "scenario": "supported-drag",
+            "frames": 272,
+            "seconds": 55.37145969970152,
+            "actualCaptureFps": 4.894218094840307,
+            "presentation": "black background composited behind native transparent canvas for review",
+            "resourcesUnchanged": true
+          }
+        ],
+        "reviews": [
+          {
+            "path": "artifacts/v51-final-visual-root.json",
+            "sha256": "600baff03caa1454a8603f83b57cc750aa742dac060335955a7c68badf0490c4"
+          },
+          {
+            "path": "artifacts/v51-continuous-03/climb-independent-visual-review.json",
+            "sha256": "cade9df0d537eddfc0891a349488158269242f01cd0b438690c33a3eb0a8df0f"
+          },
+          {
+            "path": "artifacts/v51-continuous-04/cleanup-visual-review.json",
+            "sha256": "9eeb8167f5ba1b6e4072321d0a616de2074ab3b772f11c5f606bdc9d0eb4a2a6"
+          },
+          {
+            "path": "artifacts/v51-continuous-04/supported-drag-independent-review.json",
+            "sha256": "1b443f1f2fa355cac2ab6a87232960edf2d610286e375e787f762c873b0de797"
+          }
+        ],
+        "limitations": [
+          "Capture actually achieved roughly 5 FPS; it does not capture every native RAF update. Controller continuity at 30/60/144 Hz and uneven dt is covered separately by automated tests.",
+          "Climb-to-top retains a brief painted profile-to-mid head/cloth dissolve; this is not a fully three-dimensional turn.",
+          "Abrupt top-cleaning detachment has a single tight chestward sleeve exchange (supported-drag frame 222) before normal hanging cloth (223). No claim that all intermediate shapes are distortion-free.",
+          "Gesture previews do not establish actual ToDesk input, desktop attachment/travel, audio detection, particles or privileged cleanup results."
+        ]
+      },
+      "shortPackagedSmoke": true
+    },
+    "userValidationPending": [
+      "actual ToDesk gestures and desktop dragging/contact",
+      "actual system audio and device switching",
+      "real privileged cleanup and authorization migration if needed",
+      "repeated starts and extended normal desktop use"
+    ],
+    "unchanged": [
+      "existing v4/v5 packages and shortcuts",
+      "personal settings",
+      "registered cleanup authorization",
+      "Windows protection and Chromium sandbox"
+    ],
+    "cleanupAuthorization": "Packaging does not migrate an existing old-helper task. Use 性能与内存 → 修复清理授权… when testing the new helper.",
+    "sharing": "Share the complete ZIP. Extract all files and run the included CuteMaple-Live2D.exe.",
+    "pythonSkippedTests": [
+      {
+        "test": "tests.test_cleanup_protocol_io.test_symlink_is_rejected_even_if_path_precheck_races",
+        "reason": "Host cannot create test symlinks: [WinError 1314] 客户端没有所需的特权。: 'F:\\\\cutemaple\\\\CuteMaple-Live2D\\\\.build\\\\stage-20260912-003432\\\\regression\\\\t07\\\\test_symlink_is_rejected_even_0\\\\actual.json' -> 'F:\\\\cutemaple\\\\CuteMaple-Live2D\\\\.build\\\\stage-20260912-003432\\\\regression\\\\t07\\\\test_symlink_is_rejected_even_0\\\\link.json'"
+      }
+    ]
+  },
+  "zipAudit": {
+    "passed": true,
+    "zip": "F:\\cutemaple\\美腻枫-v5.1-动作优化版-20260912.zip",
+    "bytes": 205407350,
+    "sha256": "f55507d526b4091f8a050ba24d85abe49102033520d9bacd04709eaec1ea28bf",
+    "files": 635,
+    "package": "F:\\cutemaple\\CuteMaple-Live2D\\dist\\CuteMaple-Live2D-Directory-20260912-003432",
+    "sourceRevision": "40c0e0c1c9740abf9040c9bd9b8e3a26e7033b22",
+    "allEntriesCompared": true,
+    "integrityChecked": true
+  },
+  "zipAuditSha256": "f189c16d578245a429dce87bbfce62642863c9a8b26fb179777bb924d390d2e8",
+  "scope": "Final package ready for user testing; no real cleanup, ToDesk input, system audio or extended desktop run performed for this handoff."
+}

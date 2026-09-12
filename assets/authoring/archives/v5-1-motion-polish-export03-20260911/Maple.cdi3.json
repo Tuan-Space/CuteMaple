@@ -1,0 +1,412 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "",
+			"Name": "ParamAngleX"
+		},
+		{
+			"Id": "ParamBodyAngleX",
+			"GroupId": "",
+			"Name": "ParamBodyAngleX"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "",
+			"Name": "ParamAngleY"
+		},
+		{
+			"Id": "ParamBodyAngleY",
+			"GroupId": "",
+			"Name": "ParamBodyAngleY"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "",
+			"Name": "ParamAngleZ"
+		},
+		{
+			"Id": "ParamBodyAngleZ",
+			"GroupId": "",
+			"Name": "ParamBodyAngleZ"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "",
+			"Name": "ParamEyeLOpen"
+		},
+		{
+			"Id": "ParamEyeLSmile",
+			"GroupId": "",
+			"Name": "ParamEyeLSmile"
+		},
+		{
+			"Id": "ParamBrowLY",
+			"GroupId": "",
+			"Name": "ParamBrowLY"
+		},
+		{
+			"Id": "ParamBrowLForm",
+			"GroupId": "",
+			"Name": "ParamBrowLForm"
+		},
+		{
+			"Id": "ParamArmLA",
+			"GroupId": "",
+			"Name": "ParamArmLA"
+		},
+		{
+			"Id": "ParamArmLB",
+			"GroupId": "",
+			"Name": "ParamArmLB"
+		},
+		{
+			"Id": "ParamLegLA",
+			"GroupId": "",
+			"Name": "ParamLegLA"
+		},
+		{
+			"Id": "ParamLegLB",
+			"GroupId": "",
+			"Name": "ParamLegLB"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "",
+			"Name": "ParamEyeROpen"
+		},
+		{
+			"Id": "ParamEyeRSmile",
+			"GroupId": "",
+			"Name": "ParamEyeRSmile"
+		},
+		{
+			"Id": "ParamBrowRY",
+			"GroupId": "",
+			"Name": "ParamBrowRY"
+		},
+		{
+			"Id": "ParamBrowRForm",
+			"GroupId": "",
+			"Name": "ParamBrowRForm"
+		},
+		{
+			"Id": "ParamArmRA",
+			"GroupId": "",
+			"Name": "ParamArmRA"
+		},
+		{
+			"Id": "ParamArmRB",
+			"GroupId": "",
+			"Name": "ParamArmRB"
+		},
+		{
+			"Id": "ParamLegRA",
+			"GroupId": "",
+			"Name": "ParamLegRA"
+		},
+		{
+			"Id": "ParamLegRB",
+			"GroupId": "",
+			"Name": "ParamLegRB"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "",
+			"Name": "ParamEyeBallX"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "",
+			"Name": "ParamEyeBallY"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "",
+			"Name": "ParamMouthForm"
+		},
+		{
+			"Id": "ParamHairFront",
+			"GroupId": "",
+			"Name": "ParamHairFront"
+		},
+		{
+			"Id": "ParamHairSide",
+			"GroupId": "",
+			"Name": "ParamHairSide"
+		},
+		{
+			"Id": "ParamHairBack",
+			"GroupId": "",
+			"Name": "ParamHairBack"
+		},
+		{
+			"Id": "ParamSkirt",
+			"GroupId": "",
+			"Name": "ParamSkirt"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "",
+			"Name": "ParamMouthOpenY"
+		},
+		{
+			"Id": "ParamCheek",
+			"GroupId": "",
+			"Name": "ParamCheek"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "",
+			"Name": "ParamBreath"
+		},
+		{
+			"Id": "ParamTyping",
+			"GroupId": "",
+			"Name": "ParamTyping"
+		},
+		{
+			"Id": "ParamTypingPulse",
+			"GroupId": "",
+			"Name": "ParamTypingPulse"
+		},
+		{
+			"Id": "ParamListening",
+			"GroupId": "",
+			"Name": "ParamListening"
+		},
+		{
+			"Id": "ParamDizzy",
+			"GroupId": "",
+			"Name": "ParamDizzy"
+		},
+		{
+			"Id": "ParamGlasses",
+			"GroupId": "",
+			"Name": "ParamGlasses"
+		},
+		{
+			"Id": "ParamFan",
+			"GroupId": "",
+			"Name": "ParamFan"
+		},
+		{
+			"Id": "ParamMaple",
+			"GroupId": "",
+			"Name": "ParamMaple"
+		},
+		{
+			"Id": "ParamPoseSleep",
+			"GroupId": "",
+			"Name": "ParamPoseSleep"
+		},
+		{
+			"Id": "ParamPoseSwing",
+			"GroupId": "",
+			"Name": "ParamPoseSwing"
+		},
+		{
+			"Id": "ParamPoseTop",
+			"GroupId": "",
+			"Name": "ParamPoseTop"
+		},
+		{
+			"Id": "ParamCrouch",
+			"GroupId": "",
+			"Name": "ParamCrouch"
+		},
+		{
+			"Id": "ParamBounce",
+			"GroupId": "",
+			"Name": "ParamBounce"
+		},
+		{
+			"Id": "ParamSwingVisible",
+			"GroupId": "",
+			"Name": "ParamSwingVisible"
+		},
+		{
+			"Id": "ParamCleaning",
+			"GroupId": "",
+			"Name": "ParamCleaning"
+		},
+		{
+			"Id": "ParamPoseClimb",
+			"GroupId": "",
+			"Name": "ParamPoseClimb"
+		},
+		{
+			"Id": "ParamSwing",
+			"GroupId": "",
+			"Name": "ParamSwing"
+		},
+		{
+			"Id": "ParamHeadTurn",
+			"GroupId": "",
+			"Name": "ParamHeadTurn"
+		},
+		{
+			"Id": "ParamBodyTurn",
+			"GroupId": "",
+			"Name": "ParamBodyTurn"
+		},
+		{
+			"Id": "ParamHandLShape",
+			"GroupId": "",
+			"Name": "ParamHandLShape"
+		},
+		{
+			"Id": "ParamSleeveLHang",
+			"GroupId": "",
+			"Name": "ParamSleeveLHang"
+		},
+		{
+			"Id": "ParamHandRShape",
+			"GroupId": "",
+			"Name": "ParamHandRShape"
+		},
+		{
+			"Id": "ParamSleeveRHang",
+			"GroupId": "",
+			"Name": "ParamSleeveRHang"
+		},
+		{
+			"Id": "ParamTransitionProgress",
+			"GroupId": "",
+			"Name": "ParamTransitionProgress"
+		},
+		{
+			"Id": "ParamArmPoseMode",
+			"GroupId": "",
+			"Name": "ParamArmPoseMode"
+		},
+		{
+			"Id": "ParamRibbonLX",
+			"GroupId": "",
+			"Name": "ParamRibbonLX"
+		},
+		{
+			"Id": "ParamRibbonLY",
+			"GroupId": "",
+			"Name": "ParamRibbonLY"
+		},
+		{
+			"Id": "ParamCleanFanL",
+			"GroupId": "",
+			"Name": "ParamCleanFanL"
+		},
+		{
+			"Id": "ParamRibbonRX",
+			"GroupId": "",
+			"Name": "ParamRibbonRX"
+		},
+		{
+			"Id": "ParamRibbonRY",
+			"GroupId": "",
+			"Name": "ParamRibbonRY"
+		},
+		{
+			"Id": "ParamCleanFanR",
+			"GroupId": "",
+			"Name": "ParamCleanFanR"
+		},
+		{
+			"Id": "ParamCleaningSweep",
+			"GroupId": "",
+			"Name": "ParamCleaningSweep"
+		},
+		{
+			"Id": "ParamCleanGround",
+			"GroupId": "",
+			"Name": "ParamCleanGround"
+		},
+		{
+			"Id": "ParamClimbPhase",
+			"GroupId": "",
+			"Name": "ParamClimbPhase"
+		},
+		{
+			"Id": "ParamClimbActive",
+			"GroupId": "",
+			"Name": "ParamClimbActive"
+		},
+		{
+			"Id": "ParamClimbDirection",
+			"GroupId": "",
+			"Name": "ParamClimbDirection"
+		},
+		{
+			"Id": "ParamCleanContext",
+			"GroupId": "",
+			"Name": "ParamCleanContext"
+		},
+		{
+			"Id": "ParamCleanStroke",
+			"GroupId": "",
+			"Name": "ParamCleanStroke"
+		},
+		{
+			"Id": "ParamCleanPoseL",
+			"GroupId": "",
+			"Name": "ParamCleanPoseL"
+		},
+		{
+			"Id": "ParamCleanBrushL",
+			"GroupId": "",
+			"Name": "ParamCleanBrushL"
+		},
+		{
+			"Id": "ParamCleanPoseR",
+			"GroupId": "",
+			"Name": "ParamCleanPoseR"
+		},
+		{
+			"Id": "ParamCleanBrushR",
+			"GroupId": "",
+			"Name": "ParamCleanBrushR"
+		},
+		{
+			"Id": "ParamFreeArmActive",
+			"GroupId": "",
+			"Name": "ParamFreeArmActive"
+		},
+		{
+			"Id": "ParamFreeArmPose",
+			"GroupId": "",
+			"Name": "ParamFreeArmPose"
+		},
+		{
+			"Id": "ParamFreeArmBrace",
+			"GroupId": "",
+			"Name": "ParamFreeArmBrace"
+		},
+		{
+			"Id": "ParamArmSupportBlend",
+			"GroupId": "",
+			"Name": "ParamArmSupportBlend"
+		},
+		{
+			"Id": "ParamClimbRefine",
+			"GroupId": "",
+			"Name": "ParamClimbRefine"
+		},
+		{
+			"Id": "ParamClimbHandoff",
+			"GroupId": "",
+			"Name": "ParamClimbHandoff"
+		},
+		{
+			"Id": "ParamClimbDrapeBlend",
+			"GroupId": "",
+			"Name": "ParamClimbDrapeBlend"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": [
+		{
+			"Id": "PartRoot",
+			"Name": "Root Part"
+		}
+	]
+}

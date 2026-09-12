@@ -1,0 +1,480 @@
+{
+  "scope": "Read-only original paint landmarks; no rig edits/Core/Qt and no native visual acceptance",
+  "coordinateConvention": "1024x1024 original source image pixels, x right/y down; individual-bead color means use pixel centers",
+  "controls": {
+    "ornament_l": {
+      "front": {
+        "pink_bead_inner": [
+          392.45,
+          336.98
+        ],
+        "pink_bead_middle": null,
+        "pink_bead_outer": [
+          376.67,
+          337.54
+        ]
+      },
+      "left_mid": {
+        "pink_bead_inner": null,
+        "pink_bead_middle": null,
+        "pink_bead_outer": null
+      },
+      "right_mid": {
+        "pink_bead_inner": [
+          355.36,
+          333.78
+        ],
+        "pink_bead_middle": [
+          343.28,
+          334.87
+        ],
+        "pink_bead_outer": [
+          330.15,
+          333.95
+        ]
+      },
+      "left": {
+        "pink_bead_inner": null,
+        "pink_bead_middle": null,
+        "pink_bead_outer": null
+      },
+      "right": {
+        "pink_bead_inner": [
+          396.68,
+          338.76
+        ],
+        "pink_bead_middle": [
+          382.4,
+          339.27
+        ],
+        "pink_bead_outer": [
+          367.77,
+          339.1
+        ]
+      }
+    },
+    "ornament_r": {
+      "front": {
+        "pink_bead_inner": [
+          646.58,
+          335.36
+        ],
+        "pink_bead_middle": [
+          658.68,
+          337.02
+        ],
+        "pink_bead_outer": [
+          669.09,
+          331.94
+        ]
+      },
+      "left_mid": {
+        "pink_bead_inner": [
+          640.66,
+          324.83
+        ],
+        "pink_bead_middle": [
+          654.12,
+          327.13
+        ],
+        "pink_bead_outer": [
+          669.95,
+          323.47
+        ]
+      },
+      "right_mid": {
+        "pink_bead_inner": null,
+        "pink_bead_middle": null,
+        "pink_bead_outer": null
+      },
+      "left": {
+        "pink_bead_inner": [
+          603.72,
+          330.72
+        ],
+        "pink_bead_middle": [
+          619.1,
+          332.27
+        ],
+        "pink_bead_outer": [
+          635.35,
+          330.81
+        ]
+      },
+      "right": {
+        "pink_bead_inner": null,
+        "pink_bead_middle": null,
+        "pink_bead_outer": null
+      }
+    },
+    "hair_front": {
+      "front": {
+        "scalp_parting_fork": [
+          515,
+          148
+        ]
+      },
+      "left_mid": {
+        "scalp_parting_fork": [
+          458,
+          160
+        ]
+      },
+      "right_mid": {
+        "scalp_parting_fork": [
+          516,
+          156
+        ]
+      },
+      "left": {
+        "scalp_parting_fork": [
+          444,
+          158
+        ]
+      },
+      "right": {
+        "scalp_parting_fork": [
+          557,
+          164
+        ]
+      }
+    },
+    "face_base": {
+      "front": {
+        "corresponding_visible_cheek_point": null
+      },
+      "left_mid": {
+        "corresponding_visible_cheek_point": null
+      },
+      "right_mid": {
+        "corresponding_visible_cheek_point": null
+      },
+      "left": {
+        "corresponding_visible_cheek_point": null
+      },
+      "right": {
+        "corresponding_visible_cheek_point": null
+      }
+    }
+  },
+  "measurementDetail": [
+    {
+      "view": "front",
+      "family": "ornament_l",
+      "layer": "ornament_l",
+      "feature": "pink_bead_inner",
+      "sourceRoi": [
+        385,
+        322,
+        400,
+        346
+      ],
+      "selectedPixelCount": 185,
+      "pointPixelCenter": [
+        392.45,
+        336.98
+      ]
+    },
+    {
+      "view": "front",
+      "family": "ornament_l",
+      "layer": "ornament_l",
+      "feature": "pink_bead_outer",
+      "sourceRoi": [
+        369,
+        326,
+        383,
+        351
+      ],
+      "selectedPixelCount": 219,
+      "pointPixelCenter": [
+        376.67,
+        337.54
+      ]
+    },
+    {
+      "view": "right_mid",
+      "family": "ornament_l",
+      "layer": "mid_r_ornament_l",
+      "feature": "pink_bead_inner",
+      "sourceRoi": [
+        350,
+        319,
+        363,
+        345
+      ],
+      "selectedPixelCount": 151,
+      "pointPixelCenter": [
+        355.36,
+        333.78
+      ]
+    },
+    {
+      "view": "right_mid",
+      "family": "ornament_l",
+      "layer": "mid_r_ornament_l",
+      "feature": "pink_bead_middle",
+      "sourceRoi": [
+        337,
+        320,
+        350,
+        349
+      ],
+      "selectedPixelCount": 204,
+      "pointPixelCenter": [
+        343.28,
+        334.87
+      ]
+    },
+    {
+      "view": "right_mid",
+      "family": "ornament_l",
+      "layer": "mid_r_ornament_l",
+      "feature": "pink_bead_outer",
+      "sourceRoi": [
+        323,
+        324,
+        336,
+        349
+      ],
+      "selectedPixelCount": 182,
+      "pointPixelCenter": [
+        330.15,
+        333.95
+      ]
+    },
+    {
+      "view": "right",
+      "family": "ornament_l",
+      "layer": "profile_r_ornament_l",
+      "feature": "pink_bead_inner",
+      "sourceRoi": [
+        391,
+        325,
+        404,
+        351
+      ],
+      "selectedPixelCount": 161,
+      "pointPixelCenter": [
+        396.68,
+        338.76
+      ]
+    },
+    {
+      "view": "right",
+      "family": "ornament_l",
+      "layer": "profile_r_ornament_l",
+      "feature": "pink_bead_middle",
+      "sourceRoi": [
+        375,
+        328,
+        390,
+        357
+      ],
+      "selectedPixelCount": 264,
+      "pointPixelCenter": [
+        382.4,
+        339.27
+      ]
+    },
+    {
+      "view": "right",
+      "family": "ornament_l",
+      "layer": "profile_r_ornament_l",
+      "feature": "pink_bead_outer",
+      "sourceRoi": [
+        359,
+        325,
+        374,
+        351
+      ],
+      "selectedPixelCount": 162,
+      "pointPixelCenter": [
+        367.77,
+        339.1
+      ]
+    },
+    {
+      "view": "front",
+      "family": "ornament_r",
+      "layer": "ornament_r",
+      "feature": "pink_bead_inner",
+      "sourceRoi": [
+        641,
+        322,
+        652,
+        348
+      ],
+      "selectedPixelCount": 160,
+      "pointPixelCenter": [
+        646.58,
+        335.36
+      ]
+    },
+    {
+      "view": "front",
+      "family": "ornament_r",
+      "layer": "ornament_r",
+      "feature": "pink_bead_middle",
+      "sourceRoi": [
+        652,
+        324,
+        664,
+        349
+      ],
+      "selectedPixelCount": 181,
+      "pointPixelCenter": [
+        658.68,
+        337.02
+      ]
+    },
+    {
+      "view": "front",
+      "family": "ornament_r",
+      "layer": "ornament_r",
+      "feature": "pink_bead_outer",
+      "sourceRoi": [
+        664,
+        314,
+        676,
+        343
+      ],
+      "selectedPixelCount": 158,
+      "pointPixelCenter": [
+        669.09,
+        331.94
+      ]
+    },
+    {
+      "view": "left_mid",
+      "family": "ornament_r",
+      "layer": "mid_l_ornament_r",
+      "feature": "pink_bead_inner",
+      "sourceRoi": [
+        633,
+        313,
+        647,
+        337
+      ],
+      "selectedPixelCount": 184,
+      "pointPixelCenter": [
+        640.66,
+        324.83
+      ]
+    },
+    {
+      "view": "left_mid",
+      "family": "ornament_r",
+      "layer": "mid_l_ornament_r",
+      "feature": "pink_bead_middle",
+      "sourceRoi": [
+        647,
+        316,
+        662,
+        345
+      ],
+      "selectedPixelCount": 241,
+      "pointPixelCenter": [
+        654.12,
+        327.13
+      ]
+    },
+    {
+      "view": "left_mid",
+      "family": "ornament_r",
+      "layer": "mid_l_ornament_r",
+      "feature": "pink_bead_outer",
+      "sourceRoi": [
+        662,
+        313,
+        679,
+        339
+      ],
+      "selectedPixelCount": 182,
+      "pointPixelCenter": [
+        669.95,
+        323.47
+      ]
+    },
+    {
+      "view": "left",
+      "family": "ornament_r",
+      "layer": "profile_l_ornament_r",
+      "feature": "pink_bead_inner",
+      "sourceRoi": [
+        595,
+        319,
+        611,
+        345
+      ],
+      "selectedPixelCount": 202,
+      "pointPixelCenter": [
+        603.72,
+        330.72
+      ]
+    },
+    {
+      "view": "left",
+      "family": "ornament_r",
+      "layer": "profile_l_ornament_r",
+      "feature": "pink_bead_middle",
+      "sourceRoi": [
+        611,
+        323,
+        628,
+        345
+      ],
+      "selectedPixelCount": 245,
+      "pointPixelCenter": [
+        619.1,
+        332.27
+      ]
+    },
+    {
+      "view": "left",
+      "family": "ornament_r",
+      "layer": "profile_l_ornament_r",
+      "feature": "pink_bead_outer",
+      "sourceRoi": [
+        628,
+        319,
+        645,
+        345
+      ],
+      "selectedPixelCount": 219,
+      "pointPixelCenter": [
+        635.35,
+        330.81
+      ]
+    }
+  ],
+  "sourceHashes": {
+    "layers/face_base.png": "599f6edc1c6ebf719eeac1f861b7c82ef17c3b7dd4f006eb019e3b546585577b",
+    "layers/profile_r_face_base.png": "c5986dcfd2d143df562b79f831fb36050c24cce04a6b620e66c02771b08ae8f4",
+    "layers/profile_l_face_base.png": "94df307e1b9df1be7cabf059949e7d4330c1b659be9951a9288e5bf24edace6a",
+    "layers/mid_r_face_base.png": "9c1b3fe799e90c9ba9def32bb07fdcfb79e98355b8ce86a4e1edc68b433643c2",
+    "layers/mid_l_face_base.png": "537c92ffa40a0043b7e45a99ac43d1c0e57dfb0e0918038b380fd927e7b62ac3",
+    "layers/hair_front.png": "8905d95ca8dc0718b494ea550776bc6dcb30dba0dbd959d81db609c8815e2e49",
+    "layers/profile_r_hair_front.png": "a18c6f0bcf732b26540de66460d98329cc5ac4e62305a19ec59e9e5e718b12bd",
+    "layers/profile_l_hair_front.png": "808e6b7bb83b76071d2de84aa6eb76337e3a3d99ce03fab3fdfc95bb05d83090",
+    "layers/mid_r_hair_front.png": "45fad19d736783e13ec54bef02325409224f6fb34ddd3d54f2f0f5d0646ede54",
+    "layers/mid_l_hair_front.png": "54d955e1f26677d31109a906c93eaabb0983c0aab2f26afa532958f158037678",
+    "layers/ornament_l.png": "30ac7a576419fd3b6aa9ec909ee3f537da05b11e829123a9ea21eb9613f02f68",
+    "layers/mid_r_ornament_r.png": "0a5dcd1af9b2cc2dff6499b00c5cf1c23a403550aae16ca0fde2364b6a0553ef",
+    "layers/mid_l_ornament_l.png": "bcacb2a018a0451804421e35f911f8d99dfdedf515649e9d2605208cea8e6b3a",
+    "layers/ornament_r.png": "7bb465998db960cc70a838c7d9d1c939276aabc172df9211554beb88fe97e01e",
+    "layers/profile_r_ornament_l.png": "c763e9a7e87d345183b569bf7d20f4135853261702c3804f7ec4f44a7644fe8e",
+    "layers/profile_l_ornament_r.png": "8cb008ae51cb2886b04ba1378f20d27039d9086660613c28ca7b0c9605f10bd9",
+    "layers/mid_r_ornament_l.png": "cb409bad11ab49e45c18c76a5ae884a7118f2cc1367ebf4564ac90d850366e68",
+    "layers/mid_l_ornament_r.png": "5c3a5d9d1069521bbe203feadba564750c50fd201d9f9fd47bb8e61bb87a650f"
+  },
+  "limitations": [
+    "Individual pink beads were identified visually and measured only within their named cropped ROIs. Centers have about2-3pixel semantic uncertainty from shading/overlap; these are not whole-family alpha centroids.",
+    "front ornament_l middle bead is overlapped enough to be unreliable. Both far-side middle-view hanging ornaments lack a confidently indexed common pearl/flower root; all their bead correspondences stay None. Missing profile far families also stay None.",
+    "The scalp parting/fork is a manually read painted texture feature, about3pixel uncertainty. Do not substitute the differently cut alpha opening below it or sharp rectangular crop edges.",
+    "Face/cheek blush and hair shadows differ between original paintings; no trustworthy exact same painted cheek point was established. Keep None rather than registering an arbitrary alpha/hair fragment. Existing iris/nose/mouth semantic landmarks can define comparison rows; compare only the visible skin boundary in those rows.",
+    "All mirror checks between source left/right views failed exact pixel equality. Right-side coordinates were inspected/measured independently, not invented by mirroring."
+  ],
+  "ribbonWarning": "front ribbon_l top y218 versus left_mid y352 is an occlusion/crop difference, not the same attachment root. ornament_l front alpha top pink flower ~380,270 versus left_mid surviving dangling bead ~412,318 likewise must not be paired as root.",
+  "frameReviewed": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\native-v5-material-visual-11\\climb-left-frames\\0047.png"
+}

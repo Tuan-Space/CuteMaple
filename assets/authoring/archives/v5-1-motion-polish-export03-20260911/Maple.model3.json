@@ -1,0 +1,11 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Maple.moc3",
+		"Textures": [
+			"Maple.4096/texture_00.png"
+		],
+		"Physics": "Maple.physics3.json",
+		"DisplayInfo": "Maple.cdi3.json"
+	}
+}

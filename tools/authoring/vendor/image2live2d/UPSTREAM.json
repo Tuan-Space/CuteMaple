@@ -1,0 +1,88 @@
+{
+  "upstream": "https://github.com/Wzhang3912/image2live2d",
+  "commit": "714e7cc9191f1ef6c9a1732c80e8b566ec127d6b",
+  "license": "Apache-2.0",
+  "purpose": "Editable CMO3 serialization only; no MOC3 emitter",
+  "files": [
+    {
+      "source": "src/image2live2d/irr/schema.py",
+      "path": "irr/schema.py",
+      "upstream_sha256": "97356758f404a6a1bf86efda1282039c01df987be4332cc8be4575d97659ff83",
+      "vendored_sha256": "0799238efd93af9ffa1666704600c12e88d3c14f3b179baff21878da72a1aa88",
+      "modification": "Add editable-project clipping targets, inverse clipping, draw-order keyform metadata, and validated Keyform.deformer_opacity_overrides. Add authoring-only deformer_offset_weights, expanded into standard native multi-parameter keyform coordinate arrays without new native XML fields."
+    },
+    {
+      "source": "src/image2live2d/backends/live2d/physics3.py",
+      "path": "backends/live2d/physics3.py",
+      "upstream_sha256": "41282dfe562cb4f34b22b81c703b338ddeb34a4afb5427ff00def9161d0cf42d",
+      "vendored_sha256": "41282dfe562cb4f34b22b81c703b338ddeb34a4afb5427ff00def9161d0cf42d",
+      "modification": null
+    },
+    {
+      "source": "src/image2live2d/backends/live2d/cmo3/__init__.py",
+      "path": "backends/live2d/cmo3/__init__.py",
+      "upstream_sha256": "2a6ee6b6d870ce36512fd95161f186ee23b3b98690684ff34fc1d4c693c87e62",
+      "vendored_sha256": "2a6ee6b6d870ce36512fd95161f186ee23b3b98690684ff34fc1d4c693c87e62",
+      "modification": null
+    },
+    {
+      "source": "src/image2live2d/backends/live2d/cmo3/caff.py",
+      "path": "backends/live2d/cmo3/caff.py",
+      "upstream_sha256": "a9e8b4c1db5bf63215051ed413cd383a50af84a07baca8da79a23d8005b673bb",
+      "vendored_sha256": "a9e8b4c1db5bf63215051ed413cd383a50af84a07baca8da79a23d8005b673bb",
+      "modification": null
+    },
+    {
+      "source": "src/image2live2d/backends/live2d/cmo3/export.py",
+      "path": "backends/live2d/cmo3/export.py",
+      "upstream_sha256": "ee74c9d7c4dac84938d25c432aa03280e070631aae52e323d4c9a4717d756b62",
+      "vendored_sha256": "ee74c9d7c4dac84938d25c432aa03280e070631aae52e323d4c9a4717d756b62",
+      "modification": null
+    },
+    {
+      "source": "src/image2live2d/backends/live2d/cmo3/model_xml.py",
+      "path": "backends/live2d/cmo3/model_xml.py",
+      "upstream_sha256": "c35d250583668a49845be1a7114052ad0e6bbf21b9178e15dfebd7c102bddfc5",
+      "vendored_sha256": "60c3fa4abf934dee9b8888edde5a66a9fd7d3a68482eca017b3e95b2fe6c91b2",
+      "modification": "Replace binary-emitter module dependency with four source-extracted pure IR helpers; serialize clipGuidList, inverse clipping and keyed drawOrder; include opacity-only deformer drivers and native ACDeformerForm opacity so shared view warps control child visibility without multiplying mesh axes. Add authoring-only deformer_offset_weights, expanded into standard native multi-parameter keyform coordinate arrays without new native XML fields. Set native parameter snapEpsilon from minimum serialized key spacing and decimal precision accordingly; reject precision-colliding keys to preserve dense material guards during Editor interpolation/export."
+    },
+    {
+      "source": "src/image2live2d/backends/live2d/moc3_emit.py",
+      "path": "backends/live2d/cmo3/irr_helpers.py",
+      "upstream_sha256": "1e23ea2b6f58b8bdc85e9fdd0df2af4f8d90b52674b9ac10fac8e5b4c73a816e",
+      "vendored_sha256": "5a98c6aed5fff26940e2e12456ccc92408e736e73bdd37e664ea813cd999f960",
+      "modification": "AST source extraction only: MAX_PARAMS_PER_MESH and _affecting_params, _offset_at, _opacity_at, _opacity_params"
+    },
+    {
+      "source": null,
+      "path": "__init__.py",
+      "vendored_sha256": "bb2a11940605df072ff1c7a221c27a925bcb6284dc48db23f567185c29da290c",
+      "modification": "Empty namespace replaces eager optional conversion imports."
+    },
+    {
+      "source": null,
+      "path": "irr/__init__.py",
+      "vendored_sha256": "bb2a11940605df072ff1c7a221c27a925bcb6284dc48db23f567185c29da290c",
+      "modification": "Empty namespace replaces eager optional conversion imports."
+    },
+    {
+      "source": null,
+      "path": "backends/__init__.py",
+      "vendored_sha256": "bb2a11940605df072ff1c7a221c27a925bcb6284dc48db23f567185c29da290c",
+      "modification": "Empty namespace replaces eager optional conversion imports."
+    },
+    {
+      "source": null,
+      "path": "backends/live2d/__init__.py",
+      "vendored_sha256": "bb2a11940605df072ff1c7a221c27a925bcb6284dc48db23f567185c29da290c",
+      "modification": "Empty namespace replaces eager optional conversion imports."
+    },
+    {
+      "source": "LICENSE",
+      "path": "LICENSE",
+      "upstream_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "vendored_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "modification": null
+    }
+  ]
+}

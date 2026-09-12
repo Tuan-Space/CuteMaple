@@ -8,3 +8,11 @@ __pycache__/
 .pytest-fix/
 .venv/
 *.exe
+/.cache/
+/artifacts/
+/web/node_modules/
+/web/.test-dist/
+!/web/dist/
+!/web/dist/**
+/tools/authoring/image2live2d/
+/.venv-authoring/

@@ -1,0 +1,174 @@
+{
+  "version": "5.2",
+  "preparedAt": "2026-09-12T12:20:31.741688+00:00",
+  "baseline": "4fb1a0d66452d0df5f079a167b4128a676066425",
+  "preservationTag": "v5-1-before-v5-2-20260912",
+  "branch": "codex/v5-2-cleanup-climb-rest",
+  "pythonRegression": {
+    "passed": 1089,
+    "failed": 0,
+    "skipped": 1,
+    "scope": "All tests except six unchanged authoring/atlas regeneration modules. Not represented as a full-suite run.",
+    "excludedUnchangedModules": [
+      "test_climb_refinement",
+      "test_free_arm_refinement",
+      "test_maple_v5_authoring",
+      "test_sleep_contact_refinement",
+      "test_native_atlas",
+      "test_transition_geometry"
+    ],
+    "skipReason": "Host lacks Windows symlink creation privilege (1314); existing symlink race fixture cannot be created."
+  },
+  "additionalFinalSessionTests": {
+    "passed": 16,
+    "failed": 0,
+    "overlapsPrimaryRun": true,
+    "scope": "Local non-elevated pipe handshake, owner crash exit, wrong token, fixed commands, cancel/singleflight, missing helper/225, mocked UAC errors and authorization reuse. No real cleanup."
+  },
+  "webRegression": {
+    "passed": 66,
+    "failed": 0,
+    "ratesHz": [
+      30,
+      60,
+      144
+    ],
+    "unevenFrameTimes": true
+  },
+  "nativeRenderer": {
+    "passed": true,
+    "frames": 662,
+    "checks": [
+      {
+        "name": "left-wait30-and-native-two-cycles",
+        "passed": true
+      },
+      {
+        "name": "left-rest-body-and-window-fixed",
+        "passed": true,
+        "unexpectedParameterChanges": {}
+      },
+      {
+        "name": "left-head-and-eyes-alive",
+        "passed": true
+      },
+      {
+        "name": "left-panel-freezes-phase-and-window",
+        "passed": true
+      },
+      {
+        "name": "right-wait30-and-native-two-cycles",
+        "passed": true
+      },
+      {
+        "name": "right-rest-body-and-window-fixed",
+        "passed": true,
+        "unexpectedParameterChanges": {}
+      },
+      {
+        "name": "right-head-and-eyes-alive",
+        "passed": true
+      },
+      {
+        "name": "right-panel-freezes-phase-and-window",
+        "passed": true
+      }
+    ],
+    "errors": [],
+    "scope": "Production PetWindow and native Cubism; scripted attachment, panel and gaze. No hardware input/UAC/cleanup. Visual acceptance requires frame review."
+  },
+  "visualReview": {
+    "accepted": true,
+    "method": "Reviewed actual native PNG frames including gaze extremes, blink and both moving cycles; black/checkerboard recordings and white contact sheet.",
+    "findings": [
+      "Body, cloth and window stay fixed during waiting and panel hold.",
+      "Head and eyes remain active, head turn stays within side-face range.",
+      "No visible new neck/face/hair outline gaps in reviewed frames."
+    ],
+    "hardwareInputVerified": false
+  },
+  "moc3Sha256": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+  "resourceHashes": {
+    "assets/live2d/Maple/editor-export.json": "dce65990ce8e1951332b9f81b84099094b75868a01f5b596604e9996a5f31565",
+    "assets/live2d/Maple/Maple.4096/texture_00.png": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+    "assets/live2d/Maple/Maple.cdi3.json": "c3727036c74b9913646f3213533d9faa46eeb33e8a3eb4bfac06ff5e9bb0acf5",
+    "assets/live2d/Maple/Maple.moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+    "assets/live2d/Maple/Maple.model3.json": "219b4091775a9126195df32e45424d83f210799a61e821fa952396fe0548fd4c",
+    "assets/live2d/Maple/Maple.pet.json": "0adac2b7c736718aedec8d144807f7e77bb38b854a779f1ef27694372035f6d4",
+    "assets/live2d/Maple/Maple.physics3.json": "7fe83fda4a86139704638cb3861ae5680f9cc5566abb7804f827391471f2fb03",
+    "assets/live2d/Maple/motions/clean_climb_left.motion3.json": "a660268b77517e554c5a44b07ae77796c70a0f9ced0245f35120c8cec2a0b373",
+    "assets/live2d/Maple/motions/clean_climb_left_enter.motion3.json": "eb1530bdf42d7ad7bf816b74b4d6620b069c03b1b024bdb6d20df04440bbc704",
+    "assets/live2d/Maple/motions/clean_climb_left_exit.motion3.json": "064c77273baad64d9366483a0c64965fa6f51dab1b4f6af5b736ade55a5a0926",
+    "assets/live2d/Maple/motions/clean_climb_right.motion3.json": "2b57dd96183009c80c5f6f9c949dc0a3cd431a9e1c44621fe4f629da35f29f64",
+    "assets/live2d/Maple/motions/clean_climb_right_enter.motion3.json": "549651b2f58f3a099eb1e140b79a05f6c7e01c0adb75e0fccd38943fb8a3190e",
+    "assets/live2d/Maple/motions/clean_climb_right_exit.motion3.json": "fa347c7f3be7fae0f052c3272f1339e9406fc27d36c5bc2dedca29055c96b948",
+    "assets/live2d/Maple/motions/clean_ground.motion3.json": "0cf47bb3a9a8fcee9dada7175566d2c193d04906209cb01cdf0fcbbc0ec7cb7b",
+    "assets/live2d/Maple/motions/clean_ground_enter.motion3.json": "7adc11cdba8e50839f97d9f8c5d6d88fbb3859065372b7ba829d3acba27171dc",
+    "assets/live2d/Maple/motions/clean_ground_exit.motion3.json": "020d464fbbe2b621ce59b16b39685a5690215a77718dc898a1e36c575dcbbad6",
+    "assets/live2d/Maple/motions/clean_top.motion3.json": "9999ec9aeb49b5a7b7fbd1a9bea1bbfbfb0a094d4466a48243bb8ec9e0b11037",
+    "assets/live2d/Maple/motions/clean_top_enter.motion3.json": "d356d6c84ac4b2e1aa5cdd19a161a0f774183dec5b24624767ce074a16e525bf",
+    "assets/live2d/Maple/motions/clean_top_exit.motion3.json": "3eeb2ec13ec3165bc5e9665164b6e8fb10cb739752bd790460319e3e02c9109c",
+    "assets/live2d/Maple/motions/climb_left.motion3.json": "9e7cb7aba039a71796cf82672891e3c554058cff428786bf10b1c1aa9f903455",
+    "assets/live2d/Maple/motions/climb_right.motion3.json": "95475b47631bf824d7628272eeac88618fa97cca6a92e442db56e7bf281996d5",
+    "assets/live2d/Maple/motions/climb_to_top_left.motion3.json": "90f294455fdd2ed3f240fb96e8ff9360a32421bbb133be933b2cceaa609ee394",
+    "assets/live2d/Maple/motions/climb_to_top_right.motion3.json": "336031ad32fab5d304158bd648b8bbffb01f6c433cfb90f286213154e7194e15",
+    "assets/live2d/Maple/motions/drag_left.motion3.json": "21d0839580394df84e408d5f4234d8740e3f0391f6631a05364f39f6e6aa4c09",
+    "assets/live2d/Maple/motions/drag_right.motion3.json": "3402c57eb4cc6a0225d0c749dc384e8c563ec963f8bd776fb3c517f99fbba12e",
+    "assets/live2d/Maple/motions/fall_float.motion3.json": "d7e841b6a91c23ffec4ee106bf1b25c474ef75032c7d0111077d692bb702c449",
+    "assets/live2d/Maple/motions/happy.motion3.json": "60712d2fe195607529a4466c9dc05d0a6ec10c6a9f7e19bd628aa8e097908bd3",
+    "assets/live2d/Maple/motions/idle.motion3.json": "ea4f8ded80c797f9d23ab316755f7ff2a687786261714e8fb8547fb1eccdfc59",
+    "assets/live2d/Maple/motions/land.motion3.json": "ca9b1b8491db0cec3931f7f027ad7bd860c487883d171809a2b684e2f56d54ea",
+    "assets/live2d/Maple/motions/petting.motion3.json": "96aec9912b28130aa553b87ee27fc9574a4a615931299883f9ef77b294d8360d",
+    "assets/live2d/Maple/motions/sleep_enter.motion3.json": "8580414f3c13f37f6829b054971d02d29ddaec43668a8b98c9de22dac1ff6807",
+    "assets/live2d/Maple/motions/sleep_exit.motion3.json": "0061a76e5f8e6557441c8da8d708a0e964153c5379a1e4129f1dc5e8ad5617d9",
+    "assets/live2d/Maple/motions/sleep_loop.motion3.json": "a6ca19fbc544875f8457af7f521342c752ddde741213fe1e523520f0a11b7424",
+    "assets/live2d/Maple/motions/swing_cycle.motion3.json": "a3f28b3833b93c59992f97b6897cdd62237d74c2c9d066e6609790850c5fbfff",
+    "assets/live2d/Maple/motions/swing_idle.motion3.json": "888c7848383af78363b8c4dca72cb33a88cd2eaf616fe3b62de3f3bfbf24538f",
+    "assets/live2d/Maple/motions/talk.motion3.json": "7b482b714fb2937d35c59665ca6cd3bb2a3a594bf60b4e58850b4c51a748e86d",
+    "assets/live2d/Maple/motions/walk_left.motion3.json": "c4bf429d09c77dab8a198370e9b3afa8d3c9c823c6239725c9452c250aa2f56b",
+    "assets/live2d/Maple/motions/walk_right.motion3.json": "0f0e0305e24c66dd222801ee4f72b4548b23db87f82f05009b509ed355005f99",
+    "web/dist/app.js": "61532aba4518a3be899b89b93682dca97de3bc1050e195cd1cb624bf512cfcea",
+    "web/dist/build-manifest.json": "b2f8abcd53f84066f5b08439692547dc526b77b2f7c543f6c3f30baf507e48c6",
+    "web/dist/index.html": "f6323962bed8ad9a13da25c5f171cc328e3b0403559c9b692a9d71705b7ea061",
+    "web/dist/licenses/Cubism-Core-LICENSE.md": "b81e37048010ef1d336106151201a0323c3309cae44aecdedf57831fe88fa991",
+    "web/dist/licenses/Cubism-Core-RedistributableFiles.txt": "d16c123688299e1e69a7f5ebc01b3bd75a8d408c024002a7d35b2aae94003f8c",
+    "web/dist/licenses/Cubism-Framework-LICENSE.md": "7ed849bff1e6499aa7cd882e47d246ddbbe06817c1e84cb974df949488302614",
+    "web/dist/licenses/Cubism-PROVENANCE.json": "7b9a4d3d85108a20e04fbaa551e230bbb8dd97eb3bb365568640dbf4b9251c0d",
+    "web/dist/licenses/Cubism-SDK-LICENSE.md": "787a7d1454240865420b96ea9a20ab5e1a5ec3c1abced2e308288c2de8aac991",
+    "web/dist/licenses/Cubism-SDK-NOTICE.md": "fa72aa00a7bf8b98a7617a9d67a3530a9fe23705808163cf54ca799398b22fbc",
+    "web/dist/live2dcubismcore.min.js": "8741f739779b5d5210872bd3d7d99f0f1e56e6c87409e7d26d6bb4b80aa1ef47",
+    "web/dist/shaders/fragshadersrcalphablend.frag": "855b247f02042a808a41e282ee4d7de7cc4533abeb5032b4ab8fe84f7dec107f",
+    "web/dist/shaders/fragshadersrccolorblend.frag": "01d4bf6a14b4a738976e9a538767a21da0defa8816f3845a7df08a7713327538",
+    "web/dist/shaders/fragshadersrccopy.frag": "15c67a4ec3adda4c849aff2a8319a3f6aceef8a84d5e5e1f3fb7fd9cd681193c",
+    "web/dist/shaders/fragshadersrcmaskinvertedpremultipliedalpha.frag": "1005cff8113de587cf1c0e295288d04d85f0f4ebc223684c8340e017fd8fc788",
+    "web/dist/shaders/fragshadersrcmaskpremultipliedalpha.frag": "f84ff615393d26ea6ab7c28747803db6472524c92567c0ad01e8225fbab36a3b",
+    "web/dist/shaders/fragshadersrcpremultipliedalpha.frag": "c93abe215357cc782a25fc4ef20f5fe1f34e2cc193ee23d763b56b81fae5fce1",
+    "web/dist/shaders/fragshadersrcpremultipliedalphablend.frag": "2155076275199a2946959838391dfb856e9d1db91b6ca3abd19ed70d4ff27e15",
+    "web/dist/shaders/fragshadersrcsetupmask.frag": "3cccc0b68a56cfbf4bd4841b0a759431dd159812c38dc280981ba633fa0afe7a",
+    "web/dist/shaders/vertshadersrc.vert": "291ed3f35f71f1e71e6df33fb055f009a8a9b36ee664f74f24f6cefef0c4029b",
+    "web/dist/shaders/vertshadersrcblend.vert": "2589837bd7a6a550a1c3af41b4fa776011e6e71f2531320fa39afcb83b209bf4",
+    "web/dist/shaders/vertshadersrccopy.vert": "b7bc4ba7517f405af4812ac47d99bc2b633c99f463c1224029556b00e8dff3cf",
+    "web/dist/shaders/vertshadersrcmasked.vert": "6704a9df2e6d3ee5176c72fca4ba59358ba4827a07054b1e0a72a3c574e281fd",
+    "web/dist/shaders/vertshadersrcsetupmask.vert": "649aad2f6c0af55a7a4adcf33dbf78937ef9d77ed6ba917fd716176adce25afe"
+  },
+  "evidenceSha256": {
+    "artifacts/v52-regression02.xml": "ec5a2c12994c1f106f8ad534750cc166ee4f32203a86809ce24c5a3717ed8b0b",
+    "artifacts/v52-rest02.log": "835a25359b98b6d5fdcde833099e7fd67e184cb8a3953d6155849ced7bfdd803",
+    "artifacts/v52-session05.log": "588b2610e4f642ba80c8bf615f39a2bb6a614f7beaf0a733c960284ca015a3bb",
+    "artifacts/v52-web03.log": "6722c79d53619f5a25a7a0966d3407496e65f30641c7e6d52060d06e3632db86",
+    "artifacts/v52-web-build03.log": "45905b0bf7c06d7007d9df8c447eec30adb5f182e0f48942cd05fcd4956d37e4",
+    "artifacts/v52-native03/report.json": "22dca501b5185d0f5a81ea81d80b368a7612ef5178c0e7169637a1eb5d10dfc0",
+    "artifacts/v52-native03/left.gif": "05871d21463d849187851fa6c4286784b59873a47dc4fc4d9dc5342fc0ca03e6",
+    "artifacts/v52-native03/right.gif": "4e50f7703bb2ecdcf2f4a8bbd7dd277450774fa2235d1f3cfe25a31368b89479",
+    "artifacts/v52-native03/review.png": "3fe72f7ec99a4e96823ea79eacc4a43800e05f4aee0792c73961841e0940ac1d"
+  },
+  "userValidationPending": [
+    "Real UAC acceptance/refusal",
+    "Actual six-step privileged cleanup and later session reuse",
+    "Default Windows protection behavior with the newly compiled helper",
+    "Real ToDesk gestures and prolonged use"
+  ],
+  "protectionChanged": false,
+  "quarantinedFilesRestored": false,
+  "nativeExportRequired": false
+}

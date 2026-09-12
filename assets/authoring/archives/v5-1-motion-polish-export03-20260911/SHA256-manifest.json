@@ -1,0 +1,18 @@
+{
+  "source": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03",
+  "unchangedOriginalFiles": true,
+  "files": {
+    "Maple-native-saved.can3": "1fd3eceec03a1d7c10de183bf8fe6efe36206f4033c0c0ba6428411859b0edd0",
+    "Maple.4096/texture_00.png": "b8894ec46892bce33c7ca19839b094261e1ce90e687319146561b5c75073edfd",
+    "Maple.atlas-00.png": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+    "Maple.atlas-audit.json": "90602ed551b3feef48ef89f990437612a37f7cb487664fc0ab7a159d47864f73",
+    "Maple.can3": "ce870f034b8cf731d87abef9591cc22f6c3f2425a7b7aad6b6bdf90c76fbacf3",
+    "Maple.can3.audit.json": "ca7dc6023008cb999658823c9cf135198354c43607a1060117c77fd79933c025",
+    "Maple.cdi3.json": "c3727036c74b9913646f3213533d9faa46eeb33e8a3eb4bfac06ff5e9bb0acf5",
+    "Maple.cmo3": "f4bb9bbb57bde521623f57b41dbb8c17c126487de1031a3b16f7c94a965e19b0",
+    "Maple.moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+    "Maple.model3.json": "60c29233825423aeefc0c3351e57219f966a84a3591e5a57524fdd1704e639c7",
+    "Maple.physics3.json": "134f81706b3490282dc93389783fd049cfc977d5295f5214100fb31637e39014",
+    "README.md": "9ea459011c8ae391a8890e1aa0af335059c21e5174b2ca452e23f8cd2962dd93"
+  }
+}

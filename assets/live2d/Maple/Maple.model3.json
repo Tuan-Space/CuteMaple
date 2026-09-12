@@ -1,0 +1,181 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "Maple.moc3",
+    "Textures": [
+      "Maple.4096/texture_00.png"
+    ],
+    "Physics": "Maple.physics3.json",
+    "DisplayInfo": "Maple.cdi3.json",
+    "Motions": {
+      "idle": [
+        {
+          "File": "motions/idle.motion3.json"
+        }
+      ],
+      "walk_right": [
+        {
+          "File": "motions/walk_right.motion3.json"
+        }
+      ],
+      "walk_left": [
+        {
+          "File": "motions/walk_left.motion3.json"
+        }
+      ],
+      "drag_left": [
+        {
+          "File": "motions/drag_left.motion3.json"
+        }
+      ],
+      "drag_right": [
+        {
+          "File": "motions/drag_right.motion3.json"
+        }
+      ],
+      "happy": [
+        {
+          "File": "motions/happy.motion3.json"
+        }
+      ],
+      "talk": [
+        {
+          "File": "motions/talk.motion3.json"
+        }
+      ],
+      "petting": [
+        {
+          "File": "motions/petting.motion3.json"
+        }
+      ],
+      "fall_float": [
+        {
+          "File": "motions/fall_float.motion3.json"
+        }
+      ],
+      "land": [
+        {
+          "File": "motions/land.motion3.json"
+        }
+      ],
+      "climb_right": [
+        {
+          "File": "motions/climb_right.motion3.json"
+        }
+      ],
+      "climb_left": [
+        {
+          "File": "motions/climb_left.motion3.json"
+        }
+      ],
+      "swing_cycle": [
+        {
+          "File": "motions/swing_cycle.motion3.json"
+        }
+      ],
+      "swing_idle": [
+        {
+          "File": "motions/swing_idle.motion3.json"
+        }
+      ],
+      "sleep_enter": [
+        {
+          "File": "motions/sleep_enter.motion3.json"
+        }
+      ],
+      "sleep_loop": [
+        {
+          "File": "motions/sleep_loop.motion3.json"
+        }
+      ],
+      "sleep_exit": [
+        {
+          "File": "motions/sleep_exit.motion3.json"
+        }
+      ],
+      "clean_ground": [
+        {
+          "File": "motions/clean_ground.motion3.json"
+        }
+      ],
+      "clean_climb_left": [
+        {
+          "File": "motions/clean_climb_left.motion3.json"
+        }
+      ],
+      "clean_climb_right": [
+        {
+          "File": "motions/clean_climb_right.motion3.json"
+        }
+      ],
+      "clean_top": [
+        {
+          "File": "motions/clean_top.motion3.json"
+        }
+      ],
+      "climb_to_top_left": [
+        {
+          "File": "motions/climb_to_top_left.motion3.json"
+        }
+      ],
+      "climb_to_top_right": [
+        {
+          "File": "motions/climb_to_top_right.motion3.json"
+        }
+      ],
+      "clean_ground_enter": [
+        {
+          "File": "motions/clean_ground_enter.motion3.json"
+        }
+      ],
+      "clean_ground_exit": [
+        {
+          "File": "motions/clean_ground_exit.motion3.json"
+        }
+      ],
+      "clean_climb_left_enter": [
+        {
+          "File": "motions/clean_climb_left_enter.motion3.json"
+        }
+      ],
+      "clean_climb_left_exit": [
+        {
+          "File": "motions/clean_climb_left_exit.motion3.json"
+        }
+      ],
+      "clean_climb_right_enter": [
+        {
+          "File": "motions/clean_climb_right_enter.motion3.json"
+        }
+      ],
+      "clean_climb_right_exit": [
+        {
+          "File": "motions/clean_climb_right_exit.motion3.json"
+        }
+      ],
+      "clean_top_enter": [
+        {
+          "File": "motions/clean_top_enter.motion3.json"
+        }
+      ],
+      "clean_top_exit": [
+        {
+          "File": "motions/clean_top_exit.motion3.json"
+        }
+      ]
+    }
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    }
+  ],
+  "CuteMaple": {
+    "Metadata": "Maple.pet.json"
+  }
+}

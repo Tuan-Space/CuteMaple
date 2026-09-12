@@ -1,0 +1,2686 @@
+{
+  "version": 1,
+  "name": "美腻枫",
+  "authoringSource": "../../authoring/revisions/v5-1-motion-polish-20260911/Maple.cmo3",
+  "anchors": {
+    "head": {
+      "drawable": "face_base"
+    },
+    "ground": {
+      "drawable": "leg_r",
+      "edge": "bottom"
+    },
+    "left": {
+      "drawable": "hand_l_relaxed"
+    },
+    "right": {
+      "drawable": "hand_r_relaxed"
+    },
+    "top": {
+      "point": [
+        0.508,
+        0
+      ]
+    },
+    "gripLeft": {
+      "drawable": "hand_l_relaxed"
+    },
+    "gripRight": {
+      "drawable": "hand_r_relaxed"
+    },
+    "hangerLeft": {
+      "drawable": "rope_l",
+      "edge": "top"
+    },
+    "hangerRight": {
+      "drawable": "rope_r",
+      "edge": "top"
+    },
+    "hang": {
+      "point": [
+        0.508,
+        0
+      ]
+    }
+  },
+  "states": {
+    "sleep_enter": {
+      "disableBlink": true,
+      "disableGaze": true,
+      "anchors": {
+        "ground": {
+          "point": [
+            0.508,
+            0.93310546875
+          ],
+          "parameter": "ParamPoseSleep",
+          "points": [
+            [
+              0.0,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.35,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.7,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.82,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.8201,
+              0.508,
+              0.933105491166463
+            ],
+            [
+              0.87,
+              0.508,
+              0.9376734771519204
+            ],
+            [
+              0.9199,
+              0.508,
+              0.9472048318359375
+            ],
+            [
+              0.92,
+              0.508,
+              0.947224767446845
+            ],
+            [
+              1.0,
+              0.508,
+              0.95732421875
+            ]
+          ]
+        }
+      }
+    },
+    "sleep_loop": {
+      "disableBlink": true,
+      "disableGaze": true,
+      "anchors": {
+        "ground": {
+          "point": [
+            0.508,
+            0.93310546875
+          ],
+          "parameter": "ParamPoseSleep",
+          "points": [
+            [
+              0.0,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.35,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.7,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.82,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.8201,
+              0.508,
+              0.933105491166463
+            ],
+            [
+              0.87,
+              0.508,
+              0.9376734771519204
+            ],
+            [
+              0.9199,
+              0.508,
+              0.9472048318359375
+            ],
+            [
+              0.92,
+              0.508,
+              0.947224767446845
+            ],
+            [
+              1.0,
+              0.508,
+              0.95732421875
+            ]
+          ]
+        }
+      }
+    },
+    "climb_left": {
+      "anchors": {
+        "left": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "gripLeft": {
+          "drawable": "hand_r_support",
+          "edge": "left"
+        },
+        "farGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "nearGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        }
+      }
+    },
+    "clean_climb_left": {
+      "anchors": {
+        "left": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "gripLeft": {
+          "drawable": "hand_r_support",
+          "edge": "left"
+        },
+        "freeHand": {
+          "drawable": "clean_hand_l_fingers",
+          "atlasUv": [
+            0.17794921875,
+            0.47108593750000005
+          ]
+        },
+        "farGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "nearGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "l",
+        "supportSide": "r",
+        "context": -1,
+        "forearmDrawable": "clean_sleeve_l_lower"
+      }
+    },
+    "climb_to_top_left": {
+      "anchors": {
+        "left": {
+          "drawable": "hand_r_support",
+          "edge": "left"
+        },
+        "gripLeft": {
+          "drawable": "hand_r_support",
+          "edge": "left"
+        },
+        "farGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "nearGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        }
+      }
+    },
+    "climb_right": {
+      "anchors": {
+        "right": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "gripRight": {
+          "drawable": "hand_l_support",
+          "edge": "right"
+        },
+        "nearGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "farGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        }
+      }
+    },
+    "clean_climb_right": {
+      "anchors": {
+        "right": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "gripRight": {
+          "drawable": "hand_l_support",
+          "edge": "right"
+        },
+        "freeHand": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "nearGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "farGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": "l",
+        "context": 1,
+        "forearmDrawable": "clean_sleeve_r_lower"
+      }
+    },
+    "climb_to_top_right": {
+      "anchors": {
+        "right": {
+          "drawable": "hand_l_support",
+          "edge": "right"
+        },
+        "gripRight": {
+          "drawable": "hand_l_support",
+          "edge": "right"
+        },
+        "nearGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "farGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        }
+      }
+    },
+    "idle": {
+      "anchors": {
+        "ground": {
+          "point": [
+            0.508,
+            0.93310546875
+          ],
+          "parameter": "ParamPoseSleep",
+          "points": [
+            [
+              0.0,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.35,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.7,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.82,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.8201,
+              0.508,
+              0.933105491166463
+            ],
+            [
+              0.87,
+              0.508,
+              0.9376734771519204
+            ],
+            [
+              0.9199,
+              0.508,
+              0.9472048318359375
+            ],
+            [
+              0.92,
+              0.508,
+              0.947224767446845
+            ],
+            [
+              1.0,
+              0.508,
+              0.95732421875
+            ]
+          ]
+        }
+      }
+    },
+    "sleep_exit": {
+      "anchors": {
+        "ground": {
+          "point": [
+            0.508,
+            0.93310546875
+          ],
+          "parameter": "ParamPoseSleep",
+          "points": [
+            [
+              0.0,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.35,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.7,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.82,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.8201,
+              0.508,
+              0.933105491166463
+            ],
+            [
+              0.87,
+              0.508,
+              0.9376734771519204
+            ],
+            [
+              0.9199,
+              0.508,
+              0.9472048318359375
+            ],
+            [
+              0.92,
+              0.508,
+              0.947224767446845
+            ],
+            [
+              1.0,
+              0.508,
+              0.95732421875
+            ]
+          ]
+        }
+      }
+    },
+    "clean_ground": {
+      "anchors": {
+        "freeHand": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "atlasUv": [
+            0.1520078125,
+            0.47108593750000005
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": null,
+        "context": 0,
+        "forearmDrawable": "arm_r",
+        "forearmKind": "whole",
+        "cuffSourceUv": [
+          0.526,
+          0.518
+        ],
+        "armPoseMode": 0,
+        "relaxedHandDrawable": "clean_ground_hand_r_relaxed"
+      }
+    },
+    "clean_ground_enter": {
+      "anchors": {
+        "freeHand": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "atlasUv": [
+            0.1520078125,
+            0.47108593750000005
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": null,
+        "context": 0,
+        "forearmDrawable": "arm_r",
+        "forearmKind": "whole",
+        "cuffSourceUv": [
+          0.526,
+          0.518
+        ],
+        "armPoseMode": 0,
+        "relaxedHandDrawable": "clean_ground_hand_r_relaxed"
+      }
+    },
+    "clean_ground_exit": {
+      "anchors": {
+        "freeHand": {
+          "drawable": "clean_ground_hand_r_fingers",
+          "atlasUv": [
+            0.1520078125,
+            0.47108593750000005
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_ground_brush_r",
+          "atlasUv": [
+            0.238921875,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": null,
+        "context": 0,
+        "forearmDrawable": "arm_r",
+        "forearmKind": "whole",
+        "cuffSourceUv": [
+          0.526,
+          0.518
+        ],
+        "armPoseMode": 0,
+        "relaxedHandDrawable": "clean_ground_hand_r_relaxed"
+      }
+    },
+    "clean_top": {
+      "anchors": {
+        "freeHand": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": "l",
+        "context": 2,
+        "forearmDrawable": "clean_sleeve_r_lower"
+      }
+    },
+    "clean_top_enter": {
+      "anchors": {
+        "freeHand": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": "l",
+        "context": 2,
+        "forearmDrawable": "clean_sleeve_r_lower"
+      }
+    },
+    "clean_top_exit": {
+      "anchors": {
+        "freeHand": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": "l",
+        "context": 2,
+        "forearmDrawable": "clean_sleeve_r_lower"
+      }
+    },
+    "clean_climb_left_enter": {
+      "anchors": {
+        "left": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "gripLeft": {
+          "drawable": "hand_r_support",
+          "edge": "left"
+        },
+        "freeHand": {
+          "drawable": "clean_hand_l_fingers",
+          "atlasUv": [
+            0.17794921875,
+            0.47108593750000005
+          ]
+        },
+        "farGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "nearGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "l",
+        "supportSide": "r",
+        "context": -1,
+        "forearmDrawable": "clean_sleeve_l_lower"
+      }
+    },
+    "clean_climb_left_exit": {
+      "anchors": {
+        "left": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "gripLeft": {
+          "drawable": "hand_r_support",
+          "edge": "left"
+        },
+        "freeHand": {
+          "drawable": "clean_hand_l_fingers",
+          "atlasUv": [
+            0.17794921875,
+            0.47108593750000005
+          ]
+        },
+        "farGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7684326171875,
+            0.4945068359375
+          ]
+        },
+        "nearGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7860107421875,
+            0.4949951171875
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_l",
+          "atlasUv": [
+            0.255830078125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "l",
+        "supportSide": "r",
+        "context": -1,
+        "forearmDrawable": "clean_sleeve_l_lower"
+      }
+    },
+    "clean_climb_right_enter": {
+      "anchors": {
+        "right": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "gripRight": {
+          "drawable": "hand_l_support",
+          "edge": "right"
+        },
+        "freeHand": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "nearGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "farGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": "l",
+        "context": 1,
+        "forearmDrawable": "clean_sleeve_r_lower"
+      }
+    },
+    "clean_climb_right_exit": {
+      "anchors": {
+        "right": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "gripRight": {
+          "drawable": "hand_l_support",
+          "edge": "right"
+        },
+        "freeHand": {
+          "drawable": "clean_hand_r_fingers",
+          "atlasUv": [
+            0.13882421875,
+            0.47108593750000005
+          ]
+        },
+        "nearGrip": {
+          "drawable": "hand_l_support",
+          "atlasUv": [
+            0.7764892578125,
+            0.4949951171875
+          ]
+        },
+        "farGrip": {
+          "drawable": "hand_r_support",
+          "atlasUv": [
+            0.7940673828125,
+            0.4942626953125
+          ]
+        },
+        "brushTip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.49623242187500005
+          ]
+        },
+        "brushGrip": {
+          "drawable": "clean_brush_r",
+          "atlasUv": [
+            0.22183203125,
+            0.48622265625000005
+          ]
+        }
+      },
+      "cleaningTool": {
+        "workSide": "r",
+        "supportSide": "l",
+        "context": 1,
+        "forearmDrawable": "clean_sleeve_r_lower"
+      }
+    }
+  },
+  "capabilities": {
+    "geometryDeformation": true,
+    "cursorGaze": true,
+    "automaticBlink": true,
+    "hairPhysics": true,
+    "continuousMotions": [
+      "idle",
+      "walk_right",
+      "walk_left",
+      "drag_left",
+      "drag_right",
+      "happy",
+      "talk",
+      "petting",
+      "fall_float",
+      "land",
+      "climb_right",
+      "climb_left",
+      "swing_cycle",
+      "swing_idle",
+      "sleep_enter",
+      "sleep_loop",
+      "sleep_exit",
+      "clean_ground",
+      "clean_climb_left",
+      "clean_climb_right",
+      "clean_top"
+    ],
+    "semanticDurationsMs": {
+      "idle": 2920,
+      "walk_right": 1000,
+      "walk_left": 1000,
+      "drag_left": 540,
+      "drag_right": 540,
+      "happy": 1600,
+      "talk": 880,
+      "petting": 960,
+      "fall_float": 1800,
+      "land": 1260,
+      "climb_right": 1000,
+      "climb_left": 1000,
+      "swing_cycle": 1020,
+      "swing_idle": 3870,
+      "sleep_enter": 1340,
+      "sleep_loop": 3100,
+      "sleep_exit": 1050,
+      "clean_ground": 1080,
+      "clean_climb_left": 800,
+      "clean_climb_right": 800,
+      "clean_top": 800
+    },
+    "parameters": [
+      "ParamAngleX",
+      "ParamBodyAngleX",
+      "ParamAngleY",
+      "ParamBodyAngleY",
+      "ParamAngleZ",
+      "ParamBodyAngleZ",
+      "ParamEyeLOpen",
+      "ParamEyeLSmile",
+      "ParamBrowLY",
+      "ParamBrowLForm",
+      "ParamArmLA",
+      "ParamArmLB",
+      "ParamLegLA",
+      "ParamLegLB",
+      "ParamEyeROpen",
+      "ParamEyeRSmile",
+      "ParamBrowRY",
+      "ParamBrowRForm",
+      "ParamArmRA",
+      "ParamArmRB",
+      "ParamLegRA",
+      "ParamLegRB",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamMouthForm",
+      "ParamHairFront",
+      "ParamHairSide",
+      "ParamHairBack",
+      "ParamSkirt",
+      "ParamMouthOpenY",
+      "ParamCheek",
+      "ParamBreath",
+      "ParamTyping",
+      "ParamTypingPulse",
+      "ParamListening",
+      "ParamDizzy",
+      "ParamGlasses",
+      "ParamFan",
+      "ParamMaple",
+      "ParamPoseSleep",
+      "ParamPoseSwing",
+      "ParamPoseTop",
+      "ParamCrouch",
+      "ParamBounce",
+      "ParamSwingVisible",
+      "ParamCleaning",
+      "ParamPoseClimb",
+      "ParamSwing",
+      "ParamHeadTurn",
+      "ParamBodyTurn",
+      "ParamHandLShape",
+      "ParamSleeveLHang",
+      "ParamHandRShape",
+      "ParamSleeveRHang",
+      "ParamTransitionProgress",
+      "ParamArmPoseMode",
+      "ParamRibbonLX",
+      "ParamRibbonLY",
+      "ParamCleanFanL",
+      "ParamRibbonRX",
+      "ParamRibbonRY",
+      "ParamCleanFanR",
+      "ParamCleaningSweep",
+      "ParamCleanGround",
+      "ParamClimbPhase",
+      "ParamClimbActive",
+      "ParamClimbDirection",
+      "ParamCleanContext",
+      "ParamCleanStroke",
+      "ParamCleanPoseL",
+      "ParamCleanBrushL",
+      "ParamCleanPoseR",
+      "ParamCleanBrushR",
+      "ParamFreeArmActive",
+      "ParamFreeArmPose",
+      "ParamFreeArmBrace",
+      "ParamArmSupportBlend",
+      "ParamClimbRefine",
+      "ParamClimbHandoff",
+      "ParamClimbDrapeBlend"
+    ],
+    "internalMotions": [
+      "climb_to_top_left",
+      "climb_to_top_right",
+      "clean_ground_enter",
+      "clean_ground_exit",
+      "clean_climb_left_enter",
+      "clean_climb_left_exit",
+      "clean_climb_right_enter",
+      "clean_climb_right_exit",
+      "clean_top_enter",
+      "clean_top_exit"
+    ],
+    "independentProfileTurn": true,
+    "fixedRopeSuspension": true
+  },
+  "expressions": {
+    "keyboard": [
+      {
+        "id": "ParamTyping",
+        "value": 1,
+        "blend": "Overwrite"
+      }
+    ],
+    "audio": [
+      {
+        "id": "ParamListening",
+        "value": 1,
+        "blend": "Overwrite"
+      }
+    ],
+    "dizzy": [
+      {
+        "id": "ParamDizzy",
+        "value": 1,
+        "blend": "Overwrite"
+      }
+    ],
+    "glasses": [
+      {
+        "id": "ParamGlasses",
+        "value": 1,
+        "blend": "Overwrite"
+      }
+    ],
+    "fan": [
+      {
+        "id": "ParamFan",
+        "value": 1,
+        "blend": "Overwrite"
+      }
+    ],
+    "maple": [
+      {
+        "id": "ParamMaple",
+        "value": 1,
+        "blend": "Overwrite"
+      }
+    ],
+    "happy": [
+      {
+        "id": "ParamCheek",
+        "value": 0.75,
+        "blend": "Overwrite"
+      },
+      {
+        "id": "ParamMouthForm",
+        "value": 1,
+        "blend": "Overwrite"
+      }
+    ]
+  },
+  "modelVersion": "v5",
+  "transitions": {
+    "climb_to_top_left": {
+      "duration": 1.8,
+      "playback": "one_shot",
+      "to": "swing_cycle",
+      "events": [
+        {
+          "time": 0.32,
+          "name": "top_grab"
+        },
+        {
+          "time": 0.85,
+          "name": "wall_release"
+        },
+        {
+          "time": 1.65,
+          "name": "settled"
+        }
+      ]
+    },
+    "climb_to_top_right": {
+      "duration": 1.8,
+      "playback": "one_shot",
+      "to": "swing_cycle",
+      "events": [
+        {
+          "time": 0.32,
+          "name": "top_grab"
+        },
+        {
+          "time": 0.85,
+          "name": "wall_release"
+        },
+        {
+          "time": 1.65,
+          "name": "settled"
+        }
+      ]
+    },
+    "clean_ground_enter": {
+      "duration": 0.7,
+      "playback": "one_shot",
+      "to": "clean_ground",
+      "events": []
+    },
+    "clean_ground_exit": {
+      "duration": 0.65,
+      "playback": "one_shot",
+      "to": "previous_support_state",
+      "events": []
+    },
+    "clean_top_enter": {
+      "duration": 0.7,
+      "playback": "one_shot",
+      "to": "clean_top",
+      "events": []
+    },
+    "clean_top_exit": {
+      "duration": 0.65,
+      "playback": "one_shot",
+      "to": "previous_support_state",
+      "events": []
+    },
+    "clean_climb_left_enter": {
+      "duration": 0.7,
+      "playback": "one_shot",
+      "to": "clean_climb_left",
+      "events": []
+    },
+    "clean_climb_left_exit": {
+      "duration": 0.65,
+      "playback": "one_shot",
+      "to": "previous_support_state",
+      "events": []
+    },
+    "clean_climb_right_enter": {
+      "duration": 0.7,
+      "playback": "one_shot",
+      "to": "clean_climb_right",
+      "events": []
+    },
+    "clean_climb_right_exit": {
+      "duration": 0.65,
+      "playback": "one_shot",
+      "to": "previous_support_state",
+      "events": []
+    }
+  },
+  "refinement": {
+    "version": 5,
+    "publicMotionCount": 21,
+    "internalMotionCount": 10,
+    "requiredParameters": [
+      "ParamHeadTurn",
+      "ParamBodyTurn",
+      "ParamHandLShape",
+      "ParamHandRShape",
+      "ParamTransitionProgress",
+      "ParamArmPoseMode",
+      "ParamPoseSwing",
+      "ParamSwing",
+      "ParamSwingVisible",
+      "ParamRibbonLX",
+      "ParamRibbonLY",
+      "ParamRibbonRX",
+      "ParamRibbonRY",
+      "ParamCleanFanL",
+      "ParamCleanFanR",
+      "ParamCleaningSweep",
+      "ParamClimbPhase",
+      "ParamClimbActive",
+      "ParamClimbDirection",
+      "ParamCleanGround",
+      "ParamFreeArmActive",
+      "ParamFreeArmPose",
+      "ParamArmSupportBlend",
+      "ParamClimbRefine",
+      "ParamClimbHandoff",
+      "ParamFreeArmBrace",
+      "ParamClimbDrapeBlend",
+      "ParamCleanContext",
+      "ParamCleanPoseL",
+      "ParamCleanPoseR",
+      "ParamCleanBrushL",
+      "ParamCleanBrushR",
+      "ParamCleanStroke"
+    ],
+    "neck": {
+      "materialParameter": "ParamBodyTurn",
+      "geometryParameters": [
+        "ParamHeadTurn",
+        "ParamBodyTurn"
+      ],
+      "views": {
+        "front": "neck",
+        "left": "profile_l_neck",
+        "right": "profile_r_neck",
+        "leftMid": "mid_l_neck",
+        "rightMid": "mid_r_neck"
+      }
+    },
+    "turn": {
+      "range": [
+        -1,
+        1
+      ],
+      "endpointAngleDegrees": 78,
+      "gazeSeparate": true,
+      "materialBlendTurnWidth": 0.1,
+      "materialBlend": "opaque-lower-surface-normal-over",
+      "materialDrawOrderRanks": {
+        "front": 0,
+        "right": 1,
+        "left": 2,
+        "right_mid": 3,
+        "left_mid": 4
+      },
+      "front": [
+        "face_base",
+        "torso"
+      ],
+      "left": [
+        "profile_l_face_base",
+        "profile_l_torso"
+      ],
+      "right": [
+        "profile_r_face_base",
+        "profile_r_torso"
+      ],
+      "leftMid": [
+        "mid_l_face_base",
+        "mid_l_torso"
+      ],
+      "rightMid": [
+        "mid_r_face_base",
+        "mid_r_torso"
+      ]
+    },
+    "hands": {
+      "l": {
+        "parameter": "ParamHandLShape",
+        "rest": [
+          "hand_l",
+          "hand_l_relaxed"
+        ],
+        "support": [
+          "hand_l_support"
+        ],
+        "grip": [
+          "hand_l_grip_palm",
+          "hand_l_grip_fingers"
+        ],
+        "values": {
+          "support": -1,
+          "rest": 0,
+          "grip": 1
+        },
+        "gripPartition": "complementary pixels, one hand"
+      },
+      "r": {
+        "parameter": "ParamHandRShape",
+        "rest": [
+          "hand_r",
+          "hand_r_relaxed"
+        ],
+        "support": [
+          "hand_r_support"
+        ],
+        "grip": [
+          "hand_r_grip_palm",
+          "hand_r_grip_fingers"
+        ],
+        "values": {
+          "support": -1,
+          "rest": 0,
+          "grip": 1
+        },
+        "gripPartition": "complementary pixels, one hand"
+      }
+    },
+    "seated": {
+      "parameter": "ParamPoseSwing",
+      "standing": [
+        "skirt",
+        "costume_underlay_skirt",
+        "leg_l",
+        "leg_r"
+      ],
+      "seated": [
+        "skirt_swing",
+        "leg_l_swing",
+        "leg_r_swing"
+      ],
+      "torsoContinuous": true
+    },
+    "suspension": {
+      "ropes": [
+        "rope_l",
+        "rope_r"
+      ],
+      "seat": "seat",
+      "fixedTopY": 0,
+      "gripDrawOrder": {
+        "palm": 152,
+        "rope": 154,
+        "fingers": 166
+      }
+    },
+    "occlusion": {
+      "parts": [
+        "arm_l",
+        "arm_r"
+      ],
+      "near": 158,
+      "far": 68
+    },
+    "armPoseMode": {
+      "parameter": "ParamArmPoseMode",
+      "rest": 0,
+      "active": 1
+    },
+    "contacts": {
+      "l": {
+        "sourceUv": [
+          0.495,
+          0.518
+        ],
+        "canvasSize": [
+          1024,
+          1024
+        ],
+        "handSourceUv": [
+          0.495,
+          0.518
+        ],
+        "cuffSourceUv": [
+          0.274,
+          0.39
+        ],
+        "cuff": "sleeve_l_lower",
+        "hands": [
+          "hand_l_relaxed",
+          "hand_l_support",
+          "hand_l_grip_palm"
+        ],
+        "atlasUvRequiresPackingPlacement": true
+      },
+      "r": {
+        "sourceUv": [
+          0.526,
+          0.518
+        ],
+        "canvasSize": [
+          1024,
+          1024
+        ],
+        "handSourceUv": [
+          0.526,
+          0.518
+        ],
+        "cuffSourceUv": [
+          0.728,
+          0.39
+        ],
+        "cuff": "sleeve_r_lower",
+        "hands": [
+          "hand_r_relaxed",
+          "hand_r_support",
+          "hand_r_grip_palm"
+        ],
+        "atlasUvRequiresPackingPlacement": true
+      }
+    },
+    "nativeEditorExportRequired": true,
+    "visualAcceptanceRequired": true,
+    "motionRevision": "v5-motion-refined-20260909",
+    "nativeParameterIds": [
+      "ParamAngleX",
+      "ParamBodyAngleX",
+      "ParamAngleY",
+      "ParamBodyAngleY",
+      "ParamAngleZ",
+      "ParamBodyAngleZ",
+      "ParamEyeLOpen",
+      "ParamEyeLSmile",
+      "ParamBrowLY",
+      "ParamBrowLForm",
+      "ParamArmLA",
+      "ParamArmLB",
+      "ParamLegLA",
+      "ParamLegLB",
+      "ParamEyeROpen",
+      "ParamEyeRSmile",
+      "ParamBrowRY",
+      "ParamBrowRForm",
+      "ParamArmRA",
+      "ParamArmRB",
+      "ParamLegRA",
+      "ParamLegRB",
+      "ParamEyeBallX",
+      "ParamEyeBallY",
+      "ParamMouthForm",
+      "ParamHairFront",
+      "ParamHairSide",
+      "ParamHairBack",
+      "ParamSkirt",
+      "ParamMouthOpenY",
+      "ParamCheek",
+      "ParamBreath",
+      "ParamTyping",
+      "ParamTypingPulse",
+      "ParamListening",
+      "ParamDizzy",
+      "ParamGlasses",
+      "ParamFan",
+      "ParamMaple",
+      "ParamPoseSleep",
+      "ParamPoseSwing",
+      "ParamPoseTop",
+      "ParamCrouch",
+      "ParamBounce",
+      "ParamSwingVisible",
+      "ParamCleaning",
+      "ParamPoseClimb",
+      "ParamSwing",
+      "ParamHeadTurn",
+      "ParamBodyTurn",
+      "ParamHandLShape",
+      "ParamSleeveLHang",
+      "ParamHandRShape",
+      "ParamSleeveRHang",
+      "ParamTransitionProgress",
+      "ParamArmPoseMode",
+      "ParamRibbonLX",
+      "ParamRibbonLY",
+      "ParamCleanFanL",
+      "ParamRibbonRX",
+      "ParamRibbonRY",
+      "ParamCleanFanR",
+      "ParamCleaningSweep",
+      "ParamCleanGround",
+      "ParamClimbPhase",
+      "ParamClimbActive",
+      "ParamClimbDirection",
+      "ParamCleanContext",
+      "ParamCleanStroke",
+      "ParamCleanPoseL",
+      "ParamCleanBrushL",
+      "ParamCleanPoseR",
+      "ParamCleanBrushR",
+      "ParamFreeArmActive",
+      "ParamFreeArmPose",
+      "ParamFreeArmBrace",
+      "ParamArmSupportBlend",
+      "ParamClimbRefine",
+      "ParamClimbHandoff",
+      "ParamClimbDrapeBlend"
+    ],
+    "nativeDrawableIds": [
+      "costume_underlay",
+      "profile_r_costume_underlay",
+      "profile_l_costume_underlay",
+      "mid_r_costume_underlay",
+      "mid_l_costume_underlay",
+      "costume_underlay_skirt",
+      "profile_r_costume_underlay_skirt",
+      "profile_l_costume_underlay_skirt",
+      "mid_r_costume_underlay_skirt",
+      "mid_l_costume_underlay_skirt",
+      "seat",
+      "leg_l",
+      "profile_r_leg_r",
+      "profile_l_leg_l",
+      "mid_r_leg_r",
+      "mid_l_leg_l",
+      "leg_r",
+      "profile_r_leg_l",
+      "profile_l_leg_r",
+      "mid_r_leg_l",
+      "mid_l_leg_r",
+      "neck",
+      "profile_r_neck",
+      "profile_l_neck",
+      "mid_r_neck",
+      "mid_l_neck",
+      "torso",
+      "profile_r_torso",
+      "profile_l_torso",
+      "mid_r_torso",
+      "mid_l_torso",
+      "leg_l_swing",
+      "leg_r_swing",
+      "leg_l_sleep",
+      "leg_l_climb",
+      "leg_r_sleep",
+      "leg_r_climb",
+      "skirt",
+      "profile_r_skirt",
+      "profile_l_skirt",
+      "mid_r_skirt",
+      "mid_l_skirt",
+      "profile_r_skirt_climb_drape",
+      "profile_l_skirt_climb_drape",
+      "skirt_swing",
+      "skirt_sleep",
+      "ribbon_l",
+      "profile_r_ribbon_l",
+      "profile_l_ribbon_l",
+      "mid_r_ribbon_l",
+      "mid_l_ribbon_l",
+      "ribbon_r",
+      "profile_r_ribbon_r",
+      "profile_l_ribbon_r",
+      "mid_r_ribbon_r",
+      "mid_l_ribbon_r",
+      "arm_l",
+      "arm_r",
+      "hand_l_grip_palm",
+      "hand_r_grip_palm",
+      "rope_l",
+      "rope_r",
+      "sleeve_l_upper",
+      "sleeve_l_lower",
+      "sleeve_r_upper",
+      "sleeve_r_lower",
+      "hand_l",
+      "hand_r",
+      "hand_l_relaxed",
+      "hand_l_support",
+      "hand_r_relaxed",
+      "hand_r_support",
+      "clean_hand_l_palm",
+      "clean_hand_r_palm",
+      "maple",
+      "clean_fan_l",
+      "clean_fan_r",
+      "clean_brush_l",
+      "clean_brush_r",
+      "hand_l_grip_fingers",
+      "hand_r_grip_fingers",
+      "clean_hand_l_fingers",
+      "clean_hand_r_fingers",
+      "fan",
+      "profile_r_hair_back",
+      "profile_l_hair_back",
+      "mid_r_hair_back",
+      "mid_l_hair_back",
+      "profile_r_ear_near",
+      "profile_l_ear_near",
+      "mid_r_ear_near",
+      "mid_l_ear_near",
+      "face_base",
+      "profile_r_face_base",
+      "profile_l_face_base",
+      "mid_r_face_base",
+      "mid_l_face_base",
+      "hair_front",
+      "profile_r_hair_front",
+      "profile_l_hair_front",
+      "mid_r_hair_front",
+      "mid_l_hair_front",
+      "ornament_l",
+      "mid_r_ornament_r",
+      "mid_l_ornament_l",
+      "ornament_r",
+      "profile_r_ornament_l",
+      "profile_l_ornament_r",
+      "mid_r_ornament_l",
+      "mid_l_ornament_r",
+      "eye_l",
+      "eye_r",
+      "profile_r_eye_l",
+      "profile_l_eye_r",
+      "mid_r_eye_l",
+      "mid_r_eye_r",
+      "mid_l_eye_r",
+      "mid_l_eye_l",
+      "eyebrow_l",
+      "eyebrow_r",
+      "mouth",
+      "profile_r_eyebrow_l",
+      "profile_r_mouth",
+      "profile_l_eyebrow_r",
+      "profile_l_mouth",
+      "mid_r_eyebrow_l",
+      "mid_r_eyebrow_r",
+      "mid_r_mouth",
+      "mid_l_eyebrow_r",
+      "mid_l_eyebrow_l",
+      "mid_l_mouth",
+      "pupil_l",
+      "pupil_r",
+      "profile_r_pupil_l",
+      "profile_l_pupil_r",
+      "mid_r_pupil_l",
+      "mid_r_pupil_r",
+      "mid_l_pupil_r",
+      "mid_l_pupil_l",
+      "eye_closed_l",
+      "eye_closed_r",
+      "profile_r_eye_closed_l",
+      "profile_l_eye_closed_r",
+      "mid_r_eye_closed_l",
+      "mid_r_eye_closed_r",
+      "mid_l_eye_closed_r",
+      "mid_l_eye_closed_l",
+      "blush",
+      "glasses",
+      "leg_l_climb_refined",
+      "leg_r_climb_refined",
+      "leg_l_climb_handoff",
+      "leg_r_climb_handoff",
+      "clean_sleeve_l_lower",
+      "clean_sleeve_r_lower",
+      "clean_ground_brush_r",
+      "clean_ground_hand_r_palm",
+      "clean_ground_hand_r_fingers",
+      "clean_ground_hand_r_relaxed"
+    ],
+    "pettingHeadDrawables": [
+      "face_base",
+      "profile_r_face_base",
+      "profile_l_face_base",
+      "mid_r_face_base",
+      "mid_l_face_base",
+      "hair_front",
+      "profile_r_hair_front",
+      "profile_l_hair_front",
+      "mid_r_hair_front",
+      "mid_l_hair_front"
+    ],
+    "climbMaterials": {
+      "right": {
+        "drawable": "profile_r_skirt_climb_drape",
+        "replaces": "profile_r_skirt",
+        "underlay": "profile_r_costume_underlay_skirt"
+      },
+      "left": {
+        "drawable": "profile_l_skirt_climb_drape",
+        "replaces": "profile_l_skirt",
+        "underlay": "profile_l_costume_underlay_skirt"
+      }
+    },
+    "climbDrapeExchange": {
+      "parameter": "ParamClimbDrapeBlend",
+      "default": 0,
+      "unfoldEndSeconds": 0.4,
+      "exchangeEndSeconds": 0.52,
+      "blend": "opaque-receiving-surface-normal-over",
+      "receivingOpacityGuard": 0.9999
+    },
+    "ribbons": {
+      "parameters": [
+        "ParamRibbonLX",
+        "ParamRibbonLY",
+        "ParamRibbonRX",
+        "ParamRibbonRY"
+      ],
+      "range": [
+        -1,
+        1
+      ],
+      "positiveAxes": "canvas right/down",
+      "rootPinned": true,
+      "originalAlphaPreserved": true
+    },
+    "sleep": {
+      "parameter": "ParamPoseSleep",
+      "pose": "curled ground sitting",
+      "seated": [
+        "skirt_sleep",
+        "leg_l_sleep",
+        "leg_r_sleep"
+      ],
+      "upperBodyScale": [
+        1,
+        1
+      ],
+      "groundContact": {
+        "kind": "painted-sole-contact-registration",
+        "nativeEditorVerified": false,
+        "parameter": "ParamPoseSleep",
+        "groundAnchor": {
+          "point": [
+            0.508,
+            0.93310546875
+          ],
+          "parameter": "ParamPoseSleep",
+          "points": [
+            [
+              0.0,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.35,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.7,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.82,
+              0.508,
+              0.93310546875
+            ],
+            [
+              0.8201,
+              0.508,
+              0.933105491166463
+            ],
+            [
+              0.87,
+              0.508,
+              0.9376734771519204
+            ],
+            [
+              0.9199,
+              0.508,
+              0.9472048318359375
+            ],
+            [
+              0.92,
+              0.508,
+              0.947224767446845
+            ],
+            [
+              1.0,
+              0.508,
+              0.95732421875
+            ]
+          ]
+        },
+        "exchange": [
+          0.82,
+          0.92
+        ],
+        "footDrawables": [
+          "leg_l",
+          "leg_r",
+          "leg_l_sleep",
+          "leg_r_sleep"
+        ],
+        "sourceAlphaSampling": "Original alpha>8 contours and opaque lattice vertices; approx one source pixel",
+        "beforePaintedSoles": {
+          "leg_l": [
+            [
+              0.0,
+              0.93212890625
+            ],
+            [
+              0.35,
+              1.00212890625
+            ],
+            [
+              0.7,
+              1.07212890625
+            ],
+            [
+              0.82,
+              1.0961289062500001
+            ],
+            [
+              0.8201,
+              1.09614890625
+            ],
+            [
+              0.87,
+              1.10612890625
+            ],
+            [
+              0.9199,
+              1.11610890625
+            ],
+            [
+              0.92,
+              1.11612890625
+            ],
+            [
+              1.0,
+              1.13212890625
+            ]
+          ],
+          "leg_r": [
+            [
+              0.0,
+              0.93310546875
+            ],
+            [
+              0.35,
+              1.00310546875
+            ],
+            [
+              0.7,
+              1.07310546875
+            ],
+            [
+              0.82,
+              1.09710546875
+            ],
+            [
+              0.8201,
+              1.09712546875
+            ],
+            [
+              0.87,
+              1.10710546875
+            ],
+            [
+              0.9199,
+              1.11708546875
+            ],
+            [
+              0.92,
+              1.11710546875
+            ],
+            [
+              1.0,
+              1.13310546875
+            ]
+          ],
+          "leg_l_sleep": [
+            [
+              0.0,
+              0.81396484375
+            ],
+            [
+              0.35,
+              0.8680687018998834
+            ],
+            [
+              0.7,
+              0.9228624226696082
+            ],
+            [
+              0.82,
+              0.9416979897701124
+            ],
+            [
+              0.8201,
+              0.9417136860760296
+            ],
+            [
+              0.87,
+              0.9496441209891233
+            ],
+            [
+              0.9199,
+              0.957594221380482
+            ],
+            [
+              0.92,
+              0.9576101534453947
+            ],
+            [
+              1.0,
+              0.970355805375429
+            ]
+          ],
+          "leg_r_sleep": [
+            [
+              0.0,
+              0.81298828125
+            ],
+            [
+              0.35,
+              0.8674699104410439
+            ],
+            [
+              0.7,
+              0.922902089871091
+            ],
+            [
+              0.82,
+              0.9420792784918496
+            ],
+            [
+              0.8201,
+              0.9420952594823669
+            ],
+            [
+              0.87,
+              0.9501221514703618
+            ],
+            [
+              0.9199,
+              0.9581556819648976
+            ],
+            [
+              0.92,
+              0.9581717812244057
+            ],
+            [
+              1.0,
+              0.9710511888308757
+            ]
+          ]
+        },
+        "localTranslations": {
+          "leg_l": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.35,
+              -0.0695831745426907
+            ],
+            [
+              0.7,
+              -0.13916634908535017
+            ],
+            [
+              0.82,
+              -0.1630234375000181
+            ],
+            [
+              0.8201,
+              -0.1630434150835188
+            ],
+            [
+              0.87,
+              -0.16845542909809808
+            ],
+            [
+              0.9199,
+              -0.16890407441408112
+            ],
+            [
+              0.92,
+              -0.168904138803136
+            ],
+            [
+              1.0,
+              -0.17480468749998043
+            ]
+          ],
+          "leg_r": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.35,
+              -0.06999999999999224
+            ],
+            [
+              0.7,
+              -0.13999999999998425
+            ],
+            [
+              0.82,
+              -0.16399999999998158
+            ],
+            [
+              0.8201,
+              -0.1640199775835187
+            ],
+            [
+              0.87,
+              -0.16943199159809819
+            ],
+            [
+              0.9199,
+              -0.16988063691408123
+            ],
+            [
+              0.92,
+              -0.1698807013031359
+            ],
+            [
+              1.0,
+              -0.17578124999998032
+            ]
+          ],
+          "leg_l_sleep": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.35,
+              0.03251838342505828
+            ],
+            [
+              0.7,
+              0.010243046080390691
+            ],
+            [
+              0.82,
+              -0.008592521020112424
+            ],
+            [
+              0.8201,
+              -0.008608194909565584
+            ],
+            [
+              0.87,
+              -0.01197064383720291
+            ],
+            [
+              0.9199,
+              -0.01038938954454333
+            ],
+            [
+              0.92,
+              -0.010385385998549648
+            ],
+            [
+              1.0,
+              -0.013031586625429014
+            ]
+          ],
+          "leg_r_sleep": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.35,
+              0.032817779154478005
+            ],
+            [
+              0.7,
+              0.010203378878908978
+            ],
+            [
+              0.82,
+              -0.008973809741849572
+            ],
+            [
+              0.8201,
+              -0.008989768315903915
+            ],
+            [
+              0.87,
+              -0.012448674318441422
+            ],
+            [
+              0.9199,
+              -0.010950850128960122
+            ],
+            [
+              0.92,
+              -0.010947013777559463
+            ],
+            [
+              1.0,
+              -0.013726970080875743
+            ]
+          ]
+        },
+        "newDeformers": [
+          "SleepContact_leg_l",
+          "SleepContact_leg_r",
+          "SleepContact_leg_l_sleep",
+          "SleepContact_leg_r_sleep"
+        ],
+        "standingShoeCompressionRemoved": [
+          "SleepFold_leg_l",
+          "SleepFold_leg_r"
+        ],
+        "newParameters": [],
+        "restOffsetsZero": true,
+        "samples": [
+          {
+            "pose": 0.0,
+            "ground": 0.93310546875,
+            "soles": {
+              "leg_l": 0.93212890625,
+              "leg_r": 0.93310546875,
+              "leg_l_sleep": 0.81396484375,
+              "leg_r_sleep": 0.81298828125
+            },
+            "activeMaximumError": 0.0009765625,
+            "sleepHem": 0.75732421875
+          },
+          {
+            "pose": 0.35,
+            "ground": 0.93310546875,
+            "soles": {
+              "leg_l": 0.9325457317073093,
+              "leg_r": 0.9331054687500078,
+              "leg_l_sleep": 0.9005870853249418,
+              "leg_r_sleep": 0.9002876895955219
+            },
+            "activeMaximumError": 0.0005597370426907444,
+            "sleepHem": 0.8273242187500001
+          },
+          {
+            "pose": 0.7,
+            "ground": 0.93310546875,
+            "soles": {
+              "leg_l": 0.93296255716465,
+              "leg_r": 0.9331054687500158,
+              "leg_l_sleep": 0.933105468749999,
+              "leg_r_sleep": 0.93310546875
+            },
+            "activeMaximumError": 0.00014291158534995851,
+            "sleepHem": 0.8973242187500001
+          },
+          {
+            "pose": 0.82,
+            "ground": 0.93310546875,
+            "soles": {
+              "leg_l": 0.9331054687499821,
+              "leg_r": 0.9331054687500184,
+              "leg_l_sleep": 0.9331054687500001,
+              "leg_r_sleep": 0.93310546875
+            },
+            "activeMaximumError": 1.84297022087776e-14,
+            "sleepHem": 0.9213242187500001
+          },
+          {
+            "pose": 0.8201,
+            "ground": 0.933105491166463,
+            "soles": {
+              "leg_l": 0.9331054911664813,
+              "leg_r": 0.9331054911664813,
+              "leg_l_sleep": 0.933105491166464,
+              "leg_r_sleep": 0.933105491166463
+            },
+            "activeMaximumError": 1.8318679906315083e-14,
+            "sleepHem": 0.92134421875
+          },
+          {
+            "pose": 0.83,
+            "ground": 0.9340117649391289,
+            "soles": {
+              "leg_l": 0.93401176493914,
+              "leg_r": 0.93401176493914,
+              "leg_l_sleep": 0.9339960010286965,
+              "leg_r_sleep": 0.9340064434910001
+            },
+            "activeMaximumError": 1.5763910432342598e-05,
+            "sleepHem": 0.9233242187500001
+          },
+          {
+            "pose": 0.84,
+            "ground": 0.9349271929923267,
+            "soles": {
+              "leg_l": 0.9349271929923304,
+              "leg_r": 0.9349271929923304,
+              "leg_l_sleep": 0.9349153700595025,
+              "leg_r_sleep": 0.9349232019062302
+            },
+            "activeMaximumError": 1.1822932824201438e-05,
+            "sleepHem": 0.9253242187500001
+          },
+          {
+            "pose": 0.85,
+            "ground": 0.9358426210455246,
+            "soles": {
+              "leg_l": 0.9358426210455209,
+              "leg_r": 0.9358426210455209,
+              "leg_l_sleep": 0.9358347390903086,
+              "leg_r_sleep": 0.9358399603214604
+            },
+            "activeMaximumError": 7.881955216060277e-06,
+            "sleepHem": 0.9273242187500002
+          },
+          {
+            "pose": 0.86,
+            "ground": 0.9367580490987225,
+            "soles": {
+              "leg_l": 0.9367580490987114,
+              "leg_r": 0.9367580490987114,
+              "leg_l_sleep": 0.9367541081211145,
+              "leg_r_sleep": 0.9367567187366904
+            },
+            "activeMaximumError": 3.940977608030138e-06,
+            "sleepHem": 0.9293242187500002
+          },
+          {
+            "pose": 0.87,
+            "ground": 0.9376734771519204,
+            "soles": {
+              "leg_l": 0.9376734771519023,
+              "leg_r": 0.937673477151902,
+              "leg_l_sleep": 0.9376734771519204,
+              "leg_r_sleep": 0.9376734771519204
+            },
+            "activeMaximumError": 1.84297022087776e-14,
+            "sleepHem": 0.9313242187500002
+          },
+          {
+            "pose": 0.88,
+            "ground": 0.9395835682709619,
+            "soles": {
+              "leg_l": 0.9395835682709437,
+              "leg_r": 0.9395835682709435,
+              "leg_l_sleep": 0.9395835682709622,
+              "leg_r_sleep": 0.9395835682709619
+            },
+            "activeMaximumError": 1.84297022087776e-14,
+            "sleepHem": 0.93332421875
+          },
+          {
+            "pose": 0.8899999999999999,
+            "ground": 0.9414936593900034,
+            "soles": {
+              "leg_l": 0.941493659389985,
+              "leg_r": 0.941493659389985,
+              "leg_l_sleep": 0.9414936593900037,
+              "leg_r_sleep": 0.9414936593900035
+            },
+            "activeMaximumError": 1.84297022087776e-14,
+            "sleepHem": 0.93532421875
+          },
+          {
+            "pose": 0.8999999999999999,
+            "ground": 0.9434037505090449,
+            "soles": {
+              "leg_l": 0.9434037505090266,
+              "leg_r": 0.9434037505090263,
+              "leg_l_sleep": 0.9434037505090458,
+              "leg_r_sleep": 0.9434037505090449
+            },
+            "activeMaximumError": 1.865174681370263e-14,
+            "sleepHem": 0.9373242187500002
+          },
+          {
+            "pose": 0.9099999999999999,
+            "ground": 0.9453138416280864,
+            "soles": {
+              "leg_l": 0.9453138416280678,
+              "leg_r": 0.9453138416280675,
+              "leg_l_sleep": 0.9453138416280875,
+              "leg_r_sleep": 0.9453138416280863
+            },
+            "activeMaximumError": 1.887379141862766e-14,
+            "sleepHem": 0.9393242187499999
+          },
+          {
+            "pose": 0.9199,
+            "ground": 0.9472048318359375,
+            "soles": {
+              "leg_l": 0.947204831835919,
+              "leg_r": 0.9472048318359189,
+              "leg_l_sleep": 0.9472048318359387,
+              "leg_r_sleep": 0.9472048318359375
+            },
+            "activeMaximumError": 1.865174681370263e-14,
+            "sleepHem": 0.94130421875
+          },
+          {
+            "pose": 0.9199999999999999,
+            "ground": 0.947224767446845,
+            "soles": {
+              "leg_l": 0.9472247674468641,
+              "leg_r": 0.9472247674468641,
+              "leg_l_sleep": 0.947224767446845,
+              "leg_r_sleep": 0.9472247674468462
+            },
+            "activeMaximumError": 1.9095836023552692e-14,
+            "sleepHem": 0.9413242187500002
+          },
+          {
+            "pose": 0.92,
+            "ground": 0.947224767446845,
+            "soles": {
+              "leg_l": 0.9472247674468641,
+              "leg_r": 0.9472247674468641,
+              "leg_l_sleep": 0.947224767446845,
+              "leg_r_sleep": 0.9472247674468464
+            },
+            "activeMaximumError": 1.3322676295501878e-15,
+            "sleepHem": 0.9413242187500002
+          },
+          {
+            "pose": 0.9299999999999999,
+            "ground": 0.9484871988597394,
+            "soles": {
+              "leg_l": 0.9484871988597585,
+              "leg_r": 0.9484871988597586,
+              "leg_l_sleep": 0.9484871988597394,
+              "leg_r_sleep": 0.9484871988597405
+            },
+            "activeMaximumError": 1.1102230246251565e-15,
+            "sleepHem": 0.9433242187500002
+          },
+          {
+            "pose": 0.94,
+            "ground": 0.9497496302726337,
+            "soles": {
+              "leg_l": 0.949749630272653,
+              "leg_r": 0.9497496302726532,
+              "leg_l_sleep": 0.9497496302726336,
+              "leg_r_sleep": 0.9497496302726347
+            },
+            "activeMaximumError": 9.992007221626409e-16,
+            "sleepHem": 0.9453242187500002
+          },
+          {
+            "pose": 0.95,
+            "ground": 0.9510120616855281,
+            "soles": {
+              "leg_l": 0.9510120616855473,
+              "leg_r": 0.9510120616855476,
+              "leg_l_sleep": 0.9510120616855281,
+              "leg_r_sleep": 0.951012061685529
+            },
+            "activeMaximumError": 8.881784197001252e-16,
+            "sleepHem": 0.9473242187500002
+          },
+          {
+            "pose": 0.96,
+            "ground": 0.9522744930984225,
+            "soles": {
+              "leg_l": 0.9522744930984417,
+              "leg_r": 0.9522744930984421,
+              "leg_l_sleep": 0.9522744930984226,
+              "leg_r_sleep": 0.9522744930984233
+            },
+            "activeMaximumError": 7.771561172376096e-16,
+            "sleepHem": 0.9493242187500002
+          },
+          {
+            "pose": 0.97,
+            "ground": 0.9535369245113169,
+            "soles": {
+              "leg_l": 0.9535369245113364,
+              "leg_r": 0.9535369245113363,
+              "leg_l_sleep": 0.9535369245113169,
+              "leg_r_sleep": 0.9535369245113177
+            },
+            "activeMaximumError": 7.771561172376096e-16,
+            "sleepHem": 0.9513242187500002
+          },
+          {
+            "pose": 0.98,
+            "ground": 0.9547993559242112,
+            "soles": {
+              "leg_l": 0.9547993559242306,
+              "leg_r": 0.9547993559242307,
+              "leg_l_sleep": 0.954799355924211,
+              "leg_r_sleep": 0.9547993559242115
+            },
+            "activeMaximumError": 3.3306690738754696e-16,
+            "sleepHem": 0.95332421875
+          },
+          {
+            "pose": 0.99,
+            "ground": 0.9560617873371056,
+            "soles": {
+              "leg_l": 0.9560617873371252,
+              "leg_r": 0.9560617873371252,
+              "leg_l_sleep": 0.9560617873371056,
+              "leg_r_sleep": 0.9560617873371058
+            },
+            "activeMaximumError": 2.220446049250313e-16,
+            "sleepHem": 0.95532421875
+          },
+          {
+            "pose": 1.0,
+            "ground": 0.95732421875,
+            "soles": {
+              "leg_l": 0.9573242187500195,
+              "leg_r": 0.9573242187500196,
+              "leg_l_sleep": 0.95732421875,
+              "leg_r_sleep": 0.95732421875
+            },
+            "activeMaximumError": 0.0,
+            "sleepHem": 0.95732421875
+          }
+        ],
+        "maximumActiveSoleError": 0.0009765625
+      }
+    },
+    "restContacts": {
+      "l": {
+        "hand": "hand_l",
+        "cuff": "arm_l",
+        "sourceUv": [
+          0.495,
+          0.518
+        ]
+      },
+      "r": {
+        "hand": "hand_r",
+        "cuff": "arm_r",
+        "sourceUv": [
+          0.526,
+          0.518
+        ]
+      }
+    },
+    "freeContacts": {
+      "parameter": "ParamFreeArmActive",
+      "poseParameter": "ParamFreeArmPose",
+      "armPoseMode": 0,
+      "samePaintedSleevesThroughLanding": true,
+      "contacts": {
+        "l": {
+          "hand": "hand_l",
+          "cuff": "arm_l",
+          "sourceUv": [
+            0.495,
+            0.518
+          ]
+        },
+        "r": {
+          "hand": "hand_r",
+          "cuff": "arm_r",
+          "sourceUv": [
+            0.526,
+            0.518
+          ]
+        }
+      }
+    },
+    "motionPolishVersion": 1,
+    "cleaningTool": {
+      "type": "brush",
+      "parameters": [
+        "ParamCleanContext",
+        "ParamCleanPoseL",
+        "ParamCleanPoseR",
+        "ParamCleanBrushL",
+        "ParamCleanBrushR",
+        "ParamCleanStroke"
+      ],
+      "contexts": {
+        "-1": "left",
+        "0": "ground",
+        "1": "right",
+        "2": "top"
+      },
+      "rigidGrip": true,
+      "legacyFanUsed": false,
+      "forearms": {
+        "l": {
+          "drawable": "clean_sleeve_l_lower",
+          "replaces": "sleeve_l_lower",
+          "visibilityParameter": "ParamCleanBrushL",
+          "drawOrder": 158
+        },
+        "r": {
+          "drawable": "clean_sleeve_r_lower",
+          "replaces": "sleeve_r_lower",
+          "visibilityParameter": "ParamCleanBrushR",
+          "drawOrder": 158
+        }
+      }
+    }
+  },
+  "locomotion": {
+    "climb": {
+      "phaseParameter": "ParamClimbPhase",
+      "cycleDuration": 1.0,
+      "risePerCycle": 0.12,
+      "phaseTravel": [
+        [
+          0,
+          0.0
+        ],
+        [
+          0.1,
+          0.044444444444444446
+        ],
+        [
+          0.18,
+          0.08
+        ],
+        [
+          0.25,
+          0.18181818181818182
+        ],
+        [
+          0.35,
+          0.3272727272727272
+        ],
+        [
+          0.4,
+          0.4
+        ],
+        [
+          0.5,
+          0.4533333333333333
+        ],
+        [
+          0.55,
+          0.48
+        ],
+        [
+          0.6,
+          0.5539130434782608
+        ],
+        [
+          0.7,
+          0.7017391304347824
+        ],
+        [
+          0.78,
+          0.82
+        ],
+        [
+          0.85,
+          0.8772727272727272
+        ],
+        [
+          0.9,
+          0.9181818181818182
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "supportWindows": {
+        "near": [
+          [
+            0,
+            0.1
+          ],
+          [
+            0.35,
+            1
+          ]
+        ],
+        "far": [
+          [
+            0,
+            0.6
+          ],
+          [
+            0.85,
+            1
+          ]
+        ]
+      },
+      "nearHand": {
+        "left": "r",
+        "right": "l"
+      },
+      "phaseWrapHasContinuousWorldSupport": true,
+      "refinementParameter": "ParamClimbRefine",
+      "handoffParameter": "ParamClimbHandoff",
+      "handoffDrawables": [
+        "leg_l_climb_handoff",
+        "leg_r_climb_handoff"
+      ],
+      "refinedLegDrawables": [
+        "leg_l_climb_refined",
+        "leg_r_climb_refined"
+      ],
+      "refinedLegSelectionEpsilon": 0.001,
+      "refinedLegRoles": {
+        "leg_l_climb_refined": "near",
+        "leg_r_climb_refined": "far"
+      },
+      "refinedLegSourceForHandoff": {
+        "leg_l_climb_handoff": "leg_l_climb_refined",
+        "leg_r_climb_handoff": "leg_r_climb_refined"
+      },
+      "requiredParameters": [
+        "ParamClimbRefine",
+        "ParamClimbHandoff"
+      ],
+      "handoffLegTiming": {
+        "farRelease": 0.24,
+        "farArrive": 1.3,
+        "nearRelease": 0.5,
+        "nearArrive": 1.55,
+        "switchToSwing": 1.8
+      },
+      "footSupportWindows": {
+        "near": [
+          [
+            0,
+            0.6
+          ],
+          [
+            0.85,
+            1
+          ]
+        ],
+        "far": [
+          [
+            0,
+            0.1
+          ],
+          [
+            0.35,
+            1
+          ]
+        ]
+      },
+      "skirt": "opt-in separately painted climb drape with small knee-following phase field; standing surface and matching underlay retire together; original material UVs unchanged",
+      "transferRefinementFadeSeconds": 0.85,
+      "transferRefinementHoldSeconds": 0.1,
+      "contactCalibration": {
+        "schemaVersion": 1,
+        "nativeMocSha256": "57d97329df00cb60040fac891b7c4a13a428700a8b05539136413f5c53561317",
+        "calibrationSha256": "c8ba250cd7fbb0aba1ef13b5cc9faf5dba811cf089234baed01c3ac627456ce4",
+        "wallX": 0.719,
+        "mirrorX": 1.016,
+        "nativeReexportVerificationRequired": true
+      }
+    }
+  }
+}

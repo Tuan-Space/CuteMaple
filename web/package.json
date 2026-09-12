@@ -1,0 +1,14 @@
+{
+  "name": "cutemaple-live2d-renderer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && node build.mjs",
+    "test": "node build-tests.mjs && node --test .test-dist/*.test.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "typescript": "5.9.3"
+  }
+}

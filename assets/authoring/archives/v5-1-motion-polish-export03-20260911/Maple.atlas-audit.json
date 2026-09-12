@@ -1,0 +1,4657 @@
+{
+  "status": "editable-project-packed-native-editor-open-export-still-required",
+  "source": "F:\\cutemaple\\CuteMaple-Live2D\\assets\\authoring\\revisions\\v5-1-motion-polish-20260911\\Maple.cmo3",
+  "sourceSha256": "3060fa8f9619b1e2e779011478246cd561dec87d2bc814f57bf33a770441fba2",
+  "template": "F:\\cutemaple\\Maple-v5-Export-HeadCoverage\\Maple.cmo3",
+  "templateSha256": "6cda69cac916197c671b80173928994e398082258414b9cec93bb4cf0a3b95bf",
+  "output": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.cmo3",
+  "outputSha256": "f4bb9bbb57bde521623f57b41dbb8c17c126487de1031a3b16f7c94a965e19b0",
+  "atlasSize": [
+    4096,
+    4096
+  ],
+  "padding": 16,
+  "atlasCount": 1,
+  "meshCount": 159,
+  "modelImageCount": 159,
+  "originalResourceEntriesPreserved": 162,
+  "originalObjectsVerified": 45477,
+  "unrelatedXmlStructurePreserved": true,
+  "allReferencesResolve": true,
+  "allUvsValid": true,
+  "cropPixelsIdentical": true,
+  "noRegionCollisions": true,
+  "noRotationOrScaling": true,
+  "caffPayloadAndMetadataRoundtrip": true,
+  "noMoc3Generated": true,
+  "typeDeclarations": {
+    "nativeObjectTags": 136,
+    "importDeclarationsVerified": true,
+    "nativeVersionDeclarationsVerified": true,
+    "inheritedSourceVersionDefaults": []
+  },
+  "meshTextureState": "TEXTURE_ATLAS",
+  "meshRenderTexturesUseAtlasResources": true,
+  "nativeUvRebuildFromStaticPositionsVerified": true,
+  "maximumNativeUvRebuildPixelError": 0.000724077343955846,
+  "atlases": [
+    {
+      "path": "F:\\cutemaple\\Maple-v5-1-Export-MotionPolish-03\\Maple.atlas-00.png",
+      "entry": "cutemaple-native-atlas-00.png",
+      "sha256": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73"
+    }
+  ],
+  "regions": [
+    {
+      "guid": "#11894",
+      "name": "rope_l",
+      "drawables": [
+        "rope_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_64.png",
+      "crop": [
+        359,
+        0,
+        399,
+        772
+      ],
+      "page": 0,
+      "destination": [
+        16,
+        16,
+        40,
+        772
+      ],
+      "translationToCanvas": [
+        343,
+        -16
+      ]
+    },
+    {
+      "guid": "#11920",
+      "name": "rope_r",
+      "drawables": [
+        "rope_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_65.png",
+      "crop": [
+        643,
+        0,
+        680,
+        772
+      ],
+      "page": 0,
+      "destination": [
+        88,
+        16,
+        37,
+        772
+      ],
+      "translationToCanvas": [
+        555,
+        -16
+      ]
+    },
+    {
+      "guid": "#11202",
+      "name": "ribbon_l",
+      "drawables": [
+        "ribbon_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_50.png",
+      "crop": [
+        236,
+        216,
+        427,
+        936
+      ],
+      "page": 0,
+      "destination": [
+        157,
+        16,
+        191,
+        720
+      ],
+      "translationToCanvas": [
+        79,
+        200
+      ]
+    },
+    {
+      "guid": "#11309",
+      "name": "ribbon_r",
+      "drawables": [
+        "ribbon_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_53.png",
+      "crop": [
+        613,
+        218,
+        804,
+        936
+      ],
+      "page": 0,
+      "destination": [
+        380,
+        16,
+        191,
+        718
+      ],
+      "translationToCanvas": [
+        233,
+        202
+      ]
+    },
+    {
+      "guid": "#11246",
+      "name": "profile_r_ribbon_l",
+      "drawables": [
+        "profile_r_ribbon_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_51.png",
+      "crop": [
+        209,
+        266,
+        361,
+        939
+      ],
+      "page": 0,
+      "destination": [
+        603,
+        16,
+        152,
+        673
+      ],
+      "translationToCanvas": [
+        -394,
+        250
+      ]
+    },
+    {
+      "guid": "#11353",
+      "name": "mid_r_ribbon_l",
+      "drawables": [
+        "mid_r_ribbon_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_54.png",
+      "crop": [
+        183,
+        241,
+        386,
+        909
+      ],
+      "page": 0,
+      "destination": [
+        787,
+        16,
+        203,
+        668
+      ],
+      "translationToCanvas": [
+        -604,
+        225
+      ]
+    },
+    {
+      "guid": "#11473",
+      "name": "mid_l_ribbon_r",
+      "drawables": [
+        "mid_l_ribbon_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_59.png",
+      "crop": [
+        606,
+        261,
+        818,
+        923
+      ],
+      "page": 0,
+      "destination": [
+        1022,
+        16,
+        212,
+        662
+      ],
+      "translationToCanvas": [
+        -416,
+        245
+      ]
+    },
+    {
+      "guid": "#11265",
+      "name": "profile_l_ribbon_l",
+      "drawables": [
+        "profile_l_ribbon_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_52.png",
+      "crop": [
+        597,
+        259,
+        735,
+        861
+      ],
+      "page": 0,
+      "destination": [
+        1266,
+        16,
+        138,
+        602
+      ],
+      "translationToCanvas": [
+        -669,
+        243
+      ]
+    },
+    {
+      "guid": "#11416",
+      "name": "mid_l_ribbon_l",
+      "drawables": [
+        "mid_l_ribbon_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_56.png",
+      "crop": [
+        309,
+        350,
+        456,
+        880
+      ],
+      "page": 0,
+      "destination": [
+        1436,
+        16,
+        147,
+        530
+      ],
+      "translationToCanvas": [
+        -1127,
+        334
+      ]
+    },
+    {
+      "guid": "#11435",
+      "name": "profile_l_ribbon_r",
+      "drawables": [
+        "profile_l_ribbon_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_57.png",
+      "crop": [
+        702,
+        410,
+        809,
+        932
+      ],
+      "page": 0,
+      "destination": [
+        1615,
+        16,
+        107,
+        522
+      ],
+      "translationToCanvas": [
+        -913,
+        394
+      ]
+    },
+    {
+      "guid": "#11454",
+      "name": "mid_r_ribbon_r",
+      "drawables": [
+        "mid_r_ribbon_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_58.png",
+      "crop": [
+        504,
+        414,
+        692,
+        895
+      ],
+      "page": 0,
+      "destination": [
+        1754,
+        16,
+        188,
+        481
+      ],
+      "translationToCanvas": [
+        -1250,
+        398
+      ]
+    },
+    {
+      "guid": "#11372",
+      "name": "profile_r_ribbon_r",
+      "drawables": [
+        "profile_r_ribbon_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_55.png",
+      "crop": [
+        346,
+        344,
+        434,
+        767
+      ],
+      "page": 0,
+      "destination": [
+        1974,
+        16,
+        88,
+        423
+      ],
+      "translationToCanvas": [
+        -1628,
+        328
+      ]
+    },
+    {
+      "guid": "#10919",
+      "name": "profile_r_skirt_climb_drape",
+      "drawables": [
+        "profile_r_skirt_climb_drape"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_44.png",
+      "crop": [
+        263,
+        526,
+        680,
+        914
+      ],
+      "page": 0,
+      "destination": [
+        2094,
+        16,
+        417,
+        388
+      ],
+      "translationToCanvas": [
+        -1831,
+        510
+      ]
+    },
+    {
+      "guid": "#11033",
+      "name": "profile_l_skirt_climb_drape",
+      "drawables": [
+        "profile_l_skirt_climb_drape"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_46.png",
+      "crop": [
+        337,
+        526,
+        770,
+        912
+      ],
+      "page": 0,
+      "destination": [
+        2543,
+        16,
+        433,
+        386
+      ],
+      "translationToCanvas": [
+        -2206,
+        510
+      ]
+    },
+    {
+      "guid": "#10682",
+      "name": "profile_l_skirt",
+      "drawables": [
+        "profile_l_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_43.png",
+      "crop": [
+        341,
+        526,
+        806,
+        911
+      ],
+      "page": 0,
+      "destination": [
+        3008,
+        16,
+        465,
+        385
+      ],
+      "translationToCanvas": [
+        -2667,
+        510
+      ]
+    },
+    {
+      "guid": "#1070",
+      "name": "profile_l_costume_underlay_skirt",
+      "drawables": [
+        "profile_l_costume_underlay_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_06.png",
+      "crop": [
+        341,
+        526,
+        806,
+        911
+      ],
+      "page": 0,
+      "destination": [
+        3505,
+        16,
+        465,
+        385
+      ],
+      "translationToCanvas": [
+        -3164,
+        510
+      ]
+    },
+    {
+      "guid": "#10445",
+      "name": "profile_r_skirt",
+      "drawables": [
+        "profile_r_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_42.png",
+      "crop": [
+        213,
+        526,
+        664,
+        911
+      ],
+      "page": 0,
+      "destination": [
+        16,
+        820,
+        451,
+        385
+      ],
+      "translationToCanvas": [
+        197,
+        -294
+      ]
+    },
+    {
+      "guid": "#814",
+      "name": "profile_r_costume_underlay_skirt",
+      "drawables": [
+        "profile_r_costume_underlay_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_04.png",
+      "crop": [
+        213,
+        526,
+        664,
+        911
+      ],
+      "page": 0,
+      "destination": [
+        499,
+        820,
+        451,
+        385
+      ],
+      "translationToCanvas": [
+        -286,
+        -294
+      ]
+    },
+    {
+      "guid": "#11055",
+      "name": "mid_l_skirt",
+      "drawables": [
+        "mid_l_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_47.png",
+      "crop": [
+        357,
+        526,
+        779,
+        911
+      ],
+      "page": 0,
+      "destination": [
+        982,
+        820,
+        422,
+        385
+      ],
+      "translationToCanvas": [
+        -625,
+        -294
+      ]
+    },
+    {
+      "guid": "#1418",
+      "name": "mid_l_costume_underlay_skirt",
+      "drawables": [
+        "mid_l_costume_underlay_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_09.png",
+      "crop": [
+        357,
+        526,
+        779,
+        911
+      ],
+      "page": 0,
+      "destination": [
+        1436,
+        820,
+        422,
+        385
+      ],
+      "translationToCanvas": [
+        -1079,
+        -294
+      ]
+    },
+    {
+      "guid": "#10941",
+      "name": "mid_r_skirt",
+      "drawables": [
+        "mid_r_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_45.png",
+      "crop": [
+        211,
+        526,
+        632,
+        911
+      ],
+      "page": 0,
+      "destination": [
+        1890,
+        820,
+        421,
+        385
+      ],
+      "translationToCanvas": [
+        -1679,
+        -294
+      ]
+    },
+    {
+      "guid": "#1326",
+      "name": "mid_r_costume_underlay_skirt",
+      "drawables": [
+        "mid_r_costume_underlay_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_08.png",
+      "crop": [
+        211,
+        526,
+        632,
+        911
+      ],
+      "page": 0,
+      "destination": [
+        2343,
+        820,
+        421,
+        385
+      ],
+      "translationToCanvas": [
+        -2132,
+        -294
+      ]
+    },
+    {
+      "guid": "#22490",
+      "name": "mid_r_hair_front",
+      "drawables": [
+        "mid_r_hair_front"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_112.png",
+      "crop": [
+        245,
+        39,
+        603,
+        411
+      ],
+      "page": 0,
+      "destination": [
+        2796,
+        820,
+        358,
+        372
+      ],
+      "translationToCanvas": [
+        -2551,
+        -781
+      ]
+    },
+    {
+      "guid": "#10353",
+      "name": "skirt",
+      "drawables": [
+        "skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_41.png",
+      "crop": [
+        298,
+        556,
+        760,
+        927
+      ],
+      "page": 0,
+      "destination": [
+        3186,
+        820,
+        462,
+        371
+      ],
+      "translationToCanvas": [
+        -2888,
+        -264
+      ]
+    },
+    {
+      "guid": "#22389",
+      "name": "profile_l_hair_front",
+      "drawables": [
+        "profile_l_hair_front"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_108.png",
+      "crop": [
+        373,
+        40,
+        720,
+        411
+      ],
+      "page": 0,
+      "destination": [
+        3680,
+        820,
+        347,
+        371
+      ],
+      "translationToCanvas": [
+        -3307,
+        -780
+      ]
+    },
+    {
+      "guid": "#22610",
+      "name": "mid_l_hair_front",
+      "drawables": [
+        "mid_l_hair_front"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_117.png",
+      "crop": [
+        380,
+        42,
+        749,
+        411
+      ],
+      "page": 0,
+      "destination": [
+        16,
+        1237,
+        369,
+        369
+      ],
+      "translationToCanvas": [
+        364,
+        -1195
+      ]
+    },
+    {
+      "guid": "#22288",
+      "name": "profile_r_hair_front",
+      "drawables": [
+        "profile_r_hair_front"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_104.png",
+      "crop": [
+        273,
+        42,
+        632,
+        411
+      ],
+      "page": 0,
+      "destination": [
+        417,
+        1237,
+        359,
+        369
+      ],
+      "translationToCanvas": [
+        -144,
+        -1195
+      ]
+    },
+    {
+      "guid": "#22143",
+      "name": "hair_front",
+      "drawables": [
+        "hair_front"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_99.png",
+      "crop": [
+        316,
+        35,
+        733,
+        388
+      ],
+      "page": 0,
+      "destination": [
+        808,
+        1237,
+        417,
+        353
+      ],
+      "translationToCanvas": [
+        -492,
+        -1202
+      ]
+    },
+    {
+      "guid": "#11612",
+      "name": "arm_r",
+      "drawables": [
+        "arm_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_61.png",
+      "crop": [
+        519,
+        378,
+        685,
+        712
+      ],
+      "page": 0,
+      "destination": [
+        1257,
+        1237,
+        166,
+        334
+      ],
+      "translationToCanvas": [
+        -738,
+        -859
+      ]
+    },
+    {
+      "guid": "#11492",
+      "name": "arm_l",
+      "drawables": [
+        "arm_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_60.png",
+      "crop": [
+        355,
+        384,
+        520,
+        713
+      ],
+      "page": 0,
+      "destination": [
+        1455,
+        1237,
+        165,
+        329
+      ],
+      "translationToCanvas": [
+        -1100,
+        -853
+      ]
+    },
+    {
+      "guid": "#703",
+      "name": "costume_underlay_skirt",
+      "drawables": [
+        "costume_underlay_skirt"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_02.png",
+      "crop": [
+        314,
+        613,
+        731,
+        918
+      ],
+      "page": 0,
+      "destination": [
+        1652,
+        1237,
+        417,
+        305
+      ],
+      "translationToCanvas": [
+        -1338,
+        -624
+      ]
+    },
+    {
+      "guid": "#665",
+      "name": "costume_underlay",
+      "drawables": [
+        "costume_underlay"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_00.png",
+      "crop": [
+        355,
+        327,
+        690,
+        619
+      ],
+      "page": 0,
+      "destination": [
+        2101,
+        1237,
+        335,
+        292
+      ],
+      "translationToCanvas": [
+        -1746,
+        -910
+      ]
+    },
+    {
+      "guid": "#22048",
+      "name": "profile_r_hair_back",
+      "drawables": [
+        "profile_r_hair_back"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_94.png",
+      "crop": [
+        273,
+        131,
+        470,
+        397
+      ],
+      "page": 0,
+      "destination": [
+        2468,
+        1237,
+        197,
+        266
+      ],
+      "translationToCanvas": [
+        -2195,
+        -1106
+      ]
+    },
+    {
+      "guid": "#22086",
+      "name": "mid_r_hair_back",
+      "drawables": [
+        "mid_r_hair_back"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_96.png",
+      "crop": [
+        247,
+        142,
+        422,
+        397
+      ],
+      "page": 0,
+      "destination": [
+        2697,
+        1237,
+        175,
+        255
+      ],
+      "translationToCanvas": [
+        -2450,
+        -1095
+      ]
+    },
+    {
+      "guid": "#22067",
+      "name": "profile_l_hair_back",
+      "drawables": [
+        "profile_l_hair_back"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_95.png",
+      "crop": [
+        551,
+        131,
+        719,
+        377
+      ],
+      "page": 0,
+      "destination": [
+        2904,
+        1237,
+        168,
+        246
+      ],
+      "translationToCanvas": [
+        -2353,
+        -1106
+      ]
+    },
+    {
+      "guid": "#22105",
+      "name": "mid_l_hair_back",
+      "drawables": [
+        "mid_l_hair_back"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_97.png",
+      "crop": [
+        551,
+        142,
+        738,
+        386
+      ],
+      "page": 0,
+      "destination": [
+        3104,
+        1237,
+        187,
+        244
+      ],
+      "translationToCanvas": [
+        -2553,
+        -1095
+      ]
+    },
+    {
+      "guid": "#22648",
+      "name": "mid_l_ornament_r",
+      "drawables": [
+        "mid_l_ornament_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_119.png",
+      "crop": [
+        625,
+        234,
+        694,
+        463
+      ],
+      "page": 0,
+      "destination": [
+        3323,
+        1237,
+        69,
+        229
+      ],
+      "translationToCanvas": [
+        -2698,
+        -1003
+      ]
+    },
+    {
+      "guid": "#22124",
+      "name": "face_base",
+      "drawables": [
+        "face_base"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_98.png",
+      "crop": [
+        421,
+        158,
+        624,
+        386
+      ],
+      "page": 0,
+      "destination": [
+        3424,
+        1237,
+        203,
+        228
+      ],
+      "translationToCanvas": [
+        -3003,
+        -1079
+      ]
+    },
+    {
+      "guid": "#11147",
+      "name": "skirt_swing",
+      "drawables": [
+        "skirt_swing"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_48.png",
+      "crop": [
+        325,
+        554,
+        713,
+        779
+      ],
+      "page": 0,
+      "destination": [
+        3659,
+        1237,
+        388,
+        225
+      ],
+      "translationToCanvas": [
+        -3334,
+        -683
+      ]
+    },
+    {
+      "guid": "#11174",
+      "name": "skirt_sleep",
+      "drawables": [
+        "skirt_sleep"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_49.png",
+      "crop": [
+        325,
+        554,
+        713,
+        779
+      ],
+      "page": 0,
+      "destination": [
+        16,
+        1638,
+        388,
+        225
+      ],
+      "translationToCanvas": [
+        309,
+        -1084
+      ]
+    },
+    {
+      "guid": "#22408",
+      "name": "profile_l_ornament_r",
+      "drawables": [
+        "profile_l_ornament_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_109.png",
+      "crop": [
+        592,
+        241,
+        655,
+        466
+      ],
+      "page": 0,
+      "destination": [
+        436,
+        1638,
+        63,
+        225
+      ],
+      "translationToCanvas": [
+        156,
+        -1397
+      ]
+    },
+    {
+      "guid": "#22307",
+      "name": "profile_r_ornament_l",
+      "drawables": [
+        "profile_r_ornament_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_105.png",
+      "crop": [
+        355,
+        241,
+        415,
+        463
+      ],
+      "page": 0,
+      "destination": [
+        531,
+        1638,
+        60,
+        222
+      ],
+      "translationToCanvas": [
+        -176,
+        -1397
+      ]
+    },
+    {
+      "guid": "#10257",
+      "name": "leg_l_climb_handoff",
+      "drawables": [
+        "leg_l_climb_handoff"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_39.png",
+      "crop": [
+        433,
+        616,
+        518,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        623,
+        1638,
+        85,
+        220
+      ],
+      "translationToCanvas": [
+        -190,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9353",
+      "name": "leg_l_swing",
+      "drawables": [
+        "leg_l_swing"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_29.png",
+      "crop": [
+        433,
+        616,
+        518,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        740,
+        1638,
+        85,
+        220
+      ],
+      "translationToCanvas": [
+        -307,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9441",
+      "name": "leg_l_sleep",
+      "drawables": [
+        "leg_l_sleep"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_31.png",
+      "crop": [
+        433,
+        616,
+        518,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        857,
+        1638,
+        85,
+        220
+      ],
+      "translationToCanvas": [
+        -424,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9488",
+      "name": "leg_l_climb",
+      "drawables": [
+        "leg_l_climb"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_32.png",
+      "crop": [
+        433,
+        616,
+        518,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        974,
+        1638,
+        85,
+        220
+      ],
+      "translationToCanvas": [
+        -541,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9983",
+      "name": "leg_l_climb_refined",
+      "drawables": [
+        "leg_l_climb_refined"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_38.png",
+      "crop": [
+        433,
+        616,
+        518,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        1091,
+        1638,
+        85,
+        220
+      ],
+      "translationToCanvas": [
+        -658,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9397",
+      "name": "leg_r_swing",
+      "drawables": [
+        "leg_r_swing"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_30.png",
+      "crop": [
+        526,
+        616,
+        610,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        1208,
+        1638,
+        84,
+        220
+      ],
+      "translationToCanvas": [
+        -682,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9527",
+      "name": "leg_r_sleep",
+      "drawables": [
+        "leg_r_sleep"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_33.png",
+      "crop": [
+        526,
+        616,
+        610,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        1324,
+        1638,
+        84,
+        220
+      ],
+      "translationToCanvas": [
+        -798,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9574",
+      "name": "leg_r_climb",
+      "drawables": [
+        "leg_r_climb"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_34.png",
+      "crop": [
+        526,
+        616,
+        610,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        1440,
+        1638,
+        84,
+        220
+      ],
+      "translationToCanvas": [
+        -914,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9613",
+      "name": "leg_r_climb_refined",
+      "drawables": [
+        "leg_r_climb_refined"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_35.png",
+      "crop": [
+        526,
+        616,
+        610,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        1556,
+        1638,
+        84,
+        220
+      ],
+      "translationToCanvas": [
+        -1030,
+        -1022
+      ]
+    },
+    {
+      "guid": "#9887",
+      "name": "leg_r_climb_handoff",
+      "drawables": [
+        "leg_r_climb_handoff"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_36.png",
+      "crop": [
+        526,
+        616,
+        610,
+        836
+      ],
+      "page": 0,
+      "destination": [
+        1672,
+        1638,
+        84,
+        220
+      ],
+      "translationToCanvas": [
+        -1146,
+        -1022
+      ]
+    },
+    {
+      "guid": "#22528",
+      "name": "mid_r_ornament_l",
+      "drawables": [
+        "mid_r_ornament_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_114.png",
+      "crop": [
+        316,
+        243,
+        372,
+        459
+      ],
+      "page": 0,
+      "destination": [
+        1788,
+        1638,
+        56,
+        216
+      ],
+      "translationToCanvas": [
+        -1472,
+        -1395
+      ]
+    },
+    {
+      "guid": "#22471",
+      "name": "mid_r_face_base",
+      "drawables": [
+        "mid_r_face_base"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_111.png",
+      "crop": [
+        407,
+        174,
+        580,
+        377
+      ],
+      "page": 0,
+      "destination": [
+        1876,
+        1638,
+        173,
+        203
+      ],
+      "translationToCanvas": [
+        -1469,
+        -1464
+      ]
+    },
+    {
+      "guid": "#22269",
+      "name": "profile_r_face_base",
+      "drawables": [
+        "profile_r_face_base"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_103.png",
+      "crop": [
+        433,
+        184,
+        600,
+        383
+      ],
+      "page": 0,
+      "destination": [
+        2081,
+        1638,
+        167,
+        199
+      ],
+      "translationToCanvas": [
+        -1648,
+        -1454
+      ]
+    },
+    {
+      "guid": "#22162",
+      "name": "ornament_l",
+      "drawables": [
+        "ornament_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_100.png",
+      "crop": [
+        364,
+        263,
+        420,
+        457
+      ],
+      "page": 0,
+      "destination": [
+        2280,
+        1638,
+        56,
+        194
+      ],
+      "translationToCanvas": [
+        -1916,
+        -1375
+      ]
+    },
+    {
+      "guid": "#22591",
+      "name": "mid_l_face_base",
+      "drawables": [
+        "mid_l_face_base"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_116.png",
+      "crop": [
+        403,
+        181,
+        589,
+        372
+      ],
+      "page": 0,
+      "destination": [
+        2368,
+        1638,
+        186,
+        191
+      ],
+      "translationToCanvas": [
+        -1965,
+        -1457
+      ]
+    },
+    {
+      "guid": "#22206",
+      "name": "ornament_r",
+      "drawables": [
+        "ornament_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_101.png",
+      "crop": [
+        620,
+        261,
+        680,
+        452
+      ],
+      "page": 0,
+      "destination": [
+        2586,
+        1638,
+        60,
+        191
+      ],
+      "translationToCanvas": [
+        -1966,
+        -1377
+      ]
+    },
+    {
+      "guid": "#22370",
+      "name": "profile_l_face_base",
+      "drawables": [
+        "profile_l_face_base"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_107.png",
+      "crop": [
+        401,
+        195,
+        582,
+        374
+      ],
+      "page": 0,
+      "destination": [
+        2678,
+        1638,
+        181,
+        179
+      ],
+      "translationToCanvas": [
+        -2277,
+        -1443
+      ]
+    },
+    {
+      "guid": "#8006",
+      "name": "torso",
+      "drawables": [
+        "torso"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_24.png",
+      "crop": [
+        382,
+        384,
+        616,
+        562
+      ],
+      "page": 0,
+      "destination": [
+        2891,
+        1638,
+        234,
+        178
+      ],
+      "translationToCanvas": [
+        -2509,
+        -1254
+      ]
+    },
+    {
+      "guid": "#11946",
+      "name": "sleeve_l_upper",
+      "drawables": [
+        "sleeve_l_upper"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_66.png",
+      "crop": [
+        359,
+        376,
+        456,
+        548
+      ],
+      "page": 0,
+      "destination": [
+        3157,
+        1638,
+        97,
+        172
+      ],
+      "translationToCanvas": [
+        -2798,
+        -1262
+      ]
+    },
+    {
+      "guid": "#12587",
+      "name": "sleeve_r_upper",
+      "drawables": [
+        "sleeve_r_upper"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_68.png",
+      "crop": [
+        572,
+        376,
+        667,
+        548
+      ],
+      "page": 0,
+      "destination": [
+        3286,
+        1638,
+        95,
+        172
+      ],
+      "translationToCanvas": [
+        -2714,
+        -1262
+      ]
+    },
+    {
+      "guid": "#12707",
+      "name": "sleeve_r_lower",
+      "drawables": [
+        "sleeve_r_lower"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_69.png",
+      "crop": [
+        661,
+        380,
+        756,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3413,
+        1638,
+        95,
+        157
+      ],
+      "translationToCanvas": [
+        -2752,
+        -1258
+      ]
+    },
+    {
+      "guid": "#13268",
+      "name": "clean_sleeve_r_lower",
+      "drawables": [
+        "clean_sleeve_r_lower"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_71.png",
+      "crop": [
+        661,
+        380,
+        756,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3540,
+        1638,
+        95,
+        157
+      ],
+      "translationToCanvas": [
+        -2879,
+        -1258
+      ]
+    },
+    {
+      "guid": "#12066",
+      "name": "sleeve_l_lower",
+      "drawables": [
+        "sleeve_l_lower"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_67.png",
+      "crop": [
+        273,
+        380,
+        367,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3667,
+        1638,
+        94,
+        157
+      ],
+      "translationToCanvas": [
+        -3394,
+        -1258
+      ]
+    },
+    {
+      "guid": "#13228",
+      "name": "clean_sleeve_l_lower",
+      "drawables": [
+        "clean_sleeve_l_lower"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_70.png",
+      "crop": [
+        273,
+        380,
+        367,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3793,
+        1638,
+        94,
+        157
+      ],
+      "translationToCanvas": [
+        -3520,
+        -1258
+      ]
+    },
+    {
+      "guid": "#10334",
+      "name": "mid_l_torso",
+      "drawables": [
+        "mid_l_torso"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_40.png",
+      "crop": [
+        433,
+        405,
+        770,
+        532
+      ],
+      "page": 0,
+      "destination": [
+        16,
+        1895,
+        337,
+        127
+      ],
+      "translationToCanvas": [
+        417,
+        -1490
+      ]
+    },
+    {
+      "guid": "#1307",
+      "name": "mid_l_costume_underlay",
+      "drawables": [
+        "mid_l_costume_underlay"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_07.png",
+      "crop": [
+        433,
+        405,
+        770,
+        532
+      ],
+      "page": 0,
+      "destination": [
+        385,
+        1895,
+        337,
+        127
+      ],
+      "translationToCanvas": [
+        48,
+        -1490
+      ]
+    },
+    {
+      "guid": "#684",
+      "name": "profile_r_costume_underlay",
+      "drawables": [
+        "profile_r_costume_underlay"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_01.png",
+      "crop": [
+        268,
+        405,
+        569,
+        532
+      ],
+      "page": 0,
+      "destination": [
+        754,
+        1895,
+        301,
+        127
+      ],
+      "translationToCanvas": [
+        -486,
+        -1490
+      ]
+    },
+    {
+      "guid": "#8670",
+      "name": "profile_r_torso",
+      "drawables": [
+        "profile_r_torso"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_26.png",
+      "crop": [
+        268,
+        405,
+        569,
+        532
+      ],
+      "page": 0,
+      "destination": [
+        1087,
+        1895,
+        301,
+        127
+      ],
+      "translationToCanvas": [
+        -819,
+        -1490
+      ]
+    },
+    {
+      "guid": "#795",
+      "name": "profile_l_costume_underlay",
+      "drawables": [
+        "profile_l_costume_underlay"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_03.png",
+      "crop": [
+        433,
+        405,
+        603,
+        532
+      ],
+      "page": 0,
+      "destination": [
+        1420,
+        1895,
+        170,
+        127
+      ],
+      "translationToCanvas": [
+        -987,
+        -1490
+      ]
+    },
+    {
+      "guid": "#9334",
+      "name": "profile_l_torso",
+      "drawables": [
+        "profile_l_torso"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_28.png",
+      "crop": [
+        433,
+        405,
+        603,
+        532
+      ],
+      "page": 0,
+      "destination": [
+        1622,
+        1895,
+        170,
+        127
+      ],
+      "translationToCanvas": [
+        -1189,
+        -1490
+      ]
+    },
+    {
+      "guid": "#1051",
+      "name": "mid_r_costume_underlay",
+      "drawables": [
+        "mid_r_costume_underlay"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_05.png",
+      "crop": [
+        380,
+        405,
+        536,
+        532
+      ],
+      "page": 0,
+      "destination": [
+        1824,
+        1895,
+        156,
+        127
+      ],
+      "translationToCanvas": [
+        -1444,
+        -1490
+      ]
+    },
+    {
+      "guid": "#9964",
+      "name": "mid_r_torso",
+      "drawables": [
+        "mid_r_torso"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_37.png",
+      "crop": [
+        380,
+        405,
+        536,
+        532
+      ],
+      "page": 0,
+      "destination": [
+        2012,
+        1895,
+        156,
+        127
+      ],
+      "translationToCanvas": [
+        -1632,
+        -1490
+      ]
+    },
+    {
+      "guid": "#22629",
+      "name": "mid_l_ornament_l",
+      "drawables": [
+        "mid_l_ornament_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_118.png",
+      "crop": [
+        398,
+        302,
+        445,
+        424
+      ],
+      "page": 0,
+      "destination": [
+        2200,
+        1895,
+        47,
+        122
+      ],
+      "translationToCanvas": [
+        -1802,
+        -1593
+      ]
+    },
+    {
+      "guid": "#22509",
+      "name": "mid_r_ornament_r",
+      "drawables": [
+        "mid_r_ornament_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_113.png",
+      "crop": [
+        508,
+        352,
+        564,
+        463
+      ],
+      "page": 0,
+      "destination": [
+        2279,
+        1895,
+        56,
+        111
+      ],
+      "translationToCanvas": [
+        -1771,
+        -1543
+      ]
+    },
+    {
+      "guid": "#21482",
+      "name": "clean_fan_r",
+      "drawables": [
+        "clean_fan_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_84.png",
+      "crop": [
+        522,
+        430,
+        607,
+        536
+      ],
+      "page": 0,
+      "destination": [
+        2367,
+        1895,
+        85,
+        106
+      ],
+      "translationToCanvas": [
+        -1845,
+        -1465
+      ]
+    },
+    {
+      "guid": "#21461",
+      "name": "clean_fan_l",
+      "drawables": [
+        "clean_fan_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_83.png",
+      "crop": [
+        439,
+        430,
+        523,
+        536
+      ],
+      "page": 0,
+      "destination": [
+        2484,
+        1895,
+        84,
+        106
+      ],
+      "translationToCanvas": [
+        -2045,
+        -1465
+      ]
+    },
+    {
+      "guid": "#22027",
+      "name": "fan",
+      "drawables": [
+        "fan"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_93.png",
+      "crop": [
+        533,
+        442,
+        616,
+        548
+      ],
+      "page": 0,
+      "destination": [
+        2600,
+        1895,
+        83,
+        106
+      ],
+      "translationToCanvas": [
+        -2067,
+        -1453
+      ]
+    },
+    {
+      "guid": "#21440",
+      "name": "maple",
+      "drawables": [
+        "maple"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_82.png",
+      "crop": [
+        540,
+        488,
+        605,
+        578
+      ],
+      "page": 0,
+      "destination": [
+        2715,
+        1895,
+        65,
+        90
+      ],
+      "translationToCanvas": [
+        -2175,
+        -1407
+      ]
+    },
+    {
+      "guid": "#8025",
+      "name": "mid_r_neck",
+      "drawables": [
+        "mid_r_neck"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_25.png",
+      "crop": [
+        396,
+        344,
+        518,
+        427
+      ],
+      "page": 0,
+      "destination": [
+        2812,
+        1895,
+        122,
+        83
+      ],
+      "translationToCanvas": [
+        -2416,
+        -1551
+      ]
+    },
+    {
+      "guid": "#6716",
+      "name": "profile_r_neck",
+      "drawables": [
+        "profile_r_neck"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_22.png",
+      "crop": [
+        426,
+        344,
+        528,
+        424
+      ],
+      "page": 0,
+      "destination": [
+        2966,
+        1895,
+        102,
+        80
+      ],
+      "translationToCanvas": [
+        -2540,
+        -1551
+      ]
+    },
+    {
+      "guid": "#2893",
+      "name": "leg_r",
+      "drawables": [
+        "leg_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_14.png",
+      "crop": [
+        519,
+        880,
+        619,
+        959
+      ],
+      "page": 0,
+      "destination": [
+        3100,
+        1895,
+        100,
+        79
+      ],
+      "translationToCanvas": [
+        -2581,
+        -1015
+      ]
+    },
+    {
+      "guid": "#5617",
+      "name": "mid_l_leg_r",
+      "drawables": [
+        "mid_l_leg_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_20.png",
+      "crop": [
+        506,
+        906,
+        596,
+        985
+      ],
+      "page": 0,
+      "destination": [
+        3232,
+        1895,
+        90,
+        79
+      ],
+      "translationToCanvas": [
+        -2726,
+        -989
+      ]
+    },
+    {
+      "guid": "#1531",
+      "name": "leg_l",
+      "drawables": [
+        "leg_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_11.png",
+      "crop": [
+        423,
+        880,
+        523,
+        957
+      ],
+      "page": 0,
+      "destination": [
+        3354,
+        1895,
+        100,
+        77
+      ],
+      "translationToCanvas": [
+        -2931,
+        -1015
+      ]
+    },
+    {
+      "guid": "#4709",
+      "name": "profile_l_leg_r",
+      "drawables": [
+        "profile_l_leg_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_18.png",
+      "crop": [
+        496,
+        906,
+        594,
+        978
+      ],
+      "page": 0,
+      "destination": [
+        3486,
+        1895,
+        98,
+        72
+      ],
+      "translationToCanvas": [
+        -2990,
+        -989
+      ]
+    },
+    {
+      "guid": "#3801",
+      "name": "profile_r_leg_l",
+      "drawables": [
+        "profile_r_leg_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_16.png",
+      "crop": [
+        419,
+        906,
+        514,
+        978
+      ],
+      "page": 0,
+      "destination": [
+        3616,
+        1895,
+        95,
+        72
+      ],
+      "translationToCanvas": [
+        -3197,
+        -989
+      ]
+    },
+    {
+      "guid": "#5163",
+      "name": "mid_r_leg_l",
+      "drawables": [
+        "mid_r_leg_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_19.png",
+      "crop": [
+        389,
+        906,
+        475,
+        978
+      ],
+      "page": 0,
+      "destination": [
+        3743,
+        1895,
+        86,
+        72
+      ],
+      "translationToCanvas": [
+        -3354,
+        -989
+      ]
+    },
+    {
+      "guid": "#22744",
+      "name": "profile_r_eye_l",
+      "drawables": [
+        "profile_r_eye_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_122.png",
+      "crop": [
+        492,
+        263,
+        566,
+        331
+      ],
+      "page": 0,
+      "destination": [
+        3861,
+        1895,
+        74,
+        68
+      ],
+      "translationToCanvas": [
+        -3369,
+        -1632
+      ]
+    },
+    {
+      "guid": "#8689",
+      "name": "mid_l_neck",
+      "drawables": [
+        "mid_l_neck"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_27.png",
+      "crop": [
+        490,
+        346,
+        589,
+        413
+      ],
+      "page": 0,
+      "destination": [
+        3967,
+        1895,
+        99,
+        67
+      ],
+      "translationToCanvas": [
+        -3477,
+        -1549
+      ]
+    },
+    {
+      "guid": "#22770",
+      "name": "profile_l_eye_r",
+      "drawables": [
+        "profile_l_eye_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_123.png",
+      "crop": [
+        437,
+        257,
+        514,
+        324
+      ],
+      "page": 0,
+      "destination": [
+        16,
+        2054,
+        77,
+        67
+      ],
+      "translationToCanvas": [
+        421,
+        -1797
+      ]
+    },
+    {
+      "guid": "#7361",
+      "name": "profile_l_neck",
+      "drawables": [
+        "profile_l_neck"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_23.png",
+      "crop": [
+        496,
+        346,
+        587,
+        411
+      ],
+      "page": 0,
+      "destination": [
+        125,
+        2054,
+        91,
+        65
+      ],
+      "translationToCanvas": [
+        371,
+        -1708
+      ]
+    },
+    {
+      "guid": "#4255",
+      "name": "mid_l_leg_l",
+      "drawables": [
+        "mid_l_leg_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_17.png",
+      "crop": [
+        455,
+        906,
+        543,
+        971
+      ],
+      "page": 0,
+      "destination": [
+        248,
+        2054,
+        88,
+        65
+      ],
+      "translationToCanvas": [
+        207,
+        -1148
+      ]
+    },
+    {
+      "guid": "#22250",
+      "name": "profile_r_ear_near",
+      "drawables": [
+        "profile_r_ear_near"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_102.png",
+      "crop": [
+        414,
+        286,
+        464,
+        349
+      ],
+      "page": 0,
+      "destination": [
+        368,
+        2054,
+        50,
+        63
+      ],
+      "translationToCanvas": [
+        46,
+        -1768
+      ]
+    },
+    {
+      "guid": "#24619",
+      "name": "glasses",
+      "drawables": [
+        "glasses"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_158.png",
+      "crop": [
+        421,
+        266,
+        616,
+        328
+      ],
+      "page": 0,
+      "destination": [
+        450,
+        2054,
+        195,
+        62
+      ],
+      "translationToCanvas": [
+        -29,
+        -1788
+      ]
+    },
+    {
+      "guid": "#22848",
+      "name": "mid_l_eye_r",
+      "drawables": [
+        "mid_l_eye_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_126.png",
+      "crop": [
+        467,
+        263,
+        543,
+        324
+      ],
+      "page": 0,
+      "destination": [
+        677,
+        2054,
+        76,
+        61
+      ],
+      "translationToCanvas": [
+        -210,
+        -1791
+      ]
+    },
+    {
+      "guid": "#6071",
+      "name": "neck",
+      "drawables": [
+        "neck"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_21.png",
+      "crop": [
+        485,
+        348,
+        557,
+        409
+      ],
+      "page": 0,
+      "destination": [
+        785,
+        2054,
+        72,
+        61
+      ],
+      "translationToCanvas": [
+        -300,
+        -1706
+      ]
+    },
+    {
+      "guid": "#21604",
+      "name": "clean_brush_r",
+      "drawables": [
+        "clean_brush_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_86.png",
+      "crop": [
+        517,
+        464,
+        555,
+        525
+      ],
+      "page": 0,
+      "destination": [
+        889,
+        2054,
+        38,
+        61
+      ],
+      "translationToCanvas": [
+        -372,
+        -1590
+      ]
+    },
+    {
+      "guid": "#21705",
+      "name": "clean_ground_brush_r",
+      "drawables": [
+        "clean_ground_brush_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_87.png",
+      "crop": [
+        517,
+        464,
+        555,
+        525
+      ],
+      "page": 0,
+      "destination": [
+        959,
+        2054,
+        38,
+        61
+      ],
+      "translationToCanvas": [
+        -442,
+        -1590
+      ]
+    },
+    {
+      "guid": "#21503",
+      "name": "clean_brush_l",
+      "drawables": [
+        "clean_brush_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_85.png",
+      "crop": [
+        490,
+        464,
+        527,
+        525
+      ],
+      "page": 0,
+      "destination": [
+        1029,
+        2054,
+        37,
+        61
+      ],
+      "translationToCanvas": [
+        -539,
+        -1590
+      ]
+    },
+    {
+      "guid": "#22796",
+      "name": "mid_r_eye_l",
+      "drawables": [
+        "mid_r_eye_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_124.png",
+      "crop": [
+        440,
+        266,
+        516,
+        326
+      ],
+      "page": 0,
+      "destination": [
+        1098,
+        2054,
+        76,
+        60
+      ],
+      "translationToCanvas": [
+        -658,
+        -1788
+      ]
+    },
+    {
+      "guid": "#22452",
+      "name": "mid_r_ear_near",
+      "drawables": [
+        "mid_r_ear_near"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_110.png",
+      "crop": [
+        373,
+        282,
+        431,
+        342
+      ],
+      "page": 0,
+      "destination": [
+        1206,
+        2054,
+        58,
+        60
+      ],
+      "translationToCanvas": [
+        -833,
+        -1772
+      ]
+    },
+    {
+      "guid": "#22572",
+      "name": "mid_l_ear_near",
+      "drawables": [
+        "mid_l_ear_near"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_115.png",
+      "crop": [
+        579,
+        286,
+        628,
+        345
+      ],
+      "page": 0,
+      "destination": [
+        1296,
+        2054,
+        49,
+        59
+      ],
+      "translationToCanvas": [
+        -717,
+        -1768
+      ]
+    },
+    {
+      "guid": "#22874",
+      "name": "mid_l_eye_l",
+      "drawables": [
+        "mid_l_eye_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_127.png",
+      "crop": [
+        419,
+        261,
+        456,
+        320
+      ],
+      "page": 0,
+      "destination": [
+        1377,
+        2054,
+        37,
+        59
+      ],
+      "translationToCanvas": [
+        -958,
+        -1793
+      ]
+    },
+    {
+      "guid": "#3347",
+      "name": "mid_r_leg_r",
+      "drawables": [
+        "mid_r_leg_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_15.png",
+      "crop": [
+        442,
+        906,
+        525,
+        964
+      ],
+      "page": 0,
+      "destination": [
+        1446,
+        2054,
+        83,
+        58
+      ],
+      "translationToCanvas": [
+        -1004,
+        -1148
+      ]
+    },
+    {
+      "guid": "#22692",
+      "name": "eye_l",
+      "drawables": [
+        "eye_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_120.png",
+      "crop": [
+        433,
+        266,
+        512,
+        324
+      ],
+      "page": 0,
+      "destination": [
+        1561,
+        2054,
+        79,
+        58
+      ],
+      "translationToCanvas": [
+        -1128,
+        -1788
+      ]
+    },
+    {
+      "guid": "#22718",
+      "name": "eye_r",
+      "drawables": [
+        "eye_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_121.png",
+      "crop": [
+        531,
+        266,
+        610,
+        324
+      ],
+      "page": 0,
+      "destination": [
+        1672,
+        2054,
+        79,
+        58
+      ],
+      "translationToCanvas": [
+        -1141,
+        -1788
+      ]
+    },
+    {
+      "guid": "#22351",
+      "name": "profile_l_ear_near",
+      "drawables": [
+        "profile_l_ear_near"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_106.png",
+      "crop": [
+        542,
+        284,
+        596,
+        342
+      ],
+      "page": 0,
+      "destination": [
+        1783,
+        2054,
+        54,
+        58
+      ],
+      "translationToCanvas": [
+        -1241,
+        -1770
+      ]
+    },
+    {
+      "guid": "#13629",
+      "name": "hand_r",
+      "drawables": [
+        "hand_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_73.png",
+      "crop": [
+        485,
+        508,
+        560,
+        564
+      ],
+      "page": 0,
+      "destination": [
+        1869,
+        2054,
+        75,
+        56
+      ],
+      "translationToCanvas": [
+        -1384,
+        -1546
+      ]
+    },
+    {
+      "guid": "#2439",
+      "name": "profile_l_leg_l",
+      "drawables": [
+        "profile_l_leg_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_13.png",
+      "crop": [
+        458,
+        906,
+        539,
+        960
+      ],
+      "page": 0,
+      "destination": [
+        1976,
+        2054,
+        81,
+        54
+      ],
+      "translationToCanvas": [
+        -1518,
+        -1148
+      ]
+    },
+    {
+      "guid": "#22822",
+      "name": "mid_r_eye_r",
+      "drawables": [
+        "mid_r_eye_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_125.png",
+      "crop": [
+        531,
+        270,
+        568,
+        324
+      ],
+      "page": 0,
+      "destination": [
+        2089,
+        2054,
+        37,
+        54
+      ],
+      "translationToCanvas": [
+        -1558,
+        -1784
+      ]
+    },
+    {
+      "guid": "#1985",
+      "name": "profile_r_leg_r",
+      "drawables": [
+        "profile_r_leg_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_12.png",
+      "crop": [
+        469,
+        906,
+        544,
+        959
+      ],
+      "page": 0,
+      "destination": [
+        2158,
+        2054,
+        75,
+        53
+      ],
+      "translationToCanvas": [
+        -1689,
+        -1148
+      ]
+    },
+    {
+      "guid": "#13308",
+      "name": "hand_l",
+      "drawables": [
+        "hand_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_72.png",
+      "crop": [
+        487,
+        510,
+        536,
+        562
+      ],
+      "page": 0,
+      "destination": [
+        2265,
+        2054,
+        49,
+        52
+      ],
+      "translationToCanvas": [
+        -1778,
+        -1544
+      ]
+    },
+    {
+      "guid": "#23342",
+      "name": "pupil_l",
+      "drawables": [
+        "pupil_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_141.png",
+      "crop": [
+        451,
+        270,
+        498,
+        319
+      ],
+      "page": 0,
+      "destination": [
+        2346,
+        2054,
+        47,
+        49
+      ],
+      "translationToCanvas": [
+        -1895,
+        -1784
+      ]
+    },
+    {
+      "guid": "#23473",
+      "name": "pupil_r",
+      "drawables": [
+        "pupil_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_142.png",
+      "crop": [
+        545,
+        270,
+        591,
+        319
+      ],
+      "page": 0,
+      "destination": [
+        2425,
+        2054,
+        46,
+        49
+      ],
+      "translationToCanvas": [
+        -1880,
+        -1784
+      ]
+    },
+    {
+      "guid": "#23604",
+      "name": "profile_r_pupil_l",
+      "drawables": [
+        "profile_r_pupil_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_143.png",
+      "crop": [
+        517,
+        275,
+        553,
+        324
+      ],
+      "page": 0,
+      "destination": [
+        2503,
+        2054,
+        36,
+        49
+      ],
+      "translationToCanvas": [
+        -1986,
+        -1779
+      ]
+    },
+    {
+      "guid": "#24337",
+      "name": "mid_l_pupil_l",
+      "drawables": [
+        "mid_l_pupil_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_151.png",
+      "crop": [
+        426,
+        270,
+        450,
+        317
+      ],
+      "page": 0,
+      "destination": [
+        2571,
+        2054,
+        24,
+        47
+      ],
+      "translationToCanvas": [
+        -2145,
+        -1784
+      ]
+    },
+    {
+      "guid": "#23735",
+      "name": "profile_l_pupil_r",
+      "drawables": [
+        "profile_l_pupil_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_144.png",
+      "crop": [
+        451,
+        272,
+        491,
+        317
+      ],
+      "page": 0,
+      "destination": [
+        2627,
+        2054,
+        40,
+        45
+      ],
+      "translationToCanvas": [
+        -2176,
+        -1782
+      ]
+    },
+    {
+      "guid": "#23918",
+      "name": "mid_r_pupil_l",
+      "drawables": [
+        "mid_r_pupil_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_147.png",
+      "crop": [
+        469,
+        275,
+        502,
+        320
+      ],
+      "page": 0,
+      "destination": [
+        2699,
+        2054,
+        33,
+        45
+      ],
+      "translationToCanvas": [
+        -2230,
+        -1779
+      ]
+    },
+    {
+      "guid": "#24206",
+      "name": "mid_l_pupil_r",
+      "drawables": [
+        "mid_l_pupil_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_150.png",
+      "crop": [
+        483,
+        275,
+        520,
+        319
+      ],
+      "page": 0,
+      "destination": [
+        2764,
+        2054,
+        37,
+        44
+      ],
+      "translationToCanvas": [
+        -2281,
+        -1779
+      ]
+    },
+    {
+      "guid": "#24049",
+      "name": "mid_r_pupil_r",
+      "drawables": [
+        "mid_r_pupil_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_148.png",
+      "crop": [
+        538,
+        279,
+        562,
+        322
+      ],
+      "page": 0,
+      "destination": [
+        2833,
+        2054,
+        24,
+        43
+      ],
+      "translationToCanvas": [
+        -2295,
+        -1775
+      ]
+    },
+    {
+      "guid": "#11732",
+      "name": "hand_l_grip_palm",
+      "drawables": [
+        "hand_l_grip_palm"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_62.png",
+      "crop": [
+        499,
+        497,
+        518,
+        539
+      ],
+      "page": 0,
+      "destination": [
+        2889,
+        2054,
+        19,
+        42
+      ],
+      "translationToCanvas": [
+        -2390,
+        -1557
+      ]
+    },
+    {
+      "guid": "#11813",
+      "name": "hand_r_grip_palm",
+      "drawables": [
+        "hand_r_grip_palm"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_63.png",
+      "crop": [
+        529,
+        497,
+        548,
+        539
+      ],
+      "page": 0,
+      "destination": [
+        2940,
+        2054,
+        19,
+        42
+      ],
+      "translationToCanvas": [
+        -2411,
+        -1557
+      ]
+    },
+    {
+      "guid": "#21239",
+      "name": "clean_hand_l_palm",
+      "drawables": [
+        "clean_hand_l_palm"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_78.png",
+      "crop": [
+        499,
+        497,
+        518,
+        539
+      ],
+      "page": 0,
+      "destination": [
+        2991,
+        2054,
+        19,
+        42
+      ],
+      "translationToCanvas": [
+        -2492,
+        -1557
+      ]
+    },
+    {
+      "guid": "#21279",
+      "name": "clean_hand_r_palm",
+      "drawables": [
+        "clean_hand_r_palm"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_79.png",
+      "crop": [
+        529,
+        497,
+        548,
+        539
+      ],
+      "page": 0,
+      "destination": [
+        3042,
+        2054,
+        19,
+        42
+      ],
+      "translationToCanvas": [
+        -2513,
+        -1557
+      ]
+    },
+    {
+      "guid": "#21319",
+      "name": "clean_ground_hand_r_palm",
+      "drawables": [
+        "clean_ground_hand_r_palm"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_80.png",
+      "crop": [
+        529,
+        497,
+        548,
+        539
+      ],
+      "page": 0,
+      "destination": [
+        3093,
+        2054,
+        19,
+        42
+      ],
+      "translationToCanvas": [
+        -2564,
+        -1557
+      ]
+    },
+    {
+      "guid": "#16673",
+      "name": "hand_l_support",
+      "drawables": [
+        "hand_l_support"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_75.png",
+      "crop": [
+        487,
+        499,
+        527,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3144,
+        2054,
+        40,
+        38
+      ],
+      "translationToCanvas": [
+        -2657,
+        -1555
+      ]
+    },
+    {
+      "guid": "#19717",
+      "name": "hand_r_support",
+      "drawables": [
+        "hand_r_support"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_77.png",
+      "crop": [
+        519,
+        499,
+        559,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3216,
+        2054,
+        40,
+        38
+      ],
+      "translationToCanvas": [
+        -2697,
+        -1555
+      ]
+    },
+    {
+      "guid": "#18195",
+      "name": "hand_r_relaxed",
+      "drawables": [
+        "hand_r_relaxed"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_76.png",
+      "crop": [
+        529,
+        499,
+        559,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3288,
+        2054,
+        30,
+        38
+      ],
+      "translationToCanvas": [
+        -2759,
+        -1555
+      ]
+    },
+    {
+      "guid": "#21359",
+      "name": "clean_ground_hand_r_relaxed",
+      "drawables": [
+        "clean_ground_hand_r_relaxed"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_81.png",
+      "crop": [
+        529,
+        499,
+        559,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3350,
+        2054,
+        30,
+        38
+      ],
+      "translationToCanvas": [
+        -2821,
+        -1555
+      ]
+    },
+    {
+      "guid": "#15151",
+      "name": "hand_l_relaxed",
+      "drawables": [
+        "hand_l_relaxed"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_74.png",
+      "crop": [
+        487,
+        499,
+        516,
+        537
+      ],
+      "page": 0,
+      "destination": [
+        3412,
+        2054,
+        29,
+        38
+      ],
+      "translationToCanvas": [
+        -2925,
+        -1555
+      ]
+    },
+    {
+      "guid": "#24598",
+      "name": "blush",
+      "drawables": [
+        "blush"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_157.png",
+      "crop": [
+        433,
+        307,
+        616,
+        340
+      ],
+      "page": 0,
+      "destination": [
+        3473,
+        2054,
+        183,
+        33
+      ],
+      "translationToCanvas": [
+        -3040,
+        -1747
+      ]
+    },
+    {
+      "guid": "#23212",
+      "name": "mid_r_mouth",
+      "drawables": [
+        "mid_r_mouth"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_137.png",
+      "crop": [
+        499,
+        327,
+        541,
+        360
+      ],
+      "page": 0,
+      "destination": [
+        3688,
+        2054,
+        42,
+        33
+      ],
+      "translationToCanvas": [
+        -3189,
+        -1727
+      ]
+    },
+    {
+      "guid": "#23316",
+      "name": "mid_l_mouth",
+      "drawables": [
+        "mid_l_mouth"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_140.png",
+      "crop": [
+        448,
+        325,
+        486,
+        358
+      ],
+      "page": 0,
+      "destination": [
+        3762,
+        2054,
+        38,
+        33
+      ],
+      "translationToCanvas": [
+        -3314,
+        -1729
+      ]
+    },
+    {
+      "guid": "#23173",
+      "name": "mid_r_eyebrow_r",
+      "drawables": [
+        "mid_r_eyebrow_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_136.png",
+      "crop": [
+        535,
+        248,
+        568,
+        278
+      ],
+      "page": 0,
+      "destination": [
+        3832,
+        2054,
+        33,
+        30
+      ],
+      "translationToCanvas": [
+        -3297,
+        -1806
+      ]
+    },
+    {
+      "guid": "#1510",
+      "name": "seat",
+      "drawables": [
+        "seat"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_10.png",
+      "crop": [
+        373,
+        757,
+        669,
+        786
+      ],
+      "page": 0,
+      "destination": [
+        16,
+        2153,
+        296,
+        29
+      ],
+      "translationToCanvas": [
+        357,
+        -1396
+      ]
+    },
+    {
+      "guid": "#23108",
+      "name": "profile_l_mouth",
+      "drawables": [
+        "profile_l_mouth"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_134.png",
+      "crop": [
+        419,
+        328,
+        454,
+        356
+      ],
+      "page": 0,
+      "destination": [
+        344,
+        2153,
+        35,
+        28
+      ],
+      "translationToCanvas": [
+        75,
+        -1825
+      ]
+    },
+    {
+      "guid": "#23004",
+      "name": "profile_r_eyebrow_l",
+      "drawables": [
+        "profile_r_eyebrow_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_131.png",
+      "crop": [
+        499,
+        247,
+        560,
+        274
+      ],
+      "page": 0,
+      "destination": [
+        411,
+        2153,
+        61,
+        27
+      ],
+      "translationToCanvas": [
+        88,
+        -1906
+      ]
+    },
+    {
+      "guid": "#21826",
+      "name": "hand_r_grip_fingers",
+      "drawables": [
+        "hand_r_grip_fingers"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_89.png",
+      "crop": [
+        526,
+        501,
+        548,
+        528
+      ],
+      "page": 0,
+      "destination": [
+        504,
+        2153,
+        22,
+        27
+      ],
+      "translationToCanvas": [
+        22,
+        -1652
+      ]
+    },
+    {
+      "guid": "#21947",
+      "name": "clean_hand_r_fingers",
+      "drawables": [
+        "clean_hand_r_fingers"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_91.png",
+      "crop": [
+        526,
+        501,
+        548,
+        528
+      ],
+      "page": 0,
+      "destination": [
+        558,
+        2153,
+        22,
+        27
+      ],
+      "translationToCanvas": [
+        -32,
+        -1652
+      ]
+    },
+    {
+      "guid": "#21987",
+      "name": "clean_ground_hand_r_fingers",
+      "drawables": [
+        "clean_ground_hand_r_fingers"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_92.png",
+      "crop": [
+        526,
+        501,
+        548,
+        528
+      ],
+      "page": 0,
+      "destination": [
+        612,
+        2153,
+        22,
+        27
+      ],
+      "translationToCanvas": [
+        -86,
+        -1652
+      ]
+    },
+    {
+      "guid": "#21745",
+      "name": "hand_l_grip_fingers",
+      "drawables": [
+        "hand_l_grip_fingers"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_88.png",
+      "crop": [
+        499,
+        501,
+        520,
+        528
+      ],
+      "page": 0,
+      "destination": [
+        666,
+        2153,
+        21,
+        27
+      ],
+      "translationToCanvas": [
+        -167,
+        -1652
+      ]
+    },
+    {
+      "guid": "#21907",
+      "name": "clean_hand_l_fingers",
+      "drawables": [
+        "clean_hand_l_fingers"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_90.png",
+      "crop": [
+        499,
+        501,
+        520,
+        528
+      ],
+      "page": 0,
+      "destination": [
+        719,
+        2153,
+        21,
+        27
+      ],
+      "translationToCanvas": [
+        -220,
+        -1652
+      ]
+    },
+    {
+      "guid": "#23238",
+      "name": "mid_l_eyebrow_r",
+      "drawables": [
+        "mid_l_eyebrow_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_138.png",
+      "crop": [
+        476,
+        245,
+        532,
+        271
+      ],
+      "page": 0,
+      "destination": [
+        772,
+        2153,
+        56,
+        26
+      ],
+      "translationToCanvas": [
+        -296,
+        -1908
+      ]
+    },
+    {
+      "guid": "#22978",
+      "name": "mouth",
+      "drawables": [
+        "mouth"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_130.png",
+      "crop": [
+        501,
+        328,
+        541,
+        354
+      ],
+      "page": 0,
+      "destination": [
+        860,
+        2153,
+        40,
+        26
+      ],
+      "translationToCanvas": [
+        -359,
+        -1825
+      ]
+    },
+    {
+      "guid": "#23043",
+      "name": "profile_r_mouth",
+      "drawables": [
+        "profile_r_mouth"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_132.png",
+      "crop": [
+        551,
+        337,
+        584,
+        363
+      ],
+      "page": 0,
+      "destination": [
+        932,
+        2153,
+        33,
+        26
+      ],
+      "translationToCanvas": [
+        -381,
+        -1816
+      ]
+    },
+    {
+      "guid": "#23134",
+      "name": "mid_r_eyebrow_l",
+      "drawables": [
+        "mid_r_eyebrow_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_135.png",
+      "crop": [
+        449,
+        247,
+        505,
+        272
+      ],
+      "page": 0,
+      "destination": [
+        997,
+        2153,
+        56,
+        25
+      ],
+      "translationToCanvas": [
+        -548,
+        -1906
+      ]
+    },
+    {
+      "guid": "#22939",
+      "name": "eyebrow_r",
+      "drawables": [
+        "eyebrow_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_129.png",
+      "crop": [
+        545,
+        248,
+        610,
+        272
+      ],
+      "page": 0,
+      "destination": [
+        1085,
+        2153,
+        65,
+        24
+      ],
+      "translationToCanvas": [
+        -540,
+        -1905
+      ]
+    },
+    {
+      "guid": "#22900",
+      "name": "eyebrow_l",
+      "drawables": [
+        "eyebrow_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_128.png",
+      "crop": [
+        437,
+        248,
+        500,
+        272
+      ],
+      "page": 0,
+      "destination": [
+        1182,
+        2153,
+        63,
+        24
+      ],
+      "translationToCanvas": [
+        -745,
+        -1905
+      ]
+    },
+    {
+      "guid": "#23069",
+      "name": "profile_l_eyebrow_r",
+      "drawables": [
+        "profile_l_eyebrow_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_133.png",
+      "crop": [
+        449,
+        243,
+        511,
+        267
+      ],
+      "page": 0,
+      "destination": [
+        1277,
+        2153,
+        62,
+        24
+      ],
+      "translationToCanvas": [
+        -828,
+        -1910
+      ]
+    },
+    {
+      "guid": "#23277",
+      "name": "mid_l_eyebrow_l",
+      "drawables": [
+        "mid_l_eyebrow_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_139.png",
+      "crop": [
+        419,
+        243,
+        454,
+        267
+      ],
+      "page": 0,
+      "destination": [
+        1371,
+        2153,
+        35,
+        24
+      ],
+      "translationToCanvas": [
+        -952,
+        -1910
+      ]
+    },
+    {
+      "guid": "#23892",
+      "name": "eye_closed_r",
+      "drawables": [
+        "eye_closed_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_146.png",
+      "crop": [
+        536,
+        284,
+        600,
+        303
+      ],
+      "page": 0,
+      "destination": [
+        1438,
+        2153,
+        64,
+        19
+      ],
+      "translationToCanvas": [
+        -902,
+        -1869
+      ]
+    },
+    {
+      "guid": "#23866",
+      "name": "eye_closed_l",
+      "drawables": [
+        "eye_closed_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_145.png",
+      "crop": [
+        442,
+        284,
+        505,
+        303
+      ],
+      "page": 0,
+      "destination": [
+        1534,
+        2153,
+        63,
+        19
+      ],
+      "translationToCanvas": [
+        -1092,
+        -1869
+      ]
+    },
+    {
+      "guid": "#24520",
+      "name": "mid_r_eye_closed_r",
+      "drawables": [
+        "mid_r_eye_closed_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_154.png",
+      "crop": [
+        535,
+        293,
+        562,
+        306
+      ],
+      "page": 0,
+      "destination": [
+        1629,
+        2153,
+        27,
+        13
+      ],
+      "translationToCanvas": [
+        -1094,
+        -1860
+      ]
+    },
+    {
+      "guid": "#24572",
+      "name": "mid_l_eye_closed_l",
+      "drawables": [
+        "mid_l_eye_closed_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_156.png",
+      "crop": [
+        423,
+        286,
+        450,
+        299
+      ],
+      "page": 0,
+      "destination": [
+        1688,
+        2153,
+        27,
+        13
+      ],
+      "translationToCanvas": [
+        -1265,
+        -1867
+      ]
+    },
+    {
+      "guid": "#24546",
+      "name": "mid_l_eye_closed_r",
+      "drawables": [
+        "mid_l_eye_closed_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_155.png",
+      "crop": [
+        478,
+        289,
+        530,
+        301
+      ],
+      "page": 0,
+      "destination": [
+        1747,
+        2153,
+        52,
+        12
+      ],
+      "translationToCanvas": [
+        -1269,
+        -1864
+      ]
+    },
+    {
+      "guid": "#24494",
+      "name": "mid_r_eye_closed_l",
+      "drawables": [
+        "mid_r_eye_closed_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_153.png",
+      "crop": [
+        451,
+        293,
+        505,
+        304
+      ],
+      "page": 0,
+      "destination": [
+        1831,
+        2153,
+        54,
+        11
+      ],
+      "translationToCanvas": [
+        -1380,
+        -1860
+      ]
+    },
+    {
+      "guid": "#24468",
+      "name": "profile_l_eye_closed_r",
+      "drawables": [
+        "profile_l_eye_closed_r"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_152.png",
+      "crop": [
+        449,
+        286,
+        502,
+        297
+      ],
+      "page": 0,
+      "destination": [
+        1917,
+        2153,
+        53,
+        11
+      ],
+      "translationToCanvas": [
+        -1468,
+        -1867
+      ]
+    },
+    {
+      "guid": "#24180",
+      "name": "profile_r_eye_closed_l",
+      "drawables": [
+        "profile_r_eye_closed_l"
+      ],
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "sourceImage": "texture_149.png",
+      "crop": [
+        504,
+        293,
+        555,
+        304
+      ],
+      "page": 0,
+      "destination": [
+        2002,
+        2153,
+        51,
+        11
+      ],
+      "translationToCanvas": [
+        -1498,
+        -1860
+      ]
+    }
+  ]
+}

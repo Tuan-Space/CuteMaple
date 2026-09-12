@@ -5,38 +5,68 @@ import json
 import os
 import subprocess
 import sys
-import tempfile
 import time
 import uuid
+import threading
 from ctypes import wintypes
 from pathlib import Path
-from xml.etree import ElementTree
-from xml.sax.saxutils import escape
-
-import psutil
-
-from pet_core import APP_NAME, config_path, is_compiled
-from resource_monitor import memory_snapshot
+from pet_core import APP_NAME, config_path, is_compiled, stable_application_path
+from cleanup_protocol import (SCHEMA, STEPS, TERMINAL, EXIT_CODES, START_TIMEOUT, UI_TIMEOUT,
+                              active_operation, create_operation, operation_path, root_path,
+                              safe_profile, transaction_lock, read_json, write_json, release_lease, digest)
+from cleanup_process import ObservedProcess, ExecutionMutex, current_identity, identity_alive, valid_identity
+from concurrent.futures import Future
 
 
 TASK_NAME = f"{APP_NAME}_内存清理"
-TASK_SCHEMA_VERSION = 2
+TASK_SCHEMA_VERSION = SCHEMA
 REQUEST_FILE = config_path().with_name("memory-clean-request.json")
 RESULT_FILE = config_path().with_name("memory-clean-result.json")
 INSTALL_FILE = config_path().with_name("memory-clean-install.json")
+_observers: dict[str, ObservedProcess] = {}
+_observer_lock = threading.RLock()
+_recoveries: dict[str, tuple[Future, float]] = {}
+
+
+def profile_path() -> Path:
+    return safe_profile(config_path().parent)
+
+
+def task_name() -> str:
+    profile = profile_path()
+    ordinary = Path(os.environ.get("APPDATA", Path.home() / "AppData/Roaming")) / APP_NAME
+    if os.path.normcase(str(profile)) == os.path.normcase(str(ordinary.resolve())):
+        return TASK_NAME
+    import hashlib
+    return TASK_NAME + "_" + hashlib.sha256(os.path.normcase(str(profile)).encode()).hexdigest()[:12]
 
 
 def current_executable_path() -> Path:
     """Return the user's onefile path, never Nuitka's temporary extraction path."""
     if is_compiled():
-        return Path(sys.argv[0]).resolve()
+        return stable_application_path()
     return Path(sys.executable).resolve()
 
 
-def executable_command() -> tuple[str, str]:
+def helper_path() -> Path:
     if is_compiled():
-        return str(current_executable_path()), "--memory-clean-helper"
-    return str(current_executable_path()), f'"{Path(__file__).with_name("main.py").resolve()}" --memory-clean-helper'
+        application = stable_application_path()
+        if application.name.lower() == "cutemaple-cleaner.exe":
+            return application
+        return application.parent / "cleaner" / "CuteMaple-Cleaner.exe"
+    return Path(__file__).with_name("cleanup_helper.py").resolve()
+
+
+def helper_command(*arguments: str) -> list[str]:
+    helper = helper_path()
+    if not helper.is_file():
+        raise FileNotFoundError(f"独立清理程序缺失：{helper}")
+    return ([str(helper)] if is_compiled() else [str(current_executable_path()), str(helper)]) + list(arguments)
+
+
+def executable_command() -> tuple[str, str]:
+    command = helper_command("--memory-clean-helper", "--profile", str(profile_path()))
+    return command[0], subprocess.list2cmdline(command[1:])
 
 
 def _decode_output(value: bytes | str | None) -> str:
@@ -57,35 +87,14 @@ def _decode_output(value: bytes | str | None) -> str:
     return value.decode(errors="replace")
 
 
-def task_details() -> dict:
-    if os.name != "nt":
-        return {"exists": False, "valid": False, "message": "仅 Windows 可用"}
-    expected_exe, expected_args = executable_command()
-    result = subprocess.run(
-        ["schtasks", "/Query", "/TN", TASK_NAME, "/XML"], capture_output=True,
-        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
-    )
-    output = _decode_output(result.stdout)
-    if result.returncode != 0:
-        return {"exists": False, "valid": False, "message": _decode_output(result.stderr).strip(),
-                "expected_exe": expected_exe, "expected_args": expected_args}
-    try:
-        root = ElementTree.fromstring(output)
-        command = root.findtext(".//{*}Actions/{*}Exec/{*}Command", "").strip().strip('"')
-        arguments = root.findtext(".//{*}Actions/{*}Exec/{*}Arguments", "").strip()
-    except ElementTree.ParseError as exc:
-        return {"exists": True, "valid": False, "message": f"任务 XML 无法解析: {exc}",
-                "expected_exe": expected_exe, "expected_args": expected_args}
-    valid = (os.path.normcase(os.path.abspath(command)) ==
-             os.path.normcase(os.path.abspath(expected_exe)) and arguments == expected_args)
-    return {"exists": True, "valid": valid, "command": command, "arguments": arguments,
-            "expected_exe": expected_exe, "expected_args": expected_args,
-            "message": "" if valid else "计划任务路径或参数已失效"}
+def session_is_valid() -> bool:
+    from cleanup_session import session_valid
+    return session_valid()
 
 
 def task_is_valid() -> bool:
-    return bool(task_details().get("valid"))
-
+    # Compatibility for archived diagnostic clients; never queries a task.
+    return session_is_valid()
 
 def is_process_elevated() -> bool:
     if os.name != "nt":
@@ -96,249 +105,267 @@ def is_process_elevated() -> bool:
         return False
 
 
-def request_elevated_install(operation_id: str) -> dict:
+def request_session_authorization(operation_id: str = "") -> dict:
     if os.name != "nt" or os.environ.get("MEINIFENG_DISABLE_CLEAN_TASK") == "1":
-        return {"ok": False, "cancelled": False, "operation_id": operation_id,
-                "message": "当前环境已禁用授权安装"}
-    executable = str(current_executable_path())
-    if is_compiled():
-        params = f"--install-clean-task --install-operation {operation_id}"
-    else:
-        params = (f'"{Path(__file__).with_name("main.py").resolve()}" --install-clean-task '
-                  f"--install-operation {operation_id}")
-
-    class SHELLEXECUTEINFOW(ctypes.Structure):
-        _fields_ = [("cbSize", wintypes.DWORD), ("fMask", wintypes.ULONG),
-                    ("hwnd", wintypes.HWND), ("lpVerb", wintypes.LPCWSTR),
-                    ("lpFile", wintypes.LPCWSTR), ("lpParameters", wintypes.LPCWSTR),
-                    ("lpDirectory", wintypes.LPCWSTR), ("nShow", ctypes.c_int),
-                    ("hInstApp", wintypes.HINSTANCE), ("lpIDList", ctypes.c_void_p),
-                    ("lpClass", wintypes.LPCWSTR), ("hkeyClass", wintypes.HKEY),
-                    ("dwHotKey", wintypes.DWORD), ("hIcon", wintypes.HANDLE),
-                    ("hProcess", wintypes.HANDLE)]
-
-    info = SHELLEXECUTEINFOW(cbSize=ctypes.sizeof(SHELLEXECUTEINFOW), fMask=0x00000040,
-                             lpVerb="runas", lpFile=executable, lpParameters=params, nShow=0)
-    if not ctypes.windll.shell32.ShellExecuteExW(ctypes.byref(info)):
-        error_code = ctypes.windll.kernel32.GetLastError()
-        return {"ok": False, "cancelled": error_code == 1223, "error_code": error_code,
-                "operation_id": operation_id,
-                "message": "已取消管理员授权" if error_code == 1223 else f"无法启动授权程序（{error_code}）"}
-    wait_code = ctypes.windll.kernel32.WaitForSingleObject(info.hProcess, 30000)
-    exit_code = wintypes.DWORD()
-    ctypes.windll.kernel32.GetExitCodeProcess(info.hProcess, ctypes.byref(exit_code))
-    ctypes.windll.kernel32.CloseHandle(info.hProcess)
-    if wait_code == 0x102:
-        return {"ok": False, "cancelled": False, "operation_id": operation_id,
-                "message": "授权安装等待超时"}
+        return {"ok": False, "status": "failed", "message": "当前环境已禁用清理授权"}
     try:
-        result = json.loads(INSTALL_FILE.read_text(encoding="utf-8"))
-    except (OSError, ValueError, TypeError):
-        result = {"ok": False, "message": f"未收到安装结果（退出码 {exit_code.value}）"}
-    if result.get("operation_id") != operation_id:
-        return {"ok": False, "cancelled": False, "operation_id": operation_id,
-                "message": "授权结果已过期，请重试"}
-    result["valid"] = task_is_valid()
-    result["ok"] = bool(result.get("ok") and result["valid"])
+        helper_command()  # Missing/quarantined binaries are not an authorization failure.
+        from cleanup_session import authorize
+        return authorize(helper_command, profile_path())
+    except (OSError, ValueError) as exc:
+        return cleanup_start_error(exc)
+
+
+def request_elevated_install(operation_id: str = "") -> dict:
+    return request_session_authorization(operation_id)
+
+
+def close_cleanup_session() -> None:
+    from cleanup_session import close_session
+    close_session()
+
+
+def cleanup_start_error(exc) -> dict:
+    code = getattr(exc, "winerror", None)
+    if isinstance(exc, FileNotFoundError):
+        status, message = "helper_missing", "清理助手缺失，可能已被系统防护移除；请查看 Windows 安全中心保护历史。"
+    elif code in (225, 226):
+        status, message = "security_blocked", f"Windows 防护阻止了清理助手（{code}）；本次清理未完成。"
+    else:
+        status, message = "failed", str(exc)
+    return {"ok": False, "status": status, "error_code": code, "message": message}
+
+def _failure_before_start(profile: Path, operation_id: str, message: str, error_code=None) -> dict:
+    result = {"schema": SCHEMA, "operation_id": operation_id, "status": "failed", "ok": False,
+              "terminal": True, "processExitVerified": True, "exitCodeVerified": False, "helperStarted": False,
+              "message": message, "error_code": error_code, "steps": {}, "completed_at": time.time(), "available_increase": None}
+    write_json(operation_path(profile, operation_id) / "launch-failure.json", result, immutable=True)
+    release_lease(profile, operation_id)
     return result
 
 
-def _current_user_sid() -> str:
-    output = subprocess.run(["whoami", "/user", "/fo", "csv", "/nh"], capture_output=True,
-                            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-    text = _decode_output(output.stdout)
-    parts = [part.strip().strip('"') for part in text.strip().split(",")]
-    if output.returncode != 0 or len(parts) < 2:
-        raise RuntimeError("无法获取当前用户 SID")
-    return parts[-1]
-
-
-def _task_xml(executable: str, arguments: str, sid: str) -> str:
-    return f'''<?xml version="1.0" encoding="UTF-16"?>
-<Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
-  <RegistrationInfo><Author>{escape(sid)}</Author><Description>{APP_NAME}按需内存清理</Description></RegistrationInfo>
-  <Principals><Principal id="Author"><UserId>{escape(sid)}</UserId><LogonType>InteractiveToken</LogonType><RunLevel>HighestAvailable</RunLevel></Principal></Principals>
-  <Settings><MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy><DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries><StopIfGoingOnBatteries>false</StopIfGoingOnBatteries><AllowHardTerminate>true</AllowHardTerminate><StartWhenAvailable>false</StartWhenAvailable><RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable><AllowStartOnDemand>true</AllowStartOnDemand><Enabled>true</Enabled><Hidden>false</Hidden><RunOnlyIfIdle>false</RunOnlyIfIdle><WakeToRun>false</WakeToRun><ExecutionTimeLimit>PT1M</ExecutionTimeLimit><Priority>7</Priority></Settings>
-  <Actions Context="Author"><Exec><Command>{escape(executable)}</Command><Arguments>{escape(arguments)}</Arguments></Exec></Actions>
-</Task>'''
-
-
-def install_task(operation_id: str = "") -> int:
-    executable, arguments = executable_command()
-    try:
-        xml = _task_xml(executable, arguments, _current_user_sid())
-        xml_path = Path(tempfile.gettempdir()) / f"meinifeng-clean-task-{os.getpid()}.xml"
-        xml_path.write_text(xml, encoding="utf-16")
+def _read_cleanup(profile: Path, operation_id: str, *, release: bool) -> dict | None:
+    folder = operation_path(profile, operation_id)
+    request = read_json(folder / "request.json")
+    if not request or request.get("operation_id") != operation_id:
+        return None
+    failed = read_json(folder / "launch-failure.json")
+    if failed:
+        return failed
+    state = read_json(folder / "result.json") or read_json(folder / "status.json") or {}
+    if state.get("operation_id") != operation_id:
+        return None
+    value = {**state, "terminal": False, "processExitVerified": False,
+             "requested_at": request["requested_at"], "elapsedSeconds": max(0, time.time() - request["requested_at"])}
+    started = read_json(folder / "started.json")
+    observed = read_json(folder / "exit-observed.json")
+    observer_error = None
+    if started and started.get("operation_id") == operation_id:
+        identity = started.get("supervisor")
         try:
-            result = subprocess.run(["schtasks", "/Create", "/TN", TASK_NAME, "/XML", str(xml_path), "/F"],
-                                    capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+            with _observer_lock:
+                observer = _observers.get(operation_id)
+                if observer is None and observed is None:
+                    observer = ObservedProcess(identity)
+                    _observers[operation_id] = observer
+                if observer is not None:
+                    code = observer.poll()
+                    if code is None:
+                        acknowledged = folder / "client-observed.json"
+                        if not acknowledged.exists():
+                            write_json(acknowledged, {"operation_id": operation_id, "supervisor": identity,
+                                                      "client": request["client"], "observed_at": time.time()}, immutable=True)
+                    else:
+                        observed = {"operation_id": operation_id, "supervisor": identity,
+                                    "exit_code": code, "observed_at": time.time(), "method": "process-handle"}
+                        write_json(folder / "exit-observed.json", observed)
+                        observer.close()
+                        _observers.pop(operation_id, None)
+        except (OSError, TypeError, KeyError, ValueError) as exc:
+            observer_error = str(exc)
+    if observed and started and observed.get("supervisor") == started.get("supervisor"):
+        # The helper may write result.json between the first file read and the
+        # process-handle poll. Refresh after exit rather than rejecting a stale
+        # running snapshot or overlooking its last owned worker.
+        final = read_json(folder / "result.json")
+        state = final or read_json(folder / "status.json") or state
+        if state.get("operation_id") != operation_id:
+            raise ValueError("清理终态不属于当前操作")
+        value.update(state)
+        # An exit code is meaningful only with a matching result and every owned
+        # worker confirmed gone. Never promote a final-looking file by itself.
+        workers = state.get("workers", [])
+        if not isinstance(workers, list) or any(not valid_identity(row.get("worker")) for row in workers):
+            raise ValueError("无法核验步骤进程身份")
+        live_worker = any(identity_alive(row["worker"]) for row in workers)
+        if not live_worker:
+            value.update(terminal=True, processExitVerified=True, exitCodeVerified=True, supervisorExitCode=observed["exit_code"])
+            wanted = EXIT_CODES.get(state.get("status"))
+            complete = (final is not None and final.get("schema") == SCHEMA
+                        and final.get("request_sha256") == digest(folder / "request.json")
+                        and final.get("supervisor") == started["supervisor"]
+                        and set(final.get("steps", {})) == set(STEPS)
+                        and final.get("expected_exit_code") == observed["exit_code"])
+            if state.get("status") == "succeeded":
+                complete = complete and len(workers) == len(STEPS) and all(
+                    isinstance(final["steps"].get(step), dict)
+                    and final["steps"][step].get("ok") is True
+                    and final["steps"][step].get("exit_verified") is True
+                    and final["steps"][step].get("exit_code") == 0 for step in STEPS)
+            if not complete or state.get("status") not in TERMINAL or wanted != observed["exit_code"]:
+                value.update(status="failed", ok=False, message="清理助手退出，但未返回与退出码一致的完整结果")
+            else:
+                value["ok"] = state["status"] == "succeeded"
+            if release:
+                release_lease(profile, operation_id)
+            return value
+    if (started and valid_identity(started.get("supervisor")) and not identity_alive(started["supervisor"])
+            and all(valid_identity(row.get("worker")) for row in state.get("workers", []))
+            and not any(identity_alive(row["worker"]) for row in state.get("workers", []))):
+        # A previous UI may have exited, losing its process handle. Absence of
+        # the exact PID/creation identity proves death, never historical success.
+        value.update(status="failed", ok=False, terminal=True, processExitVerified=True,
+                     exitCodeVerified=False, completed_at=time.time(), available_increase=None,
+                     message="清理助手及其步骤进程已退出，但缺少可核验的历史退出码；本次不能认定成功")
+        if release:
+            release_lease(profile, operation_id)
+        return value
+    if not started and value["elapsedSeconds"] >= START_TIMEOUT:
+        # No helper may begin an old request. Retain its lease until the outer
+        # deadline, preventing an uncertain schtasks timeout from spawning a retry.
+        value.update(status="starting", message="清理助手尚未确认接单，正在核验会话状态")
+    if value["elapsedSeconds"] >= UI_TIMEOUT:
+        value.update(status="unresponsive", recoveryRequired=True,
+                     message="清理助手未按期完成退出核验；保留操作锁，避免重复执行")
+        if observer_error:
+            value["diagnostic"] = observer_error
+        if not started and release:
+            _schedule_recovery(profile, operation_id)
+    return value
+
+
+def _query_task_state() -> int:
+    # Legacy recovery-state values retained locally; no scheduled task exists.
+    if not session_is_valid():
+        return 3
+    from cleanup_session import session_request
+    value = session_request("status")
+    if not value.get("ok"):
+        raise OSError(value.get("message", "无法核验会话状态"))
+    return 4 if value.get("operation") else 3
+
+def _recover_queued(profile: Path, operation_id: str) -> bool:
+    folder = operation_path(profile, operation_id)
+    with transaction_lock(profile):
+        request = read_json(folder / "request.json")
+        if (not request or time.time() - request.get("requested_at", 0) < UI_TIMEOUT
+                or (folder / "started.json").exists() or active_operation(profile) != operation_id):
+            return False
+        task_state = _query_task_state()
+        if task_state not in (1, 3):  # Disabled or Ready, never Queued/Running/Unknown.
+            return False
+        mutex = ExecutionMutex()
+        try:
+            if not mutex.acquire():
+                return False
+            # Supervisor claims under this same transaction lock and refuses a
+            # request older than START_TIMEOUT. It cannot start after recovery.
+            result = {"schema": SCHEMA, "operation_id": operation_id, "status": "failed", "ok": False,
+                      "terminal": True, "processExitVerified": True, "exitCodeVerified": False,
+                      "helperStarted": False, "message": "过期请求未被助手接单，已核验会话空闲并解除占用",
+                      "completed_at": time.time(), "steps": {}, "available_increase": None,
+                      "recovery": {"taskState": task_state, "executionMutexIdle": True,
+                                   "expiredRequestUnclaimable": True}}
+            write_json(folder / "launch-failure.json", result, immutable=True)
+            (root_path(profile) / "active.json").unlink(missing_ok=True)
+            return True
         finally:
-            try: xml_path.unlink()
-            except OSError: pass
-        message = (_decode_output(result.stdout) or _decode_output(result.stderr)).strip()
-        code = result.returncode
-    except Exception as exc:
-        code, message = 1, str(exc)
-    INSTALL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    _atomic_json(INSTALL_FILE, {"ok": code == 0, "code": code, "message": message,
-                                "exe": executable, "arguments": arguments,
-                                "operation_id": operation_id, "task_name": TASK_NAME})
-    return code
+            mutex.close()
+
+
+def _schedule_recovery(profile: Path, operation_id: str) -> None:
+    with _observer_lock:
+        previous = _recoveries.get(operation_id)
+        if previous and (not previous[0].done() or time.monotonic() - previous[1] < 5):
+            return
+        future = Future()
+        _recoveries[operation_id] = (future, time.monotonic())
+        def recover():
+            try:
+                future.set_result(_recover_queued(profile, operation_id))
+            except Exception as exc:
+                future.set_result({"error": str(exc)})
+        threading.Thread(target=recover, name="cleanup-recovery", daemon=True).start()
+
+
+def read_cleanup(operation_id: str) -> dict | None:
+    """Nonblocking GUI poll, including the started/observed handshake and real exit."""
+    try:
+        return _read_cleanup(profile_path(), operation_id, release=True)
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        return {"operation_id": operation_id, "status": "unresponsive", "terminal": False,
+                "processExitVerified": False, "recoveryRequired": True, "message": str(exc)}
+
+
+def begin_cleanup() -> dict:
+    """Background-only request; authorization remains an explicit UI action."""
+    if os.name != "nt" or os.environ.get("MEINIFENG_DISABLE_CLEAN_TASK") == "1":
+        return {"ok": False, "status": "failed", "message": "当前环境禁止系统清理"}
+    try:
+        helper_command()
+        if not session_is_valid():
+            return {"ok": False, "status": "authorization_required", "message": "本次运行尚未授权"}
+        profile = profile_path()
+        with transaction_lock(profile):
+            old = active_operation(profile)
+            if old:
+                state = _read_cleanup(profile, old, release=False)
+                if not state or not (state.get("terminal") and state.get("processExitVerified")):
+                    return {"ok": False, "status": "busy", "operation_id": old,
+                            "message": "已有清理操作尚未完成退出核验", "existing": state}
+            request = create_operation(profile, helper_path(), current_identity())
+        from cleanup_session import session_request
+        operation_id = request["operation_id"]
+        try:
+            result = session_request("start", operation_id)
+        except (OSError, ValueError) as exc:
+            # The start may have reached the broker. Retain its lease until
+            # observation/recovery proves that no supervisor can still start.
+            return {"ok": True, "status": "starting", "operation_id": operation_id,
+                    "message": "会话响应异常，正在核验本次助手状态", "diagnostic": str(exc)}
+        if not result.get("ok"):
+            return _failure_before_start(profile, operation_id, result.get("message", "会话拒绝清理请求"), result.get("error_code"))
+        return {"ok": True, "status": "queued", "operation_id": operation_id,
+                "message": "清理请求已提交，等待监督进程确认"}
+    except (OSError, ValueError) as exc:
+        return cleanup_start_error(exc)
+
+def cancel_cleanup(operation_id: str) -> dict:
+    try:
+        profile = profile_path()
+        folder = operation_path(profile, operation_id)
+        if not (folder / "request.json").is_file():
+            return {"ok": False, "message": "清理操作不存在"}
+        path = folder / "cancel.json"
+        if not path.exists():
+            write_json(path, {"operation_id": operation_id, "requested_at": time.time()}, immutable=True)
+        return {"ok": True, "operation_id": operation_id, "status": "cancelling",
+                "message": "已请求取消，等待当前步骤退出确认"}
+    except (OSError, ValueError) as exc:
+        return {"ok": False, "operation_id": operation_id, "message": str(exc)}
 
 
 def queue_cleanup() -> str | None:
-    operation_id = uuid.uuid4().hex
-    REQUEST_FILE.parent.mkdir(parents=True, exist_ok=True)
-    _atomic_json(REQUEST_FILE, {"operation_id": operation_id, "requested_at": time.time()})
-    if is_process_elevated():
-        executable, arguments = executable_command()
-        command = [executable]
-        if not is_compiled():
-            command.append(str(Path(__file__).with_name("main.py").resolve()))
-        command.append("--memory-clean-helper")
-        try:
-            subprocess.Popen(command, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-            return operation_id
-        except OSError:
-            return None
-    if not task_is_valid():
-        return None
-    result = subprocess.run(["schtasks", "/Run", "/TN", TASK_NAME], capture_output=True,
-                            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-    return operation_id if result.returncode == 0 else None
+    result = begin_cleanup()
+    return result.get("operation_id") if result.get("ok") else None
 
 
 def read_result(operation_id: str) -> dict | None:
-    try:
-        value = json.loads(RESULT_FILE.read_text(encoding="utf-8"))
-        return value if value.get("operation_id") == operation_id else None
-    except (OSError, ValueError, TypeError):
-        return None
+    value = read_cleanup(operation_id)
+    return value if value and value.get("terminal") and value.get("processExitVerified") else None
 
 
 def _atomic_json(path: Path, value: dict) -> None:
     temporary = path.with_suffix(".tmp")
     temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
     os.replace(temporary, path)
-
-
-def _enable_privilege(name: str) -> bool:
-    class LUID(ctypes.Structure):
-        _fields_ = [("LowPart", wintypes.DWORD), ("HighPart", wintypes.LONG)]
-
-    class LUID_AND_ATTRIBUTES(ctypes.Structure):
-        _fields_ = [("Luid", LUID), ("Attributes", wintypes.DWORD)]
-
-    class TOKEN_PRIVILEGES(ctypes.Structure):
-        _fields_ = [("PrivilegeCount", wintypes.DWORD),
-                    ("Privileges", LUID_AND_ATTRIBUTES * 1)]
-
-    advapi32 = ctypes.WinDLL("advapi32", use_last_error=True)
-    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    token = wintypes.HANDLE()
-    if not advapi32.OpenProcessToken(kernel32.GetCurrentProcess(), 0x20 | 0x8, ctypes.byref(token)):
-        return False
-    try:
-        luid = LUID()
-        if not advapi32.LookupPrivilegeValueW(None, name, ctypes.byref(luid)):
-            return False
-        privileges = TOKEN_PRIVILEGES(1, (LUID_AND_ATTRIBUTES(luid, 0x2),))
-        ctypes.set_last_error(0)
-        ok = advapi32.AdjustTokenPrivileges(token, False, ctypes.byref(privileges), 0, None, None)
-        return bool(ok and ctypes.get_last_error() != 1300)  # ERROR_NOT_ALL_ASSIGNED
-    finally:
-        kernel32.CloseHandle(token)
-
-
-def _nt_set(info_class: int, payload) -> tuple[bool, str]:
-    ntdll = ctypes.WinDLL("ntdll")
-    size = ctypes.sizeof(payload) if payload is not None else 0
-    status = ntdll.NtSetSystemInformation(info_class, ctypes.byref(payload) if payload is not None else None, size)
-    return status >= 0, f"NTSTATUS 0x{status & 0xffffffff:08X}"
-
-
-def _trim_process_working_sets() -> tuple[bool, str]:
-    """Fallback when the system-wide working-set command is unavailable."""
-    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    psapi = ctypes.WinDLL("psapi", use_last_error=True)
-    kernel32.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
-    kernel32.OpenProcess.restype = wintypes.HANDLE
-    kernel32.CloseHandle.argtypes = (wintypes.HANDLE,)
-    kernel32.CloseHandle.restype = wintypes.BOOL
-    psapi.EmptyWorkingSet.argtypes = (wintypes.HANDLE,)
-    psapi.EmptyWorkingSet.restype = wintypes.BOOL
-
-    attempted = succeeded = denied = 0
-    current_pid = os.getpid()
-    access = 0x0100 | 0x0400  # PROCESS_SET_QUOTA | PROCESS_QUERY_INFORMATION
-    for pid in psutil.pids():
-        if pid <= 4 or pid == current_pid:
-            continue
-        attempted += 1
-        handle = kernel32.OpenProcess(access, False, pid)
-        if not handle:
-            denied += 1
-            continue
-        try:
-            if psapi.EmptyWorkingSet(handle):
-                succeeded += 1
-        finally:
-            kernel32.CloseHandle(handle)
-    ok = succeeded > 0 or attempted == 0
-    return ok, f"成功 {succeeded}/{attempted}，拒绝访问 {denied}"
-
-
-def _shrink_system_file_cache() -> tuple[bool, str]:
-    maximum = ctypes.c_size_t(-1).value
-    ok = ctypes.windll.psapi.SetSystemFileCacheSize(maximum, maximum, 0)
-    return bool(ok), "SetSystemFileCacheSize" if ok else f"WinError {ctypes.get_last_error()}"
-
-
-def perform_cleanup() -> dict:
-    before = memory_snapshot()
-    steps: dict[str, dict] = {}
-
-    privileges = ("SeProfileSingleProcessPrivilege", "SeIncreaseQuotaPrivilege", "SeDebugPrivilege")
-    privilege_results = {name: _enable_privilege(name) for name in privileges}
-
-    def run_step(name: str, operation) -> bool:
-        try:
-            ok, message = operation()
-            steps[name] = {"ok": bool(ok), "message": str(message)}
-        except Exception as exc:
-            steps[name] = {"ok": False, "message": str(exc)}
-        return bool(steps[name]["ok"])
-
-    if not run_step("empty_working_sets", lambda: _nt_set(80, ctypes.c_int(2))):
-        run_step("process_working_sets_fallback", _trim_process_working_sets)
-    run_step("flush_modified_pages", lambda: _nt_set(80, ctypes.c_int(3)))
-    run_step("purge_standby_list", lambda: _nt_set(80, ctypes.c_int(4)))
-
-    run_step("system_file_cache", _shrink_system_file_cache)
-    run_step("registry_cache", lambda: _nt_set(143, None))
-
-    class MEMORY_COMBINE_INFORMATION_EX(ctypes.Structure):
-        _fields_ = [("Handle", wintypes.HANDLE), ("PagesCombined", ctypes.c_size_t), ("Flags", wintypes.ULONG)]
-    run_step("combine_memory", lambda: _nt_set(130, MEMORY_COMBINE_INFORMATION_EX(None, 0, 0)))
-    time.sleep(1.0)
-    after = memory_snapshot()
-    return {
-        "before_available": before.physical_available,
-        "after_available": after.physical_available,
-        "available_increase": after.physical_available - before.physical_available,
-        "before_percent": before.load_percent, "after_percent": after.load_percent,
-        "steps": steps, "privileges": privilege_results, "completed_at": time.time(),
-    }
-
-
-def helper_main() -> int:
-    try:
-        request = json.loads(REQUEST_FILE.read_text(encoding="utf-8"))
-        operation_id = str(request["operation_id"])
-    except (OSError, ValueError, KeyError, TypeError):
-        return 2
-    result = perform_cleanup()
-    result["operation_id"] = operation_id
-    RESULT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    _atomic_json(RESULT_FILE, result)
-    return 0

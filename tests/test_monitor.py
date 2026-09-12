@@ -52,15 +52,10 @@ def test_auto_cleanup_or_triggers_and_cooldown():
     assert auto_cleanup_due(settings, 20, 1900, 0)
 
 
-def test_cleanup_task_xml_is_on_demand_and_has_no_trigger():
-    xml = memory_cleaner._task_xml(r"D:\\pets\\美腻枫.exe", "--memory-clean-helper", "S-1-5-21-1")
-    assert "<AllowStartOnDemand>true</AllowStartOnDemand>" in xml
-    assert "<RunLevel>HighestAvailable</RunLevel>" in xml
-    assert "<Triggers>" not in xml
-    assert "--memory-clean-helper" in xml
 
 
 def test_deep_cleanup_uses_modified_and_full_standby_lists(monkeypatch):
+    import cleanup_helper as memory_cleaner
     snapshots = iter((
         SimpleNamespace(physical_available=4_000, load_percent=74),
         SimpleNamespace(physical_available=7_000, load_percent=38),

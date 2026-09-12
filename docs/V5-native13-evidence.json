@@ -1,0 +1,91 @@
+{
+  "draftEvidenceOnly": true,
+  "nativeMocSha256": "cc0ac66aa51e1933d907ff57aa63988321426b8006ac28a82b0de222004fd18b",
+  "newCoreQtOrBuilderRun": false,
+  "productionVisualOrDeliveryAccepted": false,
+  "sha256": {
+    "artifacts/native-v5-head-coverage-export-13/native-geometry.json": "531eb15643b535b683efcb5c9ea037632f0e01079b15776cbc3cbfa925bc4f00",
+    "artifacts/native-v5-head-coverage-export-13/native-uv.json": "4eda7c178e719d1f138ae4cac2c24b95ea3f6b13b0558ff88f96b656a4b77b52",
+    "artifacts/native-v5-fan-shoe-13/report.json": "027112279969416f767020bee446c55336989dbab0277cfbbc9c5c6b8c82555e",
+    "artifacts/native-v5-fan-shoe-13/12-to-13-comparison.json": "af0873a65154ca1728d9b23cd0f8efb86427386a3593f7d13ae773a53a153d42",
+    "artifacts/native-v5-fan-shoe-12/report.json": "b04884a55622f75a112c40b15ff1f183ce18ce446c56c13e79380e5b0aaaebbc",
+    "artifacts/native-v5-head-material-13/report.json": "8bf0027127c1ffeaf776541c07fb0fdc492dc187eef1752c93ccaa461d50a46b",
+    "artifacts/native-v5-head-material-12/report.json": "2cac4006cf31feeb12dbef6eb0457c0eafdab6f0e5da529c9c5192e5aee745f4",
+    "artifacts/native-v5-head-coverage-13-native/report.json": "7c43d4989578f156d37bb075dfd4d921a833d7633d96081f010904884feae05c",
+    "artifacts/native-v5-head-coverage-13-native/visual-comparison-proof.json": "660460807ee658b3576a887ad663f2ae2e591cfd18d62ade1417337c198086dd",
+    "artifacts/native-v5-head-coverage-13-native/actual12-actual13-heads.png": "0122cbb2470d47f1777ee28734fdd79a704ba001b5c262d829720c295398543f",
+    "artifacts/native-v5-skirt-core-13/summary-corrected.json": "193670f646ca07e049f12214a375f7320241ffc4a46d99a0ef557aab3ec32293",
+    "artifacts/native-v5-skirt-core-13/orientation-and-underlay-supplement.json": "a6f432fe8aa37c74f63baf8abb95858b65499beeb8e33538b98dbe187e61eeea",
+    "artifacts/native-v5-skirt-core-13/front-waist-point-diagnosis.json": "a58454ac81dc093466d975ea506981ef13a3f6e5ab84e37efbaf090cb5e4964d",
+    "artifacts/native-v5-skirt-core-13/report.json": "c1959be5c1475e7cbaf56c68d86f310edda796c9d55d7db5cac625b08d781a9e",
+    "artifacts/native-v5-head-coverage-contact-13/report.json": "95478a831f615b3b3a8c8700a766bb6b83a5d9527af4cdc6b2f08342ad15f93c",
+    "artifacts/native-v5-painted-contact-09b/report.json": "32dba741ecd8263a4eb8308040b1b98aad65298ef2397032dd9b417db309e2f0",
+    "artifacts/native-v5-head-coverage-rope-13/report.json": "2cfb596a1a408b720f3c4dd265c54cdc93afd60d9e46dadfc3273ec324f78ddb",
+    "artifacts/native-v5-painted-rope-09b/report.json": "a4226d69d1f6aed9cb33ff684fe81535705c06642e65b25a7caa17b1669f3e23",
+    "artifacts/native-v5-head-coverage-core-13/report.json": "55a049bca8d2e78446a11c303a34fac3183a0fb2d92abc2d9c666388ad97d134",
+    "artifacts/native-v5-head-coverage-can-13/Maple.can3": "d6bbbd789483cbf0a250d3af10b328e2e3a7b2e8d5e3ba43e6350626b192e280",
+    "artifacts/native-v5-head-coverage-can-13/Maple-native-saved.can3": "e18c7754d30893012af267812de23f9712df1f2b4c44396daf125c0a3858da58",
+    "artifacts/native-v5-head-coverage-can-13/native-save-comparison.json": "b56e3076331e181e911fd7698c02fe3f15e4d386a1d09f267dd37938b321a90f",
+    "artifacts/native-v5-head-coverage-can-13/independent-roundtrip-diagnosis.json": "08cae0e0f3ca1edbb2e72dfa2f17de07dd3864e299e23cf8f885ee5e6c4ebbae",
+    "artifacts/native-v5-head-coverage-can-13/diagnose_roundtrip.py": "2cfee32f21c6d0d4ea9e8eca471d4bcfd99d4a9843f6f193b89c52c7a46e8763",
+    "assets/authoring/archives/v5-head-coverage-can3-native-20260910/archive-manifest.json": "06ff6b977289915a32cafc61b0ab172dd6e8c18b06f4a7b12e3f367ef9a707f5",
+    "artifacts/native-v5-head-coverage-visual-13/root-frame-review.json": "faf195f4fec6d7e252fd0cf59ae4fc69e17e0b0c03d06cdf8d7478135bdcab64",
+    "artifacts/native-v5-head-coverage-visual-13/cleanup.json": "26b334c143011f52b44c30e8ddcf6e18efddbe05a58e34c2d75abcb65c372c28",
+    "artifacts/native-v5-head-coverage-visual-13/climb-left.json": "01728619586e178257731f0a5eea91d7112f74dcdac4852baa65c2eef015ce29",
+    "artifacts/native-v5-head-coverage-visual-13/climb-right.json": "14a942fb13effb8731f4952b1648c1d89712866c3cd806dfd3f07149f26b1aa4",
+    "artifacts/native-v5-head-coverage-visual-13/drop-land-idle.json": "5c909a10c54d153eb16acdb52f791814fee96f95ff50adbedc61c8b1e21210c1",
+    "artifacts/native-v5-head-coverage-visual-13/sleep-exit-idle.json": "0baa9a0a0e28a6001b55bb409555995ee1880746ba261f9242124de76ff65c40",
+    "artifacts/native-v5-head-coverage-visual-13/interactions.json": "f2d05076a8c2b28df800779cb77ecbf495a868756b9d5f293f78820c2daa0933",
+    "web/tests/climb-native-endpoint.test.ts": "6b60b310012ef6ba6bdc5340d140449d6d19565be3b26847078aa1d12f99aa1b",
+    "artifacts/native-v5-final-web-tests-13.log": "3b867f8504c58de2ce02bd5d49dcf1086161b088f0b282c19e40db88985ebd99",
+    "artifacts/native-v5-final-web-tests-13-harness-fixed.log": "7c5acefa863f4484166af3f1ea76019790276818eba087ef9d3ac4a9c0099c74",
+    "artifacts/native-v5-final-runtime-13/report.json": "af664ac483d5a117919202f5ed811b05eb6b201a4ed6f49730d4b7ce6358fb1d"
+  },
+  "crossReportChecks": {
+    "fan12To13ExactMaterialRows": 766,
+    "fan12To13ShoeRows": 168,
+    "sameHead145SummaryAs12": true,
+    "sameContact202SummaryAs09b": true,
+    "sameRope6SummaryAs09b": true,
+    "headWorstBothOpacityAbovePoint01": {
+      "id": "front-to-right_mid-01-gaze-right-down",
+      "feature": "pupil_r",
+      "views": [
+        "front",
+        "right_mid"
+      ],
+      "deltaPixels": [
+        -1.857898277964651,
+        -0.19268618349455835
+      ],
+      "distancePixels": 1.8678634791048605,
+      "opacities": [
+        1,
+        0.2545104920864105
+      ],
+      "bothOpacityAbove001": true
+    },
+    "clothReferencedSmallReportHashesVerified": true,
+    "actual13CanReextractedCoordinatesExactlyEqual10And11": true,
+    "rootFrameReviewReferencedReportsAnd23PngHashesVerified": true,
+    "finalWebSuiteAfterHarnessInitializationFix": {
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 1849.3316,
+      "productionCodeChanged": false,
+      "oldFailureLogPreserved": true
+    },
+    "production31MotionRuntime": {
+      "passed": true,
+      "errors": [],
+      "captureCount": 68,
+      "resourceChangesDuringRun": []
+    }
+  },
+  "limitations": [
+    "Raw Core-sample hashes are referenced within the hashed reports; this lightweight review did not rehash large raw sample files.",
+    "Root production-frame review permits full runtime QA, not final delivery. Strict CAN report remains false; its rounding differences are independently explained."
+  ],
+  "candidateAcceptedForFullRuntimeQAByRootFrameReview": true
+}

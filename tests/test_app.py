@@ -122,12 +122,13 @@ def test_global_idle_sleep_and_wake_cycle(monkeypatch):
     pet.tray.hide()
 
 
-def test_happy_twice_and_paused_motion_is_visually_frozen(monkeypatch):
+def test_happy_finishes_once_and_paused_motion_is_visually_frozen(monkeypatch):
     app = _app()
     monkeypatch.setattr(pet_app, "save_settings", lambda *_args, **_kwargs: None)
     pet = pet_app.PetWindow(app, PetSettings(paused=False, autostart=False))
+    pet.show()
     pet._start_temporary("happy")
-    for _ in range(11):
+    for _ in range(5):
         pet._advance_frame()
         assert pet.state == "happy"
     pet._advance_frame()
@@ -154,12 +155,12 @@ def test_shared_menu_and_petting_twice(monkeypatch):
 
     menu = pet._create_context_menu()
     assert [action.text() for action in menu.actions() if not action.isSeparator()] == [
-        "隐藏美腻枫", "暂停活动", "大小", "开机自动启动", "性能与内存", "退出",
+        "隐藏美腻枫", "暂停活动", "互动", "大小", "开机自动启动", "性能与内存", "退出",
     ]
     tray_menu = pet.tray.contextMenu()
     pet._sync_context_menu(tray_menu)
     assert [action.text() for action in tray_menu.actions() if not action.isSeparator()] == [
-        "隐藏美腻枫", "暂停活动", "大小", "开机自动启动", "性能与内存", "退出",
+        "隐藏美腻枫", "暂停活动", "互动", "大小", "开机自动启动", "性能与内存", "退出",
     ]
     pet.hide_pet()
     pet._sync_context_menu(tray_menu)
@@ -178,7 +179,7 @@ def test_shared_menu_and_petting_twice(monkeypatch):
     pet.tray.hide()
 
 
-def test_details_panel_toggles_pause_and_follows_pet(monkeypatch):
+def test_details_panel_freezes_movement_and_follows_pet(monkeypatch):
     app = _app()
     monkeypatch.setattr(pet_app, "save_settings", lambda *_args, **_kwargs: None)
     pet = pet_app.PetWindow(app, PetSettings(paused=False, autostart=False))
@@ -188,7 +189,7 @@ def test_details_panel_toggles_pause_and_follows_pet(monkeypatch):
     pet.open_details_panel(); app.processEvents()
     assert pet.details_panel.isVisible()
     assert not pet.monitor_capsule.isVisible()
-    assert pet.activity_paused
+    assert pet.movement_paused and not pet.activity_paused
     assert pet.details_panel.testAttribute(Qt.WA_TranslucentBackground)
     pet._flip_panel_for_drag(10)
     assert pet._panel_side == "left"
@@ -248,16 +249,5 @@ def test_overlay_union_bounds_do_not_intersect_any_animation(monkeypatch):
     pet.close(); pet.tray.hide()
 
 
-def test_ground_cleanup_finishes_after_two_complete_cycles(monkeypatch):
-    app = _app()
-    monkeypatch.setattr(pet_app, "save_settings", lambda *_args, **_kwargs: None)
-    pet = pet_app.PetWindow(app, PetSettings(autostart=False))
-    pet.cleanup_operation = "test"; pet.cleanup_finish_pending = True
-    pet.cleanup_result = {"completed_at": 1, "available_increase": 0, "steps": {}}
-    pet.start_state("clean_ground"); pet.animation_timer.stop()
-    for _ in range(6): pet._advance_frame(); pet.animation_timer.stop()
-    assert pet.state == "clean_ground" and pet.animation_cycles == 1
-    for _ in range(6): pet._advance_frame(); pet.animation_timer.stop()
-    assert pet.state == "idle" and pet.cleanup_operation is None
-    pet.monitor_button.close(); pet.monitor_capsule.close(); pet.details_panel.close()
-    pet.close(); pet.tray.hide()
+
+

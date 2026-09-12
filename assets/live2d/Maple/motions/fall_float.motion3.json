@@ -1,0 +1,1268 @@
+{
+  "Version": 3,
+  "Meta": {
+    "Duration": 1.8,
+    "Fps": 60.0,
+    "Loop": true,
+    "AreBeziersRestricted": true,
+    "CurveCount": 80,
+    "TotalSegmentCount": 87,
+    "TotalPointCount": 341,
+    "UserDataCount": 0,
+    "UserDataSize": 0
+  },
+  "FadeInTime": 0.18,
+  "FadeOutTime": 0.22,
+  "Curves": [
+    {
+      "Target": "Parameter",
+      "Id": "ParamAngleX",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBodyAngleX",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamAngleY",
+      "Segments": [
+        0.0,
+        3.0,
+        1,
+        0.6,
+        3.0,
+        1.2,
+        3.0,
+        1.8,
+        3.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBodyAngleY",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamAngleZ",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBodyAngleZ",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamEyeLOpen",
+      "Segments": [
+        0.0,
+        1.0,
+        1,
+        0.6,
+        1.0,
+        1.2,
+        1.0,
+        1.8,
+        1.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamEyeLSmile",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBrowLY",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBrowLForm",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamArmLA",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamArmLB",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamLegLA",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamLegLB",
+      "Segments": [
+        0.0,
+        5.0,
+        1,
+        0.6,
+        5.0,
+        1.2,
+        5.0,
+        1.8,
+        5.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamEyeROpen",
+      "Segments": [
+        0.0,
+        1.0,
+        1,
+        0.6,
+        1.0,
+        1.2,
+        1.0,
+        1.8,
+        1.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamEyeRSmile",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBrowRY",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBrowRForm",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamArmRA",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamArmRB",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamLegRA",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamLegRB",
+      "Segments": [
+        0.0,
+        4.0,
+        1,
+        0.6,
+        4.0,
+        1.2,
+        4.0,
+        1.8,
+        4.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamEyeBallX",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamEyeBallY",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamMouthForm",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamHairFront",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamHairSide",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamHairBack",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamSkirt",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamMouthOpenY",
+      "Segments": [
+        0.0,
+        0.24,
+        1,
+        0.6,
+        0.24,
+        1.2,
+        0.24,
+        1.8,
+        0.24
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCheek",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBreath",
+      "Segments": [
+        0.0,
+        0.02,
+        1,
+        0.075,
+        0.02,
+        0.15,
+        0.030777,
+        0.225,
+        0.049289,
+        1,
+        0.3,
+        0.067801,
+        0.375,
+        0.09382,
+        0.45,
+        0.12,
+        1,
+        0.525,
+        0.14618,
+        0.6,
+        0.172199,
+        0.675,
+        0.190711,
+        1,
+        0.75,
+        0.209223,
+        0.825,
+        0.22,
+        0.9,
+        0.22,
+        1,
+        0.975,
+        0.22,
+        1.05,
+        0.209223,
+        1.125,
+        0.190711,
+        1,
+        1.2,
+        0.172199,
+        1.275,
+        0.14618,
+        1.35,
+        0.12,
+        1,
+        1.425,
+        0.09382,
+        1.5,
+        0.067801,
+        1.575,
+        0.049289,
+        1,
+        1.65,
+        0.030777,
+        1.725,
+        0.02,
+        1.8,
+        0.02
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamTyping",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamTypingPulse",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamListening",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamDizzy",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamGlasses",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamFan",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamMaple",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamPoseSleep",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamPoseSwing",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamPoseTop",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCrouch",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBounce",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamSwingVisible",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleaning",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamPoseClimb",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamSwing",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamHeadTurn",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamBodyTurn",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamHandLShape",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamSleeveLHang",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamHandRShape",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamSleeveRHang",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamTransitionProgress",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamArmPoseMode",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamRibbonLX",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamRibbonLY",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanFanL",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamRibbonRX",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamRibbonRY",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanFanR",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleaningSweep",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanGround",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamClimbPhase",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamClimbActive",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamClimbDirection",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanContext",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanStroke",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanPoseL",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanBrushL",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanPoseR",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamCleanBrushR",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamFreeArmActive",
+      "Segments": [
+        0.0,
+        1.0,
+        1,
+        0.6,
+        1.0,
+        1.2,
+        1.0,
+        1.8,
+        1.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamFreeArmPose",
+      "Segments": [
+        0.0,
+        1.0,
+        1,
+        0.6,
+        1.0,
+        1.2,
+        1.0,
+        1.8,
+        1.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamFreeArmBrace",
+      "Segments": [
+        0.0,
+        1.0,
+        1,
+        0.6,
+        1.0,
+        1.2,
+        1.0,
+        1.8,
+        1.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamArmSupportBlend",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamClimbRefine",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamClimbHandoff",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Id": "ParamClimbDrapeBlend",
+      "Segments": [
+        0.0,
+        0.0,
+        1,
+        0.6,
+        0.0,
+        1.2,
+        0.0,
+        1.8,
+        0.0
+      ]
+    }
+  ],
+  "UserData": []
+}

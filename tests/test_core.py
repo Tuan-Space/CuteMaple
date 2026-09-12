@@ -43,8 +43,8 @@ def test_transition_animation_metadata():
     assert ANIMATIONS["land"].playback == "one_shot"
     assert ANIMATIONS["swing_cycle"].playback == "counted_loop"
     assert ANIMATIONS["swing_cycle"].cycles == 3
-    assert ANIMATIONS["happy"].playback == "counted_loop"
-    assert ANIMATIONS["happy"].cycles == 2
+    assert ANIMATIONS["happy"].playback == "one_shot"
+    assert ANIMATIONS["happy"].cycles == 0
     assert ANIMATIONS["petting"].playback == "counted_loop"
     assert ANIMATIONS["petting"].cycles == 2
     assert "peek_left" not in ANIMATIONS

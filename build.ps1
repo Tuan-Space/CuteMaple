@@ -1,99 +1,171 @@
+param(
+    [ValidateSet("Directory")]
+    [string]$Mode = "Directory",
+    [switch]$CompatibilityBuild,
+    [switch]$InstallDependencies,
+    [switch]$SkipTests,
+    [string]$CandidateLabel = "",
+    [ValidateRange(1, 32)]
+    [int]$Jobs = 4
+)
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$BuildRoot = Join-Path ([System.IO.Path]::GetTempPath()) "meinifeng-nuitka-build"
-$Stage = Join-Path $BuildRoot ("src-" + [Guid]::NewGuid().ToString("N"))
-$Venv = Join-Path $BuildRoot ".venv"
-$Python = Join-Path $Venv "Scripts\python.exe"
-$NuitkaCache = Join-Path $BuildRoot "nuitka-cache"
-
-New-Item -ItemType Directory -Force -Path $BuildRoot, $Stage, $NuitkaCache | Out-Null
-$env:NUITKA_CACHE_DIR = $NuitkaCache
-$ExistingDownloads = Join-Path $env:LOCALAPPDATA "Nuitka\Nuitka\Cache\downloads"
-if (Test-Path -LiteralPath $ExistingDownloads) {
-    # Reuse an already downloaded compiler while keeping writable caches isolated.
-    $env:NUITKA_CACHE_DIR_DOWNLOADS = $ExistingDownloads
-}
+$BuildRoot = Join-Path $ProjectRoot ".build"
+$BuildId = Get-Date -Format "yyyyMMdd-HHmmss"
+$Stage = Join-Path $BuildRoot ("stage-" + $BuildId)
+$Python = Join-Path $ProjectRoot ".venv\Scripts\python.exe"
+$env:NUITKA_CACHE_DIR = Join-Path $BuildRoot "nuitka-cache"
+$env:NUITKA_CACHE_DIR_DOWNLOADS = Join-Path $BuildRoot "downloads"
+New-Item -ItemType Directory -Force -Path $Stage, $env:NUITKA_CACHE_DIR, $env:NUITKA_CACHE_DIR_DOWNLOADS | Out-Null
 if (-not (Test-Path -LiteralPath $Python)) {
-    python -m venv $Venv
+    & python -m venv (Join-Path $ProjectRoot ".venv")
+    if ($LASTEXITCODE -ne 0) { throw "Cannot create project virtual environment." }
+    $InstallDependencies = $true
 }
-
-& $Python -m pip install -r (Join-Path $ProjectRoot "requirements-build.txt")
-
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "main.py") -Destination $Stage -Force
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "pet_app.py") -Destination $Stage -Force
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "pet_core.py") -Destination $Stage -Force
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "resource_monitor.py") -Destination $Stage -Force
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "memory_cleaner.py") -Destination $Stage -Force
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "monitor_ui.py") -Destination $Stage -Force
+if ($InstallDependencies) {
+    & $Python -m pip install -r (Join-Path $ProjectRoot "requirements-build.txt")
+    if ($LASTEXITCODE -ne 0) { throw "Build dependency installation failed." }
+}
+$ValidationArguments = @((Join-Path $ProjectRoot "tools\validate_release.py"), $ProjectRoot)
+if ($CompatibilityBuild) { $ValidationArguments += "--compatibility" }
+& $Python @ValidationArguments
+if ($LASTEXITCODE -ne 0) {
+    throw "Runtime inventory incomplete. Export Maple's model and all motions first, or explicitly use -CompatibilityBuild for a sprite fallback test package."
+}
+if (-not $SkipTests) {
+    $TestEvidence = Join-Path $Stage "regression"
+    & $Python (Join-Path $ProjectRoot "tools\run_regression.py") --project-root $ProjectRoot --output-dir $TestEvidence
+    if ($LASTEXITCODE -ne 0) { throw "Tests failed; no package produced." }
+}
+$RuntimeModules = @("main.py", "pet_app.py", "pet_core.py", "resource_monitor.py", "memory_cleaner.py",
+                    "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "desktop_decorations.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_helper.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py")
+foreach ($Module in $RuntimeModules) {
+    Copy-Item -LiteralPath (Join-Path $ProjectRoot $Module) -Destination $Stage
+}
 $StageAssets = Join-Path $Stage "assets"
 New-Item -ItemType Directory -Force -Path $StageAssets | Out-Null
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "assets\sprites_v2") -Destination $StageAssets -Recurse -Force
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "assets\fonts") -Destination $StageAssets -Recurse -Force
-Copy-Item -LiteralPath (Join-Path $ProjectRoot "assets\icon.png") -Destination $StageAssets -Force
-$IconSource = Get-ChildItem -LiteralPath (Join-Path $ProjectRoot "assets") -Filter "*.ico" -File | Select-Object -First 1
-if (-not $IconSource) {
-    throw "assets 目录中未找到 ico 图标"
+foreach ($Folder in @("sprites_v2", "fonts")) {
+    Copy-Item -LiteralPath (Join-Path $ProjectRoot ("assets\" + $Folder)) -Destination $StageAssets -Recurse
 }
-Copy-Item -LiteralPath $IconSource.FullName -Destination (Join-Path $StageAssets "app.ico") -Force
-$AppBaseName = [System.IO.Path]::GetFileNameWithoutExtension($IconSource.Name)
-
-# Some sandboxed Windows installations expose Nuitka's downloaded MinGW cache
-# through a path too long for nested SDK includes. Mirror only the headers to a
-# short temp path and advertise it to GCC; on normal systems this block is inert.
-$ShortInclude = Join-Path $BuildRoot "mingw-include"
-if (-not (Test-Path -LiteralPath $ShortInclude)) {
-    $IncludeCandidates = @(
-        Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA "Packages\*\LocalCache\Local\Nuitka\Nuitka\Cache\downloads\gcc\x86_64\*\mingw64\x86_64-w64-mingw32\include") -Directory -ErrorAction SilentlyContinue
-        Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA "Nuitka\Nuitka\Cache\downloads\gcc\x86_64\*\mingw64\x86_64-w64-mingw32\include") -Directory -ErrorAction SilentlyContinue
-    )
-    $SourceInclude = $IncludeCandidates | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if ($SourceInclude) {
-        New-Item -ItemType Directory -Force -Path $ShortInclude | Out-Null
-        Copy-Item -Path (Join-Path $SourceInclude.FullName "*") -Destination $ShortInclude -Recurse -Force
+Copy-Item -LiteralPath (Join-Path $ProjectRoot "assets\icon.png") -Destination $StageAssets
+$Icon = Get-ChildItem -LiteralPath (Join-Path $ProjectRoot "assets") -Filter "*.ico" -File | Select-Object -First 1
+if (-not $Icon) { throw "Missing application icon." }
+Copy-Item -LiteralPath $Icon.FullName -Destination (Join-Path $StageAssets "app.ico")
+$ModelSource = Join-Path $ProjectRoot "assets\live2d\Maple"
+$ModelTarget = Join-Path $StageAssets "live2d\Maple"
+New-Item -ItemType Directory -Force -Path $ModelTarget | Out-Null
+if (Test-Path -LiteralPath $ModelSource) {
+    $ModelRoot = (Resolve-Path -LiteralPath $ModelSource).Path
+    foreach ($File in Get-ChildItem -LiteralPath $ModelSource -Recurse -File) {
+        if ($File.Extension.ToLowerInvariant() -notin @(".json", ".moc3", ".png", ".jpg", ".jpeg", ".wav", ".mp3")) { continue }
+        $Relative = [System.IO.Path]::GetRelativePath($ModelRoot, $File.FullName)
+        $Destination = Join-Path $ModelTarget $Relative
+        New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Destination) | Out-Null
+        Copy-Item -LiteralPath $File.FullName -Destination $Destination
     }
 }
-if (Test-Path -LiteralPath $ShortInclude) {
-    $env:C_INCLUDE_PATH = $ShortInclude
-    $env:CPLUS_INCLUDE_PATH = $ShortInclude
+$StageWeb = Join-Path $Stage "web"
+New-Item -ItemType Directory -Force -Path $StageWeb | Out-Null
+Copy-Item -LiteralPath (Join-Path $ProjectRoot "web\dist") -Destination $StageWeb -Recurse
+$AppBaseName = if ($CompatibilityBuild) { "CuteMaple-Compatibility" } else { "CuteMaple-Live2D" }
+$Arguments = @(
+    "-m", "nuitka", "--mode=standalone", "--enable-plugin=pyside6",
+    "--include-module=PySide6.QtWebEngineCore", "--include-module=PySide6.QtWebEngineWidgets",
+    "--include-module=PySide6.QtWebChannel", "--include-module=PySide6.QtNetwork",
+    "--windows-console-mode=disable", "--windows-icon-from-ico=assets\app.ico",
+    "--include-data-dir=assets/sprites_v2=assets/sprites_v2",
+    "--include-data-dir=assets/fonts=assets/fonts",
+    "--include-data-dir=assets/live2d=assets/live2d",
+    "--include-data-files=assets/icon.png=assets/icon.png",
+    "--include-data-dir=web/dist=web/dist",
+    "--output-dir=out", "--output-filename=$AppBaseName.exe",
+    "--report=compilation-report.xml", "--assume-yes-for-downloads", "--jobs=$Jobs"
+)
+$Arguments += "main.py"
+$SourceHashes = [ordered]@{}
+foreach ($Module in $RuntimeModules) {
+    $SourceHashes[$Module] = (Get-FileHash -LiteralPath (Join-Path $Stage $Module) -Algorithm SHA256).Hash
 }
-
-$Dist = Join-Path $ProjectRoot "dist"
-New-Item -ItemType Directory -Force -Path $Dist | Out-Null
-
+$ResourceHashes = [ordered]@{}
+foreach ($Folder in @($StageAssets, (Join-Path $StageWeb "dist"))) {
+    foreach ($File in Get-ChildItem -LiteralPath $Folder -Recurse -File) {
+        $Relative = [System.IO.Path]::GetRelativePath($Stage, $File.FullName)
+        $ResourceHashes[$Relative] = (Get-FileHash -LiteralPath $File.FullName -Algorithm SHA256).Hash
+    }
+}
+$Snapshot = [ordered]@{
+    frozenAt = (Get-Date).ToUniversalTime().ToString("o"); candidateLabel = $CandidateLabel
+    sourceModulesSha256 = $SourceHashes; runtimeResourcesSha256 = $ResourceHashes
+    python = $Python; mainCompilerArguments = $Arguments
+    cleanupCompilerArguments = @("-m", "nuitka", "--mode=standalone", "--nofollow-import-to=PySide6",
+        "--windows-console-mode=disable", "--output-dir=helper-out", "--output-filename=CuteMaple-Cleaner.exe",
+        "--report=helper-compilation-report.xml", "--assume-yes-for-downloads", "--jobs=$Jobs", "cleanup_helper.py")
+}
+$Snapshot | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $Stage "SOURCE-SNAPSHOT.json") -Encoding utf8
 Push-Location $Stage
 try {
-    & $Python -m nuitka `
-        --mode=onefile `
-        --onefile-no-compression `
-        --enable-plugin=pyside6 `
-        --windows-console-mode=disable `
-        --windows-icon-from-ico="assets\app.ico" `
-        --include-data-dir="assets\sprites_v2=assets\sprites_v2" `
-        --include-data-dir="assets\fonts=assets\fonts" `
-        --include-data-files="assets\icon.png=assets\icon.png" `
-        --output-dir="dist" `
-        --assume-yes-for-downloads `
-        main.py
-    if ($LASTEXITCODE -ne 0) {
-        throw "Nuitka 构建失败，退出码 $LASTEXITCODE"
-    }
-}
-finally {
+    & $Python @Arguments
+    if ($LASTEXITCODE -ne 0) { throw "Nuitka build failed ($LASTEXITCODE)." }
+    # Separate ordinary-privilege UI and administrator-only cleanup entry.
+    # This helper has no Qt imports or web/model resources.
+    & $Python -m nuitka --mode=standalone --nofollow-import-to=PySide6 `
+        --windows-console-mode=disable --output-dir=helper-out `
+        --output-filename=CuteMaple-Cleaner.exe --report=helper-compilation-report.xml `
+        --assume-yes-for-downloads "--jobs=$Jobs" cleanup_helper.py
+    if ($LASTEXITCODE -ne 0) { throw "Minimal cleanup helper build failed ($LASTEXITCODE)." }
+} finally {
     Pop-Location
 }
+$Standalone = Join-Path $Stage "out\main.dist"
+if (-not (Test-Path -LiteralPath $Standalone)) {
+    $Standalone = (Get-ChildItem -LiteralPath (Join-Path $Stage "out") -Directory -Filter "*.dist" | Select-Object -First 1).FullName
+}
+if (-not $Standalone) { throw "Nuitka standalone dependency directory is missing." }
+$HelperStandalone = Join-Path $Stage "helper-out\cleanup_helper.dist"
+if (-not (Test-Path -LiteralPath (Join-Path $HelperStandalone "CuteMaple-Cleaner.exe"))) {
+    throw "Independent cleanup executable is missing."
+}
+Copy-Item -LiteralPath $HelperStandalone -Destination (Join-Path $Standalone "cleaner") -Recurse
+$PackagedValidation = @((Join-Path $ProjectRoot "tools\validate_release.py"), $Standalone, "--packaged")
+if ($CompatibilityBuild) { $PackagedValidation += "--compatibility" }
+& $Python @PackagedValidation
+if ($LASTEXITCODE -ne 0) { throw "Packaged QtWebEngine/runtime inventory failed." }
+$Output = Join-Path $ProjectRoot ("dist\" + $AppBaseName + "-" + $Mode + "-" + $BuildId)
+New-Item -ItemType Directory -Force -Path $Output | Out-Null
+Copy-Item -LiteralPath $Standalone -Destination (Join-Path $Output $AppBaseName) -Recurse
+$Executable = Join-Path $Output ($AppBaseName + "\" + $AppBaseName + ".exe")
+if (-not (Test-Path -LiteralPath $Executable)) { throw "Expected application executable is missing." }
+Copy-Item -LiteralPath (Join-Path $Stage "compilation-report.xml") -Destination $Output
+Copy-Item -LiteralPath (Join-Path $Stage "helper-compilation-report.xml") -Destination $Output
+Copy-Item -LiteralPath (Join-Path $Stage "SOURCE-SNAPSHOT.json") -Destination $Output
+$Manifest = [ordered]@{
+    product = $AppBaseName; mode = $Mode; compatibility = [bool]$CompatibilityBuild
+    builtAt = (Get-Date).ToString("o"); sourceRevision = (& git -C $ProjectRoot rev-parse HEAD)
+    sourceHasUncommittedChanges = [bool](& git -C $ProjectRoot status --porcelain)
+    buildStage = $Stage
+    releaseStatus = "UNVERIFIED"
+    candidateLabel = $CandidateLabel
+    normalDesktopRunVerified = $false
+    securityReviewStatus = "pending"
+    privilegedCleanup = "separate cleaner/CuteMaple-Cleaner.exe; explicit user authorization only"
+    modelValidation = $(if ($CompatibilityBuild) { "NOT A COMPLETE LIVE2D RELEASE" } else { "runtime inventory passed; visual QA remains required" })
+}
+$Manifest | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output "BUILD-STATUS.json") -Encoding utf8
+if ($CandidateLabel) {
+    ("CANDIDATE ONLY - NOT A FINAL RELEASE`n" + $CandidateLabel + "`nNo ordinary desktop soak or default-protection release verdict is implied.") |
+        Set-Content -LiteralPath (Join-Path $Output "CANDIDATE-NOT-FINAL.txt") -Encoding utf8
+}
+if ($CompatibilityBuild) {
+    "SPRITE COMPATIBILITY TEST BUILD. This is not a completed Maple Live2D model release. Check the pet's Interaction menu for renderer status." |
+        Set-Content -LiteralPath (Join-Path $Output "COMPATIBILITY-NOT-FINAL.txt") -Encoding utf8
+}
+$Hashes = foreach ($File in Get-ChildItem -LiteralPath $Output -Recurse -File) {
+    if ($File.Name -eq "SHA256.txt") { continue }
+    $Hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $File.FullName).Hash
+    $Relative = [System.IO.Path]::GetRelativePath($Output, $File.FullName)
+    "$Hash  $Relative"
+}
+$Hashes | Set-Content -LiteralPath (Join-Path $Output "SHA256.txt") -Encoding utf8
+Write-Output ("Package: " + $Output)
+Write-Output ("Executable: " + $Executable)
 
-$BuiltExe = Join-Path $Stage "dist\main.exe"
-$Exe = Join-Path $Dist ($AppBaseName + ".exe")
-if (Test-Path -LiteralPath $BuiltExe) {
-    Copy-Item -LiteralPath $BuiltExe -Destination $Exe -Force
-}
-if (-not (Test-Path -LiteralPath $Exe)) {
-    throw "构建未产生 $Exe"
-}
-if ((Get-Item -LiteralPath $Exe).Length -lt 5MB) {
-    throw "生成文件体积异常，可能缺少 onefile 负载：$Exe"
-}
-Get-Item -LiteralPath $Exe | Select-Object FullName, Length, LastWriteTime
-$Hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $Exe).Hash
-Set-Content -LiteralPath (Join-Path $Dist "SHA256.txt") -Value ($Hash + "  " + $AppBaseName + ".exe") -Encoding utf8
-Get-FileHash -Algorithm SHA256 -LiteralPath $Exe

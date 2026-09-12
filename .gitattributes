@@ -3,3 +3,15 @@
 *.gif binary
 *.ico binary
 *.otf binary
+# Keep checked source hashes stable even when core.autocrlf is enabled.
+tools/authoring/vendor/** text eol=lf
+web/dist/** -text
+assets/authoring/** -text
+assets/live2d/** -text
+*.moc3 filter=lfs diff=lfs merge=lfs -text
+*.can3 filter=lfs diff=lfs merge=lfs -text
+*.rig.json filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.cmo3 filter=lfs diff=lfs merge=lfs -text
+assets/authoring/revisions/v5-1-motion-polish-20260911/**/*.png filter=lfs diff=lfs merge=lfs -text
+assets/authoring/archives/v5-1-*/**/*.png filter=lfs diff=lfs merge=lfs -text
