@@ -1,0 +1,92 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "left-wait30-and-native-two-cycles",
+      "passed": true
+    },
+    {
+      "name": "left-rest-body-and-window-fixed",
+      "passed": true,
+      "unexpectedParameterChanges": {}
+    },
+    {
+      "name": "left-head-and-eyes-alive",
+      "passed": true
+    },
+    {
+      "name": "left-panel-freezes-phase-and-window",
+      "passed": true
+    },
+    {
+      "name": "right-wait30-and-native-two-cycles",
+      "passed": true
+    },
+    {
+      "name": "right-rest-body-and-window-fixed",
+      "passed": true,
+      "unexpectedParameterChanges": {}
+    },
+    {
+      "name": "right-head-and-eyes-alive",
+      "passed": true
+    },
+    {
+      "name": "right-panel-freezes-phase-and-window",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "resourceHashes": {
+    "assets/live2d/Maple/editor-export.json": "dce65990ce8e1951332b9f81b84099094b75868a01f5b596604e9996a5f31565",
+    "assets/live2d/Maple/Maple.4096/texture_00.png": "ff7c0216df1f053dfa2f92f9a5c5be57edb53f162855c6de6ab97f37a2f62a73",
+    "assets/live2d/Maple/Maple.cdi3.json": "c3727036c74b9913646f3213533d9faa46eeb33e8a3eb4bfac06ff5e9bb0acf5",
+    "assets/live2d/Maple/Maple.moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+    "assets/live2d/Maple/Maple.model3.json": "cf4f6efc914b950817e2f0f94f678e87511afbcc9661b2b0287b4138d24e95dd",
+    "assets/live2d/Maple/Maple.pet.json": "8f476ef2f0515d3e329bb60c2196d8a619c746b077af89283a7e2d876c9d6023",
+    "assets/live2d/Maple/Maple.physics3.json": "7fe83fda4a86139704638cb3861ae5680f9cc5566abb7804f827391471f2fb03",
+    "assets/live2d/Maple/motions/climb_left.motion3.json": "9e7cb7aba039a71796cf82672891e3c554058cff428786bf10b1c1aa9f903455",
+    "assets/live2d/Maple/motions/climb_right.motion3.json": "95475b47631bf824d7628272eeac88618fa97cca6a92e442db56e7bf281996d5",
+    "assets/live2d/Maple/motions/climb_to_top_left.motion3.json": "90f294455fdd2ed3f240fb96e8ff9360a32421bbb133be933b2cceaa609ee394",
+    "assets/live2d/Maple/motions/climb_to_top_right.motion3.json": "336031ad32fab5d304158bd648b8bbffb01f6c433cfb90f286213154e7194e15",
+    "assets/live2d/Maple/motions/drag_left.motion3.json": "21d0839580394df84e408d5f4234d8740e3f0391f6631a05364f39f6e6aa4c09",
+    "assets/live2d/Maple/motions/drag_right.motion3.json": "3402c57eb4cc6a0225d0c749dc384e8c563ec963f8bd776fb3c517f99fbba12e",
+    "assets/live2d/Maple/motions/fall_float.motion3.json": "d7e841b6a91c23ffec4ee106bf1b25c474ef75032c7d0111077d692bb702c449",
+    "assets/live2d/Maple/motions/happy.motion3.json": "60712d2fe195607529a4466c9dc05d0a6ec10c6a9f7e19bd628aa8e097908bd3",
+    "assets/live2d/Maple/motions/idle.motion3.json": "ea4f8ded80c797f9d23ab316755f7ff2a687786261714e8fb8547fb1eccdfc59",
+    "assets/live2d/Maple/motions/land.motion3.json": "ca9b1b8491db0cec3931f7f027ad7bd860c487883d171809a2b684e2f56d54ea",
+    "assets/live2d/Maple/motions/petting.motion3.json": "96aec9912b28130aa553b87ee27fc9574a4a615931299883f9ef77b294d8360d",
+    "assets/live2d/Maple/motions/sleep_enter.motion3.json": "8580414f3c13f37f6829b054971d02d29ddaec43668a8b98c9de22dac1ff6807",
+    "assets/live2d/Maple/motions/sleep_exit.motion3.json": "0061a76e5f8e6557441c8da8d708a0e964153c5379a1e4129f1dc5e8ad5617d9",
+    "assets/live2d/Maple/motions/sleep_loop.motion3.json": "a6ca19fbc544875f8457af7f521342c752ddde741213fe1e523520f0a11b7424",
+    "assets/live2d/Maple/motions/swing_cycle.motion3.json": "a3f28b3833b93c59992f97b6897cdd62237d74c2c9d066e6609790850c5fbfff",
+    "assets/live2d/Maple/motions/swing_idle.motion3.json": "888c7848383af78363b8c4dca72cb33a88cd2eaf616fe3b62de3f3bfbf24538f",
+    "assets/live2d/Maple/motions/talk.motion3.json": "7b482b714fb2937d35c59665ca6cd3bb2a3a594bf60b4e58850b4c51a748e86d",
+    "assets/live2d/Maple/motions/walk_left.motion3.json": "c4bf429d09c77dab8a198370e9b3afa8d3c9c823c6239725c9452c250aa2f56b",
+    "assets/live2d/Maple/motions/walk_right.motion3.json": "0f0e0305e24c66dd222801ee4f72b4548b23db87f82f05009b509ed355005f99",
+    "web/dist/app.js": "6ef148c905f00fdd47f0db64fc18bcfba21cc8801e39c65ce573c012714ea86b",
+    "web/dist/build-manifest.json": "668369aa85c05f8b6ee34375e0b4676f2a1cbed2a80e5c2aaac24b72be766c51",
+    "web/dist/index.html": "f6323962bed8ad9a13da25c5f171cc328e3b0403559c9b692a9d71705b7ea061",
+    "web/dist/licenses/Cubism-Core-LICENSE.md": "b81e37048010ef1d336106151201a0323c3309cae44aecdedf57831fe88fa991",
+    "web/dist/licenses/Cubism-Core-RedistributableFiles.txt": "d16c123688299e1e69a7f5ebc01b3bd75a8d408c024002a7d35b2aae94003f8c",
+    "web/dist/licenses/Cubism-Framework-LICENSE.md": "7ed849bff1e6499aa7cd882e47d246ddbbe06817c1e84cb974df949488302614",
+    "web/dist/licenses/Cubism-PROVENANCE.json": "7b9a4d3d85108a20e04fbaa551e230bbb8dd97eb3bb365568640dbf4b9251c0d",
+    "web/dist/licenses/Cubism-SDK-LICENSE.md": "787a7d1454240865420b96ea9a20ab5e1a5ec3c1abced2e308288c2de8aac991",
+    "web/dist/licenses/Cubism-SDK-NOTICE.md": "fa72aa00a7bf8b98a7617a9d67a3530a9fe23705808163cf54ca799398b22fbc",
+    "web/dist/live2dcubismcore.min.js": "8741f739779b5d5210872bd3d7d99f0f1e56e6c87409e7d26d6bb4b80aa1ef47",
+    "web/dist/shaders/fragshadersrcalphablend.frag": "855b247f02042a808a41e282ee4d7de7cc4533abeb5032b4ab8fe84f7dec107f",
+    "web/dist/shaders/fragshadersrccolorblend.frag": "01d4bf6a14b4a738976e9a538767a21da0defa8816f3845a7df08a7713327538",
+    "web/dist/shaders/fragshadersrccopy.frag": "15c67a4ec3adda4c849aff2a8319a3f6aceef8a84d5e5e1f3fb7fd9cd681193c",
+    "web/dist/shaders/fragshadersrcmaskinvertedpremultipliedalpha.frag": "1005cff8113de587cf1c0e295288d04d85f0f4ebc223684c8340e017fd8fc788",
+    "web/dist/shaders/fragshadersrcmaskpremultipliedalpha.frag": "f84ff615393d26ea6ab7c28747803db6472524c92567c0ad01e8225fbab36a3b",
+    "web/dist/shaders/fragshadersrcpremultipliedalpha.frag": "c93abe215357cc782a25fc4ef20f5fe1f34e2cc193ee23d763b56b81fae5fce1",
+    "web/dist/shaders/fragshadersrcpremultipliedalphablend.frag": "2155076275199a2946959838391dfb856e9d1db91b6ca3abd19ed70d4ff27e15",
+    "web/dist/shaders/fragshadersrcsetupmask.frag": "3cccc0b68a56cfbf4bd4841b0a759431dd159812c38dc280981ba633fa0afe7a",
+    "web/dist/shaders/vertshadersrc.vert": "291ed3f35f71f1e71e6df33fb055f009a8a9b36ee664f74f24f6cefef0c4029b",
+    "web/dist/shaders/vertshadersrcblend.vert": "2589837bd7a6a550a1c3af41b4fa776011e6e71f2531320fa39afcb83b209bf4",
+    "web/dist/shaders/vertshadersrccopy.vert": "b7bc4ba7517f405af4812ac47d99bc2b633c99f463c1224029556b00e8dff3cf",
+    "web/dist/shaders/vertshadersrcmasked.vert": "6704a9df2e6d3ee5176c72fca4ba59358ba4827a07054b1e0a72a3c574e281fd",
+    "web/dist/shaders/vertshadersrcsetupmask.vert": "649aad2f6c0af55a7a4adcf33dbf78937ef9d77ed6ba917fd716176adce25afe"
+  },
+  "scope": "Production PetWindow and native Cubism; scripted attachment, panel and gaze. No hardware input/UAC/cleanup. Visual acceptance requires frame review."
+}
