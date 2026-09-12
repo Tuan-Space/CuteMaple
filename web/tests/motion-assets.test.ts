@@ -10,7 +10,7 @@ import { bindMotionMarkers } from '../src/motion-data';
 import { REQUIRED_STATES } from '../src/protocol';
 
 const motionDirectories = [path.resolve('../assets/live2d/Maple/motions'),
-  path.resolve('../assets/authoring/revisions/v5-1-motion-polish-20260911/runtime/motions')];
+  path.resolve('../assets/authoring/source/runtime/motions')];
 test('installed and v5 authored Maple motions pass the real Cubism R5 consistency checker', async () => {
     // The official Core detects Node and expects its CommonJS runtime globals.
     const runtime = globalThis as typeof globalThis & { require: ReturnType<typeof createRequire>; __dirname: string };

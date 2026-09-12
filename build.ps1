@@ -134,10 +134,16 @@ if (-not (Test-Path -LiteralPath $Executable)) { throw "Expected application exe
 Copy-Item -LiteralPath (Join-Path $Stage "compilation-report.xml") -Destination $Output
 Copy-Item -LiteralPath (Join-Path $Stage "helper-compilation-report.xml") -Destination $Output
 Copy-Item -LiteralPath (Join-Path $Stage "SOURCE-SNAPSHOT.json") -Destination $Output
+$SourceRevision = "source-archive"
+$SourceDirty = $false
+if (Test-Path -LiteralPath (Join-Path $ProjectRoot ".git")) {
+    $SourceRevision = (& git -C $ProjectRoot rev-parse HEAD)
+    $SourceDirty = [bool](& git -C $ProjectRoot status --porcelain)
+}
 $Manifest = [ordered]@{
-    product = $AppBaseName; mode = $Mode; version = "2.0.1"
-    builtAt = (Get-Date).ToString("o"); sourceRevision = (& git -C $ProjectRoot rev-parse HEAD)
-    sourceHasUncommittedChanges = [bool](& git -C $ProjectRoot status --porcelain)
+    product = $AppBaseName; mode = $Mode; version = (Get-Content -LiteralPath (Join-Path $ProjectRoot "VERSION") -Raw).Trim()
+    builtAt = (Get-Date).ToString("o"); sourceRevision = $SourceRevision
+    sourceHasUncommittedChanges = $SourceDirty
     buildStage = $Stage
     releaseStatus = "UNVERIFIED"
     candidateLabel = $CandidateLabel

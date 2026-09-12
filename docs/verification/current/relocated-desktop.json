@@ -1,0 +1,512 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-09-12T15:13:31.110460+00:00",
+  "finishedAt": "2026-09-12T15:13:42.873789+00:00",
+  "pid": 26284,
+  "scenario": "startup",
+  "requestedDurationSeconds": 8.0,
+  "durationSeconds": 8.005577499978244,
+  "executable": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\publish-200\\relocated source\\main.py",
+  "executableSha256": "6c24af9349ba04f3cf3904811de4f386d10f9e600eb81678758203d50444948b",
+  "profile": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\publish-200\\relocated-profile",
+  "offscreen": false,
+  "graphicsOverrides": {},
+  "defaultGraphicsBackend": true,
+  "ordinaryPetWindow": true,
+  "runtimeActive": true,
+  "nativeProvidersActive": true,
+  "nativeProvidersObserved": true,
+  "completed": true,
+  "passed": true,
+  "errors": [],
+  "observations": [
+    {
+      "at": "2026-09-12T15:13:34.664077+00:00",
+      "event": "renderer_ready",
+      "payload": {
+        "backend": "live2d",
+        "capabilities": [
+          "climb-endpoint-v1",
+          "climb-rest-v1",
+          "motion-polish-v1"
+        ],
+        "generation": 1,
+        "locomotion": {
+          "climb": {
+            "contactCalibration": {
+              "calibrationSha256": "c8ba250cd7fbb0aba1ef13b5cc9faf5dba811cf089234baed01c3ac627456ce4",
+              "mirrorX": 1.016,
+              "nativeMocSha256": "57d97329df00cb60040fac891b7c4a13a428700a8b05539136413f5c53561317",
+              "nativeReexportVerificationRequired": true,
+              "schemaVersion": 1,
+              "wallX": 0.719
+            },
+            "cycleDuration": 1,
+            "footSupportWindows": {
+              "far": [
+                [
+                  0,
+                  0.1
+                ],
+                [
+                  0.35,
+                  1
+                ]
+              ],
+              "near": [
+                [
+                  0,
+                  0.6
+                ],
+                [
+                  0.85,
+                  1
+                ]
+              ]
+            },
+            "handoffDrawables": [
+              "leg_l_climb_handoff",
+              "leg_r_climb_handoff"
+            ],
+            "handoffLegTiming": {
+              "farArrive": 1.3,
+              "farRelease": 0.24,
+              "nearArrive": 1.55,
+              "nearRelease": 0.5,
+              "switchToSwing": 1.8
+            },
+            "handoffParameter": "ParamClimbHandoff",
+            "nearHand": {
+              "left": "r",
+              "right": "l"
+            },
+            "phaseParameter": "ParamClimbPhase",
+            "phaseTravel": [
+              [
+                0,
+                0
+              ],
+              [
+                0.1,
+                0.044444444444444446
+              ],
+              [
+                0.18,
+                0.08
+              ],
+              [
+                0.25,
+                0.18181818181818182
+              ],
+              [
+                0.35,
+                0.3272727272727272
+              ],
+              [
+                0.4,
+                0.4
+              ],
+              [
+                0.5,
+                0.4533333333333333
+              ],
+              [
+                0.55,
+                0.48
+              ],
+              [
+                0.6,
+                0.5539130434782608
+              ],
+              [
+                0.7,
+                0.7017391304347824
+              ],
+              [
+                0.78,
+                0.82
+              ],
+              [
+                0.85,
+                0.8772727272727272
+              ],
+              [
+                0.9,
+                0.9181818181818182
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "phaseWrapHasContinuousWorldSupport": true,
+            "refinedLegDrawables": [
+              "leg_l_climb_refined",
+              "leg_r_climb_refined"
+            ],
+            "refinedLegRoles": {
+              "leg_l_climb_refined": "near",
+              "leg_r_climb_refined": "far"
+            },
+            "refinedLegSelectionEpsilon": 0.001,
+            "refinedLegSourceForHandoff": {
+              "leg_l_climb_handoff": "leg_l_climb_refined",
+              "leg_r_climb_handoff": "leg_r_climb_refined"
+            },
+            "refinementParameter": "ParamClimbRefine",
+            "requiredParameters": [
+              "ParamClimbRefine",
+              "ParamClimbHandoff"
+            ],
+            "risePerCycle": 0.12,
+            "skirt": "opt-in separately painted climb drape with small knee-following phase field; standing surface and matching underlay retire together; original material UVs unchanged",
+            "supportWindows": {
+              "far": [
+                [
+                  0,
+                  0.6
+                ],
+                [
+                  0.85,
+                  1
+                ]
+              ],
+              "near": [
+                [
+                  0,
+                  0.1
+                ],
+                [
+                  0.35,
+                  1
+                ]
+              ]
+            },
+            "transferRefinementFadeSeconds": 0.85,
+            "transferRefinementHoldSeconds": 0.1
+          }
+        },
+        "sdk": "5-r.5",
+        "states": [
+          "climb_left",
+          "climb_right",
+          "climb_to_top_left",
+          "climb_to_top_right",
+          "drag_left",
+          "drag_right",
+          "fall_float",
+          "happy",
+          "idle",
+          "land",
+          "petting",
+          "sleep_enter",
+          "sleep_exit",
+          "sleep_loop",
+          "swing_cycle",
+          "swing_idle",
+          "talk",
+          "walk_left",
+          "walk_right"
+        ],
+        "type": "ready"
+      }
+    },
+    {
+      "at": "2026-09-12T15:13:34.785791+00:00",
+      "event": "native_ready"
+    },
+    {
+      "at": "2026-09-12T15:13:42.797863+00:00",
+      "event": "exit_requested"
+    }
+  ],
+  "keyboardEvents": 0,
+  "audioActiveEvents": 0,
+  "screenEvents": [],
+  "physicalDrags": [],
+  "pausedDrags": [],
+  "pausedDragInProgress": null,
+  "pausedDragChecks": {
+    "left": false,
+    "right": false,
+    "top": false,
+    "cornerTop": false,
+    "pausedStatePreserved": false,
+    "staticGeometry": false,
+    "noMotionWhilePaused": false,
+    "resumeWithoutCatchUp": false
+  },
+  "providerStatus": {
+    "audio": {
+      "attempt": 0,
+      "endpointId": "{0.0.0.00000000}.{7c82a0d4-53b3-4a39-b6f6-613ba8a41f14}",
+      "endpointName": "扬声器 (USB Audio and HID)",
+      "endpoints": [
+        {
+          "id": "{0.0.0.00000000}.{04f22472-85cd-46db-aad7-cb6611615f51}",
+          "isDefault": false,
+          "name": "扬声器 (ToDesk Virtual Audio)"
+        },
+        {
+          "id": "{0.0.0.00000000}.{7c82a0d4-53b3-4a39-b6f6-613ba8a41f14}",
+          "isDefault": true,
+          "name": "扬声器 (USB Audio and HID)"
+        }
+      ],
+      "error": "",
+      "muted": true,
+      "peak": 0.0,
+      "state": "muted"
+    },
+    "keyboard": {
+      "error": "",
+      "hookActivityCount": 0,
+      "lastActivityAt": null,
+      "lowLevelHook": true,
+      "lowLevelHookError": "",
+      "mergedActivityCount": 0,
+      "rawActivityCount": 0,
+      "rawInput": true,
+      "rawInputError": "",
+      "state": "ready"
+    }
+  },
+  "providerStatusHistory": [
+    {
+      "at": "2026-09-12T15:13:32.783119+00:00",
+      "status": {
+        "keyboard": {
+          "rawInput": false,
+          "lowLevelHook": false,
+          "state": "suspended",
+          "lastActivityAt": null,
+          "error": "",
+          "rawInputError": "",
+          "lowLevelHookError": "",
+          "rawActivityCount": 0,
+          "hookActivityCount": 0,
+          "mergedActivityCount": 0
+        },
+        "audio": {
+          "attempt": 0,
+          "endpointId": null,
+          "endpointName": "",
+          "endpoints": [],
+          "error": "",
+          "muted": false,
+          "peak": 0.0,
+          "state": "disabled"
+        }
+      }
+    },
+    {
+      "at": "2026-09-12T15:13:34.770638+00:00",
+      "status": {
+        "audio": {
+          "attempt": 0,
+          "endpointId": null,
+          "endpointName": "",
+          "endpoints": [],
+          "error": "",
+          "muted": false,
+          "peak": 0.0,
+          "state": "disabled"
+        },
+        "keyboard": {
+          "error": "",
+          "hookActivityCount": 0,
+          "lastActivityAt": null,
+          "lowLevelHook": true,
+          "lowLevelHookError": "",
+          "mergedActivityCount": 0,
+          "rawActivityCount": 0,
+          "rawInput": true,
+          "rawInputError": "",
+          "state": "ready"
+        }
+      }
+    },
+    {
+      "at": "2026-09-12T15:13:34.770936+00:00",
+      "status": {
+        "audio": {
+          "attempt": 0,
+          "endpointId": "{0.0.0.00000000}.{7c82a0d4-53b3-4a39-b6f6-613ba8a41f14}",
+          "endpointName": "扬声器 (USB Audio and HID)",
+          "endpoints": [
+            {
+              "id": "{0.0.0.00000000}.{04f22472-85cd-46db-aad7-cb6611615f51}",
+              "isDefault": false,
+              "name": "扬声器 (ToDesk Virtual Audio)"
+            },
+            {
+              "id": "{0.0.0.00000000}.{7c82a0d4-53b3-4a39-b6f6-613ba8a41f14}",
+              "isDefault": true,
+              "name": "扬声器 (USB Audio and HID)"
+            }
+          ],
+          "error": "",
+          "muted": true,
+          "peak": 0.0,
+          "state": "muted"
+        },
+        "keyboard": {
+          "error": "",
+          "hookActivityCount": 0,
+          "lastActivityAt": null,
+          "lowLevelHook": true,
+          "lowLevelHookError": "",
+          "mergedActivityCount": 0,
+          "rawActivityCount": 0,
+          "rawInput": true,
+          "rawInputError": "",
+          "state": "ready"
+        }
+      }
+    }
+  ],
+  "reactionObservations": [],
+  "simultaneousKeyboardAudioObserved": false,
+  "statesObserved": [
+    "idle"
+  ],
+  "nativeCycles": 2,
+  "nativeFinished": 0,
+  "rendererGeneration": 1,
+  "rendererPid": 19460,
+  "mainRssPeakBytes": 597557248,
+  "childRssPeakBytes": 758067200,
+  "ownedChildPids": [
+    13448,
+    19460,
+    35076,
+    39752
+  ],
+  "checks": {
+    "cleanExit": true,
+    "idleGaze": false,
+    "keyboardReaction": false,
+    "audioReaction": false,
+    "pauseResume": false,
+    "dragDrop": false,
+    "displayChange": false,
+    "repeatedLaunch": false
+  },
+  "manualOrExternalChecksPending": [
+    "idleGazeMovement",
+    "keyboardReaction",
+    "audioReaction",
+    "physicalDragDrop",
+    "displayChange",
+    "lockUnlock",
+    "sleepResume",
+    "audioDeviceChange",
+    "manualAutostart",
+    "manualCleanupAuthorization"
+  ],
+  "actionMethod": "Public application methods under the normal GUI event loop; no OS input injection",
+  "securityObservation": {
+    "status": "pending-external-read-only-event-review"
+  },
+  "assetSha256": {
+    "assets/live2d/Maple/Maple.model3.json": "cf4f6efc914b950817e2f0f94f678e87511afbcc9661b2b0287b4138d24e95dd",
+    "assets/live2d/Maple/Maple.moc3": "f7ead4f112b26f895848c0ff76a2f7451bad9e7c0f11b015dbc8ff54cff89689",
+    "assets/live2d/Maple/Maple.pet.json": "72551320a1c5dd0ab34ae2fbdf4e558def8ee0b4bb654a015782fdf63507c6a7"
+  },
+  "qtPlatform": "windows",
+  "initialSettings": {
+    "autostart": false,
+    "gaze_enabled": true,
+    "roaming_enabled": false,
+    "keyboard_enabled": true,
+    "audio_enabled": true,
+    "particles_enabled": true,
+    "auto_clean_interval_enabled": false,
+    "auto_clean_memory_enabled": false
+  },
+  "lastGeometry": {
+    "anchors": {
+      "gripLeft": [
+        0.5091403416410121,
+        0.5346585807390511
+      ],
+      "gripRight": [
+        0.5328435836600718,
+        0.5155215863487683
+      ],
+      "ground": [
+        0.508,
+        0.93310546875
+      ],
+      "hang": [
+        0.508,
+        0
+      ],
+      "hangerLeft": [
+        0.3701171875,
+        0
+      ],
+      "hangerRight": [
+        0.64599609375,
+        0
+      ],
+      "head": [
+        0.5043724412598025,
+        0.26651157642421425
+      ],
+      "left": [
+        0.5091403416410121,
+        0.5346585807390511
+      ],
+      "right": [
+        0.5328435836600718,
+        0.5155215863487683
+      ],
+      "top": [
+        0.508,
+        0
+      ]
+    },
+    "bounds": [
+      0.2253795564174652,
+      0.032072633504867554,
+      0.5521114766597748,
+      0.9034368097782135
+    ],
+    "climbCycle": 2,
+    "climbPhase": 0,
+    "climbRemaining": 0,
+    "climbResting": false,
+    "climbRun": 0,
+    "generation": 1,
+    "headBounds": [
+      0.3038713335990906,
+      0.032072633504867554,
+      0.4068930745124817,
+      0.3492833897471428
+    ],
+    "name": "idle",
+    "token": 3,
+    "transitionProgress": 0,
+    "type": "geometry"
+  },
+  "lastVisiblePixels": 19677,
+  "lastGazeObservation": {
+    "cursor": [
+      1336,
+      0
+    ],
+    "expected": [
+      -0.7692673858080299,
+      1
+    ],
+    "actual": [
+      -0.7698139548301697,
+      1
+    ]
+  },
+  "gazeAlignedSamples": 7,
+  "exitCode": 0,
+  "audioChildExited": true,
+  "elapsedWallSeconds": 11.682856899686158
+}

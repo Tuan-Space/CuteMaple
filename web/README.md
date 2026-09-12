@@ -27,11 +27,11 @@ Commands:
 * `expression`: `name`, `active`, optional `intensity` in [0,1]. Different expressions may be layered.
 * `resize`: redraws at the current CSS dimensions and device pixel ratio. Python controls window size; renderer maintains the source canvas aspect ratio.
 
-Reports: `cycle` or `finished` carries `token`, `name`, `cycle`; `geometry` carries `token`, `name`, normalized `[x,y,width,height]` bounds and `anchors`; `error` carries `message`. Cycles come directly from R5 Cubism motion callbacks. Fade-out callbacks from interrupted motions are ignored. Python controls transitions for counted loops.
+Reports include a `frame-ready` event with generation/token/name after drawing the current action. Python waits for the actual compositor frame before showing the character. `cycle` or `finished` carries `token`, `name`, `cycle`; `geometry` carries `token`, `name`, normalized `[x,y,width,height]` bounds and `anchors`; `error` carries `message`. Cycles come directly from R5 Cubism motion callbacks. Fade-out callbacks from interrupted motions are ignored. Python controls transitions for counted loops.
 
 ## Maple model contract
 
-`FileReferences.Motions` must contain the 21 original action names from `src/protocol.ts`, each with its own authored motion (the first entry is used). Include the EyeBlink group and standard Cubism eyes, head, and breath parameters. Supply expressions as normal `exp3.json` references or use the optional metadata mapping below.
+`FileReferences.Motions` must contain the 17 daily action names and 2 top transitions from `src/protocol.ts`, each with its own authored motion (the first entry is used). Include the EyeBlink group and standard Cubism eyes, head, and breath parameters. Supply expressions as normal `exp3.json` references or use the optional metadata mapping below.
 
 Add `"CuteMaple": {"Metadata": "Maple.pet.json"}` to `model3.json` to configure Maple-specific parameters and contact anchors. Metadata is JSON:
 

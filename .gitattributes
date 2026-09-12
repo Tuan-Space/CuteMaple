@@ -13,5 +13,5 @@ assets/live2d/** -text
 *.rig.json filter=lfs diff=lfs merge=lfs -text
 *.psd filter=lfs diff=lfs merge=lfs -text
 *.cmo3 filter=lfs diff=lfs merge=lfs -text
-assets/authoring/revisions/v5-1-motion-polish-20260911/**/*.png filter=lfs diff=lfs merge=lfs -text
-assets/authoring/archives/v5-1-*/**/*.png filter=lfs diff=lfs merge=lfs -text
+assets/authoring/source/**/*.png filter=lfs diff=lfs merge=lfs -text
+assets/authoring/model/**/*.png filter=lfs diff=lfs merge=lfs -text

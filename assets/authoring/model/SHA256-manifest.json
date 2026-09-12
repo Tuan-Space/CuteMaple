@@ -1,0 +1,13 @@
+{
+  "scope": "current editable model files",
+  "sha256": {
+    "Maple-native-saved.can3": "b5ccee1107fd1f0315f5051bc2210eef820133f82e40e6009892eef8ff9bc882",
+    "Maple.4096/texture_00.png": "b8894ec46892bce33c7ca19839b094261e1ce90e687319146561b5c75073edfd",
+    "Maple.atlas-audit.json": "90602ed551b3feef48ef89f990437612a37f7cb487664fc0ab7a159d47864f73",
+    "Maple.can3": "6d0938404400c988b038f4aee6146f369eecfc8a994b74e96e4a3a63744c9f88",
+    "Maple.can3.audit.json": "ca7dc6023008cb999658823c9cf135198354c43607a1060117c77fd79933c025",
+    "Maple.cmo3": "f4bb9bbb57bde521623f57b41dbb8c17c126487de1031a3b16f7c94a965e19b0",
+    "Maple.physics3.json": "134f81706b3490282dc93389783fd049cfc977d5295f5214100fb31637e39014",
+    "README.md": "7ac6437f6f7d8ed795d02cad3229061a6d23f43a3db999fe1c15ad28706f9a19"
+  }
+}

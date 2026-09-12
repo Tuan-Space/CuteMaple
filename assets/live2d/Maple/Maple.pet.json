@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "美腻枫",
-  "authoringSource": "../../authoring/revisions/v5-1-motion-polish-20260911/Maple.cmo3",
+  "authoringSource": "../../authoring/model/Maple.cmo3",
   "anchors": {
     "head": {
       "drawable": "face_base"

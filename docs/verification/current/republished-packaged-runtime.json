@@ -1,0 +1,93 @@
+{
+  "ready": true,
+  "nativeIdleCycles": 1,
+  "nativeLandingFinished": true,
+  "geometry": true,
+  "visiblePixels": 87252,
+  "errors": [],
+  "states": [
+    "climb_left",
+    "climb_right",
+    "climb_to_top_left",
+    "climb_to_top_right",
+    "drag_left",
+    "drag_right",
+    "fall_float",
+    "happy",
+    "idle",
+    "land",
+    "petting",
+    "sleep_enter",
+    "sleep_exit",
+    "sleep_loop",
+    "swing_cycle",
+    "swing_idle",
+    "talk",
+    "walk_left",
+    "walk_right"
+  ],
+  "resourceRoot": "F:\\cutemaple\\CuteMaple-Live2D\\dist\\CuteMaple-2.0.0\\CuteMaple-Live2D",
+  "settingsAndSensorsLoaded": false,
+  "modelSha256": "cf4f6efc914b950817e2f0f94f678e87511afbcc9661b2b0287b4138d24e95dd",
+  "sdk": "5-r.5",
+  "geometryCapture": {
+    "bounds": [
+      0.22876369953155518,
+      0.032361507415771484,
+      0.5580705106258392,
+      0.9031853675842285
+    ],
+    "anchors": {
+      "head": [
+        0.5107023140309205,
+        0.2638417509703488
+      ],
+      "ground": [
+        0.5552032626891399,
+        0.935546875
+      ],
+      "left": [
+        0.5108349087142289,
+        0.534509069882815
+      ],
+      "right": [
+        0.5346292530419305,
+        0.515474447250318
+      ],
+      "top": [
+        0.508,
+        0
+      ],
+      "gripLeft": [
+        0.5108349087142289,
+        0.534509069882815
+      ],
+      "gripRight": [
+        0.5346292530419305,
+        0.515474447250318
+      ],
+      "hangerLeft": [
+        0.3701171875,
+        0
+      ],
+      "hangerRight": [
+        0.64599609375,
+        0
+      ],
+      "hang": [
+        0.508,
+        0
+      ]
+    },
+    "headBounds": [
+      0.30844351649284363,
+      0.032361507415771484,
+      0.4074336886405945,
+      0.3448907658457756
+    ],
+    "transitionProgress": 0,
+    "climbPhase": 0
+  },
+  "screenshot": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\publish-200\\package-smoke\\packaged-runtime.png",
+  "passed": true
+}

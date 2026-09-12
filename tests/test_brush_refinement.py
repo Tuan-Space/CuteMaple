@@ -188,7 +188,7 @@ def original_painted_builder():
     b.parameter('ParamFreeArmPose', 0, 1, keys=[0, .25, .5, .75, 1])
     for side in ('L', 'R'):
         b.parameter('ParamHand'+side+'Shape', -1, 1)
-    folder = ROOT/'assets/authoring/revisions/v5-1-motion-polish-20260911'
+    folder = ROOT/'assets/authoring/source'
     manifest = json.loads((folder/'layers.json').read_text(encoding='utf-8'))
     b.layer_by_id.update({p['id']: p for p in manifest['layers']})
     for side in ('l', 'r'):
@@ -266,7 +266,7 @@ def test_ground_whole_sleeve_keeps_painted_area_width_and_joint_order_through_en
     # fabricated geometry expectation. A horizontal painted section keeps
     # >=75% width; vertical material cannot reverse at an elbow/cuff band.
     b = original_painted_builder()
-    folder = ROOT/'assets/authoring/revisions/v5-1-motion-polish-20260911'
+    folder = ROOT/'assets/authoring/source'
     for side in ('l', 'r'):
         ref = b._joints(side)
         with Image.open(folder/b.layer_by_id['arm_'+side]['file']) as painting:
@@ -461,7 +461,7 @@ def test_visible_working_forearm_is_same_material_and_parent_with_complementary_
 
 
 def test_new_brush_grip_points_are_inside_original_finger_paint_and_assets_remain_exact():
-    folder = ROOT/'assets/authoring/revisions/v5-1-motion-polish-20260911'
+    folder = ROOT/'assets/authoring/source'
     manifest = json.loads((folder/'layers.json').read_text(encoding='utf8'))
     by_id = {layer['id']: layer for layer in manifest['layers']}
     for side in ('l', 'r'):
@@ -485,7 +485,7 @@ def test_new_brush_grip_points_are_inside_original_finger_paint_and_assets_remai
 
 
 def test_cleaning_metadata_exposes_visible_forearm_through_take_sweep_and_return():
-    manifest = json.loads((ROOT/'assets/authoring/revisions/v5-1-motion-polish-20260911/layers.json').read_text(encoding='utf8'))
+    manifest = json.loads((ROOT/'assets/authoring/source/layers.json').read_text(encoding='utf8'))
     states = ('clean_ground', 'clean_top', 'clean_climb_left', 'clean_climb_right')
     metadata = {'refinement': {'requiredParameters': []},
                 'states': {state+suffix: {'anchors': {}} for state in states for suffix in ('', '_enter', '_exit')}}

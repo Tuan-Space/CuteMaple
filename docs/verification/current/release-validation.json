@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "runtime": "same verified Live2D-only executables; no PNG renderer",
+  "runtimeGroups": 19,
+  "source": "complete current code and materialized LFS assets",
+  "portableSourceCheck": true,
+  "relocatedDesktopCheck": true,
+  "testsPassed": 179,
+  "nativeEditorReopenedAfterPathChange": false,
+  "canChanges": "file association strings only; animation content hashes unchanged",
+  "systemCleanup": "not run; user test"
+}

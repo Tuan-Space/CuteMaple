@@ -20,7 +20,7 @@ from diagnose_rig import interpolate_keys
 from pet_core import ANIMATIONS
 from native_warp_sampling import warp_points
 
-ART = ROOT/'assets/authoring/revisions/v5-1-motion-polish-20260911/layers'
+ART = ROOT/'assets/authoring/source/layers'
 
 
 @pytest.mark.parametrize('side', ['l','r'])
