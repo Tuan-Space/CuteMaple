@@ -15,7 +15,7 @@ for name,digest in snap['runtimeResourcesSha256'].items():
 motions=json.loads((app/'assets/live2d/Maple/Maple.model3.json').read_text(encoding='utf-8'))['FileReferences']['Motions'];assert len(motions)==19
 assert not any('clean_' in n or 'sprites_v2' in n for n in [str(f.relative_to(app)) for f in app.rglob('*')])
 qa=pkg/'QA';shutil.copytree(root/'docs/verification/2.0.1',qa,dirs_exist_ok=True)
-for name in ['packaged-runtime.json','helper-runtime.json','smoke-summary.json','desktop-startup.json']:
+for name in ['packaged-runtime.json','helper-runtime.json','smoke-summary.json','desktop-startup.json','repeat-startup.json']:
  src=root/'artifacts/v201/package-smoke'/name
  if src.exists():shutil.copyfile(src,qa/name)
 shutil.copyfile(root/'README.md',pkg/'README.md')
