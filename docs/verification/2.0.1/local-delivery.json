@@ -1,0 +1,93 @@
+{
+  "githubUpdated": false,
+  "failures": [],
+  "previousPackage": {
+    "directoryBytes": 506120738.0,
+    "files": 667,
+    "zipBytes": 205954782
+  },
+  "zipSavedBytes": 24764701,
+  "removedBytes": 2537714011.0,
+  "newPackage": {
+    "zip": "F:\\cutemaple\\CuteMaple-2.0.1-Windows-x64.zip",
+    "sha256": "47764e5e9678e20ff85d1685882884182dd8cb994e0384737e462427fac3ac3f",
+    "files": 533,
+    "directoryBytes": 480761320,
+    "zipBytes": 181190081
+  },
+  "removedTargets": [
+    {
+      "files": 1,
+      "path": "F:\\cutemaple\\美腻枫 2.0.0.lnk",
+      "bytes": 1055.0
+    },
+    {
+      "files": 1,
+      "path": "F:\\cutemaple\\CuteMaple-2.0.0-Windows-x64.zip",
+      "bytes": 205954782.0
+    },
+    {
+      "files": 1,
+      "path": "F:\\cutemaple\\CuteMaple-2.0.0-Windows-x64.zip.sha256.txt",
+      "bytes": 99.0
+    },
+    {
+      "files": 18,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\__pycache__",
+      "bytes": 515433.0
+    },
+    {
+      "files": 1783,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\.build",
+      "bytes": 939310546.0
+    },
+    {
+      "files": 5,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\.pytest_cache",
+      "bytes": 37575.0
+    },
+    {
+      "files": 8783,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\.venv",
+      "bytes": 745857694.0
+    },
+    {
+      "files": 1485,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\v201",
+      "bytes": 100437915.0
+    },
+    {
+      "files": 667,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\dist\\CuteMaple-2.0.0",
+      "bytes": 506120738.0
+    },
+    {
+      "files": 23,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\tests\\__pycache__",
+      "bytes": 986773.0
+    },
+    {
+      "files": 11,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\tools\\__pycache__",
+      "bytes": 329725.0
+    },
+    {
+      "files": 1,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\tools\\authoring\\__pycache__",
+      "bytes": 2309.0
+    },
+    {
+      "files": 13,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\web\\.test-dist",
+      "bytes": 3832750.0
+    },
+    {
+      "files": 152,
+      "path": "F:\\cutemaple\\CuteMaple-Live2D\\web\\node_modules",
+      "bytes": 34326617.0
+    }
+  ],
+  "settingsPreserved": true,
+  "finalWorkspaceBytes": 8604365361.0,
+  "finalWorkspaceFileCount": 3688
+}
