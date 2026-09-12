@@ -1,14 +1,13 @@
 import type { EffectCommand, EffectName, Geometry, MotionContext } from './protocol';
 
-export type Shape = 'leaf' | 'note' | 'star' | 'heart' | 'bubble' | 'petal' | 'dust' | 'sleep';
+export type Shape = 'leaf' | 'note' | 'star' | 'heart' | 'bubble' | 'petal' | 'sleep';
 export interface Particle { shape: Shape; x: number; y: number; vx: number; vy: number;
   radius: number; age: number; life: number; angle: number; spin: number }
 const clamp = (x: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, x));
 const recipes: Record<EffectName, Shape[]> = {
   keyboard: ['leaf', 'star'], audio: ['note', 'bubble'], happy: ['heart', 'petal', 'star'],
   leaf: ['leaf'], note: ['note'], star: ['star'], heart: ['heart'], bubble: ['bubble'],
-  petal: ['petal'], dust: ['dust'], clean_dust: ['dust', 'dust', 'dust'],
-  clean_done: ['star', 'star', 'petal'], sleep: ['sleep'],
+  petal: ['petal'], sleep: ['sleep'],
 };
 
 /** Bounded simulation in viewport coordinates; has no DOM or input-provider dependencies. */
@@ -34,43 +33,31 @@ export class ParticleField {
   }
   clear(): void { this.particles = []; this.emitted.clear(); }
   emit(command: EffectCommand, geometry: Geometry): boolean {
+    if (!(command.name in recipes)) return false;
     if (command.token !== this.token || this.paused || !this.enabled) return false;
     const interval = command.name === 'keyboard' ? .4 : command.name === 'audio' ? .45 : .16;
     if (this.time - (this.emitted.get(command.name) ?? -Infinity) < interval) return false;
     const [left, top, width, height] = this.rect;
     if (Math.min(width, height) < .15 || this.particles.length >= ParticleField.MAX) return false;
-    const cleaning = command.name === 'clean_dust' || command.name === 'dust';
-    const fan = geometry.anchors.brushTip || geometry.anchors.fanTip;
-    const hand = geometry.anchors.brushTip ? geometry.anchors.brushGrip || geometry.anchors.freeHand : geometry.anchors.freeHand;
-    // Dust belongs to the actual tool surface. Missing/offscreen tool geometry
-    // must not turn into a head particle or an unrelated preview coordinate.
-    if (cleaning && (!fan || !hand || ![...fan, ...hand].every(Number.isFinite) || command.x !== undefined)) return false;
-    const direction = cleaning ? [fan[0] - hand[0], fan[1] - hand[1]] : [0, 0];
-    const length = Math.hypot(...direction);
-    if (cleaning && length < .01) return false;
-    const source = cleaning ? [hand[0] + direction[0] * .85, hand[1] + direction[1] * .85]
-      : command.x === undefined ? geometry.anchors.head || [.5, .3] : [command.x, command.y!];
+    const source = command.x === undefined ? geometry.anchors.head || [.5, .3] : [command.x, command.y!];
     if (!source.every(Number.isFinite)) return false;
-    if (cleaning && (source[0] < left || source[0] > left + width || source[1] < top || source[1] > top + height)) return false;
     this.emitted.set(command.name, this.time);
     const intensity = clamp(command.intensity ?? 1, 0, 1);
     if (intensity === 0) return false;
     for (const shape of recipes[command.name]) {
       if (this.particles.length >= ParticleField.MAX) break;
-      const radius = (shape === 'dust' ? .013 : .028 + this.random() * .012) * (.7 + .3 * intensity);
+      const radius = (.028 + this.random() * .012) * (.7 + .3 * intensity);
       const margin = radius + .025; // Include outline and soft highlight, not just the path center.
       const side = this.particles.length % 2 ? 1 : -1;
       const tier = (Math.floor(this.particles.length / 2) % 3 - 1) * .085;
-      const x = clamp(source[0] + (cleaning ? 0 : side * .2) + (this.random() - .5) * (cleaning ? .02 : .06), left + margin, left + width - margin);
-      const y = clamp(source[1] + (cleaning ? (this.random() - .5) * .02 : tier - .01), top + margin, top + height - margin);
+      const x = clamp(source[0] + (side * .2) + (this.random() - .5) * .06, left + margin, left + width - margin);
+      const y = clamp(source[1] + (tier - .01), top + margin, top + height - margin);
       // Steer toward free screen space. Subsequent boundary reflection keeps the whole glyph visible.
       const sx = x - left < .18 ? 1 : left + width - x < .18 ? -1 : side;
       const sy = y - top < .14 ? 1 : -1;
-      const cone = (this.random() - .5) * .7, speed = .11 + this.random() * .07;
-      const dx = cleaning ? direction[0] / length : 0, dy = cleaning ? direction[1] / length : 0;
-      this.particles.push({shape, x, y, radius, age: 0, life: cleaning ? .65 + this.random() * .25 : 1.5 + this.random() * .5,
-        vx: cleaning ? (dx * Math.cos(cone) - dy * Math.sin(cone)) * speed : sx * (.055 + this.random() * .055),
-        vy: cleaning ? (dx * Math.sin(cone) + dy * Math.cos(cone)) * speed : sy * (.06 + this.random() * .035),
+      this.particles.push({shape, x, y, radius, age: 0, life: 1.5 + this.random() * .5,
+        vx: sx * (.055 + this.random() * .055),
+        vy: sy * (.06 + this.random() * .035),
         angle: (this.random() - .5) * .6, spin: (this.random() - .5) * .7});
     }
     return true;
@@ -83,14 +70,12 @@ export class ParticleField {
     for (const p of this.particles) {
       const margin = p.radius + .025;
       p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.angle += p.spin * dt;
-      if (p.shape === 'dust') continue; // Blown dust leaves the viewport; it never rebounds toward the face.
       if (p.x < x + margin || p.x > x + w - margin) p.vx *= -1;
       if (p.y < y + margin || p.y > y + h - margin) p.vy *= -1;
       p.x = clamp(p.x, x + margin, x + w - margin);
       p.y = clamp(p.y, y + margin, y + h - margin);
     }
-    this.particles = this.particles.filter(p => p.age < p.life && (p.shape !== 'dust' ||
-      (p.x - p.radius >= x && p.x + p.radius <= x + w && p.y - p.radius >= y && p.y + p.radius <= y + h)));
+    this.particles = this.particles.filter(p => p.age < p.life);
   }
 }
 

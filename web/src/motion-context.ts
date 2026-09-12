@@ -1,7 +1,7 @@
 import type { MotionContext } from './protocol';
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 export function defaultContext(state: string, token = 0): MotionContext {
-  const attached = state.includes('climb') || state.startsWith('swing_') || state === 'clean_top' || state.startsWith('clean_top_');
+  const attached = state.includes('climb') || state.startsWith('swing_');
   const dragging = state.startsWith('drag_'), falling = state === 'fall_float';
   return {type: 'context', token, attached, dragging, falling, grounded: !attached && !dragging && !falling,
     vx: 0, vy: 0, visibleRect: [0, 0, 1, 1], effectsEnabled: true};

@@ -3,7 +3,7 @@ export const SWING_ENVELOPE_SECONDS = 1.2;
 export const SWING_PETTING_SECONDS = 3;
 export const SWING_PETTING_NAMES = ['swing_petting_left', 'swing_petting_right'] as const;
 export const isSwingFamily = (name: string): boolean =>
-  ['swing_cycle', 'swing_idle', 'clean_top', 'clean_top_enter', 'clean_top_exit'].includes(name);
+  ['swing_cycle', 'swing_idle'].includes(name);
 const smooth = (v: number): number => { const t = Math.max(0, Math.min(1, v)); return t * t * (3 - 2 * t); };
 
 /** Cubic Hermite envelope retains the current value AND velocity when interrupted. */

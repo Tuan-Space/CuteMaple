@@ -86,13 +86,6 @@ test('playback freezes the swing clock and rejects stale petting tokens and paus
   assert.throws(() => parseCommand('{"type":"expression","name":"swing_petting_left","active":true}'), /Invalid swing/);
 });
 
-test('new brush material contacts take precedence over the legacy fan', () => {
-  const field = new ParticleField(() => .5); field.play(1);
-  assert.ok(field.emit({type:'effect',name:'clean_dust',token:1}, {bounds:[0,0,1,1], anchors:{
-    brushGrip:[.3,.4], brushTip:[.5,.6], freeHand:[.9,.9], fanTip:[.8,.7]}}));
-  assert.ok(field.particles.every(p => Math.abs(p.x-.47)<1e-8 && Math.abs(p.y-.57)<1e-8 && p.vx>0 && p.vy>0));
-});
-
 test('active swing petting eases to gentle motion without resetting phase, velocity or counted turns', () => {
   const swing = new SwingMotion(); swing.enter('swing_cycle');
   const step = .000001;
@@ -132,15 +125,15 @@ test('pet expiry integration and interrupted recovery remain continuous across f
   assert.equal(swing.diagnostics().swingPhase, phase); swing.advance(1.2);
   assert.equal(swing.diagnostics().swingAmplitude, 1);
   swing.pet('swing_petting_right', true); swing.advance(.2);
-  swing.enter('clean_top_enter'); swing.advance(1.2);
+  swing.enter('swing_idle'); swing.advance(1.2);
   assert.equal(swing.diagnostics().swingAmplitude, .2);
   assert.equal(swing.diagnostics().swingFrequency, 1/3.87);
 });
 
-test('detaching revokes late petting, support context and cleanup callbacks from the old token', () => {
+test('detaching revokes late petting, support context and motion callbacks from the old token', () => {
   const swing = new SwingMotion(), events: unknown[] = [], expressions: unknown[] = [], contexts: unknown[] = [];
   const callbacks: {boundary: () => void; marker?: (name: string) => void}[] = [];
-  const driver: ModelDriver = {states:['swing_idle', 'clean_top_enter', 'drag_right'], motionPolishEnabled:true,
+  const driver: ModelDriver = {states:['swing_idle', 'drag_right'], motionPolishEnabled:true,
     play(command, boundary, marker) { swing.enter(command.name); callbacks.push({boundary, marker}); },
     expression(name, active) { expressions.push({name, active}); swing.pet(name, active); },
     context(value) { contexts.push(value); }, geometry:() => ({bounds:[0,0,1,1], anchors:{}}),
@@ -156,10 +149,10 @@ test('detaching revokes late petting, support context and cleanup callbacks from
   player.expression({type:'expression',name:'swing_petting_right',active:true,token:10});
   player.expression({type:'expression',name:'swing_petting_left',active:false,token:10});
   assert.equal(expressions.length, count);
-  player.play({type:'play',name:'clean_top_enter',token:12,playback:'one_shot'});
+  player.play({type:'play',name:'swing_idle',token:12,playback:'one_shot'});
   player.play({type:'play',name:'drag_right',token:13,playback:'loop'});
   events.length = 0; // Discard the legitimate geometry emitted before detachment.
-  callbacks[2].boundary(); callbacks[2].marker?.('clean_sweep');
+  callbacks[2].boundary(); callbacks[2].marker?.('settled');
   player.context({type:'context',token:12,grounded:false,attached:true,dragging:false,falling:false,
     vx:0,vy:0,visibleRect:[0,0,1,1],effectsEnabled:true});
   assert.deepEqual(events, []); assert.deepEqual(contexts, []);

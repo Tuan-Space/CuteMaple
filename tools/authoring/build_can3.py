@@ -31,7 +31,7 @@ try:
     from .native_caff import read_project
 except ImportError:
     from native_caff import read_project
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 from maple_motions import TRANSITIONS, V5_CLEAN_TRANSITIONS
 
 FPS = 100

@@ -38,7 +38,7 @@ def main():
     def stop():
         nonlocal stopped
         stopped=True
-        timer.stop();pet._stop_runtime();pet.tray.hide()
+        timer.stop();pet._finalize_runtime();pet.tray.hide()
         for widget in (pet.bubble,pet.monitor_button,pet.monitor_capsule,pet.details_panel):widget.close()
         pet.close();app.quit()
     def sample():
@@ -64,7 +64,7 @@ def main():
     def tick():
         nonlocal panel_used,panel_close
         if phase is None:
-            if pet._live2d_active:
+            if pet._presentation_ready:
                 pet.live2d_host.event.connect(receive_event);begin('left')
             return
         now=time.monotonic();elapsed=now-started

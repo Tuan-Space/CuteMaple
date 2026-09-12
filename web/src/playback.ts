@@ -31,6 +31,7 @@ export class Playback {
   private paused = false;
   private sampling = false;
   private evaluated = false;
+  private presented = false;
   private pendingEffects: EffectCommand[] = [];
   private boundaryEndpointPending = false;
   private endpointRequest?: ClimbEndpointCommand;
@@ -50,7 +51,7 @@ export class Playback {
   play(command: PlayCommand): void {
     if (!this.driver.states.includes(command.name)) throw new Error(`Missing Live2D motion: ${command.name}`);
     const endpointHandoff = this.endpointHeld && (command.name === this.current?.name.replace('climb_', 'climb_to_top_')
-      || command.name === `clean_${this.current?.name}_enter`);
+     );
     const staticStart = this.paused || endpointHandoff ||
       (this.driver.motionPolishEnabled === true && ['climb_left','climb_right'].includes(command.name));
     const revision = ++this.revision;
@@ -62,6 +63,7 @@ export class Playback {
     this.driver.setClimbHold?.(false);
     this.lastTime = undefined;
     this.evaluated = false;
+    this.presented = false;
     this.pendingEffects = [];
     this.particles?.play(command.token);
     this.driver.play(command, () => {
@@ -80,6 +82,7 @@ export class Playback {
       try { this.driver.sampleStartPose(); this.evaluated = true; this.driver.draw(); }
       finally { this.sampling = false; }
       this.sendGeometry();
+      this.presentFirstFrame();
     }
   }
 
@@ -194,6 +197,16 @@ export class Playback {
       if (this.geometryElapsed >= interval && !this.endpointHeld) { this.geometryElapsed %= interval; this.sendGeometry(); }
     }
     this.driver.draw();
+    this.presentFirstFrame();
+  }
+
+  private presentFirstFrame(): void {
+    if (this.presented || !this.evaluated || !this.current) return;
+    const geometry = this.driver.geometry();
+    if (geometry.bounds.length !== 4 || !geometry.bounds.every(Number.isFinite) ||
+        geometry.bounds[2] <= 0 || geometry.bounds[3] <= 0) throw new Error('Invalid first-frame geometry');
+    this.presented = true;
+    this.report({type: 'frame-ready', name: this.current.name, token: this.current.token, ...geometry});
   }
 
   sendGeometry(endpointRequest?: number): void {

@@ -93,26 +93,6 @@
           "File": "motions/sleep_exit.motion3.json"
         }
       ],
-      "clean_ground": [
-        {
-          "File": "motions/clean_ground.motion3.json"
-        }
-      ],
-      "clean_climb_left": [
-        {
-          "File": "motions/clean_climb_left.motion3.json"
-        }
-      ],
-      "clean_climb_right": [
-        {
-          "File": "motions/clean_climb_right.motion3.json"
-        }
-      ],
-      "clean_top": [
-        {
-          "File": "motions/clean_top.motion3.json"
-        }
-      ],
       "climb_to_top_left": [
         {
           "File": "motions/climb_to_top_left.motion3.json"
@@ -121,46 +101,6 @@
       "climb_to_top_right": [
         {
           "File": "motions/climb_to_top_right.motion3.json"
-        }
-      ],
-      "clean_ground_enter": [
-        {
-          "File": "motions/clean_ground_enter.motion3.json"
-        }
-      ],
-      "clean_ground_exit": [
-        {
-          "File": "motions/clean_ground_exit.motion3.json"
-        }
-      ],
-      "clean_climb_left_enter": [
-        {
-          "File": "motions/clean_climb_left_enter.motion3.json"
-        }
-      ],
-      "clean_climb_left_exit": [
-        {
-          "File": "motions/clean_climb_left_exit.motion3.json"
-        }
-      ],
-      "clean_climb_right_enter": [
-        {
-          "File": "motions/clean_climb_right_enter.motion3.json"
-        }
-      ],
-      "clean_climb_right_exit": [
-        {
-          "File": "motions/clean_climb_right_exit.motion3.json"
-        }
-      ],
-      "clean_top_enter": [
-        {
-          "File": "motions/clean_top_enter.motion3.json"
-        }
-      ],
-      "clean_top_exit": [
-        {
-          "File": "motions/clean_top_exit.motion3.json"
         }
       ]
     }

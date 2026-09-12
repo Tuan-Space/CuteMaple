@@ -2,7 +2,7 @@
   "sdk": "5-r.5",
   "files": {
     "index.html": "f6323962bed8ad9a13da25c5f171cc328e3b0403559c9b692a9d71705b7ea061",
-    "app.js": "e656b0ee31d7e967bb5d920f20f20bc85a55e04e47730fbb6dfb99bb18948b08",
+    "app.js": "6ef148c905f00fdd47f0db64fc18bcfba21cc8801e39c65ce573c012714ea86b",
     "live2dcubismcore.min.js": "8741f739779b5d5210872bd3d7d99f0f1e56e6c87409e7d26d6bb4b80aa1ef47",
     "shaders/fragshadersrcalphablend.frag": "855b247f02042a808a41e282ee4d7de7cc4533abeb5032b4ab8fe84f7dec107f",
     "shaders/fragshadersrccolorblend.frag": "01d4bf6a14b4a738976e9a538767a21da0defa8816f3845a7df08a7713327538",

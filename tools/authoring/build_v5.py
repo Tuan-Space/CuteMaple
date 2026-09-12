@@ -13,7 +13,7 @@ from build_v4 import (V4Builder, metadata_v4, smoothstep, palm_on_rope,
                       ROOT, Rig, audit_rig, corrected_project, physics3)
 from build_rig import clamp, rotate
 from maple_motions import build_motion, motion_references, TRANSITIONS, V5_CLEAN_TRANSITIONS
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 from free_arm_refinement import (apply_free_arm_refinement, finish_free_arm_refinement,
                                  finish_fan_material_refinement)
 from climb_refinement import apply_climb_refinement, climb_metadata

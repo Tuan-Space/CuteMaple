@@ -18,7 +18,7 @@ from build_rig import (ROOT, MapleBuilder, Part, SemanticRole, Texture,
                        PhysicsRig, Rig, clamp, rotate, grid_mesh, audit_rig,
                        corrected_project, metadata_for, physics3)
 from maple_motions import build_motion, motion_references, TRANSITIONS, TRANSITION_EVENTS
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 from view_registration import register_point, validate_registration
 from neck_registration import neck_point
 from head_material_registration import (HEAD_HAIR_SWAY_GRID, refine_head_warp_sampling,

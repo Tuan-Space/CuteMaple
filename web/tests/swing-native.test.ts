@@ -30,7 +30,10 @@ test('production swing ownership reaches real Core, counts turns and preserves s
     // Exercise the new controller against the existing real model's parameters;
     // this is not native export acceptance for the upcoming authoring revision.
     harness.metadata.refinement.motionPolishVersion = 1;
-    for (const name of ['swing_cycle', 'swing_idle', 'clean_top_enter', 'clean_top', 'clean_top_exit', 'land'])
+    // This assertion isolates petting closure from the independently randomized blink.
+    for (const state of ['swing_cycle', 'swing_idle'])
+      harness.metadata.states[state] = {...harness.metadata.states[state], disableBlink:true};
+    for (const name of ['swing_cycle', 'swing_idle',    'land'])
       harness.motions.set(name, {bytes:bytes(`motions/${name}.motion3.json`), index:0, hasEyeCurves:false});
     harness.setupEffects(); driver.setInitialized(true); model.saveParameters();
     const parameter = (name: string) => model.getParameterValueById(CubismFramework.getIdManager().getId(name));
@@ -64,7 +67,7 @@ test('production swing ownership reaches real Core, counts turns and preserves s
     assert.equal(driver.diagnostics().swingPhase, beforeInterrupt);
     assert.ok(parameter('ParamEyeLOpen') > .9, 'strong interruption refreshes the frozen face immediately');
     assert.deepEqual(palms(), heldPalms, 'ending the head overlay cannot change either actual native palm');
-    for (const name of ['clean_top_enter', 'clean_top', 'clean_top_exit', 'swing_idle']) {
+    for (const name of [   'swing_idle']) {
       const before = driver.diagnostics().swingPhase;
       driver.play({type:'play',name,token:3,playback:name.endsWith('enter')||name.endsWith('exit')?'one_shot':'loop'}, () => {});
       assert.equal(driver.diagnostics().swingPhase, before); driver.update(.01);

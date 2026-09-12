@@ -30,7 +30,7 @@ from image2live2d.irr.schema import (Deformer, DeformerType, Keyform, Mesh, Meta
                                      Parameter, Part, PhysicsRig, Rig, SemanticRole, Texture)
 from image2live2d.backends.live2d.cmo3 import pack_caff, rig_to_cmo3, unpack_caff
 from image2live2d.backends.live2d.physics3 import physics3
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 try:
     from .maple_motions import build_motion, motion_references
 except ImportError:

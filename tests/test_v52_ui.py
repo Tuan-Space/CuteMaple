@@ -110,4 +110,4 @@ def test_cleaning_effects_and_play_states_are_removed(pet):
     for name in ('clean_ground','clean_top','clean_climb_left','clean_climb_right'):pet.start_state(name)
     for name in ('clean_dust','clean_done'):pet._emit_effect(name,interval=0);pet._preview_effect(name)
     assert pet._renderer_token==token and pet.state=='idle' and not host.messages
-    assert not any(name.startswith('clean_') for name in pet.frames)
+    assert not any(name.startswith('clean_') for name in pet_app.ANIMATIONS)

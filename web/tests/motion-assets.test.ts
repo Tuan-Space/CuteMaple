@@ -10,7 +10,7 @@ import { bindMotionMarkers } from '../src/motion-data';
 import { REQUIRED_STATES } from '../src/protocol';
 
 const motionDirectories = [path.resolve('../assets/live2d/Maple/motions'),
-  path.resolve('../assets/authoring/revisions/v5/runtime/motions')];
+  path.resolve('../assets/authoring/revisions/v5-1-motion-polish-20260911/runtime/motions')];
 test('installed and v5 authored Maple motions pass the real Cubism R5 consistency checker', async () => {
     // The official Core detects Node and expects its CommonJS runtime globals.
     const runtime = globalThis as typeof globalThis & { require: ReturnType<typeof createRequire>; __dirname: string };
@@ -40,7 +40,7 @@ test('installed and v5 authored Maple motions pass the real Cubism R5 consistenc
           bindMotionMarkers(motion, value => markers.push(value));
           motion.getFiredEvent(-1, motion.getLoopDuration());
           const expected = JSON.parse(bytes.toString()).UserData?.map((event: {Value: string}) => event.Value) || [];
-          assert.deepEqual(markers, expected.filter((name: string) => ['top_grab', 'wall_release', 'settled', 'clean_sweep'].includes(name)));
+          assert.deepEqual(markers, expected.filter((name: string) => ['top_grab', 'wall_release', 'settled'].includes(name)));
           motion.release();
         }
       }

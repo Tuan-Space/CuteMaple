@@ -7,7 +7,17 @@ from PySide6.QtCore import QPoint, Qt
 from PySide6.QtWidgets import QApplication
 
 import pet_app
-from pet_core import PetSettings
+from pet_core import PetSettings, ANIMATIONS
+import pytest
+from test_live2d_integration import activate, event
+
+@pytest.fixture(autouse=True)
+def native_fixture(monkeypatch):
+    original=pet_app.PetWindow.__init__
+    def initialize(self,*args,**kw):
+        original(self,*args,**kw);self.show();activate(self)
+    monkeypatch.setattr(pet_app.PetWindow,"__init__",initialize)
+
 
 
 def _app() -> QApplication:
@@ -52,8 +62,7 @@ def test_size_motion_and_interaction_states(monkeypatch):
     assert pet.state == "swing_cycle"
     assert pet.attachment == "top"
 
-    for _ in range(18):
-        pet._advance_frame()
+    event(pet, "cycle", cycle=3)
     assert pet.state == "swing_idle"
 
     pet._detach_for_drag()
@@ -73,7 +82,7 @@ def test_temporary_actions_restore_attachment_and_side_contacts_screen(monkeypat
     area = pet.current_screen.availableGeometry()
 
     pet._attach_side("left")
-    left_anchor = pet_app.ANIMATIONS["climb_left"].contact_anchors[0]
+    left_anchor = pet._model_anchor('left')[0]*512
     assert abs((pet.x() + round(left_anchor * pet.width() / 512)) - area.left()) <= 1
     pet.say("测试")
     pet._finish_temporary_state()
@@ -81,7 +90,7 @@ def test_temporary_actions_restore_attachment_and_side_contacts_screen(monkeypat
     assert pet.state == "climb_left"
 
     pet._attach_side("right")
-    right_anchor = pet_app.ANIMATIONS["climb_right"].contact_anchors[0]
+    right_anchor = pet._model_anchor('right')[0]*512
     assert abs((pet.x() + round(right_anchor * pet.width() / 512)) - area.right()) <= 1
 
     pet._attach_top()
@@ -128,20 +137,18 @@ def test_happy_finishes_once_and_paused_motion_is_visually_frozen(monkeypatch):
     pet = pet_app.PetWindow(app, PetSettings(paused=False, autostart=False))
     pet.show()
     pet._start_temporary("happy")
-    for _ in range(5):
-        pet._advance_frame()
-        assert pet.state == "happy"
-    pet._advance_frame()
+    assert pet.state == "happy"
+    event(pet, "finished")
     assert pet.state == "idle"
 
     pet.settings.paused = True
     pet.motion_mode = "fall"
     pet.start_state("fall_float")
     pet.motion_timer.stop()
-    assert not pet.animation_timer.isActive()
+    assert not hasattr(pet,'animation_timer')
     pet.toggle_pause()
     assert pet.motion_timer.isActive()
-    assert pet.animation_timer.isActive()
+    assert not hasattr(pet,'animation_timer')
     pet.close()
     pet.tray.hide()
 
@@ -168,10 +175,9 @@ def test_shared_menu_and_petting_twice(monkeypatch):
 
     pet.show_pet()
     pet._start_temporary("petting")
-    for _ in range(7):
-        pet._advance_frame()
-        assert pet.state == "petting"
-    pet._advance_frame()
+    event(pet,"cycle",cycle=1)
+    assert pet.state=="petting"
+    event(pet,"cycle",cycle=2)
     assert pet.state == "idle"
 
     menu.deleteLater()
@@ -219,12 +225,12 @@ def test_overlay_union_bounds_do_not_intersect_any_animation(monkeypatch):
     assert pet.monitor_capsule.testAttribute(Qt.WA_TranslucentBackground)
     area = pet.current_screen.availableGeometry()
     pet.move(area.center().x() - pet.width() // 2, area.bottom() - pet.height() + 1)
-    pet.start_state("idle"); pet.animation_timer.stop(); pet._position_monitor_overlays()
+    pet.start_state("idle"); pet._position_monitor_overlays()
     assert pet.monitor_button.x() > pet._content_rect_global().right()
     for scale in (0.6, 1.0, 1.4, 1.8):
         pet.set_scale(scale)
-        for state in pet.frames:
-            pet.start_state(state); pet.animation_timer.stop()
+        for state in ANIMATIONS:
+            pet.start_state(state);
             pet._position_monitor_overlays()
             content = pet._content_rect_global()
             area = pet.current_screen.availableGeometry()
@@ -235,8 +241,8 @@ def test_overlay_union_bounds_do_not_intersect_any_animation(monkeypatch):
     pet.open_details_panel(); app.processEvents()
     for scale in (0.6, 1.0, 1.4, 1.8):
         pet.set_scale(scale)
-        for state in pet.frames:
-            pet.start_state(state); pet.animation_timer.stop(); pet._panel_side = None
+        for state in ANIMATIONS:
+            pet.start_state(state); pet._panel_side = None
             pet._position_details_panel(); pet._position_monitor_overlays()
             content = pet._content_rect_global(); area = pet.current_screen.availableGeometry()
             assert not pet.details_panel.geometry().intersects(content), (scale, state, "details")

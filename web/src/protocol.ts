@@ -15,7 +15,7 @@ export interface ClimbControlCommand {
   run: number; resting: boolean;
 }
 export const EFFECT_NAMES = ['keyboard', 'audio', 'happy', 'leaf', 'note', 'star', 'heart',
-  'bubble', 'petal', 'dust', 'clean_dust', 'clean_done', 'sleep'] as const;
+  'bubble', 'petal', 'sleep'] as const;
 export type EffectName = typeof EFFECT_NAMES[number];
 export interface EffectCommand {
   type: 'effect'; name: EffectName; token: number; x?: number; y?: number; intensity?: number;

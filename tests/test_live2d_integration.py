@@ -18,8 +18,12 @@ from pet_reactions import ReactionController
 class FakeHost:
     def __init__(self, pet):
         self.ready = True
+        self.generation = 4
         self.view = QWidget(pet)
         self.messages = []
+
+    def presented(self, token):
+        pass
 
     def send(self, kind, **values):
         self.messages.append({"type": kind, **values})
@@ -35,6 +39,7 @@ def pet(monkeypatch):
     window = pet_app.PetWindow(app, PetSettings(autostart=False))
     window.show()
     app.processEvents()
+    activate(window)
     yield window
     for timer in window.findChildren(pet_app.QTimer):
         timer.stop()
@@ -47,17 +52,21 @@ def pet(monkeypatch):
 
 def activate(pet, states=None):
     pet.live2d_host = FakeHost(pet)
-    pet._on_renderer_event({"type": "ready", "backend": "live2d", "states": states or list(ANIMATIONS)})
+    pet._frame_has_pixels=lambda:True
+    from test_live2d_only import META, frame
+    pet._renderer_generation = pet.live2d_host.generation
+    pet._on_renderer_event({"generation": pet._renderer_generation, "type": "ready", "backend": "live2d", "states": states or [*ANIMATIONS,*pet_app.TOP_TRANSITIONS],
+                           "locomotion":META['locomotion'],"capabilities":[]})
+    frame(pet)
     return pet.live2d_host
 
 
 def activate_motion_polish(pet):
-    pet.live2d_host = FakeHost(pet)
-    pet._on_renderer_event({"type": "ready", "states": list(ANIMATIONS),
-                           "capabilities": ["motion-polish-v1"],
-                           "locomotion": {"climb": {"cycleDuration": 1., "risePerCycle": .12,
-                                                      "phaseTravel": [[0, 0], [1, 1]]}}})
-    return pet.live2d_host
+    host=activate(pet)
+    pet._climb_spec={"cycleDuration":1.,"risePerCycle":.12,"phaseTravel":[(0,0),(1,1)]}
+    pet._motion_polish_supported=True
+    pet._climb_endpoint_supported=True
+    return host
 
 
 def test_motion_polish_petting_uses_live_head_and_keeps_seated_motion(pet, monkeypatch):
@@ -102,7 +111,7 @@ def test_motion_polish_petting_strong_interrupt_clears_trace_and_expression(pet,
     elif interrupt == 'play':
         pet.start_state('swing_idle')
     else:
-        pet._on_renderer_event({'type': 'error', 'message': 'test interruption'})
+        pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'error', 'message': 'test interruption'})
     assert not pet.pet_trace and pet._explicit_effect is None
     assert 'swing_petting_right' not in pet._requested_expressions
     assert any(row['type'] == 'expression' and row['name'] == 'swing_petting_right'
@@ -112,7 +121,7 @@ def test_motion_polish_petting_strong_interrupt_clears_trace_and_expression(pet,
 def test_motion_polish_climb_duration_and_world_travel_follow_metadata(pet):
     host = activate_motion_polish(pet)
     pet._attach_side('right')
-    assert sum(ANIMATIONS['climb_right'].delays_ms) == sum(ANIMATIONS['climb_left'].delays_ms) == 1000
+    assert ANIMATIONS['climb_right'].duration_ms == ANIMATIONS['climb_left'].duration_ms == 1000
     assert [row for row in host.messages if row['type'] == 'play'][-1]['durationMs'] == 1000
     pet._motion_y = float(pet.y()); before = pet._motion_y
     pet._advance_native_climb({'climbPhase': .25, 'climbCycle': 0})
@@ -136,7 +145,6 @@ class DragPointer:
 @pytest.mark.parametrize('origin', ['petting', 'top_with_cleanup', 'ground_with_cleanup'])
 def test_first_vertical_or_tiny_horizontal_drag_revokes_supported_token_and_late_callbacks(pet, origin, horizontal):
     host = activate_motion_polish(pet)
-    pet.live2d_states.update(pet_app.CLEANUP_SEGMENTS)
     if origin != 'ground_with_cleanup': pet._attach_top(run_intro=False)
     if origin == 'petting': pet._start_temporary('petting')
     else: pet._begin_cleanup_operation('a'*32)
@@ -146,7 +154,7 @@ def test_first_vertical_or_tiny_horizontal_drag_revokes_supported_token_and_late
     pet.mouseMoveEvent(DragPointer(400+horizontal, 320))
     expected = 'drag_left' if horizontal < 0 else 'drag_right'
     assert pet.dragging and pet.base_mode == 'ground' and pet.state == expected
-    assert pet._renderer_token == old_token+1 and pet._cleanup_segment is None
+    assert pet._renderer_token == old_token+1 and not hasattr(pet,'_cleanup_segment')
     assert pet._explicit_effect is None and not any(name.startswith('swing_petting') for name in pet._requested_expressions)
     if origin == 'petting':
         assert any(row['type']=='expression' and row['name']=='swing_petting_right' and not row['active']
@@ -156,7 +164,7 @@ def test_first_vertical_or_tiny_horizontal_drag_revokes_supported_token_and_late
     # The old callback is not stale merely by elapsed time; the new invocation
     # has to invalidate it before any horizontal movement occurs.
     for kind in ('finished', 'cycle', 'marker'):
-        pet._on_renderer_event({'type': kind, 'name': old_name, 'token': old_token, 'cycle': 3, 'marker': 'clean_sweep'})
+        pet._on_renderer_event({"generation": pet._renderer_generation, 'type': kind, 'name': old_name, 'token': old_token, 'cycle': 3, 'marker': 'clean_sweep'})
     assert (pet.state, pet._renderer_token, len(host.messages)) == (expected, token, messages)
     for step in range(1, 5): pet.mouseMoveEvent(DragPointer(400+horizontal*(step+1), 320+step*8))
     assert pet._renderer_token == token, 'small per-frame horizontal changes must not restart the drag'
@@ -188,7 +196,7 @@ def test_paused_vertical_detach_samples_drag_then_edge_pose_without_advancing_mo
 
 
 def event(pet, kind, **values):
-    pet._on_renderer_event({"type": kind, "token": pet._renderer_token, "name": pet.state, **values})
+    pet._on_renderer_event({"generation": pet._renderer_generation, "type": kind, "token": pet._renderer_token, "name": pet.state, **values})
 
 
 def test_new_defaults_settings_compatibility_and_menu(pet):
@@ -210,16 +218,16 @@ def test_live_motion_completion_ignores_duplicate_and_interrupted_events(pet):
     activate(pet)
     pet._start_temporary("happy")
     old_token = pet._renderer_token
-    assert pet._live2d_active and not pet.animation_timer.isActive()
-    pet._on_renderer_event({"type": "cycle", "name": "happy", "token": old_token - 1, "cycle": 2})
+    assert pet._live2d_active and not hasattr(pet, 'animation_timer')
+    pet._on_renderer_event({"generation": pet._renderer_generation, "type": "cycle", "name": "happy", "token": old_token - 1, "cycle": 2})
     assert pet.state == "happy" and pet.animation_cycles == 0
     event(pet, "cycle", cycle=1)
     event(pet, "cycle", cycle=1)
     assert pet.state == "happy" and pet.animation_cycles == 1
     event(pet, "finished")  # A single response settles on its native completion.
     assert pet.state == "idle" and pet._renderer_token != old_token
-    pet._on_renderer_event({"type": "finished", "name": "happy", "token": old_token})
-    pet._on_renderer_event({"type": "cycle", "name": "happy", "token": old_token, "cycle": 3})
+    pet._on_renderer_event({"generation": pet._renderer_generation, "type": "finished", "name": "happy", "token": old_token})
+    pet._on_renderer_event({"generation": pet._renderer_generation, "type": "cycle", "name": "happy", "token": old_token, "cycle": 3})
     assert pet.state == "idle"
 
 
@@ -231,21 +239,16 @@ def test_sleep_follows_native_completion(pet):
     assert pet.sleep_phase == "loop" and pet.state == "sleep_loop"
 
 
-def test_fallback_on_error_and_unsupported_motion(pet):
+def test_errors_never_restore_a_legacy_renderer(pet):
     activate(pet, ["idle"])
-    assert pet._live2d_active
-    pet.start_state("land")
-    assert not pet._live2d_active and pet.animation_timer.isActive()
-    assert "land" in pet.renderer_status
-    pet.start_state("idle")
-    assert pet._live2d_active
-    pet._on_renderer_event({"type": "error", "message": "Missing Maple.moc3"})
-    assert not pet._live2d_active and pet.sprite.isVisible() and pet.animation_timer.isActive()
-    assert "Missing Maple.moc3" in pet.renderer_status
-    sent = len(pet.live2d_host.messages)
-    for _ in range(100):
-        pet._update_runtime()
-    assert len(pet.live2d_host.messages) == sent  # missing model must not grow a JS command queue
+    assert not pet._live2d_active and pet.loading_panel.isVisible()
+    assert pet.retry_button.isVisible() and not hasattr(pet, 'sprite')
+    activate(pet)
+    event(pet, 'error', message='Missing Maple.moc3')
+    assert not pet._live2d_active and 'Missing Maple.moc3' in pet.renderer_status
+    sent=len(pet.live2d_host.messages)
+    for _ in range(100):pet._update_runtime()
+    assert len(pet.live2d_host.messages)==sent
 
 
 def test_live_pause_hide_and_resume_keep_motion_token(pet):
@@ -282,9 +285,9 @@ def test_native_close_suspends_providers_and_generic_show_resumes(pet):
     pet.monitor_button.show()
     pet.close()  # Alt+F4 closes the frameless QWidget through this path.
     assert provider.suspended and not pet.monitor_button.isVisible()
-    assert not pet.animation_timer.isActive()
+    assert not hasattr(pet, 'animation_timer')
     pet.show()
-    assert not provider.suspended and pet.animation_timer.isActive()
+    assert not provider.suspended and not hasattr(pet,'animation_timer')
 
 
 def test_sustained_gaze_and_typing_use_last_click(pet, monkeypatch):
@@ -381,7 +384,7 @@ def test_resizing_during_vertical_motion_keeps_new_contact_position(pet, monkeyp
     origin = pet.y()
     clock[0] += .016
     pet._motion_step()
-    expected = pet.climb_direction * 2 / .035 * pet.settings.scale * .016 if motion == "climb" else 0
+    expected = 0  # A host timer alone cannot advance the native climbing phase.
     assert abs(pet.y() - origin - expected) <= 1
 
 
@@ -431,13 +434,13 @@ def test_top_transition_uses_native_markers_and_rejects_interrupted_completion(p
     start = pet.pos()
     payload = {'token': token, 'name': 'climb_to_top_left', 'bounds': [0, 0, 1, 1],
                'anchors': {'gripLeft': [.2, .4], 'hang': [.5, 0]}, 'transitionProgress': 0}
-    pet._on_renderer_event({'type': 'geometry', **payload})
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'geometry', **payload})
     assert pet.pos() == start
-    pet._on_renderer_event({'type': 'marker', 'token': token, 'name': 'climb_to_top_left', 'marker': 'top_grab'})
-    pet._on_renderer_event({'type': 'geometry', **payload, 'transitionProgress': 1})
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'marker', 'token': token, 'name': 'climb_to_top_left', 'marker': 'top_grab'})
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'geometry', **payload, 'transitionProgress': 1})
     assert pet.y() == pet._screen_area().top()
     pet.start_state('drag_left')
-    pet._on_renderer_event({'type': 'finished', 'token': token, 'name': 'climb_to_top_left', 'cycle': 1})
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'finished', 'token': token, 'name': 'climb_to_top_left', 'cycle': 1})
     assert pet.state == 'drag_left' and pet._top_transition is None
 
 
@@ -446,7 +449,7 @@ def test_native_top_transition_finishes_into_original_swing_behavior(pet):
     pet._attach_side('right')
     pet._renderer_geometry = {'anchors': {'right': [.8, .4], 'hang': [.5, 0]}}
     pet._begin_top_transition()
-    pet._on_renderer_event({'type': 'finished', 'token': pet._renderer_token,
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'finished', 'token': pet._renderer_token,
                             'name': 'climb_to_top_right', 'cycle': 1})
     assert pet.state == 'swing_cycle' and pet.base_mode == 'top_swing'
     assert pet._top_transition is None
@@ -519,8 +522,8 @@ def test_attached_interactions_keep_native_pose_token_and_motion(pet, monkeypatc
     assert pet._applied_expressions <= {'smile', 'blush', 'maple'} and pet._applied_expressions
     if transition:
         for marker in ('top_grab', 'wall_release', 'settled'):
-            pet._on_renderer_event({'type': 'marker', 'name': transition['name'], 'token': before[1], 'marker': marker})
-        pet._on_renderer_event({'type': 'finished', 'name': transition['name'], 'token': before[1], 'cycle': 1})
+            pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'marker', 'name': transition['name'], 'token': before[1], 'marker': marker})
+        pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'finished', 'name': transition['name'], 'token': before[1], 'cycle': 1})
         assert pet.state == 'swing_cycle' and pet.base_mode == 'top_swing'
 
 
@@ -685,11 +688,11 @@ def test_pause_hide_clear_both_channels_and_ignore_late_activity_until_fresh_res
 def test_renderer_reload_replays_current_expression_set_once_without_replaying_expired_typing(pet, monkeypatch):
     host, clock = _start_both_real_reaction_signals(pet, monkeypatch)
     host.messages.clear()
-    pet._on_renderer_event({'type': 'ready', 'backend': 'live2d', 'states': list(ANIMATIONS)})
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'ready', 'backend': 'live2d', 'states': [*ANIMATIONS,*pet_app.TOP_TRANSITIONS], 'locomotion':__import__('test_live2d_only').META['locomotion']})
     assert _expression_commands(host) == [('audio', True), ('keyboard', True)]
     host.messages.clear()
     clock[0] = 104
-    pet._on_renderer_event({'type': 'ready', 'backend': 'live2d', 'states': list(ANIMATIONS)})
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'ready', 'backend': 'live2d', 'states': [*ANIMATIONS,*pet_app.TOP_TRANSITIONS], 'locomotion':__import__('test_live2d_only').META['locomotion']})
     assert _expression_commands(host) == [('audio', True)]
     assert pet._applied_expressions == {'audio'}
     pet._stop_runtime()
@@ -697,7 +700,7 @@ def test_renderer_reload_replays_current_expression_set_once_without_replaying_e
     pet._keyboard_activity()
     pet._audio_activity(True)
     pet._update_runtime()
-    pet._on_renderer_event({'type': 'ready', 'backend': 'live2d', 'states': list(ANIMATIONS)})
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'ready', 'backend': 'live2d', 'states': [*ANIMATIONS,*pet_app.TOP_TRANSITIONS], 'locomotion':__import__('test_live2d_only').META['locomotion']})
     assert not host.messages and not pet._reaction_expressions and pet._active_reaction is None
 
 
@@ -717,7 +720,7 @@ def test_independent_reaction_channel_does_not_cancel_an_explicit_expression(pet
 def test_v5_typing_and_listening_artwork_bindings_target_independent_native_parameters():
     from pathlib import Path
     metadata = json.loads((Path(__file__).resolve().parents[1] /
-        'assets/authoring/revisions/v5/runtime/Maple.pet.json').read_text(encoding='utf-8-sig'))
+        'assets/live2d/Maple/Maple.pet.json').read_text(encoding='utf-8-sig'))
     keyboard = {row['id'] for row in metadata['expressions']['keyboard']}
     audio = {row['id'] for row in metadata['expressions']['audio']}
     assert 'ParamTyping' in keyboard and 'ParamListening' in audio
@@ -838,9 +841,9 @@ def test_native_climb_uses_authored_phase_once_and_does_not_jump_after_pause(pet
 
 
 def _refined_climb_fixture(pet, side='left'):
-    states = [*ANIMATIONS, *pet_app.TOP_TRANSITIONS, *pet_app.CLEANUP_SEGMENTS]
+    states = [*ANIMATIONS, *pet_app.TOP_TRANSITIONS]
     host = activate(pet, states)
-    pet._on_renderer_event({'type': 'ready', 'states': states,
+    pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'ready', 'states': states,
         'capabilities': ['climb-endpoint-v1'], 'locomotion': {'climb': {
             'risePerCycle': .12, 'cycleDuration': 1.6, 'refinementParameter': 'ParamClimbRefine',
             'phaseTravel': [[0, 0], [.4, .4], [1, 1]]}}})
@@ -932,7 +935,7 @@ def test_refined_climb_cancel_discards_late_endpoint_without_false_transition(pe
 
 @pytest.mark.parametrize('side', ['left', 'right'])
 def test_top_transfer_keeps_painted_contact_and_never_switches_to_padded_edge(pet, side):
-    activate(pet, [*ANIMATIONS, 'climb_to_top_' + side])
+    activate(pet)
     pet._attach_side(side)
     material_x = .3 if side == 'left' else .7
     anchors = {side: [material_x, .4], 'nearGrip': [material_x, .4],
@@ -941,7 +944,7 @@ def test_top_transfer_keeps_painted_contact_and_never_switches_to_padded_edge(pe
     pet._begin_top_transition()
     assert pet._top_transition['anchor_key'] == 'nearGrip'
     start = pet.pos()
-    payload = {'type': 'geometry', 'token': pet._renderer_token, 'name': 'climb_to_top_' + side,
+    payload = {'generation':pet._renderer_generation, 'type': 'geometry', 'token': pet._renderer_token, 'name': 'climb_to_top_' + side,
                'bounds': [0, 0, 1, 1], 'anchors': anchors, 'transitionProgress': 0}
     pet._on_renderer_event(payload)
     assert pet.pos() == start

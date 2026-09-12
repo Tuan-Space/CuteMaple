@@ -15,7 +15,7 @@ test('paused explicit play evaluates the new pose before geometry without time o
     geometry: () => ({bounds: [0, 0, 1, 1], anchors: {left: [value, .4]}})};
   const p = new Playback(driver, e => events.push(e));
   p.pause(true); p.play({type: 'play', name: 'climb_left', token: 2, playback: 'loop'});
-  assert.equal(events.length, 1); assert.equal(events[0].anchors.left[0], .7);
+  assert.equal(events.length, 2); assert.equal(events[1].type, 'frame-ready'); assert.equal(events[0].anchors.left[0], .7);
   p.tick(0); p.tick(100000); assert.deepEqual(steps, []);
   p.pause(false); p.tick(200000); p.tick(200016);
   assert.equal(steps.reduce((a, b) => a + b, 0), .016);
@@ -50,46 +50,6 @@ test('effect generations and motion tokens cannot leak across state changes', ()
   field.play(2); assert.equal(field.particles.length, 0);
   assert.equal(field.emit({type: 'effect', name: 'audio', token: 1}, geometry), false);
   field.pause(true); assert.equal(field.emit({type: 'effect', name: 'audio', token: 2}, geometry), false);
-});
-
-test('dust requires the current fan and leaves its surface in the wrist-to-fan direction', () => {
-  const field = new ParticleField(() => .5); field.play(1);
-  const geometry = {bounds: [0, 0, 1, 1] as [number, number, number, number],
-    anchors: {head: [.5, .2] as [number, number], freeHand: [.6, .6] as [number, number], fanTip: [.75, .45] as [number, number]}};
-  assert.ok(field.emit({type: 'effect', name: 'clean_dust', token: 1}, geometry));
-  assert.equal(field.particles.length, 3);
-  for (const particle of field.particles) {
-    assert.equal(particle.shape, 'dust');
-    assert.ok(Math.abs(particle.x - .7275) < .001 && Math.abs(particle.y - .4725) < .001);
-    assert.ok(particle.vx > 0 && particle.vy < 0);
-    assert.ok(Math.hypot(particle.x - .5, particle.y - .2) > .2);
-  }
-  const origin = {...field.particles[0]}; field.update(.1);
-  assert.ok(field.particles[0].x > origin.x && field.particles[0].y < origin.y);
-});
-
-test('missing or offscreen fan never emits dust from the forehead or an override coordinate', () => {
-  const field = new ParticleField(() => .5); field.play(1);
-  const bounds: [number, number, number, number] = [0, 0, 1, 1];
-  assert.equal(field.emit({type: 'effect', name: 'clean_dust', token: 1}, {bounds, anchors: {head: [.5, .2]}}), false);
-  assert.equal(field.emit({type: 'effect', name: 'dust', token: 1}, {bounds, anchors: {head: [.5, .2], freeHand: [.6, .6]}}), false);
-  const anchors = {head: [.5, .2] as [number, number], fanTip: [.8, .5] as [number, number], freeHand: [.6, .6] as [number, number]};
-  assert.equal(field.emit({type: 'effect', name: 'dust', token: 1, x: .5, y: .2}, {bounds, anchors}), false);
-  field.context({...defaultContext('clean_ground', 1), visibleRect: [0, 0, .3, .8]});
-  assert.equal(field.emit({type: 'effect', name: 'clean_dust', token: 1}, {bounds, anchors}), false);
-  assert.deepEqual(field.particles, []);
-});
-
-test('dust dissipates at the viewport edge without reflecting toward the pet', () => {
-  const field = new ParticleField(() => .5); field.play(1);
-  const geometry = {bounds: [0, 0, 1, 1] as [number, number, number, number],
-    anchors: {head: [.5, .2] as [number, number], fanTip: [.99, .5] as [number, number], freeHand: [.95, .5] as [number, number]}};
-  assert.ok(field.emit({type: 'effect', name: 'clean_dust', token: 1}, geometry));
-  for (let i = 0; i < 8; i++) {
-    field.update(.1);
-    assert.ok(field.particles.every(p => p.vx > 0));
-  }
-  assert.deepEqual(field.particles, []);
 });
 
 test('simultaneous effect channels remain bounded and whole glyphs stay inside the visible rectangle', () => {

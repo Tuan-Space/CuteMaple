@@ -1,7 +1,6 @@
-param(
+﻿param(
     [ValidateSet("Directory")]
     [string]$Mode = "Directory",
-    [switch]$CompatibilityBuild,
     [switch]$InstallDependencies,
     [switch]$SkipTests,
     [string]$CandidateLabel = "",
@@ -27,10 +26,9 @@ if ($InstallDependencies) {
     if ($LASTEXITCODE -ne 0) { throw "Build dependency installation failed." }
 }
 $ValidationArguments = @((Join-Path $ProjectRoot "tools\validate_release.py"), $ProjectRoot)
-if ($CompatibilityBuild) { $ValidationArguments += "--compatibility" }
 & $Python @ValidationArguments
 if ($LASTEXITCODE -ne 0) {
-    throw "Runtime inventory incomplete. Export Maple's model and all motions first, or explicitly use -CompatibilityBuild for a sprite fallback test package."
+    throw "Runtime inventory incomplete. Export Maple's model and all required motions first."
 }
 if (-not $SkipTests) {
     $TestEvidence = Join-Path $Stage "regression"
@@ -38,13 +36,13 @@ if (-not $SkipTests) {
     if ($LASTEXITCODE -ne 0) { throw "Tests failed; no package produced." }
 }
 $RuntimeModules = @("main.py", "pet_app.py", "pet_core.py", "resource_monitor.py", "memory_cleaner.py",
-                    "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "desktop_decorations.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_helper.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py")
+                    "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_helper.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py")
 foreach ($Module in $RuntimeModules) {
     Copy-Item -LiteralPath (Join-Path $ProjectRoot $Module) -Destination $Stage
 }
 $StageAssets = Join-Path $Stage "assets"
 New-Item -ItemType Directory -Force -Path $StageAssets | Out-Null
-foreach ($Folder in @("sprites_v2", "fonts")) {
+foreach ($Folder in @("fonts")) {
     Copy-Item -LiteralPath (Join-Path $ProjectRoot ("assets\" + $Folder)) -Destination $StageAssets -Recurse
 }
 Copy-Item -LiteralPath (Join-Path $ProjectRoot "assets\icon.png") -Destination $StageAssets
@@ -67,13 +65,12 @@ if (Test-Path -LiteralPath $ModelSource) {
 $StageWeb = Join-Path $Stage "web"
 New-Item -ItemType Directory -Force -Path $StageWeb | Out-Null
 Copy-Item -LiteralPath (Join-Path $ProjectRoot "web\dist") -Destination $StageWeb -Recurse
-$AppBaseName = if ($CompatibilityBuild) { "CuteMaple-Compatibility" } else { "CuteMaple-Live2D" }
+$AppBaseName = "CuteMaple-Live2D"
 $Arguments = @(
     "-m", "nuitka", "--mode=standalone", "--enable-plugin=pyside6",
     "--include-module=PySide6.QtWebEngineCore", "--include-module=PySide6.QtWebEngineWidgets",
     "--include-module=PySide6.QtWebChannel", "--include-module=PySide6.QtNetwork",
     "--windows-console-mode=disable", "--windows-icon-from-ico=assets\app.ico",
-    "--include-data-dir=assets/sprites_v2=assets/sprites_v2",
     "--include-data-dir=assets/fonts=assets/fonts",
     "--include-data-dir=assets/live2d=assets/live2d",
     "--include-data-files=assets/icon.png=assets/icon.png",
@@ -127,7 +124,6 @@ if (-not (Test-Path -LiteralPath (Join-Path $HelperStandalone "CuteMaple-Cleaner
 }
 Copy-Item -LiteralPath $HelperStandalone -Destination (Join-Path $Standalone "cleaner") -Recurse
 $PackagedValidation = @((Join-Path $ProjectRoot "tools\validate_release.py"), $Standalone, "--packaged")
-if ($CompatibilityBuild) { $PackagedValidation += "--compatibility" }
 & $Python @PackagedValidation
 if ($LASTEXITCODE -ne 0) { throw "Packaged QtWebEngine/runtime inventory failed." }
 $Output = Join-Path $ProjectRoot ("dist\" + $AppBaseName + "-" + $Mode + "-" + $BuildId)
@@ -139,7 +135,7 @@ Copy-Item -LiteralPath (Join-Path $Stage "compilation-report.xml") -Destination 
 Copy-Item -LiteralPath (Join-Path $Stage "helper-compilation-report.xml") -Destination $Output
 Copy-Item -LiteralPath (Join-Path $Stage "SOURCE-SNAPSHOT.json") -Destination $Output
 $Manifest = [ordered]@{
-    product = $AppBaseName; mode = $Mode; compatibility = [bool]$CompatibilityBuild
+    product = $AppBaseName; mode = $Mode; version = "2.0.1"
     builtAt = (Get-Date).ToString("o"); sourceRevision = (& git -C $ProjectRoot rev-parse HEAD)
     sourceHasUncommittedChanges = [bool](& git -C $ProjectRoot status --porcelain)
     buildStage = $Stage
@@ -148,16 +144,12 @@ $Manifest = [ordered]@{
     normalDesktopRunVerified = $false
     securityReviewStatus = "pending"
     privilegedCleanup = "separate cleaner/CuteMaple-Cleaner.exe; explicit user authorization only"
-    modelValidation = $(if ($CompatibilityBuild) { "NOT A COMPLETE LIVE2D RELEASE" } else { "runtime inventory passed; visual QA remains required" })
+    modelValidation = "runtime inventory passed; visual QA remains required"
 }
 $Manifest | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output "BUILD-STATUS.json") -Encoding utf8
 if ($CandidateLabel) {
     ("CANDIDATE ONLY - NOT A FINAL RELEASE`n" + $CandidateLabel + "`nNo ordinary desktop soak or default-protection release verdict is implied.") |
         Set-Content -LiteralPath (Join-Path $Output "CANDIDATE-NOT-FINAL.txt") -Encoding utf8
-}
-if ($CompatibilityBuild) {
-    "SPRITE COMPATIBILITY TEST BUILD. This is not a completed Maple Live2D model release. Check the pet's Interaction menu for renderer status." |
-        Set-Content -LiteralPath (Join-Path $Output "COMPATIBILITY-NOT-FINAL.txt") -Encoding utf8
 }
 $Hashes = foreach ($File in Get-ChildItem -LiteralPath $Output -Recurse -File) {
     if ($File.Name -eq "SHA256.txt") { continue }

@@ -5,17 +5,16 @@ from pathlib import Path
 
 import pytest
 
-from pet_core import ANIMATIONS, SPRITE_GROUPS
+from tools.authoring.animation_specs import ANIMATIONS
 from tools.validate_release import (validate, validate_desktop_evidence, validate_model_evidence,
                                     blocked_build, V4_TRANSITIONS, DESKTOP_WEB_HASHES)
 from tools.qa_resource_snapshot import resource_snapshot
 
 
-def sprite_bundle(root):
+def frontend_bundle(root):
     files = ["web/dist/index.html", "web/dist/app.js", "web/dist/live2dcubismcore.min.js",
              "web/dist/licenses/Cubism-Core-LICENSE.md", "web/dist/licenses/Cubism-Framework-LICENSE.md",
              "web/dist/licenses/Cubism-SDK-NOTICE.md", "assets/icon.png", "assets/fonts/font.otf"]
-    files.extend("assets/sprites_v2/" + name for frames in SPRITE_GROUPS.values() for name in frames)
     files += ["web/dist/shaders/vertshadersrc.vert", "web/dist/shaders/fragshadersrcpremultipliedalpha.frag"]
     files += [f"web/dist/shaders/fixture-{i}.frag" for i in range(11)]
     for name in files:
@@ -28,14 +27,13 @@ def sprite_bundle(root):
     (runtime / "build-manifest.json").write_text(json.dumps({"files": hashes}))
 
 
-def test_missing_model_requires_explicit_compatibility_opt_in(tmp_path):
-    sprite_bundle(tmp_path)
-    assert validate(tmp_path, compatibility=True) == []
+def test_missing_model_always_fails(tmp_path):
+    frontend_bundle(tmp_path)
     assert any("Incomplete Maple model" in error for error in validate(tmp_path))
 
 
 def test_model_reference_cannot_escape_runtime_model_folder(tmp_path):
-    sprite_bundle(tmp_path)
+    frontend_bundle(tmp_path)
     folder = tmp_path / "assets/live2d/Maple"
     folder.mkdir(parents=True)
     outside = tmp_path / "assets/live2d/outside.moc3"
@@ -49,17 +47,17 @@ def test_model_reference_cannot_escape_runtime_model_folder(tmp_path):
 
 
 def test_package_guard_rejects_missing_chromium_and_authoring_sources(tmp_path):
-    sprite_bundle(tmp_path)
+    frontend_bundle(tmp_path)
     (tmp_path / "leaked-source.cmo3").write_bytes(b"source")
-    errors = validate(tmp_path, compatibility=True, packaged=True)
+    errors = validate(tmp_path, packaged=True)
     assert any("QtWebEngineProcess.exe" in error for error in errors)
     assert any("Authoring sources must not be shipped" in error for error in errors)
 
 
 def test_corrupt_shader_cannot_pass_compatibility_build_guard(tmp_path):
-    sprite_bundle(tmp_path)
+    frontend_bundle(tmp_path)
     (tmp_path / "web/dist/shaders/vertshadersrc.vert").write_bytes(b"corrupted")
-    assert any("hash mismatch" in error for error in validate(tmp_path, compatibility=True))
+    assert any("hash mismatch" in error for error in validate(tmp_path))
 
 
 def test_known_detected_build_is_rejected_before_reading_inventory(tmp_path):
@@ -133,13 +131,13 @@ def test_desktop_evidence_binds_hash_and_default_protection_observation():
 
 
 def test_cleanup_helper_does_not_inherit_qt_package(tmp_path):
-    sprite_bundle(tmp_path)
+    frontend_bundle(tmp_path)
     helper = tmp_path / "cleaner"
     helper.mkdir()
     (helper / "CuteMaple-Cleaner.exe").write_bytes(b"fixture")
     (helper / "Qt6Core.dll").write_bytes(b"fixture")
     assert any("Cleanup helper must not bundle Qt" in error
-               for error in validate(tmp_path, compatibility=True, packaged=True))
+               for error in validate(tmp_path, packaged=True))
 
 
 def test_finalizer_rejects_candidate_marked_for_recompile_before_binary_reads(tmp_path):
@@ -161,7 +159,7 @@ def synthetic_release(tmp_path, request):
 
     package = tmp_path / 'SYNTHETIC-TEST-ONLY'
     bundle = package / 'CuteMaple-Live2D'
-    sprite_bundle(bundle)
+    frontend_bundle(bundle)
     stage = tmp_path / 'compiler-stage'
     stage.mkdir()
     (stage/'main.py').write_text('# Synthetic unit-test fixture, not application source\n')

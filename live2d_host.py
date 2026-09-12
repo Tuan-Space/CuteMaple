@@ -1,7 +1,7 @@
 """Local-only QtWebEngine host; all model execution stays in the browser renderer.
 
 The bridge exchanges JSON, never Python source. Importing this module does not
-construct a browser or register a scheme, so sprite tests remain headless.
+construct a browser or register a scheme, until an application explicitly creates its renderer.
 """
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ class PetBridge(QObject):
         except (TypeError, ValueError):
             return
         if isinstance(value, dict) and value.get("type") in {
-            "connected", "ready", "error", "cycle", "finished", "geometry", "marker", "climb-rest",
+            "connected", "ready", "error", "cycle", "finished", "geometry", "frame-ready", "marker", "climb-rest",
         }:
             self.event.emit(value)
 
@@ -120,6 +120,15 @@ class Live2DHost(QObject):
         self.timeout.setSingleShot(True)
         self.timeout.timeout.connect(lambda: self._fail("Live2D 模型载入超时", self._generation))
         self.view.hide()
+
+    @property
+    def generation(self):
+        return self._generation
+
+    def presented(self, token: int) -> None:
+        if self.ready:
+            self.timeout.stop()
+            self._log("renderer_presented", token=token)
 
     def _log(self, name, **fields):
         try:
@@ -193,7 +202,6 @@ class Live2DHost(QObject):
                 self._fail("模型未通过 Live2D 载入验证")
                 return
             self._state, self.ready = "ready", True
-            self.timeout.stop()
             self._log("renderer_ready")
         elif kind == "error":
             self._fail(str(event.get("message", "Live2D error")))

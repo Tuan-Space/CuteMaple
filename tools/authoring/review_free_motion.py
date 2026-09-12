@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw
 from build_v5 import V5Builder
 from diagnose_rig import DiagnosticRenderer, motion_parameters
 from maple_motions import build_motion
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 
 
 def main():

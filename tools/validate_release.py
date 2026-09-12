@@ -10,7 +10,8 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pet_core import ANIMATIONS, SPRITE_GROUPS
+from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS as AUTHORING_ANIMATIONS
 from tools.native_model_contract import (declared_native_parameters, declared_native_drawables, free_motion_contacts,
     REFINED_MOTION_REVISION, motion_polish_enabled)
 from tools.native_material_geometry import (measure_brush_sweep, measure_brush_transitions, measure_free_brace, measure_climb_materials,
@@ -18,7 +19,7 @@ from tools.native_material_geometry import (measure_brush_sweep, measure_brush_t
 
 BLOCKED_BUILD_IDS = ("20260908-190153", "20260908-190759")
 V4_TRANSITIONS = ("climb_to_top_left", "climb_to_top_right")
-V5_CLEAN_SEGMENTS = tuple(f"{state}_{phase}" for state in ANIMATIONS if state.startswith("clean_")
+V5_CLEAN_SEGMENTS = tuple(f"{state}_{phase}" for state in AUTHORING_ANIMATIONS if state.startswith("clean_")
                           for phase in ("enter", "exit"))
 V5_PARAMETERS = {"Param" + name for name in ("RibbonLX", "RibbonLY", "RibbonRX", "RibbonRY",
     "CleanFanL", "CleanFanR", "CleaningSweep", "ClimbPhase", "ClimbActive", "ClimbDirection", "CleanGround")}
@@ -79,7 +80,7 @@ def validate_v5_measurements(native: dict, expected_mesh_count: int = 141, expec
         return result
     try:
         require(measured['nativeIdentity'] == native.get('modelRevisionEvidence'), 'v5 measured native identity differs')
-        states = (*ANIMATIONS, *V4_TRANSITIONS, *V5_CLEAN_SEGMENTS)
+        states = (*AUTHORING_ANIMATIONS, *V4_TRANSITIONS, *V5_CLEAN_SEGMENTS)
         require(set(measured['motionBindings']) == set(states), 'All 31 measured native motion bindings are required')
         for name in states:
             binding = native.get('motionBindings', {}).get(name, {})
@@ -103,7 +104,7 @@ def validate_v5_measurements(native: dict, expected_mesh_count: int = 141, expec
                     actual = cleanup_endpoint_parameters(native, name, phase)
                     require(row == {**actual, 'binding': native['motionBindings'][name]},
                             f'Native cleanup endpoint parameter evidence differs: {name}/{phase}')
-        require(all(native.get('markers', {}).get(name) == ['clean_sweep'] for name in ANIMATIONS if name.startswith('clean_')),
+        require(all(native.get('markers', {}).get(name) == ['clean_sweep'] for name in AUTHORING_ANIMATIONS if name.startswith('clean_')),
                 'Each cleaning loop must emit exactly its actual sweep marker')
         rest = measured['restContacts']
         require(set(rest) == set((*V5_REST_CONTACT_POSES, *V5_REST_CONTACT_PROBES)),
@@ -187,7 +188,7 @@ def validate_v5_measurements(native: dict, expected_mesh_count: int = 141, expec
                         f'Actual native {name} measurements differ from recorded geometry')
         else:
             fans = measured['fanSweep']
-            require(set(fans) == {n for n in ANIMATIONS if n.startswith('clean_')}
+            require(set(fans) == {n for n in AUTHORING_ANIMATIONS if n.startswith('clean_')}
                     and all(number(r.get('nativeFanCenterDistance'), .01) and number(r.get('supportHandMovement'), 0, .008)
                             for r in fans.values()), 'Four cleanup poses need actual fan sweep and preserved support')
         count = 35 if polished else 27
@@ -234,7 +235,7 @@ def validate_model_evidence(source: dict, native: dict, assets: dict[str, str], 
                 mesh_count = len(expected_drawables)
         except ValueError as error:
             errors.append(str(error))
-    states = (*ANIMATIONS, *V4_TRANSITIONS, *(V5_CLEAN_SEGMENTS if version == 5 else ()))
+    states = (*AUTHORING_ANIMATIONS, *V4_TRANSITIONS, *(V5_CLEAN_SEGMENTS if version == 5 else ()))
     if version not in (4, 5) or source.get("modelVersion") != revision or source.get("actualNative") is not True:
         errors.append(f"Source QA must explicitly identify the actual native {revision} model")
     if any(document.get("diagnosticOnly") is True or document.get("knownInvalidNeckUV") is True
@@ -453,7 +454,7 @@ def validate_refined_release_evidence(root: Path, metadata: dict, report_path: P
         return [f'Refined motion release evidence failed: {error}']
 
 
-def validate(root: Path, *, compatibility: bool = False, packaged: bool = False,
+def validate(root: Path, *, packaged: bool = False,
              refined_motion_report: Path | None = None) -> list[str]:
     if blocked_build(root):
         return ["This build was detected by Windows protection and is withdrawn; do not read or run its binaries"]
@@ -463,7 +464,6 @@ def validate(root: Path, *, compatibility: bool = False, packaged: bool = False,
                 "web/dist/shaders/fragshadersrcpremultipliedalpha.frag",
                 "web/dist/licenses/Cubism-Core-LICENSE.md", "web/dist/licenses/Cubism-Framework-LICENSE.md",
                 "web/dist/licenses/Cubism-SDK-NOTICE.md", "assets/icon.png"]
-    required.extend("assets/sprites_v2/" + frame for frames in SPRITE_GROUPS.values() for frame in frames)
     for name in required:
         path = root / name
         if not path.is_file() or path.stat().st_size == 0:
@@ -484,64 +484,66 @@ def validate(root: Path, *, compatibility: bool = False, packaged: bool = False,
         errors.append(f"Invalid renderer build manifest: {exc}")
     folder = root / "assets" / "live2d" / "Maple"
     model_path = folder / "Maple.model3.json"
-    if not compatibility:
-        try:
-            model = json.loads(model_path.read_text(encoding="utf-8-sig"))
-            refs = model["FileReferences"]
+    try:
+        model = json.loads(model_path.read_text(encoding="utf-8-sig"))
+        refs = model["FileReferences"]
 
-            def check_file(name: object) -> Path | None:
-                if not isinstance(name, str) or not name:
-                    errors.append("Empty or invalid model file reference")
-                    return None
-                path = (folder / name).resolve()
-                if not path.is_relative_to(folder.resolve()) or not path.is_file() or path.stat().st_size == 0:
-                    errors.append(f"Missing/unsafe model reference: {name}")
-                    return None
-                return path
+        def check_file(name: object) -> Path | None:
+            if not isinstance(name, str) or not name:
+                errors.append("Empty or invalid model file reference")
+                return None
+            path = (folder / name).resolve()
+            if not path.is_relative_to(folder.resolve()) or not path.is_file() or path.stat().st_size == 0:
+                errors.append(f"Missing/unsafe model reference: {name}")
+                return None
+            return path
 
-            moc = check_file(refs.get("Moc"))
-            if moc is not None and moc.read_bytes()[:4] != b"MOC3":
-                errors.append("Maple moc file is not a Cubism MOC3 export")
-            textures = refs.get("Textures", [])
-            if not textures:
-                errors.append("Model has no textures")
-            for name in textures:
-                check_file(name)
-            for kind in ("Physics", "Pose", "DisplayInfo", "UserData"):
-                if refs.get(kind):
-                    check_file(refs[kind])
-            for expression in refs.get("Expressions", []):
-                check_file(expression.get("File"))
-            metadata_name = model.get("CuteMaple", {}).get("Metadata")
-            if not metadata_name:
-                errors.append("Missing CuteMaple.Metadata contact/expression mapping")
-            metadata = {}
-            if metadata_name:
-                metadata_path = check_file(metadata_name)
-                if metadata_path:
-                    metadata = json.loads(metadata_path.read_text(encoding="utf-8-sig"))
-            motions = refs.get("Motions", {})
-            version = metadata.get("refinement", {}).get("version")
-            states = (*ANIMATIONS, *V4_TRANSITIONS, *V5_CLEAN_SEGMENTS) if version == 5 else ANIMATIONS
-            if version == 5 and set(motions) != set(states):
-                errors.append("v5 model must reference exactly all 31 native motion groups")
-            for state in states:
-                entries = motions.get(state, [])
-                if not entries:
-                    errors.append(f"Missing native motion group: {state}")
-                    continue
-                for entry in entries:
-                    path = check_file(entry.get("File"))
-                    if path:
-                        motion = json.loads(path.read_text(encoding="utf-8-sig"))
-                        if not motion.get("Curves") or not motion.get("Meta", {}).get("Duration", 0) > 0:
-                            errors.append(f"Motion has no authored curves/duration: {entry.get('File')}")
-                    if entry.get("Sound"):
-                        check_file(entry["Sound"])
-            errors.extend(validate_refined_release_evidence(root, metadata, refined_motion_report,
-                          finalized=packaged and (root.parent/'RELEASE-VERIFICATION.json').is_file()))
-        except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
-            errors.append(f"Incomplete Maple model: {exc}")
+        moc = check_file(refs.get("Moc"))
+        if moc is not None and moc.read_bytes()[:4] != b"MOC3":
+            errors.append("Maple moc file is not a Cubism MOC3 export")
+        textures = refs.get("Textures", [])
+        if not textures:
+            errors.append("Model has no textures")
+        for name in textures:
+            check_file(name)
+        for kind in ("Physics", "Pose", "DisplayInfo", "UserData"):
+            if refs.get(kind):
+                check_file(refs[kind])
+        for expression in refs.get("Expressions", []):
+            check_file(expression.get("File"))
+        metadata_name = model.get("CuteMaple", {}).get("Metadata")
+        if not metadata_name:
+            errors.append("Missing CuteMaple.Metadata contact/expression mapping")
+        metadata = {}
+        if metadata_name:
+            metadata_path = check_file(metadata_name)
+            if metadata_path:
+                metadata = json.loads(metadata_path.read_text(encoding="utf-8-sig"))
+        motions = refs.get("Motions", {})
+        version = metadata.get("refinement", {}).get("version")
+        states = (*ANIMATIONS, *V4_TRANSITIONS)
+        if version == 5 and set(motions) != set(states):
+            errors.append("Live2D runtime must reference exactly 19 motion groups")
+        for state in states:
+            entries = motions.get(state, [])
+            if not entries:
+                errors.append(f"Missing native motion group: {state}")
+                continue
+            for entry in entries:
+                path = check_file(entry.get("File"))
+                if path:
+                    motion = json.loads(path.read_text(encoding="utf-8-sig"))
+                    if not motion.get("Curves") or not motion.get("Meta", {}).get("Duration", 0) > 0:
+                        errors.append(f"Motion has no authored curves/duration: {entry.get('File')}")
+                if entry.get("Sound"):
+                    check_file(entry["Sound"])
+        errors.extend(validate_refined_release_evidence(root, metadata, refined_motion_report,
+                      finalized=packaged and (root.parent/'RELEASE-VERIFICATION.json').is_file()))
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+        errors.append(f"Incomplete Maple model: {exc}")
+    for obsolete in (root / "assets/sprites_v2", root / "desktop_decorations.py"):
+        if obsolete.exists():
+            errors.append(f"Obsolete sprite runtime payload: {obsolete.name}")
     if packaged:
         inventory = {path.name.lower() for path in root.rglob("*") if path.is_file()}
         for name in ("QtWebEngineProcess.exe", "Qt6WebEngineCore.dll", "Qt6WebEngineWidgets.dll",
@@ -565,14 +567,13 @@ def validate(root: Path, *, compatibility: bool = False, packaged: bool = False,
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("root", type=Path)
-    parser.add_argument("--compatibility", action="store_true")
     parser.add_argument("--packaged", action="store_true")
     parser.add_argument("--refined-motion-report", type=Path,
                         help="Reopen supplemental actual Core evidence; automatically required on finalized refined packages")
     options = parser.parse_args()
-    errors = validate(options.root.resolve(), compatibility=options.compatibility, packaged=options.packaged,
+    errors = validate(options.root.resolve(), packaged=options.packaged,
                       refined_motion_report=options.refined_motion_report)
-    print(json.dumps({"ok": not errors, "mode": "sprite-compatibility" if options.compatibility else "live2d-inventory",
+    print(json.dumps({"ok": not errors, "mode": "live2d-inventory",
                       "errors": errors}, ensure_ascii=False, indent=2))
     return int(bool(errors))
 

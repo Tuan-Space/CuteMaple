@@ -1,0 +1,29 @@
+{
+  "errors": [],
+  "states": [
+    "idle",
+    "walk_right",
+    "walk_left",
+    "drag_left",
+    "drag_right",
+    "happy",
+    "talk",
+    "petting",
+    "fall_float",
+    "land",
+    "climb_right",
+    "climb_left",
+    "swing_cycle",
+    "swing_idle",
+    "sleep_enter",
+    "sleep_loop",
+    "sleep_exit",
+    "climb_to_top_left",
+    "climb_to_top_right"
+  ],
+  "loadingVisible": true,
+  "legacyWidgetAbsent": true,
+  "firstPresentedSeconds": 3.4572838000021875,
+  "retryPresented": true,
+  "passed": true
+}

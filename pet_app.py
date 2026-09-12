@@ -12,16 +12,16 @@ from pathlib import Path
 
 from PySide6.QtCore import QEvent, QPoint, QRect, Qt, QTimer
 from PySide6.QtGui import (QAction, QFont, QFontDatabase, QGuiApplication, QIcon,
-                           QCursor, QMouseEvent, QPixmap, QRegion, QWheelEvent)
-from PySide6.QtWidgets import QApplication, QLabel, QMenu, QSystemTrayIcon, QWidget
+                           QCursor, QMouseEvent, QWheelEvent)
+from PySide6.QtWidgets import QApplication, QLabel, QMenu, QSystemTrayIcon, QWidget, QFrame, QVBoxLayout, QPushButton
 
-from pet_core import (ANIMATIONS, APP_NAME, SPRITE_GROUPS, PetSettings, AnimationSpec,
+from pet_core import (ANIMATIONS, APP_NAME, PetSettings, AnimationSpec,
                       auto_cleanup_due, choose_dialogue, choose_happy_dialogue, load_settings,
                       resource_root, save_settings, set_autostart)
 from memory_cleaner import (TASK_SCHEMA_VERSION, current_executable_path, is_process_elevated,
                             begin_cleanup, read_cleanup, cancel_cleanup,
                             request_session_authorization, session_is_valid, close_cleanup_session)
-from monitor_ui import AutoCleanDialog, DetailsPanel, MonitorButton, MonitorCapsule, clamp_rect, cleanup_summary
+from monitor_ui import AutoCleanDialog, DetailsPanel, MonitorButton, MonitorCapsule, ThemeBinding, clamp_rect, cleanup_summary
 from resource_monitor import NetworkSampler, format_bytes, memory_snapshot
 from locomotion import ClimbCadence, climb_spec, climb_progress
 
@@ -30,8 +30,6 @@ DRAG_THRESHOLD = 6
 EDGE_SNAP_PX = 28
 CLICK_DELAY_MS = 250
 TOP_TRANSITIONS = {"climb_to_top_left", "climb_to_top_right"}
-CLEANUP_SEGMENTS = {f"{state}_{phase}" for state in ANIMATIONS if state.startswith("clean_")
-                    for phase in ("enter", "exit")}
 MIN_SCALE, MAX_SCALE = 0.6, 1.8
 SLEEP_AFTER_SECONDS, SLEEP_FOR_SECONDS = 60.0, 240.0
 
@@ -91,20 +89,32 @@ class PetWindow(QWidget):
         self.setMouseTracking(True)
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon(str(resource_root() / "assets" / "icon.png")))
-        self.sprite = QLabel(self)
-        self.sprite.setAlignment(Qt.AlignCenter)
-        self.sprite.setAttribute(Qt.WA_TransparentForMouseEvents)
-        self.frames = self._load_frames()
-        self.scaled_frames: dict[str, list[QPixmap]] = {}
-        self.state_content_bounds: dict[str, QRect] = {}
-        self.state, self.frame_index, self.animation_cycles = "idle", 0, 0
+        self.state, self.animation_cycles = "idle", 0
+        self._presentation_ready = False
+        self._renderer_generation = None
+        self._pending_presentation = None
+        self.loading_panel = QFrame(self)
+        self.loading_panel.setObjectName("sectionCard")
+        layout = QVBoxLayout(self.loading_panel)
+        self.loading_label = QLabel("正在加载桌宠…", self.loading_panel)
+        self.loading_label.setWordWrap(True)
+        self.loading_label.setAlignment(Qt.AlignCenter)
+        layout.addWidget(self.loading_label)
+        self.retry_button = QPushButton("重试", self.loading_panel)
+        self.retry_button.clicked.connect(self.retry_live2d)
+        self.retry_button.hide()
+        layout.addWidget(self.retry_button)
+        self.loading_exit = QPushButton("退出", self.loading_panel)
+        self.loading_exit.clicked.connect(self.quit_app)
+        layout.addWidget(self.loading_exit)
+        self.loading_theme = ThemeBinding(self.loading_panel)
         self.live2d_host = None
         self.live2d_states: set[str] = set()
         self._live2d_active = False
         self._renderer_token = 0
         self._renderer_geometry: dict = {}
-        self.renderer_status = "精灵兼容模式（Live2D 尚未载入）"
-        self.desktop_activity = self.reactions = self.decorations = None
+        self.renderer_status = "正在加载桌宠…"
+        self.desktop_activity = self.reactions = None
         self._active_reaction: str | None = None
         self._reaction_expressions: set[str] = set()
         self._requested_expressions: set[str] = set()
@@ -127,7 +137,6 @@ class PetWindow(QWidget):
         self._climb_cadence = ClimbCadence()
         self._climb_clock = time.monotonic()
         self._climb_control_stamp = None
-        self._compat_run_baseline = 0
         self._climb_progress = 0.0
         self._climb_endpoint_supported = False
         self._motion_polish_supported = False
@@ -175,7 +184,6 @@ class PetWindow(QWidget):
         self._cleanup_manual = True
         self._cleanup_cancel_requested = False
         self._cleanup_unresponsive = False
-        self._cleanup_segment: str | None = None
         self._cleanup_feedback = {"status": "idle"}
         self._auto_authorization_notice = False
         self.auto_clean_cycle_started = time.time()
@@ -190,9 +198,6 @@ class PetWindow(QWidget):
         self._authorization_probe_future = None
         self._install_executor = concurrent.futures.ThreadPoolExecutor(max_workers=1, thread_name_prefix="clean-auth")
 
-        self.animation_timer = QTimer(self)
-        self.animation_timer.setSingleShot(True)
-        self.animation_timer.timeout.connect(self._advance_frame)
         self.motion_timer = QTimer(self)
         self.motion_timer.setInterval(16)
         self.motion_timer.setTimerType(Qt.PreciseTimer)
@@ -221,6 +226,9 @@ class PetWindow(QWidget):
         self.install_poll_timer = QTimer(self)
         self.install_poll_timer.setInterval(250)
         self.install_poll_timer.timeout.connect(self._poll_clean_task_install)
+        self.presentation_timer = QTimer(self)
+        self.presentation_timer.setInterval(16)
+        self.presentation_timer.timeout.connect(self._present_current_frame)
         self.runtime_timer = QTimer(self)
         self.runtime_timer.setInterval(30)
         self.runtime_timer.timeout.connect(self._update_runtime)
@@ -252,32 +260,18 @@ class PetWindow(QWidget):
         QTimer.singleShot(1400, self._offer_clean_task_install)
         QTimer.singleShot(0, self._initialize_runtime)
 
-    def _load_frames(self) -> dict[str, list[QPixmap]]:
-        folder = resource_root() / "assets" / "sprites_v2"
-        result = {state: [QPixmap(str(folder / name)) for name in names]
-                  for state, names in SPRITE_GROUPS.items() if not state.startswith("clean_")}
-        if any(frame.isNull() for frames in result.values() for frame in frames):
-            raise RuntimeError("无法载入桌宠动画素材")
-        return result
+
 
     def _initialize_runtime(self) -> None:
         if self._runtime_stopped:
             return
-        # Offscreen tests retain the deterministic sprite renderer and no OS hooks.
-        if os.environ.get("QT_QPA_PLATFORM") == "offscreen" or os.environ.get("MEINIFENG_DISABLE_RUNTIME") == "1":
+        # Unit tests inject their renderer through a test-only fixture.
+        if os.environ.get("MEINIFENG_DISABLE_RUNTIME") == "1":
             return
-        try:
-            from live2d_host import Live2DHost
-            self.live2d_host = Live2DHost(self, resource_root())
-            self.live2d_host.event.connect(self._on_renderer_event)
-            self.live2d_host.view.setGeometry(self.rect())
-            self.live2d_host.load()
-        except (ImportError, RuntimeError, AttributeError) as exc:
-            self.renderer_status = f"精灵兼容模式（{exc}）"
+        self.retry_live2d()
         try:
             from desktop_activity import DesktopActivity
             from pet_reactions import ReactionController
-            from desktop_decorations import DesktopDecorations
             self.reactions = ReactionController()
             self.desktop_activity = DesktopActivity(self)
             self.desktop_activity.keyboardActivity.connect(self._keyboard_activity)
@@ -285,9 +279,6 @@ class PetWindow(QWidget):
             self.desktop_activity.audioActivityChanged.connect(self._audio_activity)
             self.desktop_activity.statusChanged.connect(self._activity_status_changed)
             self.desktop_activity.audioLevelChanged.connect(self._audio_level_changed)
-            self.decorations = DesktopDecorations(self)
-            self.decorations.setGeometry(self.rect())
-            self.decorations.show()
             self._configure_activity()
             self.desktop_activity.start(int(self.winId()))
         except (ImportError, RuntimeError, OSError, AttributeError) as exc:
@@ -358,7 +349,7 @@ class PetWindow(QWidget):
             self._authorization_probe_future = None
         for timer in self.findChildren(QTimer):
             timer.stop()
-        for component in (self.desktop_activity, self.decorations, self.live2d_host):
+        for component in (self.desktop_activity, self.live2d_host):
             if component is not None:
                 component.stop()
         if self.interaction_panel is not None:
@@ -419,39 +410,31 @@ class PetWindow(QWidget):
     def _activate_state_renderer(self) -> None:
         self._cancel_swing_petting()
         name = self._render_state_name()
-        self._live2d_active = bool(self.live2d_host is not None and self.live2d_host.ready and
-                                   name in self.live2d_states)
-        self._renderer_geometry = {}
         self._renderer_token += 1
         self._climb_progress = 0.0
         self._climb_endpoint_request = None
-        self._sync_ambient_reactions()
-        if self.live2d_host is None:
+        if self.live2d_host is None or not self.live2d_host.ready:
             return
-        self.live2d_host.view.setVisible(self._live2d_active and self.isVisible())
-        self.sprite.setVisible(not self._live2d_active)
-        if self._live2d_active:
-            self.renderer_status = "Live2D"
-            spec = AnimationSpec(1, (1800,), "one_shot") if self._top_transition else ANIMATIONS[self.state]
-            self._send_renderer("resize", width=self.width(), height=self.height(), scale=self.settings.scale)
-            self._send_renderer("pause", paused=self._animation_paused())
-            self._send_renderer("play", name=name, token=self._renderer_token,
-                                playback=spec.playback, cycles=spec.cycles,
-                                durationMs=(round(self._climb_spec["cycleDuration"] * 1000)
-                                            if name in {"climb_left", "climb_right"} and self._climb_spec
-                                            else sum(spec.delays_ms)), fade=0.25)
-            self._send_motion_context()
-            self.live2d_host.view.lower()
-        elif self.live2d_host.ready:
-            self.renderer_status = f"精灵兼容模式（Live2D 暂缺动作：{self.state}）"
-            self._send_renderer("pause", paused=True)
-        if self.decorations is not None:
-            self.decorations.setVisible(not self._live2d_active and self.isVisible())
-            self.decorations.raise_()
+        if name not in self.live2d_states:
+            self._renderer_failed(f"模型缺少必要动作：{name}")
+            return
+        self._live2d_active = True
+        spec = AnimationSpec(1800, "one_shot") if self._top_transition else ANIMATIONS[self.state]
+        self._send_renderer("resize", width=self.width(), height=self.height(), scale=self.settings.scale)
+        self._send_renderer("pause", paused=self._animation_paused())
+        self._send_renderer("play", name=name, token=self._renderer_token,
+                            playback=spec.playback, cycles=spec.cycles,
+                            durationMs=(round(self._climb_spec["cycleDuration"] * 1000)
+                                        if name in {"climb_left", "climb_right"} and self._climb_spec
+                                        else spec.duration_ms), fade=0.25)
+        self._send_motion_context()
         self._sync_climb_control(force=True)
+        self._sync_ambient_reactions()
 
     def _on_renderer_event(self, event: dict) -> None:
         if self._runtime_stopped:
+            return
+        if event.get("generation") != self._renderer_generation:
             return
         kind = event.get("type")
         if kind == "ready":
@@ -465,14 +448,12 @@ class PetWindow(QWidget):
                 isinstance(climb, dict) and climb.get("refinementParameter") == "ParamClimbRefine")
             states = event.get("states", [])
             self.live2d_states = {name for name in states if isinstance(name, str) and
-                                  (name in ANIMATIONS or name in TOP_TRANSITIONS or name in CLEANUP_SEGMENTS)}
-            if not self.live2d_states:
-                self._on_renderer_event({"type": "error", "message": "模型未提供可播放动作"})
+                                  (name in ANIMATIONS or name in TOP_TRANSITIONS)}
+            required = set(ANIMATIONS) | TOP_TRANSITIONS
+            if self.live2d_states != required or self._climb_spec is None:
+                self._renderer_failed("模型动作或攀爬数据不完整")
                 return
-            self.renderer_status = "Live2D" if self.state in self.live2d_states else "Live2D 部分动作可用"
-            self.animation_timer.stop()
             self._activate_state_renderer()
-            self._arm_animation()
             for name in (self._explicit_effect,
                          "dizzy" if self.dragging or self._drag_effect_until > time.monotonic() else None):
                 if name:
@@ -480,28 +461,11 @@ class PetWindow(QWidget):
             self._sync_expressions()
             return
         if kind == "error":
-            self._cancel_swing_petting()
-            self._motion_polish_supported = False
-            self.renderer_status = f"精灵兼容模式（{str(event.get('message', '模型载入失败'))[:160]}）"
-            if self.live2d_host is not None:
-                self.live2d_host.ready = False
-                self.live2d_host.view.hide()
-            if self._top_transition:
-                self._top_transition = None
-                self._set_base("top_swing")
-                self.state = "swing_cycle"
-            self._live2d_active = False
-            self._climb_endpoint_request = None
-            self._renderer_geometry = {}
-            self._renderer_token += 1
-            self.sprite.show()
-            self.frame_index = self.animation_cycles = 0
-            self._render_frame()
-            self._arm_animation()
+            self._renderer_failed(str(event.get("message", "模型载入失败")))
             return
         if not self._live2d_active or event.get("token") != self._renderer_token or event.get("name") != self._render_state_name():
             return
-        if kind == "geometry":
+        if kind in {"geometry", "frame-ready"}:
             bounds = event.get("bounds")
             if (isinstance(bounds, list) and len(bounds) == 4 and
                     all(isinstance(v, (int, float)) and math.isfinite(v) for v in bounds) and
@@ -519,6 +483,10 @@ class PetWindow(QWidget):
                       and not self.dragging and self.state != "happy"):
                     self.move(self.x(), self._floor_y(self._screen_area()))
                 self._position_monitor_overlays()
+                if kind == "frame-ready" and not self._presentation_ready:
+                    self._pending_presentation = (self._renderer_generation, self._renderer_token)
+                    self.presentation_timer.start()
+                    self._present_current_frame()
             return
         if kind == "climb-rest" and event.get("cycles") == 2:
             if self._climb_cadence.finished(event.get("run")):
@@ -564,24 +532,19 @@ class PetWindow(QWidget):
             self._send_renderer("climb-control", name=self.state, token=self._renderer_token,
                                 run=self._climb_cadence.run, resting=resting)
             self._climb_control_stamp = stamp
-        if resting:
-            self.animation_timer.stop()
-        elif not self._live2d_active and not self.activity_paused and self.isVisible():
-            self._arm_animation()
 
     def _tick_climb_cadence(self) -> None:
         now = time.monotonic()
         elapsed = min(.25, max(0.0, now - self._climb_clock))
         self._climb_clock = now
-        blocked = self.activity_paused or self.panel_pause_active or not self.isVisible() or self.dragging or bool(self._top_transition)
+        blocked = not self._presentation_ready or self.activity_paused or self.panel_pause_active or not self.isVisible() or self.dragging or bool(self._top_transition)
         if self._climb_cadence.tick(elapsed, blocked):
-            self._compat_run_baseline = self.animation_cycles
             self._motion_updated_at = now
             self._motion_y = float(self.y())
             self._sync_climb_control(force=True)
 
     def _animation_paused(self) -> bool:
-        return self.activity_paused or not self.isVisible()
+        return not self._presentation_ready or self.activity_paused or not self.isVisible()
 
     def _advance_native_climb(self, geometry: dict) -> bool:
         if self._climb_spec is None or self.motion_mode != "climb" or not self.state.startswith("climb_"):
@@ -675,7 +638,7 @@ class PetWindow(QWidget):
     def _sync_runtime_pause(self) -> None:
         self._climb_clock = time.monotonic()
         self._sync_climb_control(force=True)
-        suspended = self.activity_paused or not self.isVisible()
+        suspended = not self._presentation_ready or self.activity_paused or not self.isVisible()
         if suspended:
             self._cancel_swing_petting()
         if suspended or self.movement_paused:
@@ -696,8 +659,6 @@ class PetWindow(QWidget):
         self._runtime_suspended = suspended
         if self.desktop_activity is not None:
             self.desktop_activity.set_suspended(suspended)
-        if self.decorations is not None:
-            self.decorations.set_suspended(suspended or not self.settings.particles_enabled)
         self._send_renderer("pause", paused=self._animation_paused())
         self._send_motion_context()
         if suspended:
@@ -739,7 +700,7 @@ class PetWindow(QWidget):
         self._poll_authorization_probe()
         self._tick_climb_cadence()
         self._send_motion_context()
-        if self.activity_paused or not self.isVisible():
+        if not self._presentation_ready or self.activity_paused or not self.isVisible():
             self._update_interaction_panel()
             return
         now = time.monotonic()
@@ -780,7 +741,7 @@ class PetWindow(QWidget):
                             effectsEnabled=self.settings.particles_enabled and self.isVisible() and not self.activity_paused)
 
     def _emit_effect(self, name: str, *, interval: float = .3) -> None:
-        if name in {"clean_dust", "clean_done"}:
+        if name not in {"keyboard", "audio", "happy", "leaf", "note", "star", "heart", "bubble", "petal", "sleep"}:
             return
         if not self.settings.particles_enabled or self.activity_paused or not self.isVisible():
             return
@@ -790,14 +751,6 @@ class PetWindow(QWidget):
         self._particle_times[name] = now
         if self._live2d_active:
             self._send_renderer("effect", name=name, token=self._renderer_token, intensity=1.0)
-        elif self.decorations is not None:
-            if name in {"clean_dust", "dust"}:
-                origin = self._model_anchor("brushTip") or self._model_anchor("fanTip")
-                if origin is None:
-                    return
-            else:
-                origin = self._model_anchor("head") or (.5, .35)
-            self.decorations.trigger(name, self.width() * origin[0], self.height() * origin[1])
 
     def _activity_status_changed(self, status: dict) -> None:
         self._activity_status = status
@@ -837,12 +790,6 @@ class PetWindow(QWidget):
             self.desktop_activity.retry_audio()
 
     def _preview_effect(self, name: str) -> None:
-        if name in {"clean_dust", "clean_done", "dust"}:
-            return
-        if (name in {"clean_dust", "dust"}
-                and (self._model_anchor("brushTip") or self._model_anchor("fanTip")) is None):
-            self.bubble.show_message("尘点会在清理时从清扫工具前端散开。", self.geometry(), self._screen_area())
-            return
         if self.activity_paused or not self.isVisible():
             self.bubble.show_message("预览效果需要先显示桌宠并继续活动。", self.geometry(), self._screen_area())
             return
@@ -885,34 +832,96 @@ class PetWindow(QWidget):
         self._save()
 
     def retry_live2d(self) -> None:
+        if self._runtime_stopped:
+            return
         if self.live2d_host is not None:
-            self._on_renderer_event({"type": "error", "message": "正在重新载入 Live2D"})
-            self.live2d_host.load()
+            self.live2d_host.stop()
+            self.live2d_host = None
+        self._pending_presentation = None
+        self.presentation_timer.stop()
+        self._presentation_ready = self._live2d_active = False
+        self._renderer_geometry = {}
+        self._renderer_token += 1
+        self.loading_label.setText("正在加载桌宠…")
+        self.renderer_status = "正在加载桌宠…"
+        self.retry_button.hide()
+        self.loading_panel.show()
+        self.loading_panel.raise_()
+        self._sync_runtime_pause()
+        try:
+            from live2d_host import Live2DHost
+            self.live2d_host = Live2DHost(self, resource_root())
+            host = self.live2d_host
+            host.event.connect(lambda event: self._on_renderer_event(event) if self.live2d_host is host else None)
+            host.view.setGeometry(self.rect())
+            host.view.show()
+            host.view.lower()
+            self.loading_panel.raise_()
+            host.load()
+            self._renderer_generation = host.generation
+        except (ImportError, RuntimeError, OSError, AttributeError) as exc:
+            self._renderer_failed(str(exc))
 
-    def _rebuild_scaled_frames(self) -> None:
-        self.scaled_frames = {
-            state: [frame.scaled(self.sprite.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                    for frame in frames] for state, frames in self.frames.items()
-        }
-        self.state_content_bounds = {}
-        for state, frames in self.scaled_frames.items():
-            combined = QRect()
-            for frame in frames:
-                frame_bounds = QRegion(frame.mask()).boundingRect()
-                combined = frame_bounds if combined.isNull() else combined.united(frame_bounds)
-            self.state_content_bounds[state] = combined if not combined.isNull() else self.rect()
+    def _frame_has_pixels(self) -> bool:
+        image = self.live2d_host.view.grab().toImage()
+        if image.isNull():
+            return False
+        # Inspect the actual Qt compositor result, not merely a WebGL draw call.
+        hits = 0
+        for y in range(0, image.height(), max(1, image.height() // 24)):
+            for x in range(0, image.width(), max(1, image.width() // 24)):
+                hits += image.pixelColor(x, y).alpha() > 16
+        return hits >= 12
+
+    def _present_current_frame(self) -> None:
+        if (self._runtime_stopped or not self._pending_presentation or
+                self._pending_presentation != (self._renderer_generation, self._renderer_token)):
+            self.presentation_timer.stop()
+            return
+        if not self.isVisible():
+            self.live2d_host.presented(self._renderer_token)
+            return  # Showing the pet still waits for a compositor frame.
+        if not self._frame_has_pixels():
+            return
+        self.presentation_timer.stop()
+        self._pending_presentation = None
+        self._presentation_ready = True
+        self.renderer_status = "Live2D"
+        self.live2d_host.presented(self._renderer_token)
+        self.loading_panel.hide()
+        self.live2d_host.view.lower()
+        self._sync_runtime_pause()
+        self._resume_activity()
+
+    def _renderer_failed(self, message: str) -> None:
+        self._cancel_swing_petting()
+        self._pending_presentation = None
+        self.presentation_timer.stop()
+        self._presentation_ready = self._live2d_active = False
+        self._renderer_geometry = {}
+        self._renderer_token += 1
+        self._climb_endpoint_request = None
+        if self.live2d_host is not None:
+            self.live2d_host.stop()
+        self.renderer_status = f"Live2D 无法显示：{message[:160]}"
+        self.loading_label.setText(self.renderer_status)
+        self.retry_button.show()
+        self.loading_panel.show()
+        self.loading_panel.raise_()
+        self.motion_timer.stop()
+        self.behavior_timer.stop()
+        self._sync_runtime_pause()
+
+
 
     def _apply_size(self, preserve_anchor: bool = True) -> None:
         old = self.geometry()
         side = round(DEFAULT_WINDOW_SIZE * self.settings.scale)
         self.setFixedSize(side, side)
-        self.sprite.setGeometry(0, 0, side, side)
+        self.loading_panel.setGeometry(0, 0, side, side)
         if self.live2d_host is not None:
             self.live2d_host.view.setGeometry(self.rect())
             self._send_renderer("resize", width=side, height=side, scale=self.settings.scale)
-        if self.decorations is not None:
-            self.decorations.setGeometry(self.rect())
-        self._rebuild_scaled_frames()
         if preserve_anchor and old.isValid():
             if self.base_mode.startswith("climb_"):
                 self.move(self.x(), old.center().y() - side // 2)
@@ -1075,61 +1084,25 @@ class PetWindow(QWidget):
 
     @property
     def movement_paused(self) -> bool:
-        return self.settings.paused or self.panel_pause_active
+        return not self._presentation_ready or self.settings.paused or self.panel_pause_active
 
     def start_state(self, state: str, duration_ms: int = 0) -> None:
-        if state.startswith("clean_") or state not in self.frames:
+        if state not in ANIMATIONS:
             return
         self._top_transition = None
-        if not state.startswith("clean_"):
-            self._cleanup_segment = None
         self._sync_expressions()
         self.state_timer.stop()
-        self.animation_timer.stop()
-        self.state, self.frame_index, self.animation_cycles = state, 0, 0
+        self.state, self.animation_cycles = state, 0
         self._state_remaining_ms = -1
         self._overlay_side = None
         self._activate_state_renderer()
         self._render_frame()
-        self._arm_animation()
         if duration_ms:
             self.state_timer.start(duration_ms)
 
-    def _arm_animation(self) -> None:
-        if self._wall_resting():
-            return
-        if (self._live2d_active or
-                self.activity_paused or
-                (self._runtime_suspended and not self.isVisible())):
-            return
-        self.animation_timer.start(ANIMATIONS[self.state].delays_ms[self.frame_index])
 
-    def _advance_frame(self) -> None:
-        if self._wall_resting():
-            return
-        if self._live2d_active:
-            return
-        spec = ANIMATIONS[self.state]
-        last = self.frame_index == len(self.frames[self.state]) - 1
-        if last and spec.playback == "one_shot":
-            self._complete_animation()
-            return
-        if last:
-            self.frame_index = 0
-            self.animation_cycles += 1
-            if (self._climb_cadence.active and self.motion_mode == "climb"
-                    and self.animation_cycles-self._compat_run_baseline >= 2):
-                self._climb_cadence.finished(self._climb_cadence.run)
-                self._climb_clock = time.monotonic()
-                self._render_frame(); self._sync_climb_control(force=True)
-                return
-            if spec.playback == "counted_loop" and self.animation_cycles >= spec.cycles:
-                self._complete_animation()
-                return
-        else:
-            self.frame_index += 1
-        self._render_frame()
-        self._arm_animation()
+
+
 
     def _complete_animation(self) -> None:
         completed = self.state
@@ -1148,10 +1121,6 @@ class PetWindow(QWidget):
             self._resume_base_state()
 
     def _render_frame(self) -> None:
-        if not self._live2d_active and self.scaled_frames and self.state in self.scaled_frames:
-            self.sprite.setPixmap(self.scaled_frames[self.state][self.frame_index])
-            if self.base_mode in ("climb_left", "climb_right") and self.state == self.base_mode:
-                self._position_side(self.base_mode.removeprefix("climb_"))
         if hasattr(self, "monitor_button"):
             self._position_monitor_button()
             self._position_monitor_overlays()
@@ -1214,23 +1183,7 @@ class PetWindow(QWidget):
                     self.motion_timer.stop()
                     self._set_ground_idle()
         elif self.motion_mode == "climb":
-            if self._live2d_active and self._climb_spec is not None:
-                return  # The native authored phase, not a second clock, drives vertical travel.
-            # Sprite compatibility follows the same requested cycle speed;
-            # native models with locomotion metadata use their actual phase above.
-            period = 1.6 if self._live2d_active else sum(ANIMATIONS[self.state].delays_ms) / 1000
-            self._motion_y += self.climb_direction * (2.0 / .035) * self.settings.scale * dt * (1.6 / period)
-            y = round(self._motion_y)
-            anchor = self._model_anchor("left" if self.base_mode == "climb_left" else "right")
-            ceiling = area.top() - round(anchor[1] * self.height()) if anchor and self._live2d_active else area.top()
-            if y <= ceiling:
-                self.move(self.x(), ceiling)
-                return self._begin_top_transition()
-            floor = self._floor_y(area)
-            if y >= floor:
-                y, self.climb_direction = floor, -1
-                self._motion_y = float(floor)
-            self.move(self.x(), y)
+            return  # Native phase and geometry exclusively drive wall travel.
         elif self.motion_mode == "fall":
             floor = self._floor_y(area)
             previous_speed = self._fall_velocity
@@ -1326,6 +1279,8 @@ class PetWindow(QWidget):
             self.start_state("sleep_exit")
 
     def _check_system_idle(self) -> None:
+        if not self._presentation_ready:
+            return
         if self.activity_paused or self.dragging or not self.isVisible():
             return
         now, idle = time.monotonic(), get_system_idle_seconds()
@@ -1345,6 +1300,8 @@ class PetWindow(QWidget):
             self.start_state("sleep_enter")
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
+        if not self._presentation_ready:
+            return
         if event.button() == Qt.LeftButton:
             self.press_global = event.globalPosition().toPoint()
             self.press_window = self.pos()
@@ -1358,6 +1315,8 @@ class PetWindow(QWidget):
             super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event: QMouseEvent) -> None:
+        if not self._presentation_ready:
+            return
         if self.press_global is not None and event.buttons() & Qt.LeftButton:
             current, delta = event.globalPosition().toPoint(), event.globalPosition().toPoint() - self.press_global
             if not self.dragging and delta.manhattanLength() >= DRAG_THRESHOLD:
@@ -1376,7 +1335,7 @@ class PetWindow(QWidget):
                 self._preview_paused_drag(dx)
             event.accept()
         else:
-            if self._pointer_near_sprite(event.position().toPoint()):
+            if self._pointer_near_model(event.position().toPoint()):
                 self._show_monitor_button()
             else:
                 self.monitor_hide_timer.start(800)
@@ -1452,6 +1411,8 @@ class PetWindow(QWidget):
             self._explicit_effect_until = 0.0
 
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
+        if not self._presentation_ready:
+            return
         if event.button() == Qt.LeftButton and self.press_global is not None:
             was_dragging = self.dragging
             self.press_global = self.press_window = self.last_drag_global = None
@@ -1511,11 +1472,7 @@ class PetWindow(QWidget):
             contact = round(model_anchor[0] * self.width())
             x = area.left() - contact if side == "left" else area.right() - contact
         else:
-            state = f"climb_{side}"
-            anchors = ANIMATIONS[state].contact_anchors
-            index = self.frame_index if self.state == state else 0
-            contact = round(anchors[index % len(anchors)] * self.width() / 512)
-            x = area.left() - contact if side == "left" else area.right() - contact
+            return  # Keep the saved contact until native geometry is available.
         self.move(x, y)
         if y != old_y:
             self._motion_y = float(y)
@@ -1536,7 +1493,7 @@ class PetWindow(QWidget):
     def _position_top(self) -> None:
         area = self._screen_area()
         anchor = (self._model_anchor("hang") or self._model_anchor("top")) if self._live2d_active else None
-        margin = round((anchor[1] if anchor else ANIMATIONS["swing_idle"].contact_margin) * self.height())
+        margin = round((anchor[1] if anchor else 0.0) * self.height())
         self.move(max(area.left(), min(self.x(), area.right() - self.width() + 1)), area.top() - margin)
 
     def _begin_top_transition(self, endpoint: dict | None = None) -> None:
@@ -1590,6 +1547,8 @@ class PetWindow(QWidget):
         self.start_state("swing_cycle" if run_intro and not self.activity_paused else "swing_idle")
 
     def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
+        if not self._presentation_ready:
+            return
         if event.button() == Qt.LeftButton:
             self.click_timer.stop(); self.suppress_release_click = True
             if self.activity_paused:
@@ -1601,8 +1560,6 @@ class PetWindow(QWidget):
                 self.bubble.show_message(choose_happy_dialogue(), self.geometry(), self._screen_area())
                 effects = ("smile", "blush", "maple") if self._has_support_pose() else ("smile", "blush", "glasses", "fan", "maple")
                 self._show_effect(random.choice(effects))
-                if self.decorations is not None and self.settings.particles_enabled:
-                    self.decorations.trigger("happy", self.width() * .5, self.height() * .3)
             event.accept()
         else:
             super().mouseDoubleClickEvent(event)
@@ -1628,23 +1585,12 @@ class PetWindow(QWidget):
                 self.monitor_hide_timer.start(800)
         return super().eventFilter(watched, event)
 
-    def _pointer_near_sprite(self, point: QPoint) -> bool:
-        if self._live2d_active:
-            bounds = self._content_rect_global().translated(-self.pos())
-            radius = max(8, round(20 * self.settings.scale))
-            return bounds.adjusted(-radius, -radius, radius, radius).contains(point)
-        if not self.scaled_frames or self.state not in self.scaled_frames:
+    def _pointer_near_model(self, point: QPoint) -> bool:
+        if not self._presentation_ready:
             return False
-        pixmap = self.scaled_frames[self.state][self.frame_index]
-        image = pixmap.toImage()
-        ox, oy = (self.width() - image.width()) // 2, (self.height() - image.height()) // 2
-        px, py = point.x() - ox, point.y() - oy
+        bounds = self._content_rect_global().translated(-self.pos())
         radius = max(8, round(20 * self.settings.scale))
-        for y in range(max(0, py - radius), min(image.height(), py + radius + 1), 4):
-            for x in range(max(0, px - radius), min(image.width(), px + radius + 1), 4):
-                if (x - px) ** 2 + (y - py) ** 2 <= radius ** 2 and image.pixelColor(x, y).alpha() > 24:
-                    return True
-        return False
+        return bounds.adjusted(-radius, -radius, radius, radius).contains(point)
 
     def _show_monitor_button(self) -> None:
         if not self.isVisible():
@@ -1671,7 +1617,7 @@ class PetWindow(QWidget):
             x, y, width, height = self._renderer_geometry["bounds"]
             return QRect(round(x * self.width()), round(y * self.height()),
                          max(1, round(width * self.width())), max(1, round(height * self.height()))).translated(self.pos())
-        bounds = self.state_content_bounds.get(self.state, self.rect())
+        bounds = self.rect()
         return bounds.translated(self.pos())
 
     @staticmethod
@@ -2101,19 +2047,18 @@ class PetWindow(QWidget):
     def toggle_pause(self) -> None:
         self.settings.paused = not self.settings.paused
         self._sync_runtime_pause()
-        self.behavior_timer.stop(); self.motion_timer.stop(); self.animation_timer.stop()
+        self.behavior_timer.stop(); self.motion_timer.stop()
         if not self.settings.paused:
             self._resume_activity()
         self._save()
 
     def _resume_activity(self) -> None:
-        if self.activity_paused:
+        if self.activity_paused or not self._presentation_ready or not self.isVisible():
             return
         self._motion_updated_at = time.monotonic()
         self._motion_y = float(self.y())
         if self.motion_mode is not None and not self.movement_paused:
             self.motion_timer.start()
-        self._arm_animation()
         self._send_renderer("pause", paused=False)
         if self.state == "idle":
             self._schedule_behavior()
@@ -2146,13 +2091,12 @@ class PetWindow(QWidget):
         self.monitor_capsule.hide()
         self.behavior_timer.stop()
         self.motion_timer.stop()
-        self.animation_timer.stop()
         self._sync_runtime_pause()
 
     def showEvent(self, event) -> None:
         super().showEvent(event)
         if hasattr(self, "runtime_timer"):
-            if self._live2d_active and self.live2d_host is not None:
+            if self._presentation_ready and self.live2d_host is not None:
                 self.live2d_host.view.show()
             self._sync_runtime_pause()
             self._resume_activity()
@@ -2161,12 +2105,11 @@ class PetWindow(QWidget):
         self.close_details_panel()
         self.bubble.hide(); self.monitor_button.hide(); self.monitor_capsule.hide()
         self.behavior_timer.stop(); self.motion_timer.stop(); self.hide()
-        self.animation_timer.stop()
         self._sync_runtime_pause()
 
     def show_pet(self) -> None:
         self.show(); self.raise_(); self._position_for_base_or_clamp()
-        if self._live2d_active and self.live2d_host is not None:
+        if self._presentation_ready and self.live2d_host is not None:
             self.live2d_host.view.show()
         self._sync_runtime_pause()
         self._resume_activity()

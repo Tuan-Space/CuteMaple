@@ -22,7 +22,7 @@ export function bindMotionMarkers(motion: { getFiredEvent(before: number, now: n
   motion.getFiredEvent = (before, now) => {
     const events = firedEvents(before, now);
     for (const name of events) {
-      if (['top_grab', 'wall_release', 'settled', 'clean_sweep'].includes(name)) marker?.(name);
+      if (['top_grab', 'wall_release', 'settled'].includes(name)) marker?.(name);
     }
     return events;
   };

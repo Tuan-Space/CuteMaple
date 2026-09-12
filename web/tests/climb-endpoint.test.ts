@@ -52,13 +52,6 @@ test('held climb plays the matching handoff as a real static start, excluding br
   assert.ok(Math.abs(f.time() - .016) < 1e-9);
 });
 
-test('a held climb can enter its own cleanup pose at the same native start, without a roof transition', () => {
-  const f = fixture(); f.play(); f.arm(); f.advance(); f.play('clean_climb_left_enter', 2);
-  assert.deepEqual(f.starts, [false, true]);
-  assert.equal(f.reports.at(-1).name, 'clean_climb_left_enter');
-  assert.equal(f.reports.at(-1).climbPhase, 0);
-});
-
 test('pause cancels the pending request; stale retries and tokens cannot hold the resumed action', () => {
   const f = fixture(); f.play(); f.arm(); f.playback.pause(true); f.playback.pause(false);
   f.arm(); f.arm(2, true, 999); f.advance();
