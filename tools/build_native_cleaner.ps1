@@ -21,7 +21,7 @@ try {
     & rc.exe /nologo ('/fo'+(Join-Path $OutputDirectory 'version.res')) (Join-Path $ProjectRoot 'native\cleaner\version.rc')
     if ($LASTEXITCODE -ne 0) { throw 'Native version resource failed.' }
     $Name = if ($TestBuild) { 'CuteMaple-Cleaner-Test.exe' } else { 'CuteMaple-Cleaner.exe' }
-    $Arguments = @('/nologo','/std:c++17','/O2','/EHsc','/W4','/MT','/utf-8','/DUNICODE','/D_UNICODE','/D_WIN32_WINNT=0x0A00','/guard:cf',('/Fo'+(Join-Path $OutputDirectory 'cleaner.obj')),('/Fe'+(Join-Path $OutputDirectory $Name)))
+    $Arguments = @('/nologo','/std:c++17','/O2','/EHsc','/W4','/MT','/utf-8','/DUNICODE','/D_UNICODE','/D_WIN32_WINNT=0x0A00','/DPSAPI_VERSION=1','/guard:cf',('/Fo'+(Join-Path $OutputDirectory 'cleaner.obj')),('/Fe'+(Join-Path $OutputDirectory $Name)))
     if ($TestBuild) { $Arguments += '/DMAPLE_CLEANER_TEST' }
     $Arguments += @((Join-Path $ProjectRoot 'native\cleaner\cleaner.cpp'),'/link',(Join-Path $OutputDirectory 'version.res'),'/Brepro','/SUBSYSTEM:WINDOWS','/DYNAMICBASE','/NXCOMPAT','/HIGHENTROPYVA','/guard:cf','advapi32.lib','bcrypt.lib','psapi.lib','shell32.lib')
     & cl.exe @Arguments

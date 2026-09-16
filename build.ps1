@@ -128,6 +128,7 @@ $Executable = Join-Path $Output ($AppBaseName + "\" + $AppBaseName + ".exe")
 if (-not (Test-Path -LiteralPath $Executable)) { throw "Expected application executable is missing." }
 Copy-Item -LiteralPath (Join-Path $Stage "compilation-report.xml") -Destination $Output
 Copy-Item -LiteralPath (Join-Path $NativeOutput "native-build.json") -Destination $Output
+Copy-Item -LiteralPath (Join-Path $ProjectRoot 'third_party/nlohmann-json-3.11.3/LICENSE.MIT') -Destination (Join-Path $Output 'nlohmann-json-LICENSE.txt')
 Copy-Item -LiteralPath (Join-Path $Stage "SOURCE-SNAPSHOT.json") -Destination $Output
 $SourceRevision = "source-archive"
 $SourceDirty = $false
