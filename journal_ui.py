@@ -79,8 +79,8 @@ class JournalWindow(QWidget):
         button=QPushButton(text);button.clicked.connect(callback);return button
 
     def page(self,title):
-        page=QWidget();layout=QVBoxLayout(page);layout.setContentsMargins(8,12,8,8);layout.setSpacing(10)
-        scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setWidget(page);self.tabs.addTab(scroll,title);return layout
+        page=QWidget();page.setObjectName('journalPage');layout=QVBoxLayout(page);layout.setContentsMargins(8,12,8,8);layout.setSpacing(10)
+        scroll=QScrollArea();scroll.viewport().setObjectName('journalViewport');scroll.setWidgetResizable(True);scroll.setWidget(page);self.tabs.addTab(scroll,title);return layout
 
     def make_events(self):
         layout=self.page('提醒');bar=QHBoxLayout();self.event_search=QLineEdit();self.event_search.setPlaceholderText('搜索标题或说明')

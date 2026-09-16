@@ -66,3 +66,13 @@ def test_event_editor_opens_and_saves(tmp_path):
     from journal_editors import EventEditor
     a=app();s=JournalStore(tmp_path/'library',create=True);dialog=EventEditor(s);dialog.show();a.processEvents()
     dialog.title.setText('新事件');dialog.save();assert s.events()[0]['title']=='新事件';dialog.close();s.close()
+
+
+def test_dark_scroll_page_paints_dark_on_light_system_palette(tmp_path,monkeypatch):
+    import monitor_ui
+    from PySide6.QtGui import QColor
+    a=app();monkeypatch.setattr(monitor_ui,'system_theme',lambda:monitor_ui.DARK)
+    s=JournalStore(tmp_path/'library',create=True);w=JournalWindow(s,None);w.show();a.processEvents()
+    page=w.tabs.widget(0).widget();image=page.grab().toImage()
+    assert image.pixelColor(2,2)==QColor(monitor_ui.DARK['background'])
+    w.close();s.close()

@@ -90,7 +90,7 @@ class ThemeBinding(QObject):
                       "padding: 10px 14px; font-size: 11pt; }")
         elif self.kind == 'journal':
             style += f"""
-QWidget#journalWindow, QWidget#journalBubble {{ background: {c['background']}; color: {c['text']}; }}
+QWidget#journalWindow, QWidget#journalBubble, QWidget#journalPage, QWidget#journalViewport {{ background: {c['background']}; color: {c['text']}; }}
 QTabWidget::pane {{ border: 1px solid {c['border']}; border-radius: 10px; top: -1px; background: {c['background']}; }}
 QTabBar::tab {{ background: {c['background']}; color: {c['muted']}; padding: 9px 20px; border: none; min-width: 42px; }}
 QTabBar::tab:selected {{ color: {c['accent']}; background: {c['status']}; border-bottom: 2px solid {c['accent']}; }}
