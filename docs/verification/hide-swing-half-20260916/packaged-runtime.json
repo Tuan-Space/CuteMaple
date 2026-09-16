@@ -1,0 +1,93 @@
+{
+  "ready": true,
+  "nativeIdleCycles": 1,
+  "nativeLandingFinished": true,
+  "geometry": true,
+  "visiblePixels": 87240,
+  "errors": [],
+  "states": [
+    "climb_left",
+    "climb_right",
+    "climb_to_top_left",
+    "climb_to_top_right",
+    "drag_left",
+    "drag_right",
+    "fall_float",
+    "happy",
+    "idle",
+    "land",
+    "petting",
+    "sleep_enter",
+    "sleep_exit",
+    "sleep_loop",
+    "swing_cycle",
+    "swing_idle",
+    "talk",
+    "walk_left",
+    "walk_right"
+  ],
+  "resourceRoot": "F:\\cutemaple\\CuteMaple-Live2D\\dist\\CuteMaple-Live2D-Directory-20260916-125647\\CuteMaple-Live2D",
+  "settingsAndSensorsLoaded": false,
+  "modelSha256": "cf4f6efc914b950817e2f0f94f678e87511afbcc9661b2b0287b4138d24e95dd",
+  "sdk": "5-r.5",
+  "geometryCapture": {
+    "bounds": [
+      0.22879737615585327,
+      0.032397300004959106,
+      0.5580036640167236,
+      0.9031495749950409
+    ],
+    "anchors": {
+      "head": [
+        0.510703085085448,
+        0.2638769477193331
+      ],
+      "ground": [
+        0.5552027178106501,
+        0.935546875
+      ],
+      "left": [
+        0.5108403146471667,
+        0.5345260270790936
+      ],
+      "right": [
+        0.5346083257514943,
+        0.5154972716652114
+      ],
+      "top": [
+        0.508,
+        0
+      ],
+      "gripLeft": [
+        0.5108403146471667,
+        0.5345260270790936
+      ],
+      "gripRight": [
+        0.5346083257514943,
+        0.5154972716652114
+      ],
+      "hangerLeft": [
+        0.3701171875,
+        0
+      ],
+      "hangerRight": [
+        0.64599609375,
+        0
+      ],
+      "hang": [
+        0.508,
+        0
+      ]
+    },
+    "headBounds": [
+      0.30846576392650604,
+      0.032397300004959106,
+      0.4073909968137741,
+      0.3448876291513443
+    ],
+    "transitionProgress": 0,
+    "climbPhase": 0
+  },
+  "screenshot": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\hide-swing-half-smoke-retained\\packaged-runtime.png",
+  "passed": true
+}

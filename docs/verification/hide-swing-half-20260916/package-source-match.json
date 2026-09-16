@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "sourceModules": 20,
+  "runtimeResources": 51,
+  "compilerIconInputVerified": true,
+  "executableSha256": "bdf5e8d233c15eccc171026d5105616dd3916f8035f6d8cd73cc1a98cd1e46e8",
+  "mocSha256": "a7ab50a9dbb7902ba44e9efc9918eba9b5bece4d10a5e8cb478a870a5503a9e2",
+  "userModelUnchanged": true
+}
