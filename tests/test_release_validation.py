@@ -172,6 +172,9 @@ def synthetic_release(tmp_path, request):
         path = bundle/name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(b'SYNTHETIC TEST FIXTURE - NOT AN EXECUTABLE')
+    (bundle/'cleaner/native-build.json').write_text(json.dumps({
+        'implementation': 'cpp-msvc', 'testBuild': False,
+        'sha256': digest(bundle/'cleaner/CuteMaple-Cleaner.exe')}))
     model = bundle/'assets/live2d/Maple'
     (model/'motions').mkdir(parents=True)
     states = (*ANIMATIONS, *V4_TRANSITIONS)

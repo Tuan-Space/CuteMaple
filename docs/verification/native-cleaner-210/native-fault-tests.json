@@ -1,0 +1,1624 @@
+{
+  "passed": true,
+  "realCleanupPerformed": false,
+  "executable": "F:\\cutemaple\\CuteMaple-Live2D\\artifacts\\native-cleaner-test\\CuteMaple-Cleaner-Test.exe",
+  "sha256": "08c2a92f34f64531ea746e78971d4d241aa75781adf9f2eac6d8c8c616088f92",
+  "results": [
+    {
+      "case": "success",
+      "passed": true,
+      "result": {
+        "after_available": 20077314048,
+        "available_increase": 10600448,
+        "before_available": 20066713600,
+        "client_observed": true,
+        "completed_at": 1789541102.2973547,
+        "duration_seconds": 0.4690000000409782,
+        "evidenceKind": "windows-cleanup-supervisor",
+        "evidenceVersion": 1,
+        "expected_exit_code": 0,
+        "guardTriggered": false,
+        "guards": [],
+        "handshake_duration_seconds": 0.04700000025331974,
+        "heartbeat_at": 1789541102.292186,
+        "implementation": "cpp-msvc",
+        "limits": {
+          "handshakeSeconds": 10,
+          "stepSeconds": 15,
+          "supervisorSeconds": 60,
+          "workSeconds": 45
+        },
+        "message": "六项清理全部完成",
+        "operation_id": "b0ba250cd73e4b0e859cbcf115ec7856",
+        "request_sha256": "997d832e228d4887a9d6b138dfa5c5d19af4a194dedeb2f1e6e533fd11e75a1e",
+        "schema": 4,
+        "started_at": 1789541101.8199723,
+        "status": "succeeded",
+        "step": "combine_memory",
+        "steps": {
+          "combine_memory": {
+            "after_available": 20077314048,
+            "after_percent": 41,
+            "before_available": 20077314048,
+            "before_percent": 41,
+            "completed_at": 1789541102.2651043,
+            "duration_seconds": 0.06199999991804361,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "b0ba250cd73e4b0e859cbcf115ec7856",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541102.2585688,
+            "status": "succeeded",
+            "step": "combine_memory",
+            "supervisor": {
+              "creationFiletime": 134340147018064089,
+              "pid": 39440
+            },
+            "token": "cb5a7bd7a633d2e40cfb8597b089a54d",
+            "worker": {
+              "creationFiletime": 134340147022240763,
+              "pid": 1640
+            }
+          },
+          "empty_working_sets": {
+            "after_available": 20066713600,
+            "after_percent": 41,
+            "before_available": 20066713600,
+            "before_percent": 41,
+            "completed_at": 1789541101.905007,
+            "duration_seconds": 0.04700000025331974,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "b0ba250cd73e4b0e859cbcf115ec7856",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541101.9002247,
+            "status": "succeeded",
+            "step": "empty_working_sets",
+            "supervisor": {
+              "creationFiletime": 134340147018064089,
+              "pid": 39440
+            },
+            "token": "b2f9de88851adbe2fb9672e376020c92",
+            "worker": {
+              "creationFiletime": 134340147018673053,
+              "pid": 34096
+            }
+          },
+          "flush_modified_pages": {
+            "after_available": 20068483072,
+            "after_percent": 41,
+            "before_available": 20068483072,
+            "before_percent": 41,
+            "completed_at": 1789541101.9820619,
+            "duration_seconds": 0.06300000008195639,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "b0ba250cd73e4b0e859cbcf115ec7856",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541101.976555,
+            "status": "succeeded",
+            "step": "flush_modified_pages",
+            "supervisor": {
+              "creationFiletime": 134340147018064089,
+              "pid": 39440
+            },
+            "token": "c1eb1db2ed8aaff0d06845f44a8abde1",
+            "worker": {
+              "creationFiletime": 134340147019390293,
+              "pid": 39172
+            }
+          },
+          "purge_standby_list": {
+            "after_available": 20076371968,
+            "after_percent": 41,
+            "before_available": 20076371968,
+            "before_percent": 41,
+            "completed_at": 1789541102.0571115,
+            "duration_seconds": 0.06300000008195639,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "b0ba250cd73e4b0e859cbcf115ec7856",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541102.0512185,
+            "status": "succeeded",
+            "step": "purge_standby_list",
+            "supervisor": {
+              "creationFiletime": 134340147018064089,
+              "pid": 39440
+            },
+            "token": "4ad36c27f47485a6c4b2d6d8100bc00a",
+            "worker": {
+              "creationFiletime": 134340147020174018,
+              "pid": 23824
+            }
+          },
+          "registry_cache": {
+            "after_available": 20085489664,
+            "after_percent": 41,
+            "before_available": 20085489664,
+            "before_percent": 41,
+            "completed_at": 1789541102.2060091,
+            "duration_seconds": 0.030999999959021807,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "b0ba250cd73e4b0e859cbcf115ec7856",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541102.2006423,
+            "status": "succeeded",
+            "step": "registry_cache",
+            "supervisor": {
+              "creationFiletime": 134340147018064089,
+              "pid": 39440
+            },
+            "token": "954a408102ed80bffa466cb7a4038f53",
+            "worker": {
+              "creationFiletime": 134340147021721093,
+              "pid": 35820
+            }
+          },
+          "system_file_cache": {
+            "after_available": 20076322816,
+            "after_percent": 41,
+            "before_available": 20076322816,
+            "before_percent": 41,
+            "completed_at": 1789541102.1350107,
+            "duration_seconds": 0.06199999991804361,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "b0ba250cd73e4b0e859cbcf115ec7856",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541102.129656,
+            "status": "succeeded",
+            "step": "system_file_cache",
+            "supervisor": {
+              "creationFiletime": 134340147018064089,
+              "pid": 39440
+            },
+            "token": "c4971997e8fa6d38300ee974e2dede03",
+            "worker": {
+              "creationFiletime": 134340147020954704,
+              "pid": 28012
+            }
+          }
+        },
+        "supervisor": {
+          "creationFiletime": 134340147018064089,
+          "pid": 39440
+        },
+        "work_duration_seconds": 0.42199999978765845,
+        "workers": [
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "empty_working_sets",
+            "worker": {
+              "creationFiletime": 134340147018673053,
+              "pid": 34096
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "flush_modified_pages",
+            "worker": {
+              "creationFiletime": 134340147019390293,
+              "pid": 39172
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "purge_standby_list",
+            "worker": {
+              "creationFiletime": 134340147020174018,
+              "pid": 23824
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "system_file_cache",
+            "worker": {
+              "creationFiletime": 134340147020954704,
+              "pid": 28012
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "registry_cache",
+            "worker": {
+              "creationFiletime": 134340147021721093,
+              "pid": 35820
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "combine_memory",
+            "worker": {
+              "creationFiletime": 134340147022240763,
+              "pid": 1640
+            }
+          }
+        ],
+        "terminal": true,
+        "processExitVerified": true,
+        "requested_at": 1789541101.7600896,
+        "elapsedSeconds": 0.5605199337005615,
+        "exitCodeVerified": true,
+        "supervisorExitCode": 0,
+        "ok": true
+      }
+    },
+    {
+      "case": "slow",
+      "passed": true,
+      "result": {
+        "after_available": 20076085248,
+        "available_increase": 33497088,
+        "before_available": 20042588160,
+        "client_observed": true,
+        "completed_at": 1789541108.4176917,
+        "duration_seconds": 5.375,
+        "evidenceKind": "windows-cleanup-supervisor",
+        "evidenceVersion": 1,
+        "expected_exit_code": 0,
+        "guardTriggered": false,
+        "guards": [],
+        "handshake_duration_seconds": 0.07800000021234155,
+        "heartbeat_at": 1789541108.4134555,
+        "implementation": "cpp-msvc",
+        "limits": {
+          "handshakeSeconds": 10,
+          "stepSeconds": 15,
+          "supervisorSeconds": 60,
+          "workSeconds": 45
+        },
+        "message": "六项清理全部完成",
+        "operation_id": "915f2844b61f4de28fde9a915931eae4",
+        "request_sha256": "586c3afe3afb5e5d613b98af4f07beadd0d1622f18b8a68972450adf5b264549",
+        "schema": 4,
+        "started_at": 1789541103.0487652,
+        "status": "succeeded",
+        "step": "combine_memory",
+        "steps": {
+          "combine_memory": {
+            "after_available": 20076085248,
+            "after_percent": 41,
+            "before_available": 20084432896,
+            "before_percent": 41,
+            "completed_at": 1789541108.381297,
+            "duration_seconds": 0.875,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "915f2844b61f4de28fde9a915931eae4",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541107.562722,
+            "status": "succeeded",
+            "step": "combine_memory",
+            "supervisor": {
+              "creationFiletime": 134340147030300667,
+              "pid": 18056
+            },
+            "token": "62f94660fe754b0822a88cfcd9731abf",
+            "worker": {
+              "creationFiletime": 134340147075311557,
+              "pid": 37260
+            }
+          },
+          "empty_working_sets": {
+            "after_available": 20088270848,
+            "after_percent": 41,
+            "before_available": 20042588160,
+            "before_percent": 41,
+            "completed_at": 1789541103.9789467,
+            "duration_seconds": 0.8590000001713634,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "915f2844b61f4de28fde9a915931eae4",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541103.161222,
+            "status": "succeeded",
+            "step": "empty_working_sets",
+            "supervisor": {
+              "creationFiletime": 134340147030300667,
+              "pid": 18056
+            },
+            "token": "eb9bb7ad480aa4377d56c2e6953fd850",
+            "worker": {
+              "creationFiletime": 134340147031241597,
+              "pid": 4952
+            }
+          },
+          "flush_modified_pages": {
+            "after_available": 20077850624,
+            "after_percent": 41,
+            "before_available": 20079128576,
+            "before_percent": 41,
+            "completed_at": 1789541104.8489416,
+            "duration_seconds": 0.875,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "915f2844b61f4de28fde9a915931eae4",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541104.0341787,
+            "status": "succeeded",
+            "step": "flush_modified_pages",
+            "supervisor": {
+              "creationFiletime": 134340147030300667,
+              "pid": 18056
+            },
+            "token": "5e3e1a2f6771f2b5609b0b96ced0efb4",
+            "worker": {
+              "creationFiletime": 134340147039991197,
+              "pid": 20328
+            }
+          },
+          "purge_standby_list": {
+            "after_available": 20082155520,
+            "after_percent": 41,
+            "before_available": 20077617152,
+            "before_percent": 41,
+            "completed_at": 1789541105.7369833,
+            "duration_seconds": 0.8599999998696148,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "915f2844b61f4de28fde9a915931eae4",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541104.9197292,
+            "status": "succeeded",
+            "step": "purge_standby_list",
+            "supervisor": {
+              "creationFiletime": 134340147030300667,
+              "pid": 18056
+            },
+            "token": "f9970b67ad1d7289468f28cce149889d",
+            "worker": {
+              "creationFiletime": 134340147048850518,
+              "pid": 5212
+            }
+          },
+          "registry_cache": {
+            "after_available": 20083683328,
+            "after_percent": 41,
+            "before_available": 20083818496,
+            "before_percent": 41,
+            "completed_at": 1789541107.495655,
+            "duration_seconds": 0.8590000001713634,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "915f2844b61f4de28fde9a915931eae4",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541106.6864913,
+            "status": "succeeded",
+            "step": "registry_cache",
+            "supervisor": {
+              "creationFiletime": 134340147030300667,
+              "pid": 18056
+            },
+            "token": "f7e9c1e2931af815c75e49b3eb3dbc49",
+            "worker": {
+              "creationFiletime": 134340147066551974,
+              "pid": 35172
+            }
+          },
+          "system_file_cache": {
+            "after_available": 20081975296,
+            "after_percent": 41,
+            "before_available": 20081963008,
+            "before_percent": 41,
+            "completed_at": 1789541106.618915,
+            "duration_seconds": 0.8590000001713634,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "915f2844b61f4de28fde9a915931eae4",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541105.803445,
+            "status": "succeeded",
+            "step": "system_file_cache",
+            "supervisor": {
+              "creationFiletime": 134340147030300667,
+              "pid": 18056
+            },
+            "token": "773114c79da7d68c62a9f37731f6bf09",
+            "worker": {
+              "creationFiletime": 134340147057719255,
+              "pid": 10724
+            }
+          }
+        },
+        "supervisor": {
+          "creationFiletime": 134340147030300667,
+          "pid": 18056
+        },
+        "work_duration_seconds": 5.2969999997876585,
+        "workers": [
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "empty_working_sets",
+            "worker": {
+              "creationFiletime": 134340147031241597,
+              "pid": 4952
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "flush_modified_pages",
+            "worker": {
+              "creationFiletime": 134340147039991197,
+              "pid": 20328
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "purge_standby_list",
+            "worker": {
+              "creationFiletime": 134340147048850518,
+              "pid": 5212
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "system_file_cache",
+            "worker": {
+              "creationFiletime": 134340147057719255,
+              "pid": 10724
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "registry_cache",
+            "worker": {
+              "creationFiletime": 134340147066551974,
+              "pid": 35172
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "combine_memory",
+            "worker": {
+              "creationFiletime": 134340147075311557,
+              "pid": 37260
+            }
+          }
+        ],
+        "terminal": true,
+        "processExitVerified": true,
+        "requested_at": 1789541102.9865656,
+        "elapsedSeconds": 5.451629161834717,
+        "exitCodeVerified": true,
+        "supervisorExitCode": 0,
+        "ok": true
+      }
+    },
+    {
+      "case": "fail",
+      "passed": true,
+      "result": {
+        "after_available": 20076412928,
+        "available_increase": 491520,
+        "before_available": 20075921408,
+        "client_observed": true,
+        "completed_at": 1789541109.1088078,
+        "duration_seconds": 0.5159999998286366,
+        "evidenceKind": "windows-cleanup-supervisor",
+        "evidenceVersion": 1,
+        "expected_exit_code": 10,
+        "guardTriggered": false,
+        "guards": [],
+        "handshake_duration_seconds": 0.06199999991804361,
+        "heartbeat_at": 1789541109.105548,
+        "implementation": "cpp-msvc",
+        "limits": {
+          "handshakeSeconds": 10,
+          "stepSeconds": 15,
+          "supervisorSeconds": 60,
+          "workSeconds": 45
+        },
+        "message": "部分清理步骤失败，请查看详情",
+        "operation_id": "c96bd9c8343c4c3b9f5ca3ab88e5b787",
+        "request_sha256": "fafc692626b18f449203ea5d7b7d4dbf7c0195ce56e19b90c14d9989c8ea9235",
+        "schema": 4,
+        "started_at": 1789541108.5889857,
+        "status": "partial",
+        "step": "combine_memory",
+        "steps": {
+          "combine_memory": {
+            "after_available": 20076412928,
+            "after_percent": 41,
+            "before_available": 20076412928,
+            "before_percent": 41,
+            "completed_at": 1789541109.0768783,
+            "duration_seconds": 0.04699999978765845,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "c96bd9c8343c4c3b9f5ca3ab88e5b787",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541109.070292,
+            "status": "succeeded",
+            "step": "combine_memory",
+            "supervisor": {
+              "creationFiletime": 134340147085758459,
+              "pid": 24216
+            },
+            "token": "8196b5dffb390ae8e6fdc0b97aeb717a",
+            "worker": {
+              "creationFiletime": 134340147090345532,
+              "pid": 14240
+            }
+          },
+          "empty_working_sets": {
+            "after_available": 20075921408,
+            "after_percent": 41,
+            "before_available": 20075921408,
+            "before_percent": 41,
+            "completed_at": 1789541108.6924825,
+            "duration_seconds": 0.06300000008195639,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "c96bd9c8343c4c3b9f5ca3ab88e5b787",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541108.6858456,
+            "status": "succeeded",
+            "step": "empty_working_sets",
+            "supervisor": {
+              "creationFiletime": 134340147085758459,
+              "pid": 24216
+            },
+            "token": "7e268f9cb1d8781909079a7f8093f1e2",
+            "worker": {
+              "creationFiletime": 134340147086521883,
+              "pid": 26160
+            }
+          },
+          "flush_modified_pages": {
+            "after_available": 20074659840,
+            "after_percent": 41,
+            "before_available": 20074659840,
+            "before_percent": 41,
+            "completed_at": 1789541108.7654667,
+            "duration_seconds": 0.04699999978765845,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "c96bd9c8343c4c3b9f5ca3ab88e5b787",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541108.7591107,
+            "status": "succeeded",
+            "step": "flush_modified_pages",
+            "supervisor": {
+              "creationFiletime": 134340147085758459,
+              "pid": 24216
+            },
+            "token": "c3fc88f76b1370f0aa4c2e41edbb9a44",
+            "worker": {
+              "creationFiletime": 134340147087274169,
+              "pid": 12408
+            }
+          },
+          "purge_standby_list": {
+            "after_available": 20076806144,
+            "after_percent": 41,
+            "before_available": 20076806144,
+            "before_percent": 41,
+            "completed_at": 1789541108.8466177,
+            "duration_seconds": 0.04700000025331974,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 20,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "系统接口返回失败，详见调用记录",
+            "nativeCalls": [],
+            "ok": false,
+            "operation_id": "c96bd9c8343c4c3b9f5ca3ab88e5b787",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541108.8400805,
+            "status": "failed",
+            "step": "purge_standby_list",
+            "supervisor": {
+              "creationFiletime": 134340147085758459,
+              "pid": 24216
+            },
+            "token": "b35de548d0a44ec817726ae1177766a9",
+            "worker": {
+              "creationFiletime": 134340147088089468,
+              "pid": 35900
+            }
+          },
+          "registry_cache": {
+            "after_available": 20077543424,
+            "after_percent": 41,
+            "before_available": 20077543424,
+            "before_percent": 41,
+            "completed_at": 1789541109.004395,
+            "duration_seconds": 0.04600000008940697,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "c96bd9c8343c4c3b9f5ca3ab88e5b787",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541108.9972808,
+            "status": "succeeded",
+            "step": "registry_cache",
+            "supervisor": {
+              "creationFiletime": 134340147085758459,
+              "pid": 24216
+            },
+            "token": "285258ba3a12fcac1572e98c0ec0a3b4",
+            "worker": {
+              "creationFiletime": 134340147089586862,
+              "pid": 13968
+            }
+          },
+          "system_file_cache": {
+            "after_available": 20077862912,
+            "after_percent": 41,
+            "before_available": 20077862912,
+            "before_percent": 41,
+            "completed_at": 1789541108.916412,
+            "duration_seconds": 0.06199999991804361,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "c96bd9c8343c4c3b9f5ca3ab88e5b787",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541108.909606,
+            "status": "succeeded",
+            "step": "system_file_cache",
+            "supervisor": {
+              "creationFiletime": 134340147085758459,
+              "pid": 24216
+            },
+            "token": "e373dac06ca87e9334e5997f34bee234",
+            "worker": {
+              "creationFiletime": 134340147088797185,
+              "pid": 13080
+            }
+          }
+        },
+        "supervisor": {
+          "creationFiletime": 134340147085758459,
+          "pid": 24216
+        },
+        "work_duration_seconds": 0.45399999991059303,
+        "workers": [
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "empty_working_sets",
+            "worker": {
+              "creationFiletime": 134340147086521883,
+              "pid": 26160
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "flush_modified_pages",
+            "worker": {
+              "creationFiletime": 134340147087274169,
+              "pid": 12408
+            }
+          },
+          {
+            "exit_code": 20,
+            "exit_verified": true,
+            "step": "purge_standby_list",
+            "worker": {
+              "creationFiletime": 134340147088089468,
+              "pid": 35900
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "system_file_cache",
+            "worker": {
+              "creationFiletime": 134340147088797185,
+              "pid": 13080
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "registry_cache",
+            "worker": {
+              "creationFiletime": 134340147089586862,
+              "pid": 13968
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "combine_memory",
+            "worker": {
+              "creationFiletime": 134340147090345532,
+              "pid": 14240
+            }
+          }
+        ],
+        "terminal": true,
+        "processExitVerified": true,
+        "requested_at": 1789541108.5288744,
+        "elapsedSeconds": 0.591986894607544,
+        "exitCodeVerified": true,
+        "supervisorExitCode": 10,
+        "ok": false
+      }
+    },
+    {
+      "case": "crash",
+      "passed": true,
+      "result": {
+        "after_available": 20094636032,
+        "available_increase": -5726208,
+        "before_available": 20100362240,
+        "client_observed": true,
+        "completed_at": 1789541110.2521772,
+        "duration_seconds": 0.4369999999180436,
+        "evidenceKind": "windows-cleanup-supervisor",
+        "evidenceVersion": 1,
+        "expected_exit_code": 10,
+        "guardTriggered": false,
+        "guards": [],
+        "handshake_duration_seconds": 0.04699999978765845,
+        "heartbeat_at": 1789541110.2482672,
+        "implementation": "cpp-msvc",
+        "limits": {
+          "handshakeSeconds": 10,
+          "stepSeconds": 15,
+          "supervisorSeconds": 60,
+          "workSeconds": 45
+        },
+        "message": "部分清理步骤失败，请查看详情",
+        "operation_id": "653289f067394f2a8e2eadab4cd831ad",
+        "request_sha256": "d0f5e6506c933a383ea6583de51817b51a97941c98bc7b77279d72263239c594",
+        "schema": 4,
+        "started_at": 1789541109.8128474,
+        "status": "partial",
+        "step": "combine_memory",
+        "steps": {
+          "combine_memory": {
+            "after_available": 20094636032,
+            "after_percent": 41,
+            "before_available": 20094636032,
+            "before_percent": 41,
+            "completed_at": 1789541110.2363527,
+            "duration_seconds": 0.030999999959021807,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "653289f067394f2a8e2eadab4cd831ad",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541110.2298203,
+            "status": "succeeded",
+            "step": "combine_memory",
+            "supervisor": {
+              "creationFiletime": 134340147097997494,
+              "pid": 17208
+            },
+            "token": "ff6c6b637d4a04319dd6072c86632a5e",
+            "worker": {
+              "creationFiletime": 134340147102005911,
+              "pid": 18340
+            }
+          },
+          "empty_working_sets": {
+            "duration_seconds": 0.030999999959021807,
+            "exit_code": 99,
+            "exit_verified": true,
+            "message": "步骤结果缺失或与进程退出码不一致",
+            "ok": false,
+            "status": "failed",
+            "worker": {
+              "creationFiletime": 134340147098677252,
+              "pid": 14352
+            }
+          },
+          "flush_modified_pages": {
+            "after_available": 20100362240,
+            "after_percent": 41,
+            "before_available": 20100362240,
+            "before_percent": 41,
+            "completed_at": 1789541109.9564712,
+            "duration_seconds": 0.030999999959021807,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "653289f067394f2a8e2eadab4cd831ad",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541109.9507668,
+            "status": "succeeded",
+            "step": "flush_modified_pages",
+            "supervisor": {
+              "creationFiletime": 134340147097997494,
+              "pid": 17208
+            },
+            "token": "dfcd652226ed6fee23bf67c3f33088da",
+            "worker": {
+              "creationFiletime": 134340147099192685,
+              "pid": 21764
+            }
+          },
+          "purge_standby_list": {
+            "after_available": 20098076672,
+            "after_percent": 41,
+            "before_available": 20098076672,
+            "before_percent": 41,
+            "completed_at": 1789541110.0045276,
+            "duration_seconds": 0.06199999991804361,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "653289f067394f2a8e2eadab4cd831ad",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541109.9988296,
+            "status": "succeeded",
+            "step": "purge_standby_list",
+            "supervisor": {
+              "creationFiletime": 134340147097997494,
+              "pid": 17208
+            },
+            "token": "229be04a45ef4f2795f54ff507f99461",
+            "worker": {
+              "creationFiletime": 134340147099682542,
+              "pid": 19252
+            }
+          },
+          "registry_cache": {
+            "after_available": 20093370368,
+            "after_percent": 41,
+            "before_available": 20093370368,
+            "before_percent": 41,
+            "completed_at": 1789541110.1593912,
+            "duration_seconds": 0.06199999991804361,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "653289f067394f2a8e2eadab4cd831ad",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541110.152708,
+            "status": "succeeded",
+            "step": "registry_cache",
+            "supervisor": {
+              "creationFiletime": 134340147097997494,
+              "pid": 17208
+            },
+            "token": "6710f21ac3d3b3fcb33597891a42ed90",
+            "worker": {
+              "creationFiletime": 134340147101223001,
+              "pid": 15172
+            }
+          },
+          "system_file_cache": {
+            "after_available": 20092690432,
+            "after_percent": 41,
+            "before_available": 20092690432,
+            "before_percent": 41,
+            "completed_at": 1789541110.0853937,
+            "duration_seconds": 0.06199999991804361,
+            "evidenceKind": "windows-native-cleanup-step",
+            "evidenceVersion": 1,
+            "exit_code": 0,
+            "exit_verified": true,
+            "implementation": "cpp-msvc",
+            "message": "清理步骤完成",
+            "nativeCalls": [
+              {
+                "api": "TEST_ONLY",
+                "succeeded": true
+              }
+            ],
+            "ok": true,
+            "operation_id": "653289f067394f2a8e2eadab4cd831ad",
+            "privileges": {},
+            "processElevated": false,
+            "schema": 4,
+            "started_at": 1789541110.078614,
+            "status": "succeeded",
+            "step": "system_file_cache",
+            "supervisor": {
+              "creationFiletime": 134340147097997494,
+              "pid": 17208
+            },
+            "token": "8af520159c4a78881fe94718751642f6",
+            "worker": {
+              "creationFiletime": 134340147100474193,
+              "pid": 32840
+            }
+          }
+        },
+        "supervisor": {
+          "creationFiletime": 134340147097997494,
+          "pid": 17208
+        },
+        "work_duration_seconds": 0.39000000013038516,
+        "workers": [
+          {
+            "exit_code": 99,
+            "exit_verified": true,
+            "step": "empty_working_sets",
+            "worker": {
+              "creationFiletime": 134340147098677252,
+              "pid": 14352
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "flush_modified_pages",
+            "worker": {
+              "creationFiletime": 134340147099192685,
+              "pid": 21764
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "purge_standby_list",
+            "worker": {
+              "creationFiletime": 134340147099682542,
+              "pid": 19252
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "system_file_cache",
+            "worker": {
+              "creationFiletime": 134340147100474193,
+              "pid": 32840
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "registry_cache",
+            "worker": {
+              "creationFiletime": 134340147101223001,
+              "pid": 15172
+            }
+          },
+          {
+            "exit_code": 0,
+            "exit_verified": true,
+            "step": "combine_memory",
+            "worker": {
+              "creationFiletime": 134340147102005911,
+              "pid": 18340
+            }
+          }
+        ],
+        "terminal": true,
+        "processExitVerified": true,
+        "requested_at": 1789541109.7563562,
+        "elapsedSeconds": 0.5185201168060303,
+        "exitCodeVerified": true,
+        "supervisorExitCode": 10,
+        "ok": false
+      }
+    },
+    {
+      "case": "hang",
+      "passed": true,
+      "result": {
+        "after_available": null,
+        "available_increase": null,
+        "before_available": null,
+        "client_observed": true,
+        "completed_at": 1789541126.070504,
+        "duration_seconds": 15.092999999877065,
+        "evidenceKind": "windows-cleanup-supervisor",
+        "evidenceVersion": 1,
+        "expected_exit_code": 13,
+        "guardTriggered": true,
+        "guards": [
+          {
+            "scope": "step-or-work-or-supervisor",
+            "step": "empty_working_sets",
+            "stepSeconds": 15.0
+          }
+        ],
+        "handshake_duration_seconds": 0.06199999991804361,
+        "heartbeat_at": 1789541126.0661008,
+        "implementation": "cpp-msvc",
+        "limits": {
+          "handshakeSeconds": 10,
+          "stepSeconds": 15,
+          "supervisorSeconds": 60,
+          "workSeconds": 45
+        },
+        "message": "清理超时，已停止所属工作进程",
+        "operation_id": "bf5ae9cbbe5444869fdf87ab30f73208",
+        "request_sha256": "8bd5e7818f904fa895f618dcfd2535bdd9dbcf28a80044eed749bcec81b4224b",
+        "schema": 4,
+        "started_at": 1789541110.9817367,
+        "status": "timed_out",
+        "step": "empty_working_sets",
+        "steps": {
+          "combine_memory": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          },
+          "empty_working_sets": {
+            "duration_seconds": 15.0,
+            "exit_code": 72,
+            "exit_verified": true,
+            "message": "清理步骤已停止",
+            "ok": false,
+            "status": "timed_out",
+            "worker": {
+              "creationFiletime": 134340147110431166,
+              "pid": 33640
+            }
+          },
+          "flush_modified_pages": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          },
+          "purge_standby_list": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          },
+          "registry_cache": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          },
+          "system_file_cache": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          }
+        },
+        "supervisor": {
+          "creationFiletime": 134340147109671178,
+          "pid": 26848
+        },
+        "work_duration_seconds": 15.030999999959022,
+        "workers": [
+          {
+            "exit_code": 72,
+            "exit_verified": true,
+            "step": "empty_working_sets",
+            "worker": {
+              "creationFiletime": 134340147110431166,
+              "pid": 33640
+            }
+          }
+        ],
+        "terminal": true,
+        "processExitVerified": true,
+        "requested_at": 1789541110.9252732,
+        "elapsedSeconds": 15.157098770141602,
+        "exitCodeVerified": true,
+        "supervisorExitCode": 13,
+        "ok": false
+      }
+    },
+    {
+      "case": "cancel",
+      "passed": true,
+      "result": {
+        "after_available": null,
+        "available_increase": null,
+        "before_available": null,
+        "client_observed": true,
+        "completed_at": 1789541126.4070272,
+        "duration_seconds": 0.1869999999180436,
+        "evidenceKind": "windows-cleanup-supervisor",
+        "evidenceVersion": 1,
+        "expected_exit_code": 12,
+        "guardTriggered": false,
+        "guards": [],
+        "handshake_duration_seconds": 0.07799999974668026,
+        "heartbeat_at": 1789541126.387032,
+        "implementation": "cpp-msvc",
+        "limits": {
+          "handshakeSeconds": 10,
+          "stepSeconds": 15,
+          "supervisorSeconds": 60,
+          "workSeconds": 45
+        },
+        "message": "本次清理已取消",
+        "operation_id": "21efc784091543b585413ef0a0633725",
+        "request_sha256": "2a3cc6fd64ae189574d452993f4f6b2583658617254d17c6b80b6529b35c2b5b",
+        "schema": 4,
+        "started_at": 1789541126.2208757,
+        "status": "cancelled",
+        "step": "empty_working_sets",
+        "steps": {
+          "combine_memory": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          },
+          "empty_working_sets": {
+            "duration_seconds": 0.07799999974668026,
+            "exit_code": 73,
+            "exit_verified": true,
+            "message": "清理步骤已停止",
+            "ok": false,
+            "status": "cancelled",
+            "worker": {
+              "creationFiletime": 134340147262985579,
+              "pid": 11536
+            }
+          },
+          "flush_modified_pages": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          },
+          "purge_standby_list": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          },
+          "registry_cache": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          },
+          "system_file_cache": {
+            "exit_code": null,
+            "exit_verified": true,
+            "message": "前序异常或取消，未执行",
+            "ok": false,
+            "status": "not_run"
+          }
+        },
+        "supervisor": {
+          "creationFiletime": 134340147262057472,
+          "pid": 2472
+        },
+        "work_duration_seconds": 0.10900000017136335,
+        "workers": [
+          {
+            "exit_code": 73,
+            "exit_verified": true,
+            "step": "empty_working_sets",
+            "worker": {
+              "creationFiletime": 134340147262985579,
+              "pid": 11536
+            }
+          }
+        ],
+        "terminal": true,
+        "processExitVerified": true,
+        "requested_at": 1789541126.1638012,
+        "elapsedSeconds": 0.2619473934173584,
+        "exitCodeVerified": true,
+        "supervisorExitCode": 12,
+        "ok": false
+      }
+    },
+    {
+      "case": "wrong-token",
+      "passed": true
+    },
+    {
+      "case": "reject-owner",
+      "passed": true
+    },
+    {
+      "case": "reject-hash",
+      "passed": true
+    },
+    {
+      "case": "reject-expired",
+      "passed": true
+    },
+    {
+      "case": "reject-steps",
+      "passed": true
+    },
+    {
+      "case": "supervisor-crash",
+      "passed": true,
+      "result": {
+        "after_available": null,
+        "available_increase": null,
+        "before_available": null,
+        "client_observed": true,
+        "evidenceKind": "windows-cleanup-supervisor",
+        "evidenceVersion": 1,
+        "guardTriggered": false,
+        "guards": [],
+        "handshake_duration_seconds": 0.03200000012293458,
+        "heartbeat_at": 1789541127.2458754,
+        "implementation": "cpp-msvc",
+        "limits": {
+          "handshakeSeconds": 10,
+          "stepSeconds": 15,
+          "supervisorSeconds": 60,
+          "workSeconds": 45
+        },
+        "message": "清理助手退出，但未返回与退出码一致的完整结果",
+        "operation_id": "7f215f37e04e4f9bbc5d01960affadd4",
+        "request_sha256": "06422d0dea039d6a41dab02ff19952e57cc007a71ede0fa79ce176e941e4e43a",
+        "schema": 4,
+        "started_at": 1789541127.2035708,
+        "status": "failed",
+        "step": "empty_working_sets",
+        "steps": {},
+        "supervisor": {
+          "creationFiletime": 134340147271880411,
+          "pid": 31232
+        },
+        "workers": [
+          {
+            "step": "empty_working_sets",
+            "worker": {
+              "creationFiletime": 134340147272356593,
+              "pid": 37020
+            }
+          }
+        ],
+        "terminal": true,
+        "processExitVerified": true,
+        "requested_at": 1789541127.1409013,
+        "elapsedSeconds": 0.12385845184326172,
+        "exitCodeVerified": true,
+        "supervisorExitCode": 91,
+        "ok": false
+      }
+    },
+    {
+      "case": "broker-crash",
+      "passed": true,
+      "result": {
+        "after_available": null,
+        "available_increase": null,
+        "before_available": null,
+        "client_observed": true,
+        "evidenceKind": "windows-cleanup-supervisor",
+        "evidenceVersion": 1,
+        "guardTriggered": false,
+        "guards": [],
+        "handshake_duration_seconds": 0.030999999959021807,
+        "heartbeat_at": 1789541127.464697,
+        "implementation": "cpp-msvc",
+        "limits": {
+          "handshakeSeconds": 10,
+          "stepSeconds": 15,
+          "supervisorSeconds": 60,
+          "workSeconds": 45
+        },
+        "message": "清理助手退出，但未返回与退出码一致的完整结果",
+        "operation_id": "3b59c15ff3ba43e69301fc4b39e49722",
+        "request_sha256": "9cdb8277eb474093f9e0819c9a2957b52c62faa766cbcc041a2233dbb058160d",
+        "schema": 4,
+        "started_at": 1789541127.4244637,
+        "status": "failed",
+        "step": "empty_working_sets",
+        "steps": {},
+        "supervisor": {
+          "creationFiletime": 134340147274074570,
+          "pid": 4952
+        },
+        "workers": [
+          {
+            "step": "empty_working_sets",
+            "worker": {
+              "creationFiletime": 134340147274540041,
+              "pid": 16764
+            }
+          }
+        ],
+        "terminal": true,
+        "processExitVerified": true,
+        "requested_at": 1789541127.3594337,
+        "elapsedSeconds": 0.16730380058288574,
+        "exitCodeVerified": true,
+        "supervisorExitCode": 0,
+        "ok": false
+      }
+    },
+    {
+      "case": "reject-foreign-process",
+      "passed": true
+    },
+    {
+      "case": "owner-crash",
+      "passed": true
+    }
+  ]
+}

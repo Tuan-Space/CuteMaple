@@ -58,7 +58,7 @@ def main(argv=None):
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     source_hashes = {name: digest(PROJECT / name) for name in (
-        "cleanup_helper.py", "cleanup_protocol.py", "cleanup_process.py", "memory_cleaner.py",
+        "cleanup_session.py", "cleanup_protocol.py", "cleanup_process.py", "memory_cleaner.py",
         "pet_core.py", "resource_monitor.py", "diagnostics.py")}
     report = {"schema": 1, "reportKind": "cleanup-operation-observation", "profile": str(profile),
               "evidenceVersion": 1, "executionMode": "native-compiled-helper",

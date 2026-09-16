@@ -11,7 +11,7 @@ import time
 from types import SimpleNamespace
 
 import pytest
-import cleanup_helper as helper
+import reference_cleanup_helper as helper
 import cleanup_protocol as protocol
 import cleanup_process as processes
 import memory_cleaner as client

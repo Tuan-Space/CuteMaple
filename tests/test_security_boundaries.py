@@ -91,7 +91,7 @@ def test_cleanup_targets_separate_helper_and_missing_helper_fails(tmp_path, monk
 
 
 def test_cleanup_never_replays_legacy_global_request(tmp_path, monkeypatch):
-    import cleanup_helper
+    import reference_cleanup_helper as cleanup_helper
     request = tmp_path / "request.json"
     request.write_text(json.dumps({"operation_id": "a" * 32, "requested_at": 1}))
     monkeypatch.setattr(cleanup_helper, "profile_path", lambda: tmp_path)
@@ -101,7 +101,7 @@ def test_cleanup_never_replays_legacy_global_request(tmp_path, monkeypatch):
 
 def test_helper_diagnostic_imports_no_qt_and_performs_no_privileged_operation(tmp_path, monkeypatch):
     monkeypatch.setenv("MEINIFENG_PROFILE_DIRECTORY", str(tmp_path))
-    script = Path(__file__).resolve().parents[1] / "cleanup_helper.py"
+    script = Path(__file__).with_name("reference_cleanup_helper.py")
     report_path = tmp_path / "helper-report.json"
     result = subprocess.run([sys.executable, str(script), "--diagnose", "--report", str(report_path)], capture_output=True,
                             text=True, timeout=15)

@@ -55,7 +55,7 @@ def test_auto_cleanup_or_triggers_and_cooldown():
 
 
 def test_deep_cleanup_uses_modified_and_full_standby_lists(monkeypatch):
-    import cleanup_helper as memory_cleaner
+    import reference_cleanup_helper as memory_cleaner
     snapshots = iter((
         SimpleNamespace(physical_available=4_000, load_percent=74),
         SimpleNamespace(physical_available=7_000, load_percent=38),

@@ -141,7 +141,7 @@ def test_incomplete_or_mismatched_native_evidence_rejected(evidence, monkeypatch
     folder = profile/'cleanup/operations'/row['operation_id']
     if case == 'two_runs': report['operations'].pop()
     elif case == 'same_operation': report['operations'][1] = deepcopy(row)
-    elif case == 'source_changed': report['sourceClientHashesAfter'] = {**report['sourceClientHashes'], 'cleanup_helper.py': 'b'*64}
+    elif case == 'source_changed': report['sourceClientHashesAfter'] = {**report['sourceClientHashes'], 'cleanup_session.py': 'b'*64}
     elif case == 'wrong_helper': (bundle/'cleaner/CuteMaple-Cleaner.exe').write_bytes(b'changed final helper')
     elif case == 'missing_started': (folder/'step-04-registry_cache-started.json').unlink()
     elif case == 'worker_alive': monkeypatch.setattr(gate, 'identity_alive', lambda _: True)

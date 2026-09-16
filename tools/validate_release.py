@@ -558,6 +558,17 @@ def validate(root: Path, *, packaged: bool = False,
         helper = root / "cleaner/CuteMaple-Cleaner.exe"
         if not helper.is_file() or helper.stat().st_size == 0:
             errors.append("Missing independent privileged cleanup helper: cleaner/CuteMaple-Cleaner.exe")
+        else:
+            try:
+                manifest = json.loads((root / 'cleaner/native-build.json').read_text(encoding='utf-8-sig'))
+                if (manifest.get('implementation') != 'cpp-msvc' or manifest.get('testBuild') is not False
+                        or manifest.get('sha256', '').lower() != hashlib.sha256(helper.read_bytes()).hexdigest()):
+                    errors.append('Native cleaner build manifest does not match the production executable')
+            except (OSError, ValueError):
+                errors.append('Missing or invalid native cleaner build manifest')
+        if any(path.name.lower() not in {'cutemaple-cleaner.exe', 'native-build.json'}
+               for path in (root / 'cleaner').rglob('*') if path.is_file()):
+            errors.append('Native cleaner directory contains unexpected dependencies or test files')
         if any("pyside" in path.name.lower() or path.name.lower().startswith("qt6")
                for path in (root / "cleaner").rglob("*")):
             errors.append("Cleanup helper must not bundle Qt or PySide")

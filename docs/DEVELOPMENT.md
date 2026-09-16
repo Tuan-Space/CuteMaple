@@ -68,6 +68,6 @@ CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只
 .\build.ps1 -Mode Directory -Jobs 2 -SkipTests
 ```
 
-如果只修改界面、清理代码没有变化，可以在本机用 `-ReuseCleanerFrom <已有目录包路径>` 复用已验证的独立清理助手。构建会核对清理源码和助手全部文件的 SHA256，再将其原样复制；不匹配会停止，且不会暗中重新编译助手。已有包需包含 `SOURCE-SNAPSHOT.json` 和 `verification/retained-helper.json`。
+清理助手使用 MSVC x64 原生 C++ 编译，不依赖 Python、Qt 或本机外部素材。安装 Visual Studio Build Tools 的 C++ 工具和 Windows SDK 后，可单独执行 `tools/build_native_cleaner.ps1`。生产构建不复制历史助手；`-TestBuild` 生成另名测试程序，只用于模拟故障，绝不执行真实内存清理或进入软件包。
 
 版本号来自 `VERSION`。构建会编译主程序和独立清理助手，结果在 `dist`。这里的 `-SkipTests` 只跳过旧制作链的完整生成回归；日常改动仍应运行相关测试并检查画面。所有必需 SDK 源文件、Web 前端构建结果和素材都随仓库提供。

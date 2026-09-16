@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def main() -> int:
-    if "--verify-desktop" in sys.argv:
+    if "--verify-desktop" in sys.argv or "--verify-cleanup" in sys.argv:
         # Parse only the explicit profile before logging/native imports. The QA
         # module owns the rest of its argument validation.
         try:
@@ -31,6 +31,9 @@ def main() -> int:
         if "--verify-desktop" in sys.argv:
             from desktop_check import run
             return int(run(sys.argv[sys.argv.index("--verify-desktop") + 1:]))
+        if "--verify-cleanup" in sys.argv:
+            from cleanup_check import run
+            return int(run(sys.argv[sys.argv.index("--verify-cleanup") + 1:]))
         if "--verify-live2d" in sys.argv:
             from runtime_check import run
             result = run(sys.argv[sys.argv.index("--verify-live2d") + 1:])

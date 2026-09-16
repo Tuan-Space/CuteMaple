@@ -1,5 +1,8 @@
 """Local, parent-bound cleanup sessions. No persistence and no cleanup API calls."""
 from __future__ import annotations
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ctypes
 from ctypes import wintypes as w
 import hmac
@@ -183,3 +186,106 @@ def close_session():
             try: _client.request('shutdown',timeout=2)
             except (OSError,ValueError): pass
             finally: _client.close(); _client=None
+
+
+class SessionOperations:
+    """Only starts the fixed supervisor for an immutable request from this owner."""
+    def __init__(self,profile,owner,command_factory,helper,job_factory=WorkerJob):
+        self.profile,self.owner,self.command_factory,self.helper=profile,owner,command_factory,helper
+        self.job=job_factory(); self.worker=None; self.operation=None; self.closing=False; self.closed_at=None
+    def poll(self):
+        if self.worker and self.worker.poll() is not None:
+            self.worker.close(); self.worker=None; self.operation=None
+    def dispatch(self,command,operation=None):
+        self.poll()
+        if command=='status': return {'ok':True,'status':'authorized','operation':self.operation}
+        if command=='shutdown':
+            self.shutdown(); return {'ok':True,'status':'closing'}
+        if command not in {'start','cancel'} or not valid_operation(operation): raise ValueError('Invalid cleanup command')
+        if self.closing: raise RuntimeError('Session is closing')
+        request=load_request(self.profile,operation,helper=self.helper)
+        if request['client']!=self.owner: raise PermissionError('Cleanup request owner mismatch')
+        if command=='cancel':
+            if operation!=self.operation: return {'ok':False,'status':'failed','message':'本次操作已经结束或不属于此会话'}
+            write_json(operation_path(self.profile,operation)/'cancel.json',{'operation_id':operation,'requested_at':time.time()})
+            return {'ok':True,'status':'cancelling'}
+        if self.worker:
+            return {'ok':operation==self.operation,'status':'busy','operation_id':self.operation}
+        if (active_operation(self.profile)!=operation or time.time()-request['requested_at']>START_TIMEOUT
+                or (operation_path(self.profile,operation)/'started.json').exists()
+                or (operation_path(self.profile,operation)/'launch-failure.json').exists()):
+            raise ValueError('Expired or already consumed cleanup request')
+        command=self.command_factory('--memory-clean-helper','--operation',operation,'--profile',str(self.profile))
+        self.worker=self.job.spawn(command,self.helper.parent)
+        self.operation=operation
+        return {'ok':True,'status':'queued','operation_id':operation}
+    def shutdown(self):
+        self.closing=True
+        if self.closed_at is None: self.closed_at=time.monotonic()
+        if self.operation:
+            write_json(operation_path(self.profile,self.operation)/'cancel.json',{'operation_id':self.operation,'requested_at':time.time()})
+    def close(self):
+        self.job.close()  # Nested supervisors/workers belong only to this session.
+        if self.worker:
+            self.worker.wait(2); self.worker.close(); self.worker=None
+
+
+def serve(profile,owner,token,command_factory,helper):
+    if not valid_identity(owner): raise ValueError('Invalid session owner')
+    name=pipe_name(token); api=pipe_api(); parent=ObservedProcess(owner)
+    descriptor=ctypes.c_void_p(); handle=None; manager=None
+    adv=ctypes.WinDLL('advapi32',use_last_error=True)
+    adv.ConvertStringSecurityDescriptorToSecurityDescriptorW.argtypes=[w.LPCWSTR,w.DWORD,ctypes.POINTER(ctypes.c_void_p),ctypes.c_void_p]
+    adv.ConvertStringSecurityDescriptorToSecurityDescriptorW.restype=w.BOOL
+    class Security(ctypes.Structure): _fields_=[('length',w.DWORD),('descriptor',ctypes.c_void_p),('inherit',w.BOOL)]
+    try:
+        sid=process_logon_sid(parent.handle)
+        if sid!=process_logon_sid(api.GetCurrentProcess()): raise PermissionError('Authorization must use the same Windows login')
+        # Explicit medium integrity permits the ordinary owner to contact this
+        # elevated server; the logon DACL, token and process binding still apply.
+        if not adv.ConvertStringSecurityDescriptorToSecurityDescriptorW(f'D:P(A;;GA;;;SY)(A;;0x{PIPE_ACCESS:x};;;{sid})S:(ML;;NW;;;ME)',1,ctypes.byref(descriptor),None):
+            raise ctypes.WinError(ctypes.get_last_error())
+        security=Security(ctypes.sizeof(Security),descriptor,False)
+        handle=api.CreateNamedPipeW(name,3|0x80000,4|2|1|8,1,MAX_MESSAGE,MAX_MESSAGE,0,ctypes.byref(security))
+        if handle==w.HANDLE(-1).value: handle=None; raise ctypes.WinError(ctypes.get_last_error())
+        manager=SessionOperations(profile,owner,command_factory,helper)
+        connected=False; authenticated=False; started=time.monotonic(); connected_at=started
+        while True:
+            manager.poll()
+            if parent.poll() is not None or (not authenticated and time.monotonic()-started>12): manager.shutdown()
+            if manager.closing:
+                if manager.worker is None or time.monotonic()-manager.closed_at>=3: return 0
+                time.sleep(.02); continue
+            if not connected:
+                ok=api.ConnectNamedPipe(handle,None); code=0 if ok else ctypes.get_last_error()
+                if code in (0,535):
+                    peer=w.DWORD()
+                    if not api.GetNamedPipeClientProcessId(handle,ctypes.byref(peer)) or peer.value!=owner['pid'] or parent.poll() is not None:
+                        api.DisconnectNamedPipe(handle); continue
+                    connected=True; connected_at=time.monotonic()
+                elif code==232: api.DisconnectNamedPipe(handle)
+                elif code!=536: raise ctypes.WinError(code)
+            if connected:
+                try:
+                    message=read_message(api,handle)
+                    if message is not None:
+                        if (message.get('version')!=1 or not isinstance(message.get('token'),str)
+                                or not hmac.compare_digest(message['token'],token) or not valid_operation(message.get('request'))):
+                            raise PermissionError('Invalid session identity')
+                        authenticated=True
+                        try: response=manager.dispatch(message.get('command'),message.get('operation'))
+                        except (OSError,ValueError,RuntimeError) as exc:
+                            response={'ok':False,'status':'failed','message':str(exc),'error_code':getattr(exc,'winerror',None)}
+                        write_message(api,handle,dict(response,request=message['request'],session=token))
+                        # Client reads before closing; do not discard its response.
+                        connected_at=time.monotonic()-4
+                    if time.monotonic()-connected_at>5:
+                        api.DisconnectNamedPipe(handle); connected=False
+                except (OSError,ValueError):
+                    api.DisconnectNamedPipe(handle); connected=False
+            time.sleep(.01)
+    finally:
+        if manager: manager.close()
+        if handle: api.CloseHandle(handle)
+        if descriptor.value: api.LocalFree(descriptor)
+        parent.close()

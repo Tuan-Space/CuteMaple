@@ -3,7 +3,7 @@ from pathlib import Path
 import threading
 import uuid
 import pytest
-import cleanup_session as session
+import reference_cleanup_session as session
 import cleanup_protocol as protocol
 import memory_cleaner as client
 from cleanup_process import current_identity, ObservedProcess
@@ -90,7 +90,8 @@ def test_security_block_is_reported_explicitly():
 
 
 def test_backend_contains_no_task_registration_or_scheduling():
-    import inspect, cleanup_helper
+    import inspect
+    import reference_cleanup_helper as cleanup_helper
     source=inspect.getsource(client)+inspect.getsource(cleanup_helper)
     assert '"schtasks"' not in source
     assert '--install-clean-task' not in source
@@ -123,11 +124,11 @@ def test_session_exits_after_owner_process_crash(tmp_path):
     script=tmp_path/'owner.py'; evidence=tmp_path/'broker.json'
     script.write_text('''import json,os,subprocess,sys,uuid
 from pathlib import Path
-sys.path.insert(0,sys.argv[1])
+sys.path.insert(0,sys.argv[1]);sys.path.insert(0,str(Path(sys.argv[1])/'tests'))
 from cleanup_process import current_identity,ObservedProcess,creation_time,kernel
 from cleanup_session import SessionClient
 owner=current_identity();token=uuid.uuid4().hex
-code="import json,sys;from pathlib import Path;from cleanup_session import serve;serve(Path(sys.argv[1]),json.loads(sys.argv[2]),sys.argv[3],lambda *a: (_ for _ in ()).throw(RuntimeError('No workers allowed')),Path(sys.argv[4]))"
+code="import json,sys;from pathlib import Path;sys.path.insert(0,str(Path.cwd()/'tests'));from reference_cleanup_session import serve;serve(Path(sys.argv[1]),json.loads(sys.argv[2]),sys.argv[3],lambda *a: (_ for _ in ()).throw(RuntimeError('No workers allowed')),Path(sys.argv[4]))"
 child=subprocess.Popen([sys._base_executable,'-c',code,sys.argv[2],json.dumps(owner),token,__file__],cwd=sys.argv[1])
 identity={'pid':child.pid,'creationFiletime':creation_time(kernel(),int(child._handle))}
 client=SessionClient(token,ObservedProcess(identity))

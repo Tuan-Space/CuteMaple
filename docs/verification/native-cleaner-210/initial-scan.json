@@ -1,0 +1,13 @@
+{
+  "completed": "2026-09-16T14:38:43.1599912+08:00",
+  "diagnosticExit": 0,
+  "sha256": "77F13BDF39FC6A04FD938AE3A3156F267AF07A2D7814D22721ABBCEB2288C6D1",
+  "detections": [],
+  "bytes": 573440,
+  "scanStarted": "2026-09-16T14:38:37.9658401+08:00",
+  "defender": {
+    "AntivirusSignatureVersion": "1.459.218.0",
+    "AntivirusSignatureLastUpdated": "2026-09-15T11:38:35+08:00",
+    "RealTimeProtectionEnabled": true
+  }
+}

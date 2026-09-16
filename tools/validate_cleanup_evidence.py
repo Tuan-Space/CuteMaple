@@ -16,7 +16,7 @@ from cleanup_protocol import SCHEMA, STEPS, digest
 from cleanup_process import identity_alive, valid_identity
 
 BLOCKED_BUILD_IDS = ('20260908-190153', '20260908-190759')
-SOURCE_NAMES = ('cleanup_helper.py', 'cleanup_protocol.py', 'cleanup_process.py', 'memory_cleaner.py',
+SOURCE_NAMES = ('cleanup_session.py', 'cleanup_protocol.py', 'cleanup_process.py', 'memory_cleaner.py',
                 'pet_core.py', 'resource_monitor.py', 'diagnostics.py')
 
 

@@ -54,14 +54,14 @@ def helper_path() -> Path:
         if application.name.lower() == "cutemaple-cleaner.exe":
             return application
         return application.parent / "cleaner" / "CuteMaple-Cleaner.exe"
-    return Path(__file__).with_name("cleanup_helper.py").resolve()
+    return Path(__file__).parent / "artifacts" / "native-cleaner" / "CuteMaple-Cleaner.exe"
 
 
 def helper_command(*arguments: str) -> list[str]:
     helper = helper_path()
     if not helper.is_file():
         raise FileNotFoundError(f"独立清理程序缺失：{helper}")
-    return ([str(helper)] if is_compiled() else [str(current_executable_path()), str(helper)]) + list(arguments)
+    return [str(helper)] + list(arguments)
 
 
 def executable_command() -> tuple[str, str]:
@@ -337,6 +337,15 @@ def begin_cleanup() -> dict:
             return _failure_before_start(profile, operation_id, result.get("message", "会话拒绝清理请求"), result.get("error_code"))
         return {"ok": True, "status": "queued", "operation_id": operation_id,
                 "message": "清理请求已提交，等待监督进程确认"}
+    except BlockingIOError:
+        # The supervisor can be publishing its acknowledgement while a second
+        # click arrives. Lock contention is an existing operation, not failure.
+        try:
+            operation_id = active_operation(profile_path())
+        except (OSError, ValueError):
+            operation_id = None
+        return {"ok": False, "status": "busy", "operation_id": operation_id,
+                "message": "正在更新当前清理进度，请稍候"}
     except (OSError, ValueError) as exc:
         return cleanup_start_error(exc)
 

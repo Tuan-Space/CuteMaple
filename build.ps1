@@ -1,10 +1,9 @@
-﻿param(
+param(
     [ValidateSet("Directory")]
     [string]$Mode = "Directory",
     [switch]$InstallDependencies,
     [switch]$SkipTests,
     [string]$CandidateLabel = "",
-    [string]$ReuseCleanerFrom = "",
     [ValidateRange(1, 32)]
     [int]$Jobs = 4
 )
@@ -36,31 +35,8 @@ if (-not $SkipTests) {
     & $Python (Join-Path $ProjectRoot "tools\run_regression.py") --project-root $ProjectRoot --output-dir $TestEvidence
     if ($LASTEXITCODE -ne 0) { throw "Tests failed; no package produced." }
 }
-$RuntimeModules = @("main.py", "pet_app.py", "pet_core.py", "resource_monitor.py", "memory_cleaner.py",
-                    "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_helper.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py")
-$CleanerReuse = $null
-if ($ReuseCleanerFrom) {
-    $PreviousPackage = (Resolve-Path -LiteralPath $ReuseCleanerFrom).Path
-    $PreviousSnapshot = Get-Content -LiteralPath (Join-Path $PreviousPackage 'SOURCE-SNAPSHOT.json') -Raw | ConvertFrom-Json
-    $CleanerReuse = Get-Content -LiteralPath (Join-Path $PreviousPackage 'verification\retained-helper.json') -Raw | ConvertFrom-Json
-    foreach ($Module in @('cleanup_helper.py','cleanup_protocol.py','cleanup_process.py','cleanup_session.py','memory_cleaner.py')) {
-        if ((Get-FileHash -LiteralPath (Join-Path $ProjectRoot $Module)).Hash -ne $PreviousSnapshot.sourceModulesSha256.$Module) {
-            throw "Cleanup source changed; cannot reuse the previous helper: $Module"
-        }
-    }
-    $PreviousCleaner = Join-Path $PreviousPackage 'CuteMaple-Live2D\cleaner'
-    $ExpectedFiles = @($CleanerReuse.helperFilesSha256.psobject.Properties)
-    $ActualFiles = @(Get-ChildItem -LiteralPath $PreviousCleaner -Recurse -File)
-    if ($ExpectedFiles.Count -ne $ActualFiles.Count) { throw 'Reused helper file inventory changed.' }
-    foreach ($File in $ActualFiles) {
-        $Relative = [IO.Path]::GetRelativePath($PreviousCleaner, $File.FullName)
-        if ((Get-FileHash -LiteralPath $File.FullName).Hash -ne $CleanerReuse.helperFilesSha256.$Relative) {
-            throw "Reused helper hash mismatch: $Relative"
-        }
-    }
-    Copy-Item -LiteralPath $PreviousCleaner -Destination (Join-Path $Stage 'reused-cleaner') -Recurse
-    Copy-Item -LiteralPath (Join-Path $PreviousPackage 'helper-compilation-report.xml') -Destination $Stage
-}
+$RuntimeModules = @("main.py", "pet_app.py", "pet_core.py", "resource_monitor.py", "memory_cleaner.py", "cleanup_check.py",
+                    "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py")
 foreach ($Module in $RuntimeModules) {
     Copy-Item -LiteralPath (Join-Path $ProjectRoot $Module) -Destination $Stage
 }
@@ -100,7 +76,7 @@ $Arguments = @(
     "--include-data-files=assets/icon.png=assets/icon.png",
     "--include-data-dir=web/dist=web/dist",
     "--output-dir=out", "--output-filename=$AppBaseName.exe",
-    "--report=compilation-report.xml", "--assume-yes-for-downloads", "--jobs=$Jobs"
+    "--file-version=2.1.0", "--product-version=2.1.0", "--report=compilation-report.xml", "--assume-yes-for-downloads", "--jobs=$Jobs"
 )
 $Arguments += "main.py"
 $SourceHashes = [ordered]@{}
@@ -118,28 +94,14 @@ $Snapshot = [ordered]@{
     frozenAt = (Get-Date).ToUniversalTime().ToString("o"); candidateLabel = $CandidateLabel
     sourceModulesSha256 = $SourceHashes; runtimeResourcesSha256 = $ResourceHashes
     python = $Python; mainCompilerArguments = $Arguments
-    cleanupCompilerArguments = @("-m", "nuitka", "--mode=standalone", "--nofollow-import-to=PySide6",
-        "--windows-console-mode=disable", "--output-dir=helper-out", "--output-filename=CuteMaple-Cleaner.exe",
-        "--report=helper-compilation-report.xml", "--assume-yes-for-downloads", "--jobs=$Jobs", "cleanup_helper.py")
-}
-if ($CleanerReuse) {
-    $Snapshot.cleanupCompilerArguments = @()
-    $Snapshot.cleanupReuse = $CleanerReuse
+    cleanupImplementation = "cpp-msvc"
+    cleanupBuildScript = "tools/build_native_cleaner.ps1"
 }
 $Snapshot | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $Stage "SOURCE-SNAPSHOT.json") -Encoding utf8
 Push-Location $Stage
 try {
     & $Python @Arguments
     if ($LASTEXITCODE -ne 0) { throw "Nuitka build failed ($LASTEXITCODE)." }
-    # Separate ordinary-privilege UI and administrator-only cleanup entry.
-    # This helper has no Qt imports or web/model resources.
-    if (-not $CleanerReuse) {
-      & $Python -m nuitka --mode=standalone --nofollow-import-to=PySide6 `
-        --windows-console-mode=disable --output-dir=helper-out `
-        --output-filename=CuteMaple-Cleaner.exe --report=helper-compilation-report.xml `
-        --assume-yes-for-downloads "--jobs=$Jobs" cleanup_helper.py
-      if ($LASTEXITCODE -ne 0) { throw "Minimal cleanup helper build failed ($LASTEXITCODE)." }
-    }
 } finally {
     Pop-Location
 }
@@ -148,12 +110,14 @@ if (-not (Test-Path -LiteralPath $Standalone)) {
     $Standalone = (Get-ChildItem -LiteralPath (Join-Path $Stage "out") -Directory -Filter "*.dist" | Select-Object -First 1).FullName
 }
 if (-not $Standalone) { throw "Nuitka standalone dependency directory is missing." }
-$HelperStandalone = Join-Path $Stage "helper-out\cleanup_helper.dist"
-if ($CleanerReuse) { $HelperStandalone = Join-Path $Stage 'reused-cleaner' }
-if (-not (Test-Path -LiteralPath (Join-Path $HelperStandalone "CuteMaple-Cleaner.exe"))) {
-    throw "Independent cleanup executable is missing."
-}
-Copy-Item -LiteralPath $HelperStandalone -Destination (Join-Path $Standalone "cleaner") -Recurse
+$NativeOutput = Join-Path $Stage 'native-cleaner'
+& (Join-Path $ProjectRoot 'tools/build_native_cleaner.ps1') -OutputDirectory $NativeOutput
+$Helper = Join-Path $NativeOutput 'CuteMaple-Cleaner.exe'
+if (-not (Test-Path -LiteralPath $Helper)) { throw 'Native cleaner missing.' }
+$HelperTarget = Join-Path $Standalone 'cleaner'
+New-Item -ItemType Directory -Force -Path $HelperTarget | Out-Null
+Copy-Item -LiteralPath $Helper -Destination $HelperTarget
+Copy-Item -LiteralPath (Join-Path $NativeOutput 'native-build.json') -Destination $HelperTarget
 $PackagedValidation = @((Join-Path $ProjectRoot "tools\validate_release.py"), $Standalone, "--packaged")
 & $Python @PackagedValidation
 if ($LASTEXITCODE -ne 0) { throw "Packaged QtWebEngine/runtime inventory failed." }
@@ -163,7 +127,7 @@ Copy-Item -LiteralPath $Standalone -Destination (Join-Path $Output $AppBaseName)
 $Executable = Join-Path $Output ($AppBaseName + "\" + $AppBaseName + ".exe")
 if (-not (Test-Path -LiteralPath $Executable)) { throw "Expected application executable is missing." }
 Copy-Item -LiteralPath (Join-Path $Stage "compilation-report.xml") -Destination $Output
-Copy-Item -LiteralPath (Join-Path $Stage "helper-compilation-report.xml") -Destination $Output
+Copy-Item -LiteralPath (Join-Path $NativeOutput "native-build.json") -Destination $Output
 Copy-Item -LiteralPath (Join-Path $Stage "SOURCE-SNAPSHOT.json") -Destination $Output
 $SourceRevision = "source-archive"
 $SourceDirty = $false
