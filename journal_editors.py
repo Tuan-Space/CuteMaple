@@ -66,6 +66,7 @@ class EventEditor(QDialog):
         y=QSpinBox();y.setRange(1900,2199);y.setValue(lunar.getYear());m=QSpinBox();m.setRange(1,12);m.setValue(abs(lunar.getMonth()));d=QSpinBox();d.setRange(1,30);d.setValue(lunar.getDay());leap=QCheckBox('闰月');leap.setChecked(lunar.getMonth()<0)
         for label,w in [('年',y),('月',m),('日',d),('',leap)]:layout.addRow(label,w)
         error=QLabel();layout.addRow(error);buttons=QDialogButtonBox(QDialogButtonBox.Ok|QDialogButtonBox.Cancel);layout.addRow(buttons)
+        buttons.button(QDialogButtonBox.Ok).setText('确定');buttons.button(QDialogButtonBox.Cancel).setText('取消')
         def accept():
             try:
                 solar=Lunar.fromYmd(y.value(),-m.value() if leap.isChecked() else m.value(),d.value()).getSolar()

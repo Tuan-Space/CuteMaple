@@ -22,6 +22,7 @@ def snooze_seconds(parent):
     layout.addLayout(presets)
     row=QHBoxLayout(); amount=QSpinBox(); amount.setRange(1,366); amount.setValue(10); unit=QComboBox(); unit.addItems(['分钟','小时','天']); row.addWidget(amount); row.addWidget(unit); layout.addLayout(row)
     buttons=QDialogButtonBox(QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
+    buttons.button(QDialogButtonBox.Ok).setText('确定');buttons.button(QDialogButtonBox.Cancel).setText('取消')
     buttons.accepted.connect(lambda:(result.append(amount.value()*[60,3600,86400][unit.currentIndex()]),dialog.accept())); buttons.rejected.connect(dialog.reject); layout.addWidget(buttons)
     return result[0] if dialog.exec()==QDialog.Accepted else None
 

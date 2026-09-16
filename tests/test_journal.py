@@ -83,6 +83,12 @@ def test_health_response_and_correction(journal):
 def test_sleep_does_not_accumulate_health(journal):
     s,c=journal;s.set_habit('water',True,1);c.now+=86400;s.tick();assert not s.pending()
 
+def test_disabling_habit_keeps_existing_response(journal):
+    s,c=journal;s.set_habit('water',True,1)
+    for _ in range(61):c.now+=1;s.tick()
+    identity=s.pending()[0]['id'];s.set_habit('water',False,1)
+    assert s.pending()[0]['id']==identity;s.respond(identity,'done');c.now+=3600;s.tick();assert not s.pending()
+
 def test_library_lock_and_backup(journal,tmp_path):
     s,c=journal
     with pytest.raises(ValueError):JournalStore(s.root)

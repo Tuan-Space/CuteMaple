@@ -15,9 +15,14 @@ from datetime import datetime,timedelta
 a.output.mkdir(parents=True,exist_ok=True);app=QApplication([])
 font=QFontDatabase.addApplicationFont(str(next((Path(__file__).resolve().parents[1]/'assets/fonts').glob('*.otf'))));app.setFont(QFont(QFontDatabase.applicationFontFamilies(font)[0],11))
 app.styleHints().setColorScheme(Qt.ColorScheme.Dark if a.theme=='dark' else Qt.ColorScheme.Light)
+import monitor_ui,journal_ui
+colors=monitor_ui.DARK if a.theme=='dark' else monitor_ui.LIGHT
+monitor_ui.system_theme=lambda:colors
+journal_ui.system_theme=lambda:colors
 s=JournalStore(a.output/'profile',create=True);s.save_event('和朋友一起喝茶','schedule','一个轻松的下午。',Rule((datetime.now()+timedelta(days=1)).isoformat(timespec='seconds'),period='weekly',advances=(86400,3600)))
 note=s.save_note('小小的记录','# 留一点时间给自己\n\n- [x] 喝一杯水\n- [ ] 看远处的树\n\n**慢慢来，也很好。**')
 w=JournalWindow(s,None);w.note_editor.load(s.rows('SELECT * FROM notes WHERE id=?',(note,))[0]);w.show()
+assert w._theme is colors
 report={'scale':os.environ.get('QT_SCALE_FACTOR','1'),'theme':a.theme,'captures':[]}
 for i,name in enumerate(['reminders','notes','calendar','statistics','settings']):
     w.tabs.setCurrentIndex(i);app.processEvents();w.grab().save(str(a.output/(name+'.png')));report['captures'].append({'name':name,'logicalWidth':w.width(),'logicalHeight':w.height()})

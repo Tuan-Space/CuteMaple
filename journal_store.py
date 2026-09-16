@@ -157,9 +157,8 @@ class JournalStore:
         with self.db:
             self.db.execute('UPDATE habits SET enabled=?,minutes=?,start=?,end=?,next_due=? WHERE kind=?',
                 (int(enabled),int(minutes),start,end,self.clock()+minutes*60,kind))
-            # Turning a reminder off is explicit cancellation, never a negative response.
-            if not enabled:
-                self.db.execute("UPDATE alerts SET state='cancelled' WHERE habit=? AND state='pending'", (kind,))
+            # Turning future reminders off must not silently dismiss an existing
+            # unanswered bubble or create an unanswerable statistics record.
 
     def resume_habits(self):
         with self.db:
