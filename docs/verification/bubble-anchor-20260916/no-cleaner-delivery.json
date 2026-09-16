@@ -1,0 +1,8 @@
+{
+  "notice": "2.0.0 气泡修复版：攀爬气泡下移、秋千气泡上移，更贴近人物，保持上下布局。本次按用户选择暂不包含内存清理助手，内存清理不可用；桌宠、内存监控和网速功能保留。原助手被 Windows 防护拦截，未恢复隔离文件、未添加白名单。",
+  "noRestoration": true,
+  "helperIncluded": false,
+  "userApprovedOmission": true,
+  "mainSha256": "3b34d81f0064d2da92edeaeb0aa1c11435790021cae6353b13b2e9fb836d5601",
+  "cleanupAvailable": false
+}
