@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (QDialog,QVBoxLayout,QHBoxLayout,QFormLayout,QLine
 from journal_recurrence import Rule,ADVANCES,PERIODS
 from monitor_ui import ThemeBinding
 from monitor_ui import ThemedComboBox as QComboBox
+from monitor_ui import ThemedSpinBox as QSpinBox
 
 
 def local_zone():

@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (QWidget,QDialog,QVBoxLayout,QHBoxLayout,QLabel,QP
  QTableWidget,QTableWidgetItem,QHeaderView,QMessageBox,QFileDialog,QScrollArea,QFormLayout)
 from monitor_ui import ThemeBinding,system_theme
 from monitor_ui import ThemedComboBox as QComboBox
+from monitor_ui import ThemedSpinBox as QSpinBox,ThemedTimeEdit as QTimeEdit
 from journal_store import HABITS
 from journal_recurrence import Rule
 from journal_editors import EventEditor,NoteEditor

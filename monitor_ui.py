@@ -4,7 +4,8 @@ from PySide6.QtCore import QPoint, QPointF, QRect, Qt, QTimer, Signal, QObject
 from PySide6.QtGui import QColor, QFontMetrics, QMouseEvent, QPainter, QPen, QPalette, QPolygonF
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog, QFrame,
                                QGridLayout, QHBoxLayout, QLabel, QPushButton,
-                               QVBoxLayout, QWidget, QScrollArea, QStyle, QStyleOptionButton)
+                               QVBoxLayout, QWidget, QScrollArea, QStyle, QStyleOptionButton,
+                               QSpinBox, QTimeEdit, QStyleOptionSpinBox)
 
 from resource_monitor import MemorySnapshot, NetworkSnapshot, format_bytes
 
@@ -120,6 +121,23 @@ class ThemedComboBox(QComboBox):
         painter.setPen(Qt.NoPen); painter.setBrush(QColor(c['text' if self.isEnabled() else 'muted']))
         x, y = self.width()-12, self.height()/2
         painter.drawPolygon(QPolygonF([QPointF(x-4,y-2),QPointF(x+4,y-2),QPointF(x,y+3)]))
+
+
+class SpinArrows:
+    def paintEvent(self,event):
+        super().paintEvent(event)
+        c=getattr(self.window(),'_theme',LIGHT)
+        option=QStyleOptionSpinBox();self.initStyleOption(option)
+        painter=QPainter(self);painter.setRenderHint(QPainter.Antialiasing)
+        painter.setPen(Qt.NoPen);painter.setBrush(QColor(c['text' if self.isEnabled() else 'muted']))
+        for control,direction in ((QStyle.SC_SpinBoxUp,-1),(QStyle.SC_SpinBoxDown,1)):
+            rect=self.style().subControlRect(QStyle.CC_SpinBox,option,control,self)
+            x,y=rect.center().x(),rect.center().y()
+            painter.drawPolygon(QPolygonF([QPointF(x-3,y-direction*2),QPointF(x+3,y-direction*2),QPointF(x,y+direction*2)]))
+
+
+class ThemedSpinBox(SpinArrows,QSpinBox):pass
+class ThemedTimeEdit(SpinArrows,QTimeEdit):pass
 
 
 class ThemedCheckBox(QCheckBox):
