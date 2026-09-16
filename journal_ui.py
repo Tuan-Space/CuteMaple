@@ -124,12 +124,23 @@ class JournalWindow(QWidget):
         if not event:return
         dialog=QDialog(self);dialog.setWindowTitle(event['title']+' · 发生记录');dialog.resize(650,420);layout=QVBoxLayout(dialog)
         table=QTableWidget(0,4);table.setHorizontalHeaderLabels(['原到期时间','状态','回应时间','提醒／延期时间']);table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        table.setSelectionBehavior(QTableWidget.SelectRows);table.setSelectionMode(QTableWidget.SingleSelection);table.setEditTriggers(QTableWidget.NoEditTriggers)
         for row in self.store.rows('SELECT * FROM occurrences WHERE event_id=? ORDER BY due DESC LIMIT 1000',(event['id'],)):
             pos=table.rowCount();table.insertRow(pos)
             pending=self.store.rows("SELECT notify FROM alerts WHERE event_id=? AND due=? AND state='pending'",(event['id'],row['due']))
             values=[datetime.fromtimestamp(row['due']).strftime('%Y-%m-%d %H:%M:%S'),{'pending':'待处理','missed':'错过','completed':'已完成','cancelled':'已取消'}.get(row['state'],row['state']),datetime.fromtimestamp(row['answered']).strftime('%Y-%m-%d %H:%M:%S') if row['answered'] else '—',' / '.join(datetime.fromtimestamp(x['notify']).strftime('%m-%d %H:%M:%S') for x in pending)]
             for column,value in enumerate(values):table.setItem(pos,column,QTableWidgetItem(value))
-        layout.addWidget(table);layout.addWidget(QLabel('显示最近 1000 次；已完成与错过分别记录，不会把错过的事件算作完成。'));dialog.exec()
+            table.item(pos,0).setData(Qt.UserRole,row['due'])
+        def complete_selected():
+            row=table.currentRow()
+            if row<0:return
+            due=table.item(row,0).data(Qt.UserRole)
+            if QMessageBox.question(dialog,'完成选中的一次','仅将 '+table.item(row,0).text()+' 这次发生标记为已完成？')!=QMessageBox.Yes:return
+            try:
+                if self.store.complete_occurrence(event['id'],due):
+                    table.item(row,1).setText('已完成');table.item(row,2).setText(datetime.now().strftime('%Y-%m-%d %H:%M:%S'));table.item(row,3).setText('—')
+            except Exception as error:QMessageBox.warning(dialog,'尚未保存',str(error))
+        layout.addWidget(table);layout.addWidget(self.button('将选中的这一次标记为已完成',complete_selected));layout.addWidget(QLabel('显示最近 1000 次；已完成与错过分别记录，不会把错过的事件算作完成。'));dialog.exec()
 
     def save_habit(self,kind):
         check,minutes,start,end=self.habits[kind]

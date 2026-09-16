@@ -222,6 +222,7 @@ class JournalStore:
                     self.db.execute("UPDATE occurrences SET state='missed' WHERE event_id=? AND due<? AND state='pending'",(event['id'],latest))
                     self.db.execute("UPDATE alerts SET state='superseded' WHERE event_id=? AND due<? AND state='pending'",(event['id'],latest))
                 pending=self.db.execute("SELECT 1 FROM alerts WHERE event_id=? AND state='pending'",(event['id'],)).fetchone()
+                pending=pending or self.db.execute("SELECT 1 FROM occurrences WHERE event_id=? AND state IN ('pending','missed')",(event['id'],)).fetchone()
                 if not pending and not rule.preview(after=now+.001,count=1):
                     self.db.execute('UPDATE events SET archived=1 WHERE id=?',(event['id'],))
                 future=rule.preview(after=now+.001,count=2)
@@ -267,6 +268,18 @@ class JournalStore:
             else:
                 raise ValueError('无效的提醒操作')
             self.audit(alert_id,action,{'delay':delay})
+        return True
+
+    def complete_occurrence(self,event_id,due):
+        """Explicitly complete only the ledger occurrence selected by the user."""
+        now=self.clock()
+        with self.db:
+            changed=self.db.execute("UPDATE occurrences SET state='completed',answered=? WHERE event_id=? AND due=? AND state IN ('pending','missed')",(now,event_id,due)).rowcount
+            if not changed:return False
+            self.db.execute("UPDATE alerts SET state='answered' WHERE event_id=? AND due=? AND state='pending'",(event_id,due))
+            self.db.execute('UPDATE events SET next_check=? WHERE id=?',(now,event_id))
+            self.audit(f'{event_id}:{due:.0f}','complete_selected_occurrence',{})
+        self._event_wake.pop(event_id,None)
         return True
 
     def correct_habit(self, identity, done):

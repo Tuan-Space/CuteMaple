@@ -51,6 +51,14 @@ def test_due_persists_and_double_completion(journal):
     identity=s.pending()[0]['id'];assert s.respond(identity,'done');assert not s.respond(identity,'done')
     s.tick();assert not s.pending();assert s.events(archived=True)[0]['title']=='hello'
 
+def test_ended_series_waits_for_selected_missed_occurrences(journal):
+    s,c=journal;identity=s.save_event('两次','todo','',Rule(iso(c.now),period='hourly',count=2))
+    first=c.now;s.tick();c.now+=3601;s.tick();s.respond(s.pending()[0]['id'],'done');s.tick()
+    assert len(s.events())==1 and not s.events(archived=True)
+    assert s.complete_occurrence(identity,first)
+    assert not s.complete_occurrence(identity,first)
+    s.tick();assert not s.events() and len(s.events(archived=True))==1
+
 def test_advance_ack_preserves_later_stages(journal):
     s,c=journal;due=c.now+7200;s.save_event('future','schedule','',Rule(iso(due),advances=(3600,)))
     s.tick();assert not s.pending();c.now+=3601;s.tick();alert=s.pending()[0];assert alert['stage']==3600
