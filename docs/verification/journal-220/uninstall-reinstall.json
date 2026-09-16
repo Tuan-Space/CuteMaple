@@ -1,0 +1,18 @@
+{
+  "uninstallExit": 0,
+  "programRemoved": true,
+  "libraryUnchanged": true,
+  "unlistedFileKept": true,
+  "desktopRemoved": true,
+  "autostartRemoved": true,
+  "reinstallExit": 0,
+  "reinstallLibraryUnchanged": true,
+  "autostartOff": true,
+  "normalAppRunning": true,
+  "compiledShutdownExit": 0,
+  "normalAppExited": true,
+  "normalAppExitCode": 0,
+  "libraryStillExists": true,
+  "finalUninstallExit": 0,
+  "originalAutostartRestored": true
+}

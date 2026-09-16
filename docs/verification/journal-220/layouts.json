@@ -1,0 +1,282 @@
+[
+  {
+    "scale": "1",
+    "theme": "dark",
+    "captures": [
+      {
+        "name": "reminders",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "notes",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "calendar",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "statistics",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "settings",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      }
+    ],
+    "smallWindow": [
+      620,
+      420
+    ]
+  },
+  {
+    "scale": "1",
+    "theme": "light",
+    "captures": [
+      {
+        "name": "reminders",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "notes",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "calendar",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "statistics",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "settings",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      }
+    ],
+    "smallWindow": [
+      620,
+      420
+    ]
+  },
+  {
+    "scale": "1.25",
+    "theme": "dark",
+    "captures": [
+      {
+        "name": "reminders",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "notes",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "calendar",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "statistics",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "settings",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      }
+    ],
+    "smallWindow": [
+      620,
+      420
+    ]
+  },
+  {
+    "scale": "1.25",
+    "theme": "light",
+    "captures": [
+      {
+        "name": "reminders",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "notes",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "calendar",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "statistics",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "settings",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      }
+    ],
+    "smallWindow": [
+      620,
+      420
+    ]
+  },
+  {
+    "scale": "1.5",
+    "theme": "dark",
+    "captures": [
+      {
+        "name": "reminders",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "notes",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "calendar",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "statistics",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "settings",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      }
+    ],
+    "smallWindow": [
+      620,
+      420
+    ]
+  },
+  {
+    "scale": "1.5",
+    "theme": "light",
+    "captures": [
+      {
+        "name": "reminders",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "notes",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "calendar",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "statistics",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "settings",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      }
+    ],
+    "smallWindow": [
+      620,
+      420
+    ]
+  },
+  {
+    "scale": "2",
+    "theme": "dark",
+    "captures": [
+      {
+        "name": "reminders",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "notes",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "calendar",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "statistics",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "settings",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      }
+    ],
+    "smallWindow": [
+      620,
+      420
+    ]
+  },
+  {
+    "scale": "2",
+    "theme": "light",
+    "captures": [
+      {
+        "name": "reminders",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "notes",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "calendar",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "statistics",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      },
+      {
+        "name": "settings",
+        "logicalWidth": 900,
+        "logicalHeight": 650
+      }
+    ],
+    "smallWindow": [
+      620,
+      420
+    ]
+  }
+]

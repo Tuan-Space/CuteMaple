@@ -1,0 +1,10 @@
+{
+  "sha256": "d5d8bf0fcdae5c769db1d3d2ac63b6188f53e8d4b0fc006da39c6b8b3ddb60a7",
+  "scanStarted": "2026-09-16T23:52:42.6106136+08:00",
+  "scanEnded": "2026-09-16T23:52:45.7450589+08:00",
+  "antivirusEnabled": true,
+  "realTimeEnabled": true,
+  "signature": "1.459.234.0",
+  "newDetectionCount": 0,
+  "detections": []
+}

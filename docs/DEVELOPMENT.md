@@ -89,3 +89,5 @@ CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只
 安装标识固定在 `installer/CuteMaple.iss`，不要随版本改变。安装器仅清理上次安装清单中不再需要的文件，拒绝跨目录与目录链接；资料库永远不进入卸载清单。中文向导翻译来自 Inno Setup 官方仓库，文件内保留贡献者说明。
 
 手账回归：`python -m pytest tests/test_journal.py tests/test_journal_ui.py`。`main.py --verify-journal --profile <全新测试路径> --output <结果路径>` 在隔离资料库生成界面证据；只有显式追加 `--hardware` 才短暂使用麦克风和播放测试音。不要把录音测试资料放进源码或交付包。
+
+完整源码归档使用 `tools/package_release.py <源码目录> <输出ZIP> --source`，版本从 `VERSION` 读取。若本地保留了未提交的模型编辑稿，可显式增加 `--committed-file assets/authoring/model/Maple.cmo3`：归档使用已提交且已物化的 LFS 模型原件，本地编辑稿不会被覆盖。
