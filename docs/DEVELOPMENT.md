@@ -2,7 +2,7 @@
 
 ## 下载完整源码
 
-推荐下载 Release 里的 **CuteMaple-2.0.0-Source.zip**，完整解压即可得到代码、运行模型、贴图、分层素材和可编辑工程。这个 ZIP 已包含真实大文件，不需要你原来的电脑或 F 盘目录。
+推荐下载当前版本的 **CuteMaple-版本号-Source.zip**，完整解压即可得到代码、运行模型、贴图、分层素材和可编辑工程。这个 ZIP 已包含真实大文件，不需要原开发电脑或 F 盘目录。
 
 也可以使用 Git（先安装 Git LFS）：
 
@@ -73,3 +73,19 @@ CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只
 原生故障回归使用 `tools/verify_native_cleaner.py`，只接受测试构建。最终程序的真实清理验收入口为 `CuteMaple-Live2D.exe --verify-cleanup --profile <新的测试目录绝对路径> --report <报告绝对路径> --allow-real-cleanup`：会请求一次真实 UAC，并通过桌宠入口执行三次清理，不能当作无副作用的诊断使用。`tools/validate_native_cleanup_acceptance.py` 只读取并核验结果，不执行清理。
 
 版本号来自 `VERSION`。构建会编译主程序和独立清理助手，结果在 `dist`。这里的 `-SkipTests` 只跳过旧制作链的完整生成回归；日常改动仍应运行相关测试并检查画面。所有必需 SDK 源文件、Web 前端构建结果和素材都随仓库提供。
+
+## 枫叶手账与安装程序
+
+`journal_recurrence.py` 负责独立的公农历周期；`journal_store.py` 管理 SQLite、提醒队列、笔记和附件；其余 `journal_*` 模块提供界面、录音和安装退出协议。调试可使用独立的 `MEINIFENG_PROFILE_DIRECTORY`，避免触碰自己的资料库。普通首次启动会要求选择资料目录，程序目录不得作为资料库。
+
+农历依赖固定为 lunar-python 1.4.8，时区数据固定为 tzdata 2025.2；许可保存在 `third_party`。录音和播放使用 Qt Multimedia，打包必须包含其 FFmpeg 后端，不可凭 DLL 名称删除依赖。
+
+安装器使用 Inno Setup 6.7.3（从 https://jrsoftware.org/isdl.php 获取并核验签名）。安装该开发工具后运行：
+
+```powershell
+.\tools\build_installer.ps1 -PackageDirectory "完整目录包中的 CuteMaple-Live2D 文件夹" -Compiler "Inno Setup 的 ISCC.exe 路径"
+```
+
+安装标识固定在 `installer/CuteMaple.iss`，不要随版本改变。安装器仅清理上次安装清单中不再需要的文件，拒绝跨目录与目录链接；资料库永远不进入卸载清单。中文向导翻译来自 Inno Setup 官方仓库，文件内保留贡献者说明。
+
+手账回归：`python -m pytest tests/test_journal.py tests/test_journal_ui.py`。`main.py --verify-journal --profile <全新测试路径> --output <结果路径>` 在隔离资料库生成界面证据；只有显式追加 `--hardware` 才短暂使用麦克风和播放测试音。不要把录音测试资料放进源码或交付包。

@@ -9,6 +9,7 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$AppVersion = (Get-Content -LiteralPath (Join-Path $ProjectRoot 'VERSION') -Raw).Trim()
 $BuildRoot = Join-Path $ProjectRoot ".build"
 $BuildId = Get-Date -Format "yyyyMMdd-HHmmss"
 $Stage = Join-Path $BuildRoot ("stage-" + $BuildId)
@@ -36,10 +37,12 @@ if (-not $SkipTests) {
     if ($LASTEXITCODE -ne 0) { throw "Tests failed; no package produced." }
 }
 $RuntimeModules = @("main.py", "pet_app.py", "pet_core.py", "resource_monitor.py", "memory_cleaner.py", "cleanup_check.py",
-                    "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py")
+                    "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py",
+                    "journal_recurrence.py", "journal_store.py", "journal_library.py", "journal_reminders.py", "journal_media.py", "journal_editors.py", "journal_ui.py", "journal_service.py", "journal_install.py", "journal_check.py")
 foreach ($Module in $RuntimeModules) {
     Copy-Item -LiteralPath (Join-Path $ProjectRoot $Module) -Destination $Stage
 }
+Copy-Item -LiteralPath (Join-Path $ProjectRoot 'VERSION') -Destination $Stage
 $StageAssets = Join-Path $Stage "assets"
 New-Item -ItemType Directory -Force -Path $StageAssets | Out-Null
 foreach ($Folder in @("fonts")) {
@@ -70,13 +73,15 @@ $Arguments = @(
     "-m", "nuitka", "--mode=standalone", "--enable-plugin=pyside6",
     "--include-module=PySide6.QtWebEngineCore", "--include-module=PySide6.QtWebEngineWidgets",
     "--include-module=PySide6.QtWebChannel", "--include-module=PySide6.QtNetwork",
+    "--include-module=PySide6.QtMultimedia", "--include-qt-plugins=multimedia", "--include-package=lunar_python", "--include-package=tzdata", "--include-package-data=tzdata",
     "--windows-console-mode=disable", "--windows-icon-from-ico=assets\app.ico",
     "--include-data-dir=assets/fonts=assets/fonts",
     "--include-data-dir=assets/live2d=assets/live2d",
     "--include-data-files=assets/icon.png=assets/icon.png",
     "--include-data-dir=web/dist=web/dist",
+    "--include-data-files=VERSION=VERSION",
     "--output-dir=out", "--output-filename=$AppBaseName.exe",
-    "--file-version=2.1.0", "--product-version=2.1.0", "--report=compilation-report.xml", "--assume-yes-for-downloads", "--jobs=$Jobs"
+    "--file-version=$AppVersion", "--product-version=$AppVersion", "--report=compilation-report.xml", "--assume-yes-for-downloads", "--jobs=$Jobs"
 )
 $Arguments += "main.py"
 $SourceHashes = [ordered]@{}
@@ -118,6 +123,13 @@ $HelperTarget = Join-Path $Standalone 'cleaner'
 New-Item -ItemType Directory -Force -Path $HelperTarget | Out-Null
 Copy-Item -LiteralPath $Helper -Destination $HelperTarget
 Copy-Item -LiteralPath (Join-Path $NativeOutput 'native-build.json') -Destination $HelperTarget
+$Licenses = Join-Path $Standalone 'licenses'
+New-Item -ItemType Directory -Force -Path $Licenses | Out-Null
+foreach ($Dependency in @('lunar-python-1.4.8','tzdata-2025.2','nlohmann-json-3.11.3')) {
+    $LicenseTarget = Join-Path $Licenses $Dependency
+    New-Item -ItemType Directory -Force -Path $LicenseTarget | Out-Null
+    Get-ChildItem -LiteralPath (Join-Path $ProjectRoot ('third_party\'+$Dependency)) -File -Filter 'LICENSE*' | Copy-Item -Destination $LicenseTarget
+}
 $PackagedValidation = @((Join-Path $ProjectRoot "tools\validate_release.py"), $Standalone, "--packaged")
 & $Python @PackagedValidation
 if ($LASTEXITCODE -ne 0) { throw "Packaged QtWebEngine/runtime inventory failed." }

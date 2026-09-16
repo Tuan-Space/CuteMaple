@@ -361,7 +361,9 @@ class DesktopActivity(QObject):
             else:
                 self._filter.stop()
         if self._worker:
-            self._worker.set_enabled(available and self._audio_enabled)
+            # The meter also protects sleep. Disabling decorative audio reactions
+            # must not stop detecting music; the PetWindow gates visuals itself.
+            self._worker.set_enabled(available)
         if self._hook:
             if available and self._keyboard_enabled:
                 self._hook.start()
@@ -376,7 +378,7 @@ class DesktopActivity(QObject):
         else:
             self._mouse_timer.stop()
             self._mouse_down = False
-        if not available or not self._audio_enabled:
+        if not available:
             self._on_audio(False)
 
     def _on_keyboard(self) -> None:
@@ -389,7 +391,7 @@ class DesktopActivity(QObject):
                 self.keyboardActivity.emit()
 
     def _on_audio(self, active: bool) -> None:
-        value = bool(active) and self._started and self._audio_enabled and not self._suspended
+        value = bool(active) and self._started and not self._suspended
         if value != self._audio_active:
             self._audio_active = value
             self.audioActivityChanged.emit(value)

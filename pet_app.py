@@ -134,6 +134,11 @@ class PetWindow(QWidget):
     def __init__(self, app: QApplication, settings: PetSettings) -> None:
         super().__init__(None, Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.app, self.settings = app, settings
+        self.journal = None
+        self.journal_pause_active = False
+        self._audio_prevents_sleep = False
+        self._last_audible_at = -float('inf')
+        self._last_dialogue = None
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setMouseTracking(True)
         self.setWindowTitle(APP_NAME)
@@ -576,7 +581,7 @@ class PetWindow(QWidget):
     def _wall_resting(self) -> bool:
         return (self._climb_cadence.active and self.motion_mode == "climb"
                 and self.state in {"climb_left", "climb_right"}
-                and (self._climb_cadence.waiting or self.panel_pause_active))
+                and (self._climb_cadence.waiting or self.panel_pause_active or self.journal_pause_active))
 
     def _sync_climb_control(self, *, force: bool = False) -> None:
         if not self._climb_cadence.active or self._top_transition or self.state not in {"climb_left", "climb_right"}:
@@ -592,7 +597,7 @@ class PetWindow(QWidget):
         now = time.monotonic()
         elapsed = min(.25, max(0.0, now - self._climb_clock))
         self._climb_clock = now
-        blocked = not self._presentation_ready or self.activity_paused or self.panel_pause_active or not self.isVisible() or self.dragging or bool(self._top_transition)
+        blocked = not self._presentation_ready or self.activity_paused or self.panel_pause_active or self.journal_pause_active or not self.isVisible() or self.dragging or bool(self._top_transition)
         if self._climb_cadence.tick(elapsed, blocked):
             self._motion_updated_at = now
             self._motion_y = float(self.y())
@@ -731,6 +736,16 @@ class PetWindow(QWidget):
             self.reactions.note_keyboard(time.monotonic())
 
     def _audio_activity(self, active: bool) -> None:
+        self._audio_prevents_sleep = bool(active)
+        if active:
+            self._last_audible_at = time.monotonic()
+            if not self.activity_paused and self.isVisible():
+                self._begin_wake()
+        else:
+            # Start a full idle interval after playback, including when a device
+            # disappears. A lost endpoint must not leave the sleep latch active.
+            if self._last_audible_at > -float('inf'):
+                self._last_audible_at = time.monotonic()
         if self.reactions is not None:
             self.reactions.set_audio(active and self.settings.audio_enabled and not self._runtime_stopped
                                      and not self.activity_paused and self.isVisible(), time.monotonic())
@@ -1039,6 +1054,7 @@ class PetWindow(QWidget):
 
     def _create_context_menu(self) -> QMenu:
         menu = QMenu()
+        menu.addAction("枫叶手账 · 提醒与笔记", self.open_journal)
         visibility = QAction(menu)
         visibility.setObjectName("visibility_action")
         visibility.triggered.connect(self.toggle_visibility)
@@ -1141,7 +1157,7 @@ class PetWindow(QWidget):
 
     @property
     def movement_paused(self) -> bool:
-        return not self._presentation_ready or self.settings.paused or self.panel_pause_active
+        return not self._presentation_ready or self.settings.paused or self.panel_pause_active or self.journal_pause_active
 
     def start_state(self, state: str, duration_ms: int = 0) -> None:
         if state not in ANIMATIONS:
@@ -1336,6 +1352,8 @@ class PetWindow(QWidget):
         return self._content_rect_global()
 
     def _show_dialogue(self, text: str) -> None:
+        if self.journal is not None and self.journal.bubble.isVisible():
+            return
         if self._pet_hidden or not self.isVisible():
             return
         self.bubble.show_message(text, self._bubble_anchor_rect(), self._screen_area(),
@@ -1352,7 +1370,28 @@ class PetWindow(QWidget):
 
     def _single_click(self) -> None:
         if not self.activity_paused and not self.dragging and not self.sleep_phase:
-            self.say(choose_dialogue())
+            from pet_core import DIALOGUES, HAPPY_DIALOGUES
+            choices = [text for text in (*DIALOGUES, *HAPPY_DIALOGUES) if text != self._last_dialogue]
+            self._last_dialogue = random.choice(choices)
+            self.say(self._last_dialogue)
+
+    def open_journal(self) -> None:
+        if self.journal is not None:
+            self.journal.open()
+
+    def _journal_visibility(self, visible: bool) -> None:
+        if visible == self.journal_pause_active:
+            return
+        if visible:
+            self._journal_paused_at = time.monotonic()
+        elif self.motion_mode in {"walk_out", "walk_back"}:
+            self.walk_leg_started_at += max(0.0, time.monotonic() - getattr(self, "_journal_paused_at", time.monotonic()))
+        self.journal_pause_active = visible
+        self._sync_runtime_pause()
+        if visible:
+            self.behavior_timer.stop(); self.motion_timer.stop()
+        else:
+            self._resume_activity()
 
     def _begin_wake(self) -> None:
         if self.sleep_phase in ("enter", "loop"):
@@ -1366,6 +1405,11 @@ class PetWindow(QWidget):
         if self.activity_paused or self.dragging or not self.isVisible():
             return
         now, idle = time.monotonic(), get_system_idle_seconds()
+        if self._audio_prevents_sleep:
+            self._last_audible_at = now
+            self._begin_wake()
+            return
+        idle = min(idle, now - self._last_audible_at)
         if self.sleep_phase in ("enter", "loop"):
             expired = self.sleep_started_at is not None and now - self.sleep_started_at >= SLEEP_FOR_SECONDS
             if idle < 1.5 or expired:
@@ -1633,15 +1677,9 @@ class PetWindow(QWidget):
             return
         if event.button() == Qt.LeftButton:
             self.click_timer.stop(); self.suppress_release_click = True
-            if self.activity_paused:
-                pass
-            elif self.sleep_phase:
+            if self.sleep_phase and not self.activity_paused:
                 self._begin_wake()
-            else:
-                self._start_temporary("happy")
-                self._show_dialogue(choose_happy_dialogue())
-                effects = ("smile", "blush", "maple") if self._has_support_pose() else ("smile", "blush", "glasses", "fan", "maple")
-                self._show_effect(random.choice(effects))
+            self.open_journal()
             event.accept()
         else:
             super().mouseDoubleClickEvent(event)
@@ -2148,6 +2186,12 @@ class PetWindow(QWidget):
                   current_step=result.get("current_step", result.get("currentStep", result.get("step"))))
         self.details_panel.show_result(result)
         self.monitor_button.setToolTip(text)
+        if self.journal is not None and self.journal.bubble.isVisible():
+            self.journal.bubble.cleanup.setText(text)
+            self.journal.bubble.cleanup.show()
+            self.bubble.show_cleanup(result, self._cleanup_feedback_active, self._bubble_anchor_rect(),
+                                     self._screen_area(), False, placement=self.base_mode)
+            return
         self.bubble.show_cleanup(result, self._cleanup_feedback_active, self._bubble_anchor_rect(),
                                  self._screen_area(), self.isVisible() and not self._pet_hidden,
                                  placement=self.base_mode)
@@ -2275,6 +2319,12 @@ class PetWindow(QWidget):
     def quit_app(self) -> None:
         if self._quitting:
             return
+        if self.journal is not None and not self.journal.close():
+            if self.journal.window.note_editor.media.pending_finalize:
+                QTimer.singleShot(200,self.quit_app)
+            else:
+                self.journal.open()
+            return
         self._quitting = True
         self._hide_monitor_overlays()
         self._save_position(); self.bubble.close(); self.monitor_button.close()
@@ -2326,8 +2376,33 @@ def run(*, observer=None) -> int:
         app.setFont(font)
     lock = acquire_single_instance()
     if lock is None: return 0
+    journal_store = None
+    if not os.environ.get("MEINIFENG_PROFILE_DIRECTORY") and observer is None:
+        from journal_library import open_startup_library
+        journal_store = open_startup_library()
+        if journal_store is None:
+            return 0
     settings = load_settings()
+    if (resource_root() / 'installed.json').is_file() and os.name == 'nt':
+        try:
+            import winreg
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Microsoft\Windows\CurrentVersion\Run') as key:
+                command = winreg.QueryValueEx(key, APP_NAME)[0]
+            settings.autostart = str(Path(sys.executable)).lower() in command.lower()
+        except OSError:
+            settings.autostart = False
     pet = PetWindow(app, settings); pet.show()
+    if journal_store is not None:
+        from journal_service import JournalService
+        pet.journal = JournalService(journal_store, pet)
+        from journal_install import install_server
+        pet._installer_server = install_server(pet)
+        def save_on_shutdown(session):
+            if not pet.journal.window.note_editor.finish():
+                session.cancel()
+            else:
+                pet.quit_app()
+        app.commitDataRequest.connect(save_on_shutdown)
     if observer is not None:
         observer(app, pet)
     app._pet_window, app._instance_lock = pet, lock

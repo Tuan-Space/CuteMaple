@@ -1,4 +1,5 @@
 #include "platform.h"
+#include "maple_version.h"
 #include <cstdio>
 #include <iomanip>
 using namespace maple;
@@ -180,7 +181,7 @@ int WINAPI wWinMain(HINSTANCE,HINSTANCE,PWSTR,int){
         for(const auto& [key,value]:args)require(std::find(allowed.begin(),allowed.end(),key)!=allowed.end(),"Unknown argument");
         int modes=int(args.count(L"--diagnose")+args.count(L"--clean-session")+args.count(L"--memory-clean-helper")+args.count(L"--clean-step"));require(modes==1,"One mode required");
         if(args.count(L"--diagnose")){
-            J result={{"component","cleaner"},{"implementation","cpp-msvc"},{"version","2.1.0"},{"protocolVersion",schema},{"sessionProtocolVersion",1},{"qtImported",false},{"privilegedOperationPerformed",false},{"steps",steps}};
+            J result={{"component","cleaner"},{"implementation","cpp-msvc"},{"version",MAPLE_VERSION},{"protocolVersion",schema},{"sessionProtocolVersion",1},{"qtImported",false},{"privilegedOperationPerformed",false},{"steps",steps}};
 #ifdef MAPLE_CLEANER_TEST
             result["testBuild"]=true;
 #else

@@ -1,7 +1,8 @@
 #include <windows.h>
+#include "maple_version.h"
 1 VERSIONINFO
- FILEVERSION 2,1,0,0
- PRODUCTVERSION 2,1,0,0
+ FILEVERSION MAPLE_VERSION_QUAD
+ PRODUCTVERSION MAPLE_VERSION_QUAD
  FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
  FILEFLAGS 0
  FILEOS VOS_NT_WINDOWS32
@@ -13,11 +14,11 @@ BEGIN
   BEGIN
    VALUE "CompanyName", "Tuan-Space"
    VALUE "FileDescription", "CuteMaple Native Memory Cleaner"
-   VALUE "FileVersion", "2.1.0.0"
+   VALUE "FileVersion", MAPLE_VERSION_FILE
    VALUE "InternalName", "CuteMaple-Cleaner"
    VALUE "OriginalFilename", "CuteMaple-Cleaner.exe"
    VALUE "ProductName", "CuteMaple"
-   VALUE "ProductVersion", "2.1.0"
+   VALUE "ProductVersion", MAPLE_VERSION
   END
  END
  BLOCK "VarFileInfo"
