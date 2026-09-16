@@ -1,7 +1,7 @@
-"""Record isolated cleanup acceptance; scheduling requires explicit --begin.
+"""Legacy read-only operation observer; current GUI acceptance is --verify-cleanup.
 
-This is a normal-user observer/client, never an elevation or native-cleanup
-entry point. The helper must already have an explicitly authorized profile task.
+Session authorization is bound to the GUI process. This separate observer cannot
+reuse that session and never requests elevation or performs native cleanup.
 """
 from __future__ import annotations
 
@@ -35,6 +35,8 @@ def parser():
 
 def main(argv=None):
     args = parser().parse_args(argv)
+    if args.begin:
+        raise ValueError('Use the packaged GUI --verify-cleanup --allow-real-cleanup with a new --profile and --report; a separate observer cannot reuse GUI session authorization')
     if not args.begin and args.runs != 1:
         raise ValueError("--runs only applies to explicit --begin")
     if not 65 <= args.timeout <= 120:

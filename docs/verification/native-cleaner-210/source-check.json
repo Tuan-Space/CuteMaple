@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "runtimeGroups": 19,
+  "layers": 147,
+  "rigTextures": 149,
+  "embeddedTextures": 163,
+  "projects": [
+    {
+      "file": "Maple-native-saved.can3",
+      "animationContentSha256": "fbc03378a0c51992641f9b1b073b18154dafb8a91d8f22741887dcdeb69beace"
+    },
+    {
+      "file": "Maple.can3",
+      "animationContentSha256": "20b4aa80f9fd3d4f9e69b0b99542378bbcb74e18805d1f9db6a52a1c08ac3b92"
+    }
+  ],
+  "externalFilesRequired": false
+}

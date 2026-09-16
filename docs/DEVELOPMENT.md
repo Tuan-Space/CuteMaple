@@ -70,4 +70,6 @@ CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只
 
 清理助手使用 MSVC x64 原生 C++ 编译，不依赖 Python、Qt 或本机外部素材。安装 Visual Studio Build Tools 的 C++ 工具和 Windows SDK 后，可单独执行 `tools/build_native_cleaner.ps1`。生产构建不复制历史助手；`-TestBuild` 生成另名测试程序，只用于模拟故障，绝不执行真实内存清理或进入软件包。
 
+原生故障回归使用 `tools/verify_native_cleaner.py`，只接受测试构建。最终程序的真实清理验收入口为 `CuteMaple-Live2D.exe --verify-cleanup --profile <新的测试目录绝对路径> --report <报告绝对路径> --allow-real-cleanup`：会请求一次真实 UAC，并通过桌宠入口执行三次清理，不能当作无副作用的诊断使用。`tools/validate_native_cleanup_acceptance.py` 只读取并核验结果，不执行清理。
+
 版本号来自 `VERSION`。构建会编译主程序和独立清理助手，结果在 `dist`。这里的 `-SkipTests` 只跳过旧制作链的完整生成回归；日常改动仍应运行相关测试并检查画面。所有必需 SDK 源文件、Web 前端构建结果和素材都随仓库提供。

@@ -1,0 +1,12 @@
+{
+  "protection": {
+    "RealTimeProtectionEnabled": true,
+    "BehaviorMonitorEnabled": true,
+    "AntivirusEnabled": true,
+    "AntivirusSignatureVersion": "1.459.218.0"
+  },
+  "since": "2026-09-16T14:56:37",
+  "scope": "This final package scan and three actual cleanup runs; not a guarantee for every machine or future definitions",
+  "detections": [],
+  "observedAt": "2026-09-16T14:59:56.1426923+08:00"
+}

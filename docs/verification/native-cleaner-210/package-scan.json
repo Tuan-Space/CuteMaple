@@ -1,0 +1,12 @@
+{
+  "detections": [],
+  "finished": "2026-09-16T14:56:40.4725018+08:00",
+  "mainSha256": "FA6B3D0E679D1967ABAAF37F872045B28BE4F9D7E7DC489FC9B9877ED156E602",
+  "helperSha256": "2ED5FAD32B7987C752849CFF1DCAE1925178222972E7B12BCCEF8588913AB003",
+  "started": "2026-09-16T14:56:37.6017665+08:00",
+  "protection": {
+    "RealTimeProtectionEnabled": true,
+    "BehaviorMonitorEnabled": true,
+    "AntivirusSignatureVersion": "1.459.218.0"
+  }
+}
