@@ -24,7 +24,7 @@ class EventEditor(QDialog):
     def __init__(self,store,event=None,parent=None):
         super().__init__(parent);self.store=store;self.event_record=event;self.theme=ThemeBinding(self,'journal')
         self.setWindowTitle('编辑提醒' if event else '新建提醒');self.resize(630,700)
-        outer=QVBoxLayout(self);scroll=QScrollArea();scroll.setWidgetResizable(True);content=QWidget();layout=QVBoxLayout(content);form=QFormLayout();self.form=form
+        outer=QVBoxLayout(self);scroll=QScrollArea();scroll.viewport().setObjectName('journalViewport');scroll.setWidgetResizable(True);content=QWidget();content.setObjectName('journalPage');layout=QVBoxLayout(content);form=QFormLayout();self.form=form
         self.title=QLineEdit();self.title.setMaxLength(200);self.kind=QComboBox();self.kind.addItems(['待办事项','日程','纪念日'])
         self.body=QPlainTextEdit();self.body.setMaximumHeight(95)
         self.start=QDateTimeEdit(QDateTime.currentDateTime().addSecs(3600));self.start.setCalendarPopup(True);self.start.setDisplayFormat('yyyy-MM-dd HH:mm:ss')

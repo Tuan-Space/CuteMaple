@@ -75,4 +75,10 @@ def test_dark_scroll_page_paints_dark_on_light_system_palette(tmp_path,monkeypat
     s=JournalStore(tmp_path/'library',create=True);w=JournalWindow(s,None);w.show();a.processEvents()
     page=w.tabs.widget(0).widget();image=page.grab().toImage()
     assert image.pixelColor(2,2)==QColor(monitor_ui.DARK['background'])
+    from journal_editors import EventEditor
+    from PySide6.QtWidgets import QScrollArea
+    dialog=EventEditor(s,parent=w);dialog.show();a.processEvents()
+    image=dialog.findChild(QScrollArea).widget().grab().toImage()
+    assert image.pixelColor(2,2)==QColor(monitor_ui.DARK['background'])
+    dialog.close()
     w.close();s.close()
