@@ -1,0 +1,30 @@
+[
+  {
+    "project": "assets/authoring/model/Maple.cmo3",
+    "parameters": [
+      "ParamAngleZ",
+      "ParamLegLA",
+      "ParamLegRA",
+      "ParamSwing"
+    ],
+    "snapEpsilon": 1e-05,
+    "beforeSha256": "f4bb9bbb57bde521623f57b41dbb8c17c126487de1031a3b16f7c94a965e19b0",
+    "afterSha256": "69f1b00653fb6f94174d353d03442c29a1419bee0dbdc216c837c9a59ea9a876",
+    "nonPrecisionXmlSha256": "b7a086f6c7baf1833989df284b15439d0a6ac8330ca74cabedde2267ffcbd892",
+    "embeddedTexturesUnchanged": true
+  },
+  {
+    "project": "assets/authoring/source/Maple.cmo3",
+    "parameters": [
+      "ParamAngleZ",
+      "ParamLegLA",
+      "ParamLegRA",
+      "ParamSwing"
+    ],
+    "snapEpsilon": 1e-05,
+    "beforeSha256": "3060fa8f9619b1e2e779011478246cd561dec87d2bc814f57bf33a770441fba2",
+    "afterSha256": "8c9ac6d3fccbbd1980beba82db2c248c9f531db5c0e749fdcf56545f933a031c",
+    "nonPrecisionXmlSha256": "edf4be2bfd3e5ce47acc469a51b02309c9ad297e0de8fcbf8807615fd1785f87",
+    "embeddedTexturesUnchanged": true
+  }
+]

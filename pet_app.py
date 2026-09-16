@@ -52,23 +52,66 @@ class SpeechBubble(QWidget):
         super().__init__(None, Qt.ToolTip | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
+        self.setAttribute(Qt.WA_ShowWithoutActivating)
         self.label = QLabel(self)
+        self.label.setTextFormat(Qt.PlainText)
         self.label.setWordWrap(True)
         self.label.setAlignment(Qt.AlignCenter)
-        self.label.setStyleSheet(
-            "QLabel { background: rgba(255,255,255,245); color: #58483f; "
-            "border: 2px solid #acd8ee; border-radius: 14px; padding: 10px 14px; "
-            "font-size: 11pt; }"
-        )
+        self.theme = ThemeBinding(self, 'bubble')
+        self._cleanup_text = ""
+        self._cleanup_stamp = None
+        self._cleanup_active = False
+        self._cleanup_expires = 0.0
         self.hide_timer = QTimer(self)
         self.hide_timer.setSingleShot(True)
         self.hide_timer.timeout.connect(self.hide)
 
     def show_message(self, text: str, pet_rect: QRect, screen_rect: QRect) -> None:
-        self.label.setText(text)
-        self.label.setFixedWidth(230)
+        if self.cleanup_owns_bubble:
+            return
+        self._display(text, pet_rect, screen_rect)
+        self.hide_timer.start(4200)
+
+    @property
+    def cleanup_owns_bubble(self) -> bool:
+        return self._cleanup_active or time.monotonic() < self._cleanup_expires
+
+    def show_cleanup(self, result: dict, active: bool, pet_rect: QRect,
+                     screen_rect: QRect, visible: bool) -> None:
+        text = cleanup_summary(result)
+        stamp = (result.get('operation_id'), result.get('status'), text, active)
+        if stamp != self._cleanup_stamp or not self.cleanup_owns_bubble:
+            self._cleanup_stamp = stamp
+            self._cleanup_text = text
+            self._cleanup_active = active
+            duration = 6 if result.get('status') in {'succeeded', 'authorized'} else 8
+            self._cleanup_expires = 0.0 if active else time.monotonic() + duration
+        self.restore_cleanup(pet_rect, screen_rect, visible)
+
+    def restore_cleanup(self, pet_rect: QRect, screen_rect: QRect, visible: bool) -> None:
+        if not self.cleanup_owns_bubble:
+            return
+        self.hide_timer.stop()
+        if not self._cleanup_active:
+            remaining = max(1, math.ceil((self._cleanup_expires - time.monotonic()) * 1000))
+            self.hide_timer.start(remaining)
+        if visible:
+            self._display(self._cleanup_text, pet_rect, screen_rect)
+        else:
+            self.hide()
+
+    def _display(self, text: str, pet_rect: QRect, screen_rect: QRect) -> None:
+        if self.label.text() != text:
+            self.label.setText(text)
+        self.label.setFixedWidth(max(1, min(230, screen_rect.width() - 16)))
         self.label.adjustSize()
         self.resize(self.label.size())
+        self.follow_pet(pet_rect, screen_rect)
+        if not self.isVisible():
+            self.show()
+            self.raise_()
+
+    def follow_pet(self, pet_rect: QRect, screen_rect: QRect) -> None:
         x = pet_rect.center().x() - self.width() // 2
         y = pet_rect.top() - self.height() - 8
         if y < screen_rect.top():
@@ -76,9 +119,6 @@ class SpeechBubble(QWidget):
         x = max(screen_rect.left(), min(x, screen_rect.right() - self.width() + 1))
         y = max(screen_rect.top(), min(y, screen_rect.bottom() - self.height() + 1))
         self.move(x, y)
-        self.show()
-        self.raise_()
-        self.hide_timer.start(4200)
 
 
 class PetWindow(QWidget):
@@ -185,6 +225,8 @@ class PetWindow(QWidget):
         self._cleanup_cancel_requested = False
         self._cleanup_unresponsive = False
         self._cleanup_feedback = {"status": "idle"}
+        self._cleanup_feedback_active = False
+        self._cleanup_feedback_stamp = None
         self._auto_authorization_notice = False
         self.auto_clean_cycle_started = time.time()
         self.panel_pause_active = False
@@ -1841,6 +1883,8 @@ class PetWindow(QWidget):
 
     def moveEvent(self, event) -> None:
         super().moveEvent(event)
+        if hasattr(self, "bubble") and self.bubble.isVisible():
+            self.bubble.follow_pet(self.geometry(), self._screen_area())
         if hasattr(self, "monitor_button"):
             self._position_monitor_overlays()
         if hasattr(self, "details_panel") and self.details_panel.isVisible() and not self._panel_positioning:
@@ -1892,11 +1936,10 @@ class PetWindow(QWidget):
         self._begin_clean_task_install(False)
 
     def _set_cleanup_progress(self, result: dict, *, active: bool = True) -> None:
-        self._cleanup_feedback = dict(result)
-        self.details_panel.show_result(result)
+        self._cleanup_feedback_active = active
         self.details_panel.set_cleaning(active, cancelling=self._cleanup_cancel_requested)
         self.monitor_button.set_cleaning(active)
-        self.monitor_button.setToolTip(cleanup_summary(result))
+        self._show_cleanup_feedback(result)
 
     def _begin_clean_task_install(self, pending_cleanup: bool) -> None:
         if self._install_future is not None:
@@ -2015,14 +2058,17 @@ class PetWindow(QWidget):
     def _show_cleanup_feedback(self, result: dict) -> None:
         from diagnostics import event
         self._cleanup_feedback = dict(result)
-        event("cleanup_feedback", status=result.get("status"), operation_id=result.get("operation_id"),
-              error_code=result.get("error_code"), message=result.get("message"))
         text = cleanup_summary(result)
+        stamp = (result.get('operation_id'), result.get('status'), text, self._cleanup_feedback_active)
+        if stamp != self._cleanup_feedback_stamp:
+            self._cleanup_feedback_stamp = stamp
+            event("cleanup_feedback", status=result.get("status"), operation_id=result.get("operation_id"),
+                  error_code=result.get("error_code"), message=result.get("message"),
+                  current_step=result.get("current_step", result.get("currentStep", result.get("step"))))
         self.details_panel.show_result(result)
         self.monitor_button.setToolTip(text)
-        if self.isVisible(): self.bubble.show_message(text, self.geometry(), self._screen_area())
-        warning = result.get("status") in {"failed", "partial", "timed_out", "helper_missing", "security_blocked", "unresponsive"}
-        self.tray.showMessage(APP_NAME, text, QSystemTrayIcon.Warning if warning else QSystemTrayIcon.Information, 6000)
+        self.bubble.show_cleanup(result, self._cleanup_feedback_active, self.geometry(),
+                                 self._screen_area(), self.isVisible())
 
     def _finish_cleanup_operation(self) -> None:
         result = self.cleanup_result or {}
@@ -2096,6 +2142,7 @@ class PetWindow(QWidget):
     def showEvent(self, event) -> None:
         super().showEvent(event)
         if hasattr(self, "runtime_timer"):
+            self.bubble.restore_cleanup(self.geometry(), self._screen_area(), True)
             if self._presentation_ready and self.live2d_host is not None:
                 self.live2d_host.view.show()
             self._sync_runtime_pause()

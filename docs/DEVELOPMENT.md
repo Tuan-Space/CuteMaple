@@ -57,6 +57,8 @@ npm test --prefix web
 
 CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只播放 19 组日常和登顶动作。编辑后使用 Cubism 原生导出。保持参数、网格 ID 与现有模型一致时，可在验证后更新 `assets/live2d/Maple` 中对应 MOC/纹理/动作；更改 ID 时还需同步 `Maple.pet.json` 的原生身份和接点配置。
 
+秋千连续驱动的 `ParamSwing`、`ParamAngleZ`、`ParamLegLA`、`ParamLegRA` 使用五位小数、`snapEpsilon=0.00001`。请保留此精度，避免小幅摆动经过中心时被吸附为静止。`tools/authoring/refine_swing_precision.py` 只修正可编辑 CMO 的这四项精度，不修改网格或纹理；修改后仍需 Cubism 原生导出 MOC。对应原生位移回归位于 `web/tests/swing-native.test.ts`。
+
 作者工具中部分生成器是现有制作链的组成模块，不是日常修改的前置步骤；首次修改请从当前 CMO/CAN 和分层文件开始，不需要重建早期工程。
 
 ## 构建软件

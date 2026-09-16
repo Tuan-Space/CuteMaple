@@ -73,6 +73,39 @@ test('production swing ownership reaches real Core, counts turns and preserves s
       assert.equal(driver.diagnostics().swingPhase, before); driver.update(.01);
       assert.ok(Math.abs(parameter('ParamSwing')-harness.swing.pose().swing)<1e-6);
     }
+    // The former regression checked only the continuous parameter. The native
+    // model used to snap +/-0.08 to exactly the SAME seat/rope/hand geometry.
+    // Measure actual Core vertices through the production effects pipeline.
+    const seatIndex = core.drawables.ids.indexOf('seat');
+    const seatX = () => {
+      const vertices = core.drawables.vertexPositions[seatIndex];
+      let sum = 0; for (let i=0; i<vertices.length; i+=2) sum += vertices[i];
+      return sum/(vertices.length/2);
+    };
+    for (const [label, steps] of Object.entries({hz30:[1/30], hz60:[1/60], hz144:[1/144],
+      irregular:[.007,.023,.012,.041,.009,.016]})) {
+      driver.play({type:'play',name:'swing_idle',token:5,playback:'loop'}, () => {});
+      for (let i=0;i<200;i++) driver.update(.01); // Settle the 1.2 s envelope.
+      let elapsed=0, count=0, crossings=0, samples=0;
+      let previousS=parameter('ParamSwing'), previousX=seatX();
+      let minSlope=Infinity, maxSlope=0;
+      const phaseStart=driver.diagnostics().swingPhase;
+      while (elapsed < 3.87*10) {
+        const dt=Math.min(steps[count++%steps.length],3.87*10-elapsed);
+        driver.update(dt); elapsed+=dt;
+        const s=parameter('ParamSwing'), x=seatX(), ds=s-previousS;
+        if (s*previousS<0) crossings++;
+        if (Math.abs(s)<.04 && Math.abs(previousS)<.04 && Math.abs(ds)>1e-6) {
+          const slope=(x-previousX)/ds;
+          assert.ok(slope < -.01, `${label}: native center must move, s=${s}, slope=${slope}`);
+          minSlope=Math.min(minSlope,Math.abs(slope)); maxSlope=Math.max(maxSlope,Math.abs(slope)); samples++;
+        }
+        previousS=s; previousX=x;
+      }
+      assert.ok(samples>60 && crossings>=19, `${label}: insufficient real center passes`);
+      assert.ok(maxSlope/minSlope<1.15, `${label}: native center velocity jumps`);
+      assert.ok(Math.abs(driver.diagnostics().swingPhase-phaseStart-Math.PI*20)<1e-7);
+    }
     driver.play({type:'play',name:'land',token:4,playback:'one_shot'}, () => {});
     assert.equal(driver.diagnostics().swingActive, 0);
   } finally { driver.dispose(); CubismFramework.dispose(); CubismFramework.cleanUp(); }

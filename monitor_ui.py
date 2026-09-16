@@ -84,6 +84,10 @@ class ThemeBinding(QObject):
             style += f"QLabel, QLabel#memory {{ font-size: 10pt; padding: 0 3px; }}"
         elif self.kind == 'button':
             style += f"QPushButton {{ border-radius: 17px; padding: 0; color: {c['accent']}; }}"
+        elif self.kind == 'bubble':
+            style += (f"QLabel {{ background: {c['card']}; color: {c['text']}; "
+                      f"border: 2px solid {c['border']}; border-radius: 14px; "
+                      "padding: 10px 14px; font-size: 11pt; }")
         w.setStyleSheet(style)
         w.update()
         if hasattr(w,"_fit_contents"): QTimer.singleShot(0,w._fit_contents)

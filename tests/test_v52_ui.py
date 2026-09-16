@@ -55,10 +55,15 @@ def test_startup_and_unapproved_automatic_cleanup_never_request_uac(pet,monkeypa
 def test_failed_launch_immediately_reports_to_visible_ui(pet,monkeypatch,status):
     pending=concurrent.futures.Future();submitted=[];feedback=[]
     monkeypatch.setattr(pet._install_executor,'submit',lambda *args:submitted.append(args) or pending)
-    monkeypatch.setattr(pet,'_show_cleanup_feedback',lambda value:feedback.append(value.copy()))
+    original = pet._show_cleanup_feedback
+    def observe(value):
+        feedback.append(value.copy())
+        original(value)
+    monkeypatch.setattr(pet,'_show_cleanup_feedback',observe)
     pet.start_memory_cleanup()
     assert pet.monitor_button._cleaning and pet.details_panel.clean_button.text()=='查看清理进度'
-    pet.start_memory_cleanup();assert len(submitted)==1 and len(feedback)==2
+    pet.start_memory_cleanup()
+    assert len(submitted)==1 and feedback[-1]['status']=='starting'
     pending.set_result({'ok':False,'status':status,'message':'controlled visible failure'})
     pet._poll_cleanup()
     assert feedback[-1]['status']==status and not pet.monitor_button._cleaning

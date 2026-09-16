@@ -1256,6 +1256,11 @@ def _param_source(parent, param, ref_param_group, ref_guid) -> None:
         raise ValueError(f"Parameter {param.id}: keys collide at native authoring precision")
     gaps = [b-a for a,b in zip(keys,keys[1:])]
     snap_epsilon = min([0.1] + [gap / 10 for gap in gaps])
+    # These continuously driven parameters cross zero on every swing. A 0.1
+    # snap epsilon freezes the native mesh during a large part of the gentle
+    # +/-0.2 swing, even when the runtime phase itself is perfectly continuous.
+    if param.id in {"ParamSwing", "ParamAngleZ", "ParamLegLA", "ParamLegRA"}:
+        snap_epsilon = min(snap_epsilon, 0.00001)
     decimal_places = max(1, min(8, math.ceil(-math.log10(snap_epsilon) - 1e-10)))
     _text(ps, "i", str(decimal_places), xs__n="decimalPlaces")
     _sub(ps, "CParameterGuid", xs__n="guid", xs__ref=ref_guid)
