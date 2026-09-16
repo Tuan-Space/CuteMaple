@@ -66,10 +66,11 @@ class SpeechBubble(QWidget):
         self.hide_timer.setSingleShot(True)
         self.hide_timer.timeout.connect(self.hide)
 
-    def show_message(self, text: str, pet_rect: QRect, screen_rect: QRect) -> None:
+    def show_message(self, text: str, pet_rect: QRect, screen_rect: QRect,
+                     *, placement: str = "ground") -> None:
         if self.cleanup_owns_bubble:
             return
-        self._display(text, pet_rect, screen_rect)
+        self._display(text, pet_rect, screen_rect, placement=placement)
         self.hide_timer.start(4200)
 
     @property
@@ -77,7 +78,7 @@ class SpeechBubble(QWidget):
         return self._cleanup_active or time.monotonic() < self._cleanup_expires
 
     def show_cleanup(self, result: dict, active: bool, pet_rect: QRect,
-                     screen_rect: QRect, visible: bool) -> None:
+                     screen_rect: QRect, visible: bool, *, placement: str = "ground") -> None:
         text = cleanup_summary(result)
         stamp = (result.get('operation_id'), result.get('status'), text, active)
         if stamp != self._cleanup_stamp or not self.cleanup_owns_bubble:
@@ -86,9 +87,10 @@ class SpeechBubble(QWidget):
             self._cleanup_active = active
             duration = 6 if result.get('status') in {'succeeded', 'authorized'} else 8
             self._cleanup_expires = 0.0 if active else time.monotonic() + duration
-        self.restore_cleanup(pet_rect, screen_rect, visible)
+        self.restore_cleanup(pet_rect, screen_rect, visible, placement=placement)
 
-    def restore_cleanup(self, pet_rect: QRect, screen_rect: QRect, visible: bool) -> None:
+    def restore_cleanup(self, pet_rect: QRect, screen_rect: QRect, visible: bool,
+                        *, placement: str = "ground") -> None:
         if not self.cleanup_owns_bubble:
             return
         self.hide_timer.stop()
@@ -96,29 +98,36 @@ class SpeechBubble(QWidget):
             remaining = max(1, math.ceil((self._cleanup_expires - time.monotonic()) * 1000))
             self.hide_timer.start(remaining)
         if visible:
-            self._display(self._cleanup_text, pet_rect, screen_rect)
+            self._display(self._cleanup_text, pet_rect, screen_rect, placement=placement)
         else:
             self.hide()
 
-    def _display(self, text: str, pet_rect: QRect, screen_rect: QRect) -> None:
+    def _display(self, text: str, pet_rect: QRect, screen_rect: QRect,
+                 *, placement: str = "ground") -> None:
         if self.label.text() != text:
             self.label.setText(text)
-        self.label.setFixedWidth(max(1, min(230, screen_rect.width() - 16)))
-        self.label.adjustSize()
-        self.resize(self.label.size())
-        self.follow_pet(pet_rect, screen_rect)
+        self.follow_pet(pet_rect, screen_rect, placement=placement)
         if not self.isVisible():
             self.show()
             self.raise_()
 
-    def follow_pet(self, pet_rect: QRect, screen_rect: QRect) -> None:
+    def follow_pet(self, pet_rect: QRect, screen_rect: QRect,
+                   *, placement: str = "ground") -> None:
+        # Head top and visible body bottom, in Qt logical screen coordinates.
+        # Keep dialogue above/below the person; never move it to a side.
+        self.label.setFixedWidth(max(1, min(230, screen_rect.width() - 16)))
+        self.label.adjustSize()
+        self.resize(self.label.size())
         x = pet_rect.center().x() - self.width() // 2
-        y = pet_rect.top() - self.height() - 8
-        if y < screen_rect.top():
-            y = pet_rect.bottom() + 8
         x = max(screen_rect.left(), min(x, screen_rect.right() - self.width() + 1))
-        y = max(screen_rect.top(), min(y, screen_rect.bottom() - self.height() + 1))
-        self.move(x, y)
+        above = QRect(x, pet_rect.top() - self.height() - 8, self.width(), self.height())
+        below = QRect(x, pet_rect.bottom() + 9, self.width(), self.height())
+        preferred, alternate = (below, above) if placement == "top_swing" else (above, below)
+        target = preferred if screen_rect.contains(preferred) else alternate
+        if not screen_rect.contains(target):
+            target = clamp_rect(preferred, screen_rect)
+        self.move(target.topLeft())
+
 
 
 class PetWindow(QWidget):
@@ -366,6 +375,7 @@ class PetWindow(QWidget):
                 self._top_transition = None
                 self._set_ground_idle()
             self._position_for_base_or_clamp()
+            self._follow_bubble()
 
     def _screen_area(self) -> QRect:
         screens = [screen for screen in QGuiApplication.screens() if id(screen) not in self._removed_screen_ids]
@@ -518,6 +528,7 @@ class PetWindow(QWidget):
                     self._position_top_transition(event)
                 elif self.base_mode.startswith("climb_"):
                     if self._advance_native_climb(event):
+                        self._follow_bubble()
                         return
                     self._position_side(self.base_mode.removeprefix("climb_"))
                 elif self.base_mode == "top_swing":
@@ -526,6 +537,7 @@ class PetWindow(QWidget):
                       and not self.dragging and self.state != "happy"):
                     self.move(self.x(), self._floor_y(self._screen_area()))
                 self._position_monitor_overlays()
+                self._follow_bubble()
                 if kind == "frame-ready" and not self._presentation_ready:
                     self._pending_presentation = (self._renderer_generation, self._renderer_token)
                     self.presentation_timer.start()
@@ -834,14 +846,14 @@ class PetWindow(QWidget):
 
     def _preview_effect(self, name: str) -> None:
         if self.activity_paused or not self.isVisible():
-            self.bubble.show_message("预览效果需要先显示桌宠并继续活动。", self.geometry(), self._screen_area())
+            self._show_dialogue("预览效果需要先显示桌宠并继续活动。")
             return
         if name != "glasses" and not self.settings.particles_enabled:
-            self.bubble.show_message("请先在互动菜单开启装饰特效，再预览。", self.geometry(), self._screen_area())
+            self._show_dialogue("请先在互动菜单开启装饰特效，再预览。")
             return
         if name == "glasses":
             if self._has_support_pose():
-                self.bubble.show_message("眼镜预览可在地面姿势下查看。", self.geometry(), self._screen_area())
+                self._show_dialogue("眼镜预览可在地面姿势下查看。")
                 return
             self._show_effect("glasses", 3500)
         else:
@@ -986,6 +998,7 @@ class PetWindow(QWidget):
     def set_scale(self, scale: float) -> None:
         self.settings.scale = round(max(MIN_SCALE, min(MAX_SCALE, scale)), 2)
         self._apply_size()
+        self._follow_bubble()
         self._save_position()
 
     def wheelEvent(self, event: QWheelEvent) -> None:
@@ -1308,9 +1321,34 @@ class PetWindow(QWidget):
         else:
             self._set_ground_idle()
 
+    def _bubble_anchor_rect(self) -> QRect:
+        bounds = self._renderer_geometry.get("headBounds")
+        if (isinstance(bounds, list) and len(bounds) == 4 and
+                all(isinstance(v, (int, float)) and math.isfinite(v) for v in bounds) and
+                bounds[2] > 0 and bounds[3] > 0):
+            x, y, width, height = bounds
+            head = QRect(round(x * self.width()), round(y * self.height()),
+                         max(1, round(width * self.width())),
+                         max(1, round(height * self.height()))).translated(self.pos())
+            # Above uses the painted head; below clears the whole visible body.
+            head.setBottom(max(head.bottom(), self._content_rect_global().bottom()))
+            return head
+        return self._content_rect_global()
+
+    def _show_dialogue(self, text: str) -> None:
+        if self._pet_hidden or not self.isVisible():
+            return
+        self.bubble.show_message(text, self._bubble_anchor_rect(), self._screen_area(),
+                                 placement=self.base_mode)
+
+    def _follow_bubble(self) -> None:
+        if hasattr(self, "bubble") and self.bubble.isVisible():
+            self.bubble.follow_pet(self._bubble_anchor_rect(), self._screen_area(),
+                                   placement=self.base_mode)
+
     def say(self, text: str) -> None:
         self._start_temporary("talk", 3200)
-        self.bubble.show_message(text, self.geometry(), self._screen_area())
+        self._show_dialogue(text)
 
     def _single_click(self) -> None:
         if not self.activity_paused and not self.dragging and not self.sleep_phase:
@@ -1601,7 +1639,7 @@ class PetWindow(QWidget):
                 self._begin_wake()
             else:
                 self._start_temporary("happy")
-                self.bubble.show_message(choose_happy_dialogue(), self.geometry(), self._screen_area())
+                self._show_dialogue(choose_happy_dialogue())
                 effects = ("smile", "blush", "maple") if self._has_support_pose() else ("smile", "blush", "glasses", "fan", "maple")
                 self._show_effect(random.choice(effects))
             event.accept()
@@ -1927,7 +1965,7 @@ class PetWindow(QWidget):
     def moveEvent(self, event) -> None:
         super().moveEvent(event)
         if hasattr(self, "bubble") and self.bubble.isVisible():
-            self.bubble.follow_pet(self.geometry(), self._screen_area())
+            self._follow_bubble()
         if hasattr(self, "monitor_button"):
             self._position_monitor_overlays()
         if hasattr(self, "details_panel") and self.details_panel.isVisible() and not self._panel_positioning:
@@ -2110,8 +2148,9 @@ class PetWindow(QWidget):
                   current_step=result.get("current_step", result.get("currentStep", result.get("step"))))
         self.details_panel.show_result(result)
         self.monitor_button.setToolTip(text)
-        self.bubble.show_cleanup(result, self._cleanup_feedback_active, self.geometry(),
-                                 self._screen_area(), self.isVisible())
+        self.bubble.show_cleanup(result, self._cleanup_feedback_active, self._bubble_anchor_rect(),
+                                 self._screen_area(), self.isVisible() and not self._pet_hidden,
+                                 placement=self.base_mode)
 
     def _finish_cleanup_operation(self) -> None:
         result = self.cleanup_result or {}
@@ -2186,7 +2225,8 @@ class PetWindow(QWidget):
         self._pet_hidden = False
         super().showEvent(event)
         if hasattr(self, "runtime_timer"):
-            self.bubble.restore_cleanup(self.geometry(), self._screen_area(), True)
+            self.bubble.restore_cleanup(self._bubble_anchor_rect(), self._screen_area(), True,
+                                        placement=self.base_mode)
             if self._presentation_ready and self.live2d_host is not None:
                 self.live2d_host.view.show()
             self._sync_runtime_pause()

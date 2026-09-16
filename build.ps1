@@ -4,6 +4,7 @@
     [switch]$InstallDependencies,
     [switch]$SkipTests,
     [string]$CandidateLabel = "",
+    [string]$ReuseCleanerFrom = "",
     [ValidateRange(1, 32)]
     [int]$Jobs = 4
 )
@@ -37,6 +38,29 @@ if (-not $SkipTests) {
 }
 $RuntimeModules = @("main.py", "pet_app.py", "pet_core.py", "resource_monitor.py", "memory_cleaner.py",
                     "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_helper.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py")
+$CleanerReuse = $null
+if ($ReuseCleanerFrom) {
+    $PreviousPackage = (Resolve-Path -LiteralPath $ReuseCleanerFrom).Path
+    $PreviousSnapshot = Get-Content -LiteralPath (Join-Path $PreviousPackage 'SOURCE-SNAPSHOT.json') -Raw | ConvertFrom-Json
+    $CleanerReuse = Get-Content -LiteralPath (Join-Path $PreviousPackage 'verification\retained-helper.json') -Raw | ConvertFrom-Json
+    foreach ($Module in @('cleanup_helper.py','cleanup_protocol.py','cleanup_process.py','cleanup_session.py','memory_cleaner.py')) {
+        if ((Get-FileHash -LiteralPath (Join-Path $ProjectRoot $Module)).Hash -ne $PreviousSnapshot.sourceModulesSha256.$Module) {
+            throw "Cleanup source changed; cannot reuse the previous helper: $Module"
+        }
+    }
+    $PreviousCleaner = Join-Path $PreviousPackage 'CuteMaple-Live2D\cleaner'
+    $ExpectedFiles = @($CleanerReuse.helperFilesSha256.psobject.Properties)
+    $ActualFiles = @(Get-ChildItem -LiteralPath $PreviousCleaner -Recurse -File)
+    if ($ExpectedFiles.Count -ne $ActualFiles.Count) { throw 'Reused helper file inventory changed.' }
+    foreach ($File in $ActualFiles) {
+        $Relative = [IO.Path]::GetRelativePath($PreviousCleaner, $File.FullName)
+        if ((Get-FileHash -LiteralPath $File.FullName).Hash -ne $CleanerReuse.helperFilesSha256.$Relative) {
+            throw "Reused helper hash mismatch: $Relative"
+        }
+    }
+    Copy-Item -LiteralPath $PreviousCleaner -Destination (Join-Path $Stage 'reused-cleaner') -Recurse
+    Copy-Item -LiteralPath (Join-Path $PreviousPackage 'helper-compilation-report.xml') -Destination $Stage
+}
 foreach ($Module in $RuntimeModules) {
     Copy-Item -LiteralPath (Join-Path $ProjectRoot $Module) -Destination $Stage
 }
@@ -98,6 +122,10 @@ $Snapshot = [ordered]@{
         "--windows-console-mode=disable", "--output-dir=helper-out", "--output-filename=CuteMaple-Cleaner.exe",
         "--report=helper-compilation-report.xml", "--assume-yes-for-downloads", "--jobs=$Jobs", "cleanup_helper.py")
 }
+if ($CleanerReuse) {
+    $Snapshot.cleanupCompilerArguments = @()
+    $Snapshot.cleanupReuse = $CleanerReuse
+}
 $Snapshot | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $Stage "SOURCE-SNAPSHOT.json") -Encoding utf8
 Push-Location $Stage
 try {
@@ -105,11 +133,13 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Nuitka build failed ($LASTEXITCODE)." }
     # Separate ordinary-privilege UI and administrator-only cleanup entry.
     # This helper has no Qt imports or web/model resources.
-    & $Python -m nuitka --mode=standalone --nofollow-import-to=PySide6 `
+    if (-not $CleanerReuse) {
+      & $Python -m nuitka --mode=standalone --nofollow-import-to=PySide6 `
         --windows-console-mode=disable --output-dir=helper-out `
         --output-filename=CuteMaple-Cleaner.exe --report=helper-compilation-report.xml `
         --assume-yes-for-downloads "--jobs=$Jobs" cleanup_helper.py
-    if ($LASTEXITCODE -ne 0) { throw "Minimal cleanup helper build failed ($LASTEXITCODE)." }
+      if ($LASTEXITCODE -ne 0) { throw "Minimal cleanup helper build failed ($LASTEXITCODE)." }
+    }
 } finally {
     Pop-Location
 }
@@ -119,6 +149,7 @@ if (-not (Test-Path -LiteralPath $Standalone)) {
 }
 if (-not $Standalone) { throw "Nuitka standalone dependency directory is missing." }
 $HelperStandalone = Join-Path $Stage "helper-out\cleanup_helper.dist"
+if ($CleanerReuse) { $HelperStandalone = Join-Path $Stage 'reused-cleaner' }
 if (-not (Test-Path -LiteralPath (Join-Path $HelperStandalone "CuteMaple-Cleaner.exe"))) {
     throw "Independent cleanup executable is missing."
 }
@@ -166,4 +197,3 @@ $Hashes = foreach ($File in Get-ChildItem -LiteralPath $Output -Recurse -File) {
 $Hashes | Set-Content -LiteralPath (Join-Path $Output "SHA256.txt") -Encoding utf8
 Write-Output ("Package: " + $Output)
 Write-Output ("Executable: " + $Executable)
-
