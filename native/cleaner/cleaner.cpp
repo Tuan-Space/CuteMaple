@@ -165,6 +165,11 @@ int serve(const J& owner,const std::string& token){
 }
 int WINAPI wWinMain(HINSTANCE,HINSTANCE,PWSTR,int){
     try{
+        // Every child is this exact on-disk image. Keep the directory and image
+        // pinned for the full session so a same-user rename cannot substitute a
+        // different executable between request verification and CreateProcess.
+        DirectoryGuard executable_directory(executable().parent_path());
+        auto executable_lock=regular(executable(),GENERIC_READ,OPEN_EXISTING,FILE_SHARE_READ);
         int argc;LPWSTR* argv=CommandLineToArgvW(GetCommandLineW(),&argc);require(argv!=nullptr,"Command line");std::map<std::wstring,std::wstring> args;
         try{for(int i=1;i<argc;i++){std::wstring key=argv[i];require(!args.count(key),"Duplicate argument");if(key==L"--diagnose"||key==L"--clean-session"||key==L"--memory-clean-helper")args[key]=L"";else{require(i+1<argc,"Missing argument");args[key]=argv[++i];}}}catch(...){LocalFree(argv);throw;}LocalFree(argv);
         std::vector<std::wstring> allowed={L"--diagnose",L"--clean-session",L"--memory-clean-helper",L"--clean-step",L"--profile",L"--report",L"--session",L"--owner-pid",L"--owner-created",L"--operation",L"--token"};

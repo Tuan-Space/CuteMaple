@@ -16,3 +16,4 @@ __pycache__/
 !/web/dist/**
 /tools/authoring/image2live2d/
 /.venv-authoring/
+*.io.lock
