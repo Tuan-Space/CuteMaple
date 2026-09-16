@@ -41,7 +41,7 @@ test('cycle to idle preserves position and velocity, settling over the requested
   swing.advance(.00001); const after = swing.pose().swing;
   assert.ok(Math.abs((center-before)/.00001-(after-center)/.00001) < 1e-5);
   swing.advance(1.2);
-  assert.equal(swing.diagnostics().swingAmplitude, .2);
+  assert.equal(swing.diagnostics().swingAmplitude, .1);
   assert.equal(swing.diagnostics().swingFrequency, 1/3.87);
 });
 
@@ -97,11 +97,11 @@ test('active swing petting eases to gentle motion without resetting phase, veloc
   swing.advance(step); const after = swing.pose().swing;
   assert.ok(Math.abs((current-before)/step-(after-current)/step) < .0001);
   cycles += swing.advance(1.2-step);
-  assert.equal(swing.diagnostics().swingAmplitude, .2);
+  assert.equal(swing.diagnostics().swingAmplitude, .1);
   assert.equal(swing.diagnostics().swingFrequency, 1/3.87);
   cycles += swing.advance(1.8);
   assert.equal(swing.petting().weight, 0);
-  assert.equal(swing.diagnostics().swingAmplitude, .2, 'expiry begins a smooth recovery');
+  assert.equal(swing.diagnostics().swingAmplitude, .1, 'expiry begins a smooth recovery');
   cycles += swing.advance(1.2);
   assert.equal(swing.diagnostics().swingAmplitude, 1);
   assert.equal(swing.diagnostics().swingFrequency, 1/1.02);
@@ -126,7 +126,7 @@ test('pet expiry integration and interrupted recovery remain continuous across f
   assert.equal(swing.diagnostics().swingAmplitude, 1);
   swing.pet('swing_petting_right', true); swing.advance(.2);
   swing.enter('swing_idle'); swing.advance(1.2);
-  assert.equal(swing.diagnostics().swingAmplitude, .2);
+  assert.equal(swing.diagnostics().swingAmplitude, .1);
   assert.equal(swing.diagnostics().swingFrequency, 1/3.87);
 });
 

@@ -1,6 +1,7 @@
 /** One continuous clock for the seated swing, independent of Cubism's loop padding. */
 export const SWING_ENVELOPE_SECONDS = 1.2;
 export const SWING_PETTING_SECONDS = 3;
+export const SWING_IDLE_AMPLITUDE = .1;
 export const SWING_PETTING_NAMES = ['swing_petting_left', 'swing_petting_right'] as const;
 export const isSwingFamily = (name: string): boolean =>
   ['swing_cycle', 'swing_idle'].includes(name);
@@ -57,7 +58,7 @@ export class SwingMotion {
     if (!wasActive) {
       this.phase = 0; this.amplitude = new Envelope(0); this.frequency = new Envelope(1/period);
     }
-    this.amplitude.set(state === 'swing_cycle' ? 1 : .2);
+    this.amplitude.set(state === 'swing_cycle' ? 1 : SWING_IDLE_AMPLITUDE);
     this.frequency.set(1/period);
     this.origin = this.phase; this.cycles = 0;
   }
@@ -84,7 +85,7 @@ export class SwingMotion {
     if (!active) { this.cancelPetting(); return; }
     if (!this.ownsCycles || this.petAge < SWING_PETTING_SECONDS) return;
     this.petSide = name === 'swing_petting_left' ? -1 : 1; this.petAge = 0;
-    this.amplitude.set(.2); this.frequency.set(1/3.87);
+    this.amplitude.set(SWING_IDLE_AMPLITUDE); this.frequency.set(1/3.87);
   }
   cancelPetting(): boolean {
     const active = this.petAge < SWING_PETTING_SECONDS; this.petAge = SWING_PETTING_SECONDS;
@@ -92,7 +93,7 @@ export class SwingMotion {
     return active;
   }
   private restoreTargets(): void {
-    this.amplitude.set(this.state === 'swing_cycle' ? 1 : .2);
+    this.amplitude.set(this.state === 'swing_cycle' ? 1 : SWING_IDLE_AMPLITUDE);
     this.frequency.set(1/(this.state === 'swing_cycle' ? 1.02 : 3.87));
   }
   pose(): {swing: number; headZ: number; legA: number} {

@@ -187,6 +187,7 @@ class PetWindow(QWidget):
         self._suspended_at = 0.0
         self._runtime_stopped = False
         self._quitting = False
+        self._pet_hidden = False
         self._top_transition = None
         self.base_mode, self.resume_base, self.attachment = "ground", "ground", None
         self.motion_mode: str | None = None
@@ -934,6 +935,7 @@ class PetWindow(QWidget):
         self.live2d_host.view.lower()
         self._sync_runtime_pause()
         self._resume_activity()
+        self._restore_monitor_overlays()
 
     def _renderer_failed(self, message: str) -> None:
         self._cancel_swing_petting()
@@ -1612,16 +1614,20 @@ class PetWindow(QWidget):
         menu.deleteLater()
 
     def leaveEvent(self, event) -> None:
-        self.monitor_hide_timer.start(800)
+        if self._monitor_can_show():
+            self.monitor_hide_timer.start(800)
         super().leaveEvent(event)
 
     def eventFilter(self, watched, event) -> bool:
+        if not hasattr(self, "details_panel"):
+            return super().eventFilter(watched, event)
         if watched in (getattr(self, "monitor_button", None), getattr(self, "monitor_capsule", None)):
+            if not self._monitor_can_show():
+                self._hide_monitor_overlays()
+                return super().eventFilter(watched, event)
             if event.type() in (QEvent.Enter, QEvent.MouseMove):
                 self.monitor_hide_timer.stop()
-                self.monitor_button.show()
-                if not self.details_panel.isVisible():
-                    self.monitor_capsule.show()
+                self._set_monitor_visibility(button=True, capsule=not self.details_panel.isVisible())
                 self._position_monitor_overlays()
             elif event.type() == QEvent.Leave:
                 self.monitor_hide_timer.start(800)
@@ -1635,21 +1641,50 @@ class PetWindow(QWidget):
         return bounds.adjusted(-radius, -radius, radius, radius).contains(point)
 
     def _show_monitor_button(self) -> None:
-        if not self.isVisible():
+        if not self._monitor_can_show():
             return
         self.monitor_hide_timer.stop()
-        self.monitor_button.show(); self.monitor_button.raise_()
+        self._set_monitor_visibility(button=True)
+        self.monitor_button.raise_()
         self._position_monitor_button()
 
+    def _monitor_can_show(self) -> bool:
+        return (not self._pet_hidden and not self._quitting and self.isVisible()
+                and self._presentation_ready)
+
+    def _set_monitor_visibility(self, *, button: bool | None = None,
+                                capsule: bool | None = None) -> None:
+        # These are independent Tool windows. Every show path must respect the
+        # owner's visibility, including callbacks already pending when it hides.
+        if not self._monitor_can_show():
+            button = capsule = False
+        if button is not None:
+            self.monitor_button.setVisible(button)
+        if capsule is not None:
+            self.monitor_capsule.setVisible(capsule and not self.details_panel.isVisible())
+
+    def _hide_monitor_overlays(self) -> None:
+        self.monitor_hide_timer.stop()
+        self.monitor_button.cancel_pending_click()
+        self._set_monitor_visibility(button=False, capsule=False)
+
+    def _restore_monitor_overlays(self) -> None:
+        near = self._pointer_near_model(self.mapFromGlobal(QCursor.pos()))
+        self._set_monitor_visibility(button=near, capsule=near or self.settings.monitor_always_visible)
+        self._position_monitor_overlays()
+
     def _hide_monitor_if_allowed(self) -> None:
+        if not self._monitor_can_show():
+            self._hide_monitor_overlays()
+            return
         if self.details_panel.isVisible():
-            self.monitor_capsule.hide()
+            self._set_monitor_visibility(capsule=False)
             return
         if self.settings.monitor_always_visible:
-            self.monitor_button.hide(); self.monitor_capsule.show()
+            self._set_monitor_visibility(button=False, capsule=True)
             self._position_monitor_overlays()
             return
-        self.monitor_button.hide(); self.monitor_capsule.hide()
+        self._set_monitor_visibility(button=False, capsule=False)
 
     def _position_monitor_button(self) -> None:
         self._position_monitor_overlays()
@@ -1710,6 +1745,9 @@ class PetWindow(QWidget):
 
     def _position_monitor_overlays(self) -> None:
         if not hasattr(self, "monitor_button"):
+            return
+        if not self._monitor_can_show():
+            self._set_monitor_visibility(button=False, capsule=False)
             return
         area = self._screen_area()
         content = self._content_rect_global()
@@ -1783,9 +1821,11 @@ class PetWindow(QWidget):
 
     def toggle_monitor_always(self, enabled: bool) -> None:
         self.settings.monitor_always_visible = enabled
-        if enabled:
+        if not self._monitor_can_show():
+            self._hide_monitor_overlays()
+        elif enabled:
             self._show_monitor_button()
-            if not self.details_panel.isVisible(): self.monitor_capsule.show()
+            self._set_monitor_visibility(capsule=True)
             self._position_monitor_overlays()
             self.monitor_hide_timer.start(800)
         else:
@@ -1797,11 +1837,14 @@ class PetWindow(QWidget):
         self.latest_memory = memory_snapshot()
         self.monitor_capsule.update_stats(self.latest_network, self.latest_memory)
         self.details_panel.update_stats(self.latest_network, self.latest_memory)
-        if self.settings.monitor_always_visible and self.isVisible() and not self.details_panel.isVisible():
-            self.monitor_capsule.show(); self._position_monitor_overlays()
+        if self.settings.monitor_always_visible:
+            self._set_monitor_visibility(capsule=True)
+            self._position_monitor_overlays()
         self._check_auto_cleanup()
 
     def open_details_panel(self) -> None:
+        if not self._monitor_can_show():
+            return
         if self.details_panel.isVisible():
             self.close_details_panel()
             return
@@ -1813,7 +1856,7 @@ class PetWindow(QWidget):
         self._sync_runtime_pause()
         self.behavior_timer.stop(); self.motion_timer.stop()
         self.details_panel.update_stats(self.latest_network, self.latest_memory)
-        self.monitor_capsule.hide(); self.monitor_button.show()
+        self._set_monitor_visibility(button=True, capsule=False)
         self._panel_side = self._overlay_side = None
         self.details_panel.show(); self._position_details_panel(); self.details_panel.raise_()
         self.monitor_button.raise_(); self._position_monitor_overlays()
@@ -1831,9 +1874,9 @@ class PetWindow(QWidget):
         cursor = QCursor.pos()
         pointer_near = self.geometry().contains(cursor) or self.monitor_button.geometry().contains(cursor)
         if self.settings.monitor_always_visible or pointer_near:
-            self.monitor_capsule.show()
+            self._set_monitor_visibility(capsule=True)
         else:
-            self.monitor_button.hide(); self.monitor_capsule.hide()
+            self._set_monitor_visibility(button=False, capsule=False)
         self._position_monitor_overlays()
         if not self.panel_previous_paused and not self.settings.paused:
             self._resume_activity()
@@ -2128,18 +2171,19 @@ class PetWindow(QWidget):
         self.set_scale(1.0)
 
     def hideEvent(self, event) -> None:
+        self._pet_hidden = True
         super().hideEvent(event)
         if not hasattr(self, "runtime_timer"):
             return
+        self._hide_monitor_overlays()
         self.close_details_panel()
         self.bubble.hide()
-        self.monitor_button.hide()
-        self.monitor_capsule.hide()
         self.behavior_timer.stop()
         self.motion_timer.stop()
         self._sync_runtime_pause()
 
     def showEvent(self, event) -> None:
+        self._pet_hidden = False
         super().showEvent(event)
         if hasattr(self, "runtime_timer"):
             self.bubble.restore_cleanup(self.geometry(), self._screen_area(), True)
@@ -2147,10 +2191,13 @@ class PetWindow(QWidget):
                 self.live2d_host.view.show()
             self._sync_runtime_pause()
             self._resume_activity()
+            self._restore_monitor_overlays()
 
     def hide_pet(self) -> None:
+        self._pet_hidden = True
+        self._hide_monitor_overlays()
         self.close_details_panel()
-        self.bubble.hide(); self.monitor_button.hide(); self.monitor_capsule.hide()
+        self.bubble.hide()
         self.behavior_timer.stop(); self.motion_timer.stop(); self.hide()
         self._sync_runtime_pause()
 
@@ -2186,14 +2233,15 @@ class PetWindow(QWidget):
         except OSError: pass
 
     def quit_app(self) -> None:
+        if self._quitting:
+            return
+        self._quitting = True
+        self._hide_monitor_overlays()
         self._save_position(); self.bubble.close(); self.monitor_button.close()
         self.monitor_capsule.close(); self.details_panel.close()
         import threading
         threading.Thread(target=close_cleanup_session, name="cleanup-session-close", daemon=True).start()
         self._install_executor.shutdown(wait=False, cancel_futures=True)
-        if self._quitting:
-            return
-        self._quitting = True
         self.tray.hide()
         if self.desktop_activity is not None:
             self.desktop_activity.stopped.connect(self.app.quit)

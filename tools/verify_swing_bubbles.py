@@ -15,6 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output', type=Path, required=True)
+parser.add_argument('--idle-seconds', type=float, default=10.)
+parser.add_argument('--verify-monitor-hide', action='store_true')
 args = parser.parse_args()
 out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=True)
@@ -26,7 +28,8 @@ import live2d_host
 live2d_host.register_live2d_scheme()
 live2d_host.APP_URL += '?diagnostics=1'
 from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, QEvent, Qt
+from PySide6.QtTest import QTest
 from PIL import Image, ImageDraw
 from pet_core import PetSettings
 from pet_app import PetWindow
@@ -39,6 +42,7 @@ pet = PetWindow(app, PetSettings(autostart=False))
 pet.move(650, 100)
 pet.show()
 report = {'errors': [], 'frames': [], 'cleanupBackendSimulated': True}
+report['monitorHiddenChecks'] = 0
 images = []
 started = time.monotonic()
 phase = 'load'
@@ -88,6 +92,10 @@ def capture():
             report['frames'].append({'elapsed': time.monotonic()-started, 'stage': phase, 'state': pet.state,
                                      'position': [pet.x(), pet.y()], 'playback': value['playback'],
                                      'swing': value['parameters']['ParamSwing'], 'drawables': drawables})
+            if args.verify_monitor_hide and phase in {'idle', 'petting'}:
+                amplitude = value['playback'].get('swingAmplitude')
+                if amplitude is not None and (phase == 'petting' or now_idle_settled()):
+                    assert abs(amplitude-.1) < 1e-6, amplitude
             if len(report['frames']) % 2 == 0:
                 im = Image.open(io.BytesIO(base64.b64decode(value['png'].split(',', 1)[1]))).convert('RGBA')
                 backgrounds = ['white', '#181818', '#b3b3b3']
@@ -105,11 +113,15 @@ def capture():
     pet.live2d_host.page.runJavaScript('JSON.stringify(window.__cutemapleCapture())', received)
 
 
+def now_idle_settled():
+    return phase == 'idle' and time.monotonic() > due-args.idle_seconds+2
+
+
 def tick():
     global phase, due, captured_themes
     now = time.monotonic()
     try:
-        if now-started > 65:
+        if now-started > 75+args.idle_seconds:
             raise AssertionError('Native UI verification timed out: '+phase)
         if phase == 'load':
             if not pet._presentation_ready:
@@ -117,7 +129,7 @@ def tick():
             pet._attach_top(True)
             phase = 'intro'; due = now+7
         if phase == 'intro' and pet.state == 'swing_idle':
-            phase = 'idle'; due = now+10
+            phase = 'idle'; due = now+args.idle_seconds
         if phase == 'idle' and now >= due:
             phase = 'petting'; due = now+4
             pet._start_temporary('petting')
@@ -128,9 +140,39 @@ def tick():
             phase = 'resumed'; due = now+2
             pet.settings.paused = False; pet._sync_runtime_pause(); pet._resume_activity()
         if phase == 'resumed' and now >= due:
-            phase = 'hidden'; due = now+1; pet.hide_pet()
+            phase = 'hidden'; due = now+(3 if args.verify_monitor_hide else 1)
+            if args.verify_monitor_hide:
+                pet.settings.monitor_always_visible = True
+                pet._set_monitor_visibility(button=True, capsule=True)
+                QTest.mouseClick(pet.monitor_button, Qt.LeftButton)
+                pet.monitor_hide_timer.start(800)
+            pet.hide_pet()
+        if phase.startswith('hidden') and args.verify_monitor_hide:
+            for w in (pet.monitor_button, pet.monitor_capsule):
+                pet.eventFilter(w, QEvent(QEvent.Enter))
+            pet._hide_monitor_if_allowed()
+            pet.open_details_panel()
+            pet.close_details_panel()
+            assert not any(w.isVisible() for w in
+                           (pet, pet.monitor_button, pet.monitor_capsule, pet.details_panel, pet.bubble))
+            assert not pet.monitor_button._click_timer.isActive()
+            assert not pet.monitor_hide_timer.isActive()
+            report['monitorHiddenChecks'] += 1
         if phase == 'hidden' and now >= due:
+            if args.verify_monitor_hide:
+                pet.show_pet()
+                assert not pet.details_panel.isVisible()
+                assert pet.monitor_capsule.isVisible()
+                pet.settings.monitor_always_visible = False
+                pet.open_details_panel()
+                assert pet.details_panel.isVisible()
+                pet.hide_pet()
+                phase = 'hidden-panel'; due = now+3
+            else:
+                phase = 'restored'; due = now+2; pet.show_pet()
+        if phase == 'hidden-panel' and now >= due:
             phase = 'restored'; due = now+2; pet.show_pet()
+            assert not pet.details_panel.isVisible()
         if phase == 'restored' and now >= due:
             phase = 'bubbles'; due = now+1
         if phase == 'bubbles' and not captured_themes:

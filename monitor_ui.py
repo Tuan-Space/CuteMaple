@@ -196,6 +196,15 @@ class MonitorButton(QPushButton):
         self._cleaning = value
         self.update()
 
+    def cancel_pending_click(self) -> None:
+        self._click_timer.stop()
+        self._suppress_release = False
+        self.setDown(False)
+
+    def hideEvent(self, event) -> None:
+        self.cancel_pending_click()
+        super().hideEvent(event)
+
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.LeftButton:
             if self._suppress_release:
