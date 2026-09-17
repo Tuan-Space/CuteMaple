@@ -1,0 +1,2599 @@
+{
+  "reviewer": "overview_audit",
+  "completed_at": "2026-09-17T23:32:34",
+  "groups": [
+    "dark-125",
+    "dark-150",
+    "dark-200",
+    "light-125"
+  ],
+  "total_png_frames": 212,
+  "inspected_png_frames": 212,
+  "open_issues": [],
+  "resolved_issues": [
+    {
+      "id": "disclosure-icon-uninitialized-pixmap",
+      "severity": "visual-blocker",
+      "status": "fixed-and-rechecked",
+      "description": "The earlier small event and anniversary bottom captures showed a random multicolour square before the More settings label. QIconEngine needed an explicit transparent pixmap implementation.",
+      "first_observed_in": [
+        "dark-125/small-event-bottom.png",
+        "dark-125/small-anniversary-bottom.png",
+        "dark-150/small-event-bottom.png",
+        "dark-150/small-anniversary-bottom.png"
+      ],
+      "resolution": "DisclosureIcon.pixmap initializes QPixmap with Qt.transparent, then paints the vector chevron. Parent-authorized local fix; four icon sizes tested for transparent edges, meaningful painted area and deterministic rendering.",
+      "verified_in": [
+        "dark-125/small-event-bottom.png",
+        "dark-125/small-anniversary-bottom.png",
+        "dark-150/small-event-bottom.png",
+        "dark-150/small-anniversary-bottom.png",
+        "dark-200/small-event-bottom.png",
+        "dark-200/small-anniversary-bottom.png",
+        "light-125/small-event-bottom.png",
+        "light-125/small-anniversary-bottom.png"
+      ]
+    }
+  ],
+  "method": "Every PNG listed by each completed report.json was visually reviewed in contact sheets. Eight refreshed editor frames per group were included or re-reviewed after recapture. Four representative arrow originals were additionally reviewed at original resolution. Existing scroll viewport crop at a scrolled boundary is expected; fixed dialog actions remain visible.",
+  "checks": [
+    "light/dark contrast and font glyphs",
+    "normal and 420-height windows",
+    "October/November/December month labels and markers",
+    "static upcoming-arrangements label versus reminder-period action",
+    "Today button affordance",
+    "batch checkboxes/counts/disabled states/destructive confirmation",
+    "editable event and anniversary cards and advance checkboxes",
+    "true read-only reminder summaries",
+    "inline validation error and invalid-name focus",
+    "fixed Save/Cancel and Close buttons",
+    "toolbar and attachment overflow",
+    "scrollbar palette and content boundaries"
+  ],
+  "files": [
+    {
+      "file": "dark-125/overview.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a0c6e92c2e360c615b60d89c3d3da620d323d6ca9a8eb3ad085a316128cadf6a",
+      "issues": []
+    },
+    {
+      "file": "dark-125/reminders.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "d30001ca3042a2c6420d7f658a3b0517e4fe59dc7eaff4d0b2d20a148ca85544",
+      "issues": []
+    },
+    {
+      "file": "dark-125/notes.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c94c3b9e648d66792bb67f5b523e85aba491f6d07d755d3bbe55bc2030c55f90",
+      "issues": []
+    },
+    {
+      "file": "dark-125/statistics.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "1c8d508c2e067b138487fabba78ab271e514b059038c15a453057c048191db5d",
+      "issues": []
+    },
+    {
+      "file": "dark-125/settings.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "31a3ce0ca6e1c3e8fe1724fbad30c35ff8312358599c2944d8b71ab012ccfb7a",
+      "issues": []
+    },
+    {
+      "file": "dark-125/month-10.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a0c6e92c2e360c615b60d89c3d3da620d323d6ca9a8eb3ad085a316128cadf6a",
+      "issues": []
+    },
+    {
+      "file": "dark-125/month-11.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "9f5c16dea7d9bd6861c07027773927a86e04de3c74e6b07dad84e8118dd67501",
+      "issues": []
+    },
+    {
+      "file": "dark-125/month-12.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a0ee50b982ba309811dc89490d3ae4c4988130d3010db56f1b557b687ff37f58",
+      "issues": []
+    },
+    {
+      "file": "dark-125/event.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "aaa71b382cbd39ac889e5e5185c25c9aa1fc5c4c33ba743756c8727671f68a2d",
+      "issues": []
+    },
+    {
+      "file": "dark-125/anniversary.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "f8ab8967192792b1c6ac6a1c43dbaccc9def4b02db44c8221ac27dcd5c87d728",
+      "issues": []
+    },
+    {
+      "file": "dark-125/notes-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a84cda85a452c29ce83da6d59d83fd3935f613463ccca7d01ad6c237cd8df262",
+      "issues": []
+    },
+    {
+      "file": "dark-125/notes-trash-multiple.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "0fd2b20f08e6b9d7c90a57ae7bf1323e791dc73e983d72e93e403ee31b452a8a",
+      "issues": []
+    },
+    {
+      "file": "dark-125/notes-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "17197e58689406ad775dc1f63dfbc3dcca7a886a76d425f758efec4252d64ba8",
+      "issues": []
+    },
+    {
+      "file": "dark-125/notes-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "20eb2ba10964ec6977f21b77446d690498d6850ba5f87ca69209f86c58aef9ce",
+      "issues": []
+    },
+    {
+      "file": "dark-125/notes-source.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "24559b391ad1a1374b4bd00baac4367138a799bad380f48664fec590b07ef1f6",
+      "issues": []
+    },
+    {
+      "file": "dark-125/reminders-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "6c300d26ec777efae4b0a58428bc31dcee5ea6d1d9c06cca93a28b3a3dbbc00d",
+      "issues": []
+    },
+    {
+      "file": "dark-125/reminders-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "84bf0ea7c654d0fa3a017f64ff7fbfa24ba4c381adc0702ee8218276daeab345",
+      "issues": []
+    },
+    {
+      "file": "dark-125/reminders-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "1b1c14a3a0a057d3321ee3e2cf5958c45c0e0ab7c487171d78801abd2b73bd9f",
+      "issues": []
+    },
+    {
+      "file": "dark-125/reminders-trash-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "72c2eb9d8ce2d256d5c1bbecce13985fc7fabc24fe4aaff2c4f0fd391907a154",
+      "issues": []
+    },
+    {
+      "file": "dark-125/reminders-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7f0d8bb83c47729b38318766e80f3ad81ad45291f07bcd6d9154d1d6e944b412",
+      "issues": []
+    },
+    {
+      "file": "dark-125/reminder-readonly.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "dd864b7928ea7ddb922fb01cc496c6d4899f8ecd4ba05a1048412c488706380c",
+      "issues": []
+    },
+    {
+      "file": "dark-125/event-save-error.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "e4157a406b39999d1a660a89c9c27cd0361d69b421ee0774cc62e82b9c614fa9",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-overview.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "18e0983578186a8ae652184ab99457b430c7b093d42d2d9cf0dc3fcec2eee29b",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-overview-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a2d5c002d0ec31e951d49de67a3e60944ab64d2dd537809f9dec54f09a5608cd",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-reminders.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "5555a75f0a853161f1a7b062b8f669b2eaeaab34fe440c4fd8e56ac8eac05185",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-reminders-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "93428d3bb736e58650989c5bb586c0b0839e3310b54bd6ea67efbbce14483b33",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "36d26162a23dea02eac8f13fdea3c404f7e373846a7914ea93f954b2b86b44da",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7d89bc56a65002e7100003fbac327f831eba1663944f4a86072f20616af0066b",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-statistics.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c5b14372a68ebeedd54ceed828e2ff597e6d982fa640fe33a19c848ceb0a1cab",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-statistics-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "0080cb2dfb738560de64158516ed8b076a6460e237d642151a0cd7aec0b0fce8",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-settings.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "41a178eaa978c496a146fbe0b8d812c268384a3bb0e4ea79a931f1977c3cfc22",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-settings-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "2fc7db9cdd44f2c159ffcd65ed3d16f8750255ebbdec73c26f1d7d329bcf6b99",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-month-10.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "18e0983578186a8ae652184ab99457b430c7b093d42d2d9cf0dc3fcec2eee29b",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-month-11.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "ed88d8c4dbb8682ec217eac43dad1e4c4bcb888a12b70dfac2530f75feb46730",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-month-12.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "59ec4287793ed86b5328387ebe29aa8334f34328fe3aa0efad45a7e09be6366f",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-event.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "cb4bf87d0618257dfa5b2c4a3e148198781f3f45ae47a8b79f806f8173dff4d9",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-event-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": true,
+      "recaptured_after_icon_fix": true,
+      "sha256": "156f39491efbbc6850fa61877dbd5b698112ca5e48ddf1f73d821ba6f5952f50",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-anniversary.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "0c7d3030ddb4163647758621c523bc30d47c1f56d4cf4ecb4fc4c79e5fa60d5d",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-anniversary-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-recapture-2.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "08facb297ee4bcbc8156fc2eb1a9eacb7e44bd23760fcfce6e6b1569b58914bd",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "194f0c195bb7c0e94647793c2fa30bdfb315ef6c740d3796622bde344c14c8fc",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes-trash-multiple.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "61509ff567584e42f8e371e7fb4e51e70c8c3834e8184e06240116244abff444",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "78d8fdbdc24f5c02a957e409c76756c90b913a6f7ad36b7ac89648122f3008d4",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "20eb2ba10964ec6977f21b77446d690498d6850ba5f87ca69209f86c58aef9ce",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes-trash-preview-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "d6b205a7c7e362c465a4a5f566e99597e2f029a24f248bde67116ca7359dfacc",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes-source.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "48aeddeee3a72639e7bf1b9cf4b411755aebb561ede7c5e9fe610612e965a4d8",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-notes-toolbar-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7d89bc56a65002e7100003fbac327f831eba1663944f4a86072f20616af0066b",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-reminders-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "5b7845f73301267bc3ea68a944b57dd7810d4568601bd53d8f1f3de7c3e48ac3",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-reminders-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "e2fa26ad2cb75a3d36dba12ec6894ded95c0f02deeda84b91f9a863c1dbf3fdb",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-reminders-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "1b1c14a3a0a057d3321ee3e2cf5958c45c0e0ab7c487171d78801abd2b73bd9f",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-reminders-trash-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "562e798fa9fad16753db453e82804aece3d1beba0e24609977435d2145bfcb66",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-reminders-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7f0d8bb83c47729b38318766e80f3ad81ad45291f07bcd6d9154d1d6e944b412",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-reminder-readonly.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "154f1657e23ae4abe135c228fb4d77c1afc33cce202301a5f3e9c91de089127a",
+      "issues": []
+    },
+    {
+      "file": "dark-125/small-event-save-error.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-125-recapture-2.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "a545c7db400c9a74b531160911ce2d38c55d7a6636e44ac239cbf9a95b7864c8",
+      "issues": []
+    },
+    {
+      "file": "dark-150/overview.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "22d62d41abe435990b146e47dc351a308231db3298dd21563a86c31289ff7106",
+      "issues": []
+    },
+    {
+      "file": "dark-150/reminders.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "2ff2d4031376f63a4d71dcac6127b993bf667429c47077be83844d33a17276bb",
+      "issues": []
+    },
+    {
+      "file": "dark-150/notes.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "75f7b9f40118765d3c0376b1da5047a01d1c4cf5c28275f2c2c860c84ecf1273",
+      "issues": []
+    },
+    {
+      "file": "dark-150/statistics.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "f51db0f8159766870e75c2ed444ceadf3346fd74f4ecfc94da8943a9b3e01642",
+      "issues": []
+    },
+    {
+      "file": "dark-150/settings.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "4e2c63f4d264364b8a3fd7f2c47642975b5299e5a78a309a7cb18ed74405357a",
+      "issues": []
+    },
+    {
+      "file": "dark-150/month-10.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "22d62d41abe435990b146e47dc351a308231db3298dd21563a86c31289ff7106",
+      "issues": []
+    },
+    {
+      "file": "dark-150/month-11.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "0feb27eff13e07034440f12d93d6209b49f0009d029c7cf6b31a2857bc4b1ebb",
+      "issues": []
+    },
+    {
+      "file": "dark-150/month-12.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "3430f68213ce5405f5dc2e6fa2e7f219f41856a390ce0a47cf1a7e39961044bb",
+      "issues": []
+    },
+    {
+      "file": "dark-150/event.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "d11c98dcc2dbb824609e3d5dc948b59a0812e2048d9232e1afd364d8aad31eb4",
+      "issues": []
+    },
+    {
+      "file": "dark-150/anniversary.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "f8c4f3bf19f07aab03d19287082efb9d8bccb74f5b60beb67e4929f4d34add1f",
+      "issues": []
+    },
+    {
+      "file": "dark-150/notes-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "8dbd3f7a07a78c77bfe5fa4edb39c57845a596cdd29d63a9681aeba378ca5aae",
+      "issues": []
+    },
+    {
+      "file": "dark-150/notes-trash-multiple.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "6d7f5364dc6cc0d6755b2d8318c16fe64bc7246ecc6268fcd77172ad8fe61a70",
+      "issues": []
+    },
+    {
+      "file": "dark-150/notes-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c348cfeced4b8d234c8d49b6b6c7fd4c50fd44d5ee4ff61845967787a96905f5",
+      "issues": []
+    },
+    {
+      "file": "dark-150/notes-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "e0f91684c7fee830c4f25088d8258c5d86a3cf5a72f7f0a7bc69446e30912c7c",
+      "issues": []
+    },
+    {
+      "file": "dark-150/notes-source.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "8c49711b08eaa9029ba7e0a8d4dbef7e4921b4012fca94b22a8bf76fa83b8f9a",
+      "issues": []
+    },
+    {
+      "file": "dark-150/reminders-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "69bd6a27b9dff8a30cb7a1b88abc398dcc7bdfc901669b1406d834d2747fcf75",
+      "issues": []
+    },
+    {
+      "file": "dark-150/reminders-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "0c4552483021b3e7b722f29a22c7652b022cad271b96ad8ff420fc71a8bad43c",
+      "issues": []
+    },
+    {
+      "file": "dark-150/reminders-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "8327cdd588db066d52a834d7f7fd90a3a5de2d9188153b6ba940535050acd914",
+      "issues": []
+    },
+    {
+      "file": "dark-150/reminders-trash-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a7dfa82629ef600e2876f154cbf04928daea3eefd2cd54c392e5db56caf1726c",
+      "issues": []
+    },
+    {
+      "file": "dark-150/reminders-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c422c7587588e744ef48dac4d8a3142c019badf3199c73b0da431bceddcbdb5f",
+      "issues": []
+    },
+    {
+      "file": "dark-150/reminder-readonly.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "fac18c1b65ffcccc1942023e664b3ca35b1f69c24508dbfd7078a3652cc16f06",
+      "issues": []
+    },
+    {
+      "file": "dark-150/event-save-error.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "f89448ac5f21bf3199149fd671c4a4a6ea94e8677d5b1ed904839aa7074cf256",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-overview.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "34fde021bfff8385be0236bb9e2933ae2a286a0a4483206db0049b341ab14d26",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-overview-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "62f877f92013b3f8325fa166b4dc2d4874860281ba76bf3061eed82f4c57074a",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-reminders.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "9188f40994de85d757c500faea8d37a522af9804583bb1b4ac7ce39a05bf2465",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-reminders-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "32ca1fa391754da00af33ab0024620f18d2fdaec75c8d3ced8e32bf405aa7aa9",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7b212cf11758c4b0aa4e40a4fb4031b4bfe4881f66162a3924183d18058be020",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "48032635cc1f1239b7d746cc841e79c37983b31a02d14803d56e5f31f6b4b8c4",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-statistics.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "499b911a49bee403c1117635b5343a2b02708ace993ca04cdd88605641d8190f",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-statistics-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7f9fb1d3f33655c1d9811bce552f1df29e8acdd1216e4155169332258ce9e050",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-settings.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "dc3ef5f0a6e89a7022ad7e76e448aa79590f7714e17650fc4034a2df38125227",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-settings-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "f9fb53fcd6865d14bcea3b0748dfecdc206ccda21cb5dfd78e9bc9d2c785db1f",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-month-10.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "34fde021bfff8385be0236bb9e2933ae2a286a0a4483206db0049b341ab14d26",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-month-11.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "fb11d844174f768cf0355369a6de32a9b2767a898d95208eccd745214ae48c88",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-month-12.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c0b466bfda72cadc5d2f21b30225787995d822a29125cce56dd95ce375ba997b",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-event.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "012e407262eb4e6d0184f439d3c8a605516624ad00deec019e466315d1f58483",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-event-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": true,
+      "recaptured_after_icon_fix": true,
+      "sha256": "dbd25a316a5f3ba5b668db93bb0cb76b6acc76205fbdc977f2a1df0b9ccfbcf8",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-anniversary.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-recapture-1.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "a17e74d1c99e1598e93730616b5e693a77acb5149cfe4d6fcd1947ebfbe31f13",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-anniversary-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-recapture-2.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "c396a7659ed20c06ce95bce058aff9d01ae7314ac89e8a84c6b3eef4eca2594c",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "3ac6901184ea6a5afc6e2edb8bafd46b17b82d83f225163b9deea47a98eda937",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes-trash-multiple.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "cc2bcf7536013881158d1c919e4b309ce7ee12f56c975a48a1d6dae622d9058f",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "01746e5dd79acb9e328241c31cf309bea5676a1e0078069bd28c740f17c86754",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "e0f91684c7fee830c4f25088d8258c5d86a3cf5a72f7f0a7bc69446e30912c7c",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes-trash-preview-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "4688fb724e552b74d72d4f1efd94ba864a15233ba3acd1528326121f67debbc4",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes-source.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b050801f65e14aa8b6fabdf5259d4d5a83078c813c2cfc215c0392f56d47c8ea",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-notes-toolbar-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "48032635cc1f1239b7d746cc841e79c37983b31a02d14803d56e5f31f6b4b8c4",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-reminders-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b244a6330f4c3b3423a78d4ccfaca3ad3253d95e97c2f4ee1f5cdbd58ca0aeb8",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-reminders-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "145b39a703219f03d41d4249793f78a0f0463b996f88e826b8831008c81b2d50",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-reminders-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "8327cdd588db066d52a834d7f7fd90a3a5de2d9188153b6ba940535050acd914",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-reminders-trash-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "496470e7d6d5db3880644b44f50e585daff55b741a98af69e84927339de4b48f",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-reminders-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c422c7587588e744ef48dac4d8a3142c019badf3199c73b0da431bceddcbdb5f",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-reminder-readonly.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a362ad426c2069c10105b398df7619eed545c7682c0fb263df4d8438e9765a57",
+      "issues": []
+    },
+    {
+      "file": "dark-150/small-event-save-error.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-150-recapture-2.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "af407aa54a902c038543ffcacd378c36d0c72518ee2f683aedb1abb9183978ef",
+      "issues": []
+    },
+    {
+      "file": "dark-200/overview.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7f9a69562cdc9a0d2c2c2098a6bb1f0e1e635b1cf73806cff7f708133b5ba5ff",
+      "issues": []
+    },
+    {
+      "file": "dark-200/reminders.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c649fb8f6607165db34af4c6ecef057aa5193f1ec5b9ecd0c2872cb9707554ff",
+      "issues": []
+    },
+    {
+      "file": "dark-200/notes.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7037be60f74ad9da801456ccf5371e3b5a2a0096afc38926270b9cc1b1ad9156",
+      "issues": []
+    },
+    {
+      "file": "dark-200/statistics.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "e00e87b138c5c9e80177fa245dc6b9c2c541e6209bc408a2801c90b4be233e95",
+      "issues": []
+    },
+    {
+      "file": "dark-200/settings.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "69bbb35465d380b896b3c93cff021e6ad0d6adaa40fa452b40d4a4152a23c9a3",
+      "issues": []
+    },
+    {
+      "file": "dark-200/month-10.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7f9a69562cdc9a0d2c2c2098a6bb1f0e1e635b1cf73806cff7f708133b5ba5ff",
+      "issues": []
+    },
+    {
+      "file": "dark-200/month-11.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "202e2a464cf818b64e93ae618e03312848a02c649437a1808e1cc9c64485d99b",
+      "issues": []
+    },
+    {
+      "file": "dark-200/month-12.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "99fd1fd936c2d93e1809b981d55fb1e86f619a6a7ca014c582d2e38b90cee667",
+      "issues": []
+    },
+    {
+      "file": "dark-200/event.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "6da09001357b03eaf9dd370ab79b975acf04d73a5a4a075b1f51f677cf1d8f0c",
+      "issues": []
+    },
+    {
+      "file": "dark-200/anniversary.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "d44405974c81aeb29c89d8c0f9a11e40eacafa0ba1c36e59c24bc7b495fcd62c",
+      "issues": []
+    },
+    {
+      "file": "dark-200/notes-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "666e27856822780b43dc983d3308c9d39b80d5aaad58fc804d18fb6b92a38111",
+      "issues": []
+    },
+    {
+      "file": "dark-200/notes-trash-multiple.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "ac8757df33106190e70ea8d27aed0bd98e1f9e7f4f763c9d15f55888444fbbca",
+      "issues": []
+    },
+    {
+      "file": "dark-200/notes-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7b249a0a89d72d5c678ef0d5702acde77a589b3fba9c3a2c30b1863261b003da",
+      "issues": []
+    },
+    {
+      "file": "dark-200/notes-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "9e05e9a134edd06f6fa3ca4e0f03a98f46cd1b8117f6406e27df639749a3369d",
+      "issues": []
+    },
+    {
+      "file": "dark-200/notes-source.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "2ec91601702cbc2418546934af48cf6ce31d9e8454599a67ef9df705489b8b12",
+      "issues": []
+    },
+    {
+      "file": "dark-200/reminders-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "85e5f89041a90ff3a42edcc498998a6463830076a0a07cbe8d7f24678e4da5ed",
+      "issues": []
+    },
+    {
+      "file": "dark-200/reminders-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c854b8668360930139144db568f7280181913c09d889d398040bf18df5bab2b2",
+      "issues": []
+    },
+    {
+      "file": "dark-200/reminders-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b0a80c0bda2d7f785f46b09a618fe299a438c7c6892195588286d7aaf42f6298",
+      "issues": []
+    },
+    {
+      "file": "dark-200/reminders-trash-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "d95533b7cd1c78711184001d803ccfc02c9d225793cbf0b667edbc55d35b26c5",
+      "issues": []
+    },
+    {
+      "file": "dark-200/reminders-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "5c7ced41164b7b3186033b4ba93685f46b509d5e0688ef25a31985a9d271d633",
+      "issues": []
+    },
+    {
+      "file": "dark-200/reminder-readonly.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "0fb3fa81a04e541c325d3b1e794fd375451dcf4182580b9ca7783e499d0d44a9",
+      "issues": []
+    },
+    {
+      "file": "dark-200/event-save-error.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "a574e9bea2c7cca74de37cd86d537b4427b19b649e2c7b3ad34354e149e98a3e",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-overview.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "92c291760284239c21b6b13b543e324f3d4ed8a3ededbb181884ad8ca8701060",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-overview-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "798cb21e3399137ccdb5a4cd4d01ed76725f085164f79aba0633d057e303437d",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-reminders.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "2ea8dda74d1e9b3d5e686fc9c83cf18654381d9af867ca25faab9c3ced6cf7b3",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-reminders-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "0c5020252b6d6fa5f2fc02cad35bf039a3d72c8a7c098c48488a2f1023c1c8a8",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "0a728e9c36a3a451b61f2ffceb85bfc664e09df4933f3c2f746434982f577104",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "94fdfbccfd8a347ba9fad607a1446b0e38a9ba64750f5b37260b96910fa791dd",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-statistics.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "9f701f2531ebd5666aac86bc801dd6a233091bc02740001e9aba602c2a6388db",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-statistics-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "fb857079108d4b339dbf4533f6f96492308d40c3111b6aafabc12152ac4d5a3c",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-settings.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "418ecc3a0278c32ceb3638c020c0563c82e08dba8f7ceff5aeb9cb699a0e4224",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-settings-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "547f1f815e61007852f2e88647f13e4fa2a6f69a654fad8bfb67f87e55bac742",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-month-10.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "92c291760284239c21b6b13b543e324f3d4ed8a3ededbb181884ad8ca8701060",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-month-11.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b057de0f715021d1ee6f25eb29f33c0af3d8ed554ea9080909bc4617d92b6033",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-month-12.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "026c3a14400e1211ec3bfef4fcd410dae46e9c8bd6bfb26a2ef155f068dbb6e0",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-event.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "3ee9c4cc7d20a894c3633460dd6ba2077a20292962159c48daad9ef50fbceb60",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-event-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "05782a77e6be26a12092da97a9cf4e3d9f541ca5853fb3360136014437702691",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-anniversary.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "e9159d8ec166f17140809ba5c3b3a0bfe8d77efac4c9a52e6e80cf5647564239",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-anniversary-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-07.jpg"
+      ],
+      "original_resolution_inspected": true,
+      "recaptured_after_icon_fix": true,
+      "sha256": "1c9b17f8c1e4e60c637b9aea186cda11005560bca8a0231b2ad0e4b4df095a82",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "26b5e56e59c1626377d113a9926c4537a88551388e19ea37f96883dba3744a00",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes-trash-multiple.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "098f02d123efd0d63e60b300e4cc60723cc941ad2770b7117dbba221c97517a8",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "fca400297173f379b74ba8485b5e9bc611adadf942f84a4025193edb1484aa9d",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "9e05e9a134edd06f6fa3ca4e0f03a98f46cd1b8117f6406e27df639749a3369d",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes-trash-preview-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "8f0497fb13bdae45d25392b21c618fb3c12933c227c459165c52b4e8a8aed675",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes-source.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7fb5664d638713058b18920c467166b6c9a1c62d4532301c9c297346daee9f7e",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-notes-toolbar-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "94fdfbccfd8a347ba9fad607a1446b0e38a9ba64750f5b37260b96910fa791dd",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-reminders-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "6a02fcb1b576582b601314824cf8f0250dc4e11bb7c1011266a3b39dbef645cf",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-reminders-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "e0f5d67c34e8a74d9b545ba71aa05398ecf7c38f4fa70d0de42ac4694aac977e",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-reminders-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b0a80c0bda2d7f785f46b09a618fe299a438c7c6892195588286d7aaf42f6298",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-reminders-trash-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "de81e784c87a6ee9fa29f77bd3de6039789dfde48f23d9c6defe07ecf3bc1de3",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-reminders-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "5c7ced41164b7b3186033b4ba93685f46b509d5e0688ef25a31985a9d271d633",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-reminder-readonly.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "3bae2c0af4361616be75326a6b4aca2554dc112183dfe9fe39df561ff71689a1",
+      "issues": []
+    },
+    {
+      "file": "dark-200/small-event-save-error.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "dark-200-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "f66237eb155b9ee07604a0ab54c3fd9d2e38cdc35f049abb5b9bfe3fe69cfca7",
+      "issues": []
+    },
+    {
+      "file": "light-125/overview.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b28d5187892d6ec9ac7fb47cab324453ff9ec3e867993c7075699cbbeaff7757",
+      "issues": []
+    },
+    {
+      "file": "light-125/reminders.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "d944449ddfedc537b8bde370ed5c2f15a1bd1ddfd9ff30f087b5a07250d92e0b",
+      "issues": []
+    },
+    {
+      "file": "light-125/notes.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "cacc340d6042489a234427cb99b2ae9caf251ffdbc8996b3c3ca33028423b3a0",
+      "issues": []
+    },
+    {
+      "file": "light-125/statistics.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "54d6ff3e277ab62dc476010fcbdb9674a246ac35b324b01d52cefd3a1d15e4fb",
+      "issues": []
+    },
+    {
+      "file": "light-125/settings.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "343cb46ee7abef7c9055e09fb6aaa43d2d4747f24bec699dbb0c4f418da44e10",
+      "issues": []
+    },
+    {
+      "file": "light-125/month-10.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-01.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b28d5187892d6ec9ac7fb47cab324453ff9ec3e867993c7075699cbbeaff7757",
+      "issues": []
+    },
+    {
+      "file": "light-125/month-11.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "8beff997ab8633d54014d8d296d3741f566e84971317d2456f7f66eac4998f00",
+      "issues": []
+    },
+    {
+      "file": "light-125/month-12.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a5b5be582d70984cdb2d800da4b9e1d461b1446af01c06e305bb58f0489179c3",
+      "issues": []
+    },
+    {
+      "file": "light-125/event.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "6bff98b90bddbdb08049624217e1689d2851aae723861ff97785c1f7e8db86e5",
+      "issues": []
+    },
+    {
+      "file": "light-125/anniversary.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "6286f0ab5d0beaf323de43227db75b1a3edda52c9ae00950833f9b40d655b199",
+      "issues": []
+    },
+    {
+      "file": "light-125/notes-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "6cf3bbf60069867ad7990fc916020618cd5aafec08c89629fad196e67ccc3166",
+      "issues": []
+    },
+    {
+      "file": "light-125/notes-trash-multiple.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-02.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "8ae0d0cc707b118546141ce77cdfe237f59e620ec01890aef056e5bd01b867c8",
+      "issues": []
+    },
+    {
+      "file": "light-125/notes-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "93b8a01b66641f095c7d364f16d76ca7e4701eac3f049f99d9054eb902294b07",
+      "issues": []
+    },
+    {
+      "file": "light-125/notes-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b8ac55a00dda703f933a0ef6ded83fc0b19134fd84109e2aa70680594ba4aff7",
+      "issues": []
+    },
+    {
+      "file": "light-125/notes-source.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "ca545dc723da972980053562f3ecd5aa9c41a0d9935ab9d2216ffce36ef06f3a",
+      "issues": []
+    },
+    {
+      "file": "light-125/reminders-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "882af9947ed737a48b60b2534b0599261084fba360221b6add3474054e61102b",
+      "issues": []
+    },
+    {
+      "file": "light-125/reminders-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "716f6611951d7dfb915563350f312d9cd9cad592dd786c64923ef84ca0a5f245",
+      "issues": []
+    },
+    {
+      "file": "light-125/reminders-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-03.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "2810c9a9b57db6eb5977ad4b79be647d795022d67299a00a2498cc69a2471389",
+      "issues": []
+    },
+    {
+      "file": "light-125/reminders-trash-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "746a0bba5d84c35875a6e422d8ba10cf5318394c03dfaa357e2762e05024b311",
+      "issues": []
+    },
+    {
+      "file": "light-125/reminders-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "04f8eb50468a2133477f0edb9dadf41a857bce7c402f58b6a4c4845d7e2a1547",
+      "issues": []
+    },
+    {
+      "file": "light-125/reminder-readonly.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c778e7c0165b5f09d2eb3089974887609b1edf5409ed572c9446be2816664f98",
+      "issues": []
+    },
+    {
+      "file": "light-125/event-save-error.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "05483eb38e7f504462e5333738b85c9020f8ad29ec7a11775b0bd1ee13ac3b6b",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-overview.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "5e760cd40ada5f81fe7757ec908237f2b7a9274a30cb45556f6fa6fb141e7f7b",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-overview-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-04.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "7d267e11d6feae7d3de99f66cf8e2a504358327b321c6bc4200109efa91f94fd",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-reminders.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "eefda0d24e639beaa8113ac3ab3f1e3709c801757b289b5064ca141adafb1780",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-reminders-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "77bea562ab94a2de1804031d1cb59f7a2c79efcb739bd162f7a0781014afcd2a",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "d5cd40dd2cd43938ad0ffad17be187c3d431c3904fd0a720ce17c910177bf10f",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c64e26ccb537da9cb9a69050f246c3f0dc8b4253f24e88ab2b050da2e3e1c12a",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-statistics.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "2854d81ca80b2daba47221db0b6f958107a9d98de3d3a9c7dc9024bbe05fe6e0",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-statistics-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-05.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "fca394e81cdaad161c977e654308a16b78d16b4a8dddb6228edf3c3366fd1ab4",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-settings.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "f4be4b45c597d8ca833a8f965c6a266bbb4c070924a5c5d18079157b823b24c9",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-settings-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "8d0613ea1caa8bbfa6c722fd3d072762753de10f0c7874af46d66b5d14f6594e",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-month-10.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "5e760cd40ada5f81fe7757ec908237f2b7a9274a30cb45556f6fa6fb141e7f7b",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-month-11.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "e96a9ee9167c3fed7de0110adb6e2dc7015c0fd0949b050cc384fc5c32a20a46",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-month-12.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "6c3bb28a7c375dd78fb5f84bbc560e1cbb3b895b1d3c9a175a3f599fb5275250",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-event.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-06.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "950aa62f5516b617ce5bcc9dab70b4dc7434914a99fec7accfb2c2a1d9c48ed7",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-event-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "fcbbe04248c28b27095ff62a8d0113936cd700e1c7019a14ec212462189da260",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-anniversary.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "be2fa52e192a46b663f15edb17d6df86c2a718168b0dc140967b15ed87c04713",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-anniversary-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-07.jpg"
+      ],
+      "original_resolution_inspected": true,
+      "recaptured_after_icon_fix": true,
+      "sha256": "5e22097a3e9cbb8222124de406839e061283c24c9f4fcc727216516706ca968e",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "d67b1f7f13fcb03ae0ce99923a0c5b2778b1fb23439b72099fffe2230f897c0a",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes-trash-multiple.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "bc75478048e8ec8ac25e9900908645032ad120e5850a340c1182df2eed182760",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-07.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "351c2f1080ef31b8f52e020788cfb92ef5298dfce18c6aeaa77446e8219f2940",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "b8ac55a00dda703f933a0ef6ded83fc0b19134fd84109e2aa70680594ba4aff7",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes-trash-preview-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "3ae5858ac812b783f8a1f31a770137472f994e5950b2ff526f117d4fac7bdd5a",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes-source.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "37ffcf07e45f9c6783c10dd4ef84d25f1f1c17e5cae6d69b03ba04b960a1d9f0",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-notes-toolbar-bottom.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "c64e26ccb537da9cb9a69050f246c3f0dc8b4253f24e88ab2b050da2e3e1c12a",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-reminders-trash-none.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "97bf8187f4d640db7d298113a43421144ee6c89828ddcb449d37e6f74f115a02",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-reminders-trash-all.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-08.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "cefb1976876efb962cefc304a41eb3c218847209baf15dc295f6e38815e1fd60",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-reminders-bulk-confirm.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "2810c9a9b57db6eb5977ad4b79be647d795022d67299a00a2498cc69a2471389",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-reminders-trash-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a16fe511cc99a03a40a0c0d3d814cee82fad8381593706c503a5edeee36ca15b",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-reminders-pending.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "04f8eb50468a2133477f0edb9dadf41a857bce7c402f58b6a4c4845d7e2a1547",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-reminder-readonly.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": false,
+      "sha256": "a26c59b36b5cff68e61d594a92a7c2c7c6db8639c79c175a1bf3a099e2ee16ef",
+      "issues": []
+    },
+    {
+      "file": "light-125/small-event-save-error.png",
+      "inspected": true,
+      "status": "pass",
+      "contact_sheets": [
+        "light-125-09.jpg"
+      ],
+      "original_resolution_inspected": false,
+      "recaptured_after_icon_fix": true,
+      "sha256": "c0bca8edb5905fc1dbeabff31929ab5acc9a466f2f2d0b4635010683f6f94ea9",
+      "issues": []
+    }
+  ]
+}

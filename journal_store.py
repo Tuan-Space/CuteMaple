@@ -162,6 +162,125 @@ class JournalStore:
                          + (' AND kind=?' if kind else '') + ' ORDER BY updated DESC,id DESC LIMIT ? OFFSET ?',
                          ('%'+search+'%','%'+search+'%') + ((kind,) if kind else ()) + (limit,offset))
 
+    def reminder_trash(self, search='', kind=None, offset=0, limit=100):
+        """One filtered, stable page of deleted plans and deleted occurrences.
+
+        Child occurrences remain hidden while their whole plan is in the trash.
+        ``_key`` identifies the selected entity without conflating two dates of
+        the same plan; ``id`` and ``_occurrence`` retain the existing UI shape.
+        """
+        pattern='%'+search+'%'
+        kind_clause=' AND e.kind=?' if kind else ''
+        args=(pattern,pattern)+((kind,) if kind else ())
+        sql=('SELECT * FROM ('
+             'SELECT e.*,0 AS _occurrence,e.id AS event_id,NULL AS due,NULL AS snapshot,e.deleted AS trash_deleted '
+             'FROM events e WHERE e.deleted IS NOT NULL AND (e.title LIKE ? OR e.body LIKE ?)'+kind_clause+
+             ' UNION ALL '
+             'SELECT e.*,1 AS _occurrence,x.event_id,x.due,x.snapshot,x.deleted AS trash_deleted '
+             'FROM occurrence_exclusions x JOIN events e ON e.id=x.event_id '
+             'WHERE x.deleted IS NOT NULL AND e.deleted IS NULL '
+             "AND (COALESCE(json_extract(x.snapshot,'$.title'),e.title) LIKE ? OR e.body LIKE ?)"+kind_clause+
+             ') ORDER BY trash_deleted DESC,id DESC,_occurrence ASC,due DESC LIMIT ? OFFSET ?')
+        rows=self.rows(sql,args+args+(-1 if limit is None else max(0,int(limit)),max(0,int(offset))))
+        for row in rows:
+            row['_occurrence']=bool(row['_occurrence'])
+            row['deleted']=row.pop('trash_deleted')
+            row['_key']=('occurrence',row['id'],row['due']) if row['_occurrence'] else ('event',row['id'])
+            if row['_occurrence']:
+                snapshot=json.loads(row['snapshot'])
+                row['title']=snapshot.get('title',row['title'])
+                row['state']=snapshot.get('state','pending')
+                row['answered']=snapshot.get('answered')
+        return rows
+
+    def reminder_trash_keys(self, search='', kind=None):
+        return [row['_key'] for row in self.reminder_trash(search,kind,limit=None)]
+
+    @staticmethod
+    def _batch_result():
+        return dict(restored=[],deleted=[],pending=[],missing=[],cleanup_warning=None)
+
+    @staticmethod
+    def _reminder_keys(keys):
+        normalized=[];seen=set()
+        for key in keys:
+            key=tuple(key)
+            if not key or key[0] not in ('event','occurrence') or len(key)!=(2 if key[0]=='event' else 3):
+                raise ValueError('无效的提醒回收站标识')
+            if key not in seen:normalized.append(key);seen.add(key)
+        return normalized
+
+    def restore_reminders(self, keys):
+        """Atomically restore eligible entities; overdue unfinished ones stay put.
+
+        ``pending`` requires a new date (or restoration of the parent plan).
+        SQL failures roll back every restoration, including its audit entries.
+        """
+        keys=self._reminder_keys(keys);result=self._batch_result();now=self.clock()
+        # Restoring a parent first also makes an explicitly selected child
+        # eligible, independent of the selection's original ordering.
+        with self.db:
+            for key in sorted(keys,key=lambda key:key[0]!='event'):
+                identity=key[1]
+                if key[0]=='event':
+                    rows=self.rows('SELECT * FROM events WHERE id=? AND deleted IS NOT NULL',(identity,))
+                    if not rows:result['missing'].append(key);continue
+                    event=rows[0];rule=parse_rule(event['rule'])
+                    future=rule.preview(after=now+.001,count=1)
+                    if not event['previous_archived'] and not future:
+                        result['pending'].append(key);continue
+                    archived=int(bool(event['previous_archived']) or not future)
+                    self.db.execute('UPDATE events SET deleted=NULL,archived=?,cursor=?,updated=?,next_check=? WHERE id=?',(archived,now,now,now,identity))
+                    self.db.execute("DELETE FROM alerts WHERE event_id=? AND state='cancelled' AND due>?",(identity,now))
+                    self.db.execute("DELETE FROM occurrences WHERE event_id=? AND state='cancelled' AND due>? AND NOT EXISTS(SELECT 1 FROM occurrence_exclusions x WHERE x.event_id=occurrences.event_id AND x.due=occurrences.due)",(identity,now))
+                    self.audit(identity,'event_restored',{})
+                else:
+                    due=key[2]
+                    rows=self.rows('SELECT x.snapshot,e.deleted AS parent_deleted FROM occurrence_exclusions x JOIN events e ON e.id=x.event_id WHERE x.event_id=? AND x.due=? AND x.deleted IS NOT NULL',(identity,due))
+                    if not rows:result['missing'].append(key);continue
+                    snap=json.loads(rows[0]['snapshot'])
+                    if rows[0]['parent_deleted'] is not None or (due<=now and snap['state'] not in ('completed','cancelled')):
+                        result['pending'].append(key);continue
+                    self.db.execute('DELETE FROM occurrence_exclusions WHERE event_id=? AND due=?',(identity,due))
+                    self.db.execute('INSERT OR REPLACE INTO occurrences VALUES(?,?,?,?,?)',(identity,due,snap['state'],snap['answered'],snap['title']))
+                    self.db.execute("DELETE FROM alerts WHERE event_id=? AND due=? AND state='cancelled'",(identity,due))
+                    if snap['state'] not in ('completed','cancelled'):
+                        self.db.execute("INSERT OR IGNORE INTO alerts VALUES(?,?,?,?,?,'pending',NULL,?)",(f'{identity}:{due:.0f}:0',identity,due,0,due,now))
+                        self.db.execute('UPDATE events SET archived=0,next_check=? WHERE id=? AND deleted IS NULL',(now,identity))
+                    self.audit(f'{identity}:{due:.0f}','occurrence_restored',{})
+                result['restored'].append(key)
+        for key in result['restored']:self._event_wake.pop(key[1],None)
+        return result
+
+    def purge_reminders(self, keys):
+        """Permanently remove selected trash rows in one transaction.
+
+        A purged occurrence keeps a content-free exclusion tombstone, so a
+        recurring rule cannot recreate the date after the next tick or restart.
+        """
+        keys=self._reminder_keys(keys);result=self._batch_result()
+        with self.db:
+            # Purge selected children before their parent removes its own rows.
+            for key in sorted(keys,key=lambda key:key[0]=='event'):
+                identity=key[1]
+                if key[0]=='event':
+                    if not self.db.execute('SELECT 1 FROM events WHERE id=? AND deleted IS NOT NULL',(identity,)).fetchone():
+                        result['missing'].append(key);continue
+                    for table in ('alerts','occurrences','occurrence_exclusions'):
+                        self.db.execute(f'DELETE FROM {table} WHERE event_id=?',(identity,))
+                    self.db.execute('DELETE FROM audit WHERE entity=? OR entity LIKE ?',(identity,identity+':%'))
+                    self.db.execute('DELETE FROM events WHERE id=?',(identity,))
+                    self.db.execute('DELETE FROM meta WHERE key=?',('event_input_lunar:'+identity,))
+                else:
+                    due=key[2]
+                    changed=self.db.execute('UPDATE occurrence_exclusions SET deleted=NULL,snapshot=NULL WHERE event_id=? AND due=? AND deleted IS NOT NULL',(identity,due)).rowcount
+                    if not changed:result['missing'].append(key);continue
+                    self.db.execute('DELETE FROM alerts WHERE event_id=? AND due=?',(identity,due))
+                    self.db.execute('DELETE FROM occurrences WHERE event_id=? AND due=?',(identity,due))
+                result['deleted'].append(key)
+        for key in result['deleted']:self._event_wake.pop(key[1],None)
+        return result
+
     def restore_event(self, identity, rule=None):
         rows=self.rows('SELECT * FROM events WHERE id=? AND deleted IS NOT NULL',(identity,))
         if not rows:return False
@@ -375,7 +494,37 @@ class JournalStore:
         return identity
 
     def notes(self, search='', trash=False, offset=0, limit=100):
-        return self.rows('SELECT * FROM notes WHERE deleted IS '+('NOT NULL' if trash else 'NULL')+' AND (title LIKE ? OR body LIKE ?) ORDER BY created DESC,id DESC LIMIT ? OFFSET ?',('%'+search+'%','%'+search+'%',limit,offset))
+        order='deleted DESC,id DESC' if trash else 'created DESC,id DESC'
+        return self.rows('SELECT * FROM notes WHERE deleted IS '+('NOT NULL' if trash else 'NULL')+' AND (title LIKE ? OR body LIKE ?) ORDER BY '+order+' LIMIT ? OFFSET ?',('%'+search+'%','%'+search+'%',-1 if limit is None else limit,offset))
+
+    def note_ids(self, search='', trash=False):
+        """All matching IDs, including records beyond the loaded UI page."""
+        order='deleted DESC,id DESC' if trash else 'created DESC,id DESC'
+        return [row['id'] for row in self.rows('SELECT id FROM notes WHERE deleted IS '+('NOT NULL' if trash else 'NULL')+' AND (title LIKE ? OR body LIKE ?) ORDER BY '+order,('%'+search+'%','%'+search+'%'))]
+
+    def restore_notes(self, identities):
+        result=self._batch_result()
+        with self.db:
+            for identity in dict.fromkeys(identities):
+                changed=self.db.execute('UPDATE notes SET deleted=NULL WHERE id=? AND deleted IS NOT NULL',(identity,)).rowcount
+                result['restored' if changed else 'missing'].append(identity)
+        return result
+
+    def purge_notes(self, identities, *, allow_active=False):
+        """Delete atomically, then collect attachments once after the commit.
+
+        Active-note deletion is deliberate and opt-in. Cleanup failures cannot
+        undo committed note deletion and are reported separately to the UI.
+        """
+        result=self._batch_result()
+        with self.db:
+            for identity in dict.fromkeys(identities):
+                changed=self.db.execute('DELETE FROM notes WHERE id=?'+('' if allow_active else ' AND deleted IS NOT NULL'),(identity,)).rowcount
+                result['deleted' if changed else 'missing'].append(identity)
+        if result['deleted']:
+            try:self.collect_attachments()
+            except Exception as error:result['cleanup_warning']='记录已删除，但部分附件清理未完成：'+str(error)
+        return result
 
     def trash_note(self, identity, restore=False):
         with self.db:
@@ -391,15 +540,26 @@ class JournalStore:
 
     def collect_attachments(self):
         if getattr(self,'background_backup',False):return
-        referenced={r[0] for r in self.db.execute('SELECT DISTINCT file_id FROM note_files')}
+        referenced=self._attachment_references(self.db)
         for backup in (self.root/'backups').glob('*.sqlite3'):
             connection=sqlite3.connect(backup.resolve().as_uri()+'?mode=ro',uri=True)
-            try:referenced.update(r[0] for r in connection.execute('SELECT DISTINCT file_id FROM note_files'))
+            try:referenced.update(self._attachment_references(connection))
             finally:connection.close()
         for row in self.rows('SELECT * FROM files'):
             if row['id'] not in referenced:
                 self.attachment_path(row['relative']).unlink(missing_ok=True)
                 with self.db:self.db.execute('DELETE FROM files WHERE id=?',(row['id'],))
+
+    @staticmethod
+    def _attachment_references(connection):
+        referenced={r[0] for r in connection.execute('SELECT DISTINCT file_id FROM note_files')}
+        # Markdown can refer to an attachment owned by a different note. Keep
+        # those files, including preserved original bodies and retained backups.
+        tables={r[0] for r in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        for table in ('notes','note_originals'):
+            if table in tables:
+                referenced.update(r[0] for r in connection.execute(f'SELECT id FROM files WHERE EXISTS(SELECT 1 FROM {table} WHERE instr(body,files.relative)>0)'))
+        return referenced
 
     def attach(self, note_id, source):
         return self.finish_attachment(note_id,self.prepare_attachment(source))

@@ -1,0 +1,15 @@
+{
+  "version": "2.2.4",
+  "buildPassed": true,
+  "installerScriptSha256": "8328c843725a00aacd6ad5f62f912efddce7281759e0afafbea208022333e17e",
+  "autoStartLabel": "开机自动启动",
+  "windowTitleObserved": "安装 - 美腻枫 CuteMaple 版本 2.2.4",
+  "wizardScreenshotVerified": false,
+  "windowAutomationError": "failed to activate captured window (initial + recovery)",
+  "installed": false,
+  "note": "窗口激活失败，未继续输入；安装文案按本次编译脚本核对。",
+  "finalInstallerSha256": "5ca86ab7297da233a2f669e5a079581496a5a9abdfeba82df0fc0041e7062a36",
+  "windowObservationBuild": "20260917-232740",
+  "finalBuild": "20260917-233643",
+  "sameInstallerScriptAndVersion": true
+}

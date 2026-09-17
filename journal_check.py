@@ -12,7 +12,7 @@ def run(args):
     if (root/'library'/'journal.sqlite3').exists():raise ValueError('Use a fresh profile')
     os.environ['MEINIFENG_PROFILE_DIRECTORY']=str(root)
     output=a.output.resolve();output.mkdir(parents=True,exist_ok=True)
-    from PySide6.QtCore import QTimer,Qt
+    from PySide6.QtCore import QTimer,Qt,QEventLoop
     from journal_store import JournalStore
     from journal_recurrence import Rule,MilestoneRule
     from journal_service import JournalService
@@ -27,6 +27,9 @@ def run(args):
         store.save_note(title,'## 值得记录\n\n一段 **重要** 的文字，和 *一点灵感*。\n\n- 阅读\n- 散步')
         store.save_event(title,'todo' if n%2 else 'schedule','隔离验收。',Rule((now+timedelta(hours=n+1)).isoformat(timespec='seconds')))
     store.save_event('相识的日子','anniversary','',MilestoneRule((now-timedelta(days=99)).replace(hour=9,minute=0,second=0).isoformat(timespec='seconds'),hundreds=True,days=(520,1314)))
+    for n in range(105):
+        identity=store.save_note(f'回收站手记 {n+1:03}','可选择复制的只读正文。');store.trash_note(identity)
+    trash_event=store.save_event('暂存的计划','todo','',Rule((now+timedelta(days=3)).isoformat(timespec='seconds')));store.archive_event(trash_event)
     def observer(app,pet):
         app.styleHints().setColorScheme(Qt.ColorScheme.Dark if a.theme=='dark' else Qt.ColorScheme.Light)
         pet.journal=JournalService(store,pet)
@@ -34,14 +37,15 @@ def run(args):
         window=pet.journal.window
         tasks=[]
         def capture(name):
-            app.processEvents();path=output/(name+'.png');window.grab().save(str(path));report['screens'].append(name)
+            app.processEvents();settle=QEventLoop();QTimer.singleShot(100,settle.quit);settle.exec();app.processEvents()
+            path=output/(name+'.png');window.grab().save(str(path));report['screens'].append(name)
         def begin():
             try:
                 window.show();window.note_editor.load(store.rows('SELECT * FROM notes WHERE id=?',(note_id,))[0])
                 for index,name in enumerate(['overview','reminders','notes','statistics','settings']):
                     def action(i=index,n=name):window.tabs.setCurrentIndex(i);capture(n)
                     tasks.append(action)
-                tasks.append(event_dialog)
+                tasks.append(event_dialog);tasks.append(interaction_check)
                 if a.hardware:tasks.append(record)
                 elif a.playback:tasks.append(check_silent_playback)
                 else:tasks.append(check_independent)
@@ -54,6 +58,17 @@ def run(args):
             if tasks:QTimer.singleShot(400,next_task)
         def event_dialog():
             dialog=EventEditor(store,parent=window,initial_kind='anniversary');dialog.title.setText('相识的日子');dialog.hundreds.setChecked(True);dialog.day520.setChecked(True);dialog.show();app.processEvents();dialog.grab().save(str(output/'event-editor.png'));report['screens'].append('event-editor');dialog.close()
+        def interaction_check():
+            window.tabs.setCurrentIndex(2);window.trash.setChecked(True);window.reset_notes();app.processEvents();capture('notes-trash-readonly')
+            editor=window.note_editor;report['trashReadOnly']=editor.read_only and editor.preview.isReadOnly() and not editor.format_toolbar.isVisible() and not window.note_new.isVisible()
+            window.select_all_notes(True);report['selectAllUnloaded']=len(window.note_checked)==105;capture('notes-trash-all')
+            window.resize(620,420);capture('small-notes-trash');window.resize(1000,700)
+            window.trash.setChecked(False);window.reset_notes();editor.load(store.rows('SELECT * FROM notes WHERE id=?',(note_id,))[0]);editor.mode.setCurrentIndex(1);capture('notes-source-toolbar');editor.mode.setCurrentIndex(0)
+            report['vectorIcons']=all(not button.icon().isNull() for button in (editor.plus,editor.undo,editor.redo))
+            window.tabs.setCurrentIndex(1);window.event_status.setCurrentIndex(2);window.select_all_events(True);capture('reminders-trash-all');window.event_status.setCurrentIndex(0)
+            dialog=EventEditor(store,store.rows('SELECT * FROM events WHERE id=?',(trash_event,))[0],window);dialog.show();app.processEvents();dialog.grab().save(str(output/'reminder-readonly.png'));report['screens'].append('reminder-readonly');report['reminderReadOnly']=dialog.read_only;dialog.close()
+            dialog=EventEditor(store,parent=window);dialog.resize(620,420);dialog.show();dialog.save();app.processEvents();dialog.grab().save(str(output/'event-error.png'));report['screens'].append('event-error');report['visibleValidation']=dialog.error_label.isVisible();dialog.close()
+            if not all(report.get(k) for k in ('trashReadOnly','selectAllUnloaded','vectorIcons','reminderReadOnly','visibleValidation')):report['errors'].append('2.2.4交互验收失败')
         def check_silent_playback():
             import wave
             tone=root/'playback-check.wav'

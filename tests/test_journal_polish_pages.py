@@ -108,7 +108,7 @@ def test_note_sections_never_overlap_when_toolbar_wraps(page,tmp_path):
                 app.processEvents();QTest.qWait(25);app.processEvents()
                 assert editor.pages.height()>=160
                 assert editor.pages.geometry().bottom()<editor.files.geometry().top()
-                assert editor.files.geometry().bottom()<editor.plus.mapTo(editor,editor.plus.rect().topLeft()).y()
+                assert editor.plus.mapTo(editor,editor.plus.rect().bottomRight()).y()<editor.pages.geometry().top()
                 if recording:
                     assert editor.files.geometry().bottom()<editor.media.geometry().top()
 

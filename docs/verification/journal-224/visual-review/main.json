@@ -1,0 +1,2005 @@
+{
+  "status": "passed",
+  "issues": [],
+  "sets": [
+    {
+      "set": "light-100",
+      "uniqueUIFiles": 100,
+      "captureEntries": 101,
+      "uniqueCaptureNames": 100,
+      "reportPassed": true,
+      "horizontalOverflow": {
+        "overview": 0,
+        "reminders": 0,
+        "notes": 0,
+        "statistics": 0,
+        "settings": 0,
+        "month-10": 0,
+        "month-11": 0,
+        "month-12": 0,
+        "notes-trash-none": 0,
+        "notes-trash-multiple": 0,
+        "notes-trash-all": 0,
+        "notes-source": 0,
+        "reminders-trash-none": 0,
+        "reminders-trash-all": 0,
+        "reminders-trash-pending": 0,
+        "small-overview": 0,
+        "small-overview-bottom": 0,
+        "small-reminders": 0,
+        "small-reminders-bottom": 0,
+        "small-notes": 0,
+        "small-notes-bottom": 0,
+        "small-statistics": 0,
+        "small-statistics-bottom": 0,
+        "small-settings": 0,
+        "small-settings-bottom": 0,
+        "small-month-10": 0,
+        "small-month-11": 0,
+        "small-month-12": 0,
+        "small-notes-trash-none": 0,
+        "small-notes-trash-multiple": 0,
+        "small-notes-trash-all": 0,
+        "small-notes-trash-preview-bottom": 0,
+        "small-notes-source": 0,
+        "small-notes-toolbar-bottom": 0,
+        "small-reminders-trash-none": 0,
+        "small-reminders-trash-all": 0,
+        "small-reminders-trash-pending": 0,
+        "reminders-active": 0,
+        "reminders-completed": 0,
+        "reminders-trash": 0,
+        "reminders-search-empty": 0,
+        "notes-trash": 0,
+        "notes-search-empty": 0,
+        "notes-protected": 0,
+        "notes-attachments": 0,
+        "small-recording": 0,
+        "small-recording-bottom": 0,
+        "small-notes-source-bottom": 0,
+        "notes-image": 0,
+        "statistics-day": 0,
+        "statistics-week": 0,
+        "statistics-month": 0,
+        "statistics-year": 0,
+        "statistics-empty": 0,
+        "settings-update-latest": 0,
+        "settings-update-available": 0,
+        "settings-update-error": 0,
+        "settings-backup-feedback": 0,
+        "overview-note-filter": 0,
+        "overview-empty": 0
+      },
+      "nonzeroHorizontalOverflow": {},
+      "missingReportedFiles": [],
+      "unreportedUIFiles": [],
+      "frames": [
+        {
+          "file": "anniversary.png",
+          "contact": "light-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "f1a13f6a0ce278989c1c34f4b7c86c6cf3d95b64af67dd38cc1ac3be6349d7be"
+        },
+        {
+          "file": "delete-confirmation.png",
+          "contact": "light-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "ab0722abed272c3ec5ef021fd92619b1c81c1d06b6f57906e783e2428d815bfe"
+        },
+        {
+          "file": "error-dialog.png",
+          "contact": "light-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "b8767d037352d455e9503782b4b4438a740762d63803150b45d47c6520476b09"
+        },
+        {
+          "file": "event-advanced.png",
+          "contact": "light-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": true,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "dab3e86ab47e0f2d67fe07cd949ac00d58799eb6b692455ba0ca55b67bcb1ec6"
+        },
+        {
+          "file": "event-bubble-long-bottom.png",
+          "contact": "light-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "8927fca2cc8d72663d2c564228171b2097fe7c25eb945367235641e5d86a0287"
+        },
+        {
+          "file": "event-bubble-long.png",
+          "contact": "light-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "d96812d08ac299176bf6cb5b36693d0bef87f8f3b48c156c920af3ecc6f0d406"
+        },
+        {
+          "file": "event-bubble.png",
+          "contact": "light-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "7c52f6424b3b551639317514f8da2c1b715b5d87301781a592eaabce770e2443"
+        },
+        {
+          "file": "event-leap-month.png",
+          "contact": "light-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "150be799eef366d836cd0d95aa4cd55e54e53b431d8663a0c459f546cfa0616c"
+        },
+        {
+          "file": "event-ledger.png",
+          "contact": "light-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "c8f53f893ead52f9e14b6cc5cf5fd26114f02fdf4c72f759f00947872deb77f4"
+        },
+        {
+          "file": "event-save-error.png",
+          "contact": "light-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "a558103ca03bebec0b4757fd81e276b0fd456109802de356e352a0f10cb1c80e"
+        },
+        {
+          "file": "event-validation-error.png",
+          "contact": "light-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": true,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "c2d6604c67031379f1bdf18ca316d7e216a3da7e2c2f8a74f59f2c81bbcb154a"
+        },
+        {
+          "file": "event.png",
+          "contact": "light-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "704020c83f9ec9ecba020e99a8bb2d2861da933d37588a1ca81013a247f2b026"
+        },
+        {
+          "file": "heading-menu.png",
+          "contact": "light-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "803087b7bbe6ddc9ce4368a9e05f7ffc5662461e2b04b7400ba51e74d434119e"
+        },
+        {
+          "file": "health-bubble.png",
+          "contact": "light-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "e85071b3a8826f617d411357b9b25d7761581428dbea47097321006cb915a3c1"
+        },
+        {
+          "file": "health-times.png",
+          "contact": "light-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "d20cbf7e1bb22d60b05793d2633f1eb919a168a450a4ab6ff3b3a4b5b79a424c"
+        },
+        {
+          "file": "insert-link.png",
+          "contact": "light-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "bf6729a5ec39c26e9530a4a29a93d063cc2f22bd709b436c4656124aaa76ff0c"
+        },
+        {
+          "file": "library-selector.png",
+          "contact": "light-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "dcf916db6695e9b3c2d293098b2cfb73cdc043dec4aad52371c6e3074862684c"
+        },
+        {
+          "file": "month-10.png",
+          "contact": "light-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "bfb8c91eb90173ed9b5d109310e523eb9bc3e850bba472f86cba8744a1d59661"
+        },
+        {
+          "file": "month-11.png",
+          "contact": "light-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "b5ea580913b1d196d15a4a887323cc23aa19890ac7272da9922cf5af830661fd"
+        },
+        {
+          "file": "month-12.png",
+          "contact": "light-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "2a5ef121c64a7be6cdc75c9276aeaec11718f07119303531ac73a879f5f41bd6"
+        },
+        {
+          "file": "note-add-menu.png",
+          "contact": "light-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "fc5e6628d4ef0efe50c408d3ac50d49470dacdde7037f4fba7358f6785adf8e4"
+        },
+        {
+          "file": "notes-attachments.png",
+          "contact": "light-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "023eb3fa51a64bfe6fcad8e7e05ed59ae35b14280cc50436b26fae1c8835d904"
+        },
+        {
+          "file": "notes-bulk-confirm.png",
+          "contact": "light-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "2f14c2dc18767c22a9f6f34ad33c41ca036ab0dbbc907578bf7e2e89f31477c6"
+        },
+        {
+          "file": "notes-image.png",
+          "contact": "light-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9f0f9f96cba84a99f5f4e70a664bd632a12a958915662e1733316bab59d0909f"
+        },
+        {
+          "file": "notes-protected.png",
+          "contact": "light-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f13deb94eeb3e9112cce5bb2bfe44312c414b2e45438356a4c93cb39c1cd28bd"
+        },
+        {
+          "file": "notes-search-empty.png",
+          "contact": "light-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "2b8723544f2b3dee2724d2fcef0051eb6cff02f41f15b341e2385cd6f72a8770"
+        },
+        {
+          "file": "notes-source.png",
+          "contact": "light-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "b9678193ea2d7b1d7cc42611b51b6e589b77d4d8213b3d0626abd887c24da8d4"
+        },
+        {
+          "file": "notes-trash-all.png",
+          "contact": "light-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "08ac0098d2bad42f7adfb0710463ee42b0b42ef4c672e391474166aeb076f7b5"
+        },
+        {
+          "file": "notes-trash-multiple.png",
+          "contact": "light-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "dccc6f0c0d4144c99baf7588dfcf8467528fa409b79ed69fdd228b5e4b1550a2"
+        },
+        {
+          "file": "notes-trash-none.png",
+          "contact": "light-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "21c129bdb016affab007706ea427f98770808266ee2bd4ee2e8e486cb4698c9f"
+        },
+        {
+          "file": "notes-trash.png",
+          "contact": "light-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "21c129bdb016affab007706ea427f98770808266ee2bd4ee2e8e486cb4698c9f"
+        },
+        {
+          "file": "notes.png",
+          "contact": "light-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "eceb6146abff916c70896a116b453d984f7fb472fbe6f3a4cbc860d71a6cc93a"
+        },
+        {
+          "file": "overview-empty.png",
+          "contact": "light-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "c6f4164a0d5cc1ea47609e9a1ee7793acbf054cdbbbdd3092dbd1b054594fc8d"
+        },
+        {
+          "file": "overview-note-filter.png",
+          "contact": "light-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "aa90d4c8b92958d1d3c0858912a387d06b119171ec9173f8a57eea343c7c1bee"
+        },
+        {
+          "file": "overview.png",
+          "contact": "light-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "bfb8c91eb90173ed9b5d109310e523eb9bc3e850bba472f86cba8744a1d59661"
+        },
+        {
+          "file": "playback-active.png",
+          "contact": "light-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "4adac1fad8c1d67474d74ab3265b8b81e82c711dc845526d62dd815db7c24638"
+        },
+        {
+          "file": "playback-completed.png",
+          "contact": "light-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "884f73fdd3351b7470a8522b17d155aad3ff3071e1f1c36899d98741fa31be0f"
+        },
+        {
+          "file": "playback-dismissed.png",
+          "contact": "light-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "023eb3fa51a64bfe6fcad8e7e05ed59ae35b14280cc50436b26fae1c8835d904"
+        },
+        {
+          "file": "recording-active-simulated.png",
+          "contact": "light-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "b28efe461eea82cb6b6ffb1beda926dcf061c9f21581f28635effc585319bf4d"
+        },
+        {
+          "file": "recording-collapsed-simulated.png",
+          "contact": "light-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "7695e9dbc12e9a3672dcf28e4ae6b7940af0568e598d6e5aeafc309b08366068"
+        },
+        {
+          "file": "recording-error-simulated.png",
+          "contact": "light-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "e115f1c14350159b74e75219bd0f5de155ba4b64dbc361b5eff24d6212f6074d"
+        },
+        {
+          "file": "recording-idle.png",
+          "contact": "light-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "22cecdd83f3d75a1dc63d8aa90c42b5572c8662a3544230c74f19cbd745088bb"
+        },
+        {
+          "file": "recording-paused-simulated.png",
+          "contact": "light-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "ac4c589b8697f79106e4c331cfb8a82ae6b43f676b5b2b481323815d8c3fe969"
+        },
+        {
+          "file": "reminder-readonly.png",
+          "contact": "light-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "7996477bec814bad10a6dd36ab5c70ceadca062609576e7ea90fe26acfeb4f69"
+        },
+        {
+          "file": "reminders-active.png",
+          "contact": "light-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "c9fe9b7788e033922b3c99a2969961c6c97a0dd0c5b85668e6b68db99f990d2a"
+        },
+        {
+          "file": "reminders-bulk-confirm.png",
+          "contact": "light-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "548402853c0a5ea98d85f46b8419588c592f5c083e26069a2fafa49875278a8a"
+        },
+        {
+          "file": "reminders-completed.png",
+          "contact": "light-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1eaf35fc03c94a663f3762a095b4277367353ff534823411e938fc0ac94aafeb"
+        },
+        {
+          "file": "reminders-pending.png",
+          "contact": "light-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "dc4625927a06e95d2fa38bd1c9aa8b9456159fdca7fa37efbbf6b68005b4ae22"
+        },
+        {
+          "file": "reminders-search-empty.png",
+          "contact": "light-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "d0922c0376a687cf2de8cba51ef8c1300b3e50a4713d8f141c2d82357fab7c4c"
+        },
+        {
+          "file": "reminders-trash-all.png",
+          "contact": "light-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f6e576da13ac210c847abc905417ee3d0481efad7a612a3b9fa6cf62d6fb4ddb"
+        },
+        {
+          "file": "reminders-trash-none.png",
+          "contact": "light-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f2873c3bb7aaa6d88be89525d54c543c1b7dab873735fed7def8ea13e12117a3"
+        },
+        {
+          "file": "reminders-trash-pending.png",
+          "contact": "light-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "2b2d2c6927c53648015b01ee2c7522a384b298849800830270372ecc8ce1387b"
+        },
+        {
+          "file": "reminders-trash.png",
+          "contact": "light-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f2873c3bb7aaa6d88be89525d54c543c1b7dab873735fed7def8ea13e12117a3"
+        },
+        {
+          "file": "reminders.png",
+          "contact": "light-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f894be2aff45984e90ff0bd4d4cfc171578503acf53395ee6a19bcd07555f16e"
+        },
+        {
+          "file": "settings-backup-feedback.png",
+          "contact": "light-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "d95c2b4cc71702fd15303c6250622116161f78bbb75f309d97672e618fa277e4"
+        },
+        {
+          "file": "settings-update-available.png",
+          "contact": "light-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "04789d120e5d19cca709e438bce087ff6fa2e18c49763c92a6811a293776e493"
+        },
+        {
+          "file": "settings-update-error.png",
+          "contact": "light-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1d49b32f4941b52d2085c29f4473331fc2709ba7f092358d42d3062c2482d03f"
+        },
+        {
+          "file": "settings-update-latest.png",
+          "contact": "light-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "c68f097f5df672505db15752674710c72cfade2d5c5467743d8d682531416e66"
+        },
+        {
+          "file": "settings.png",
+          "contact": "light-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "fc0fac476ad47c92499a56c724348eac3b47d908a75135677322344b7594a818"
+        },
+        {
+          "file": "small-anniversary-bottom.png",
+          "contact": "light-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "a8a4c86dd1c2c777e4557a25261599f34f61502204a353b3f06eb81fd396bde4"
+        },
+        {
+          "file": "small-anniversary.png",
+          "contact": "light-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "40e152c428d18b53b80b8a0a0ee5cba303fc27f035813f5d1bd1472dd9e51628"
+        },
+        {
+          "file": "small-event-bottom.png",
+          "contact": "light-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "3a6cfb9b1dfbaa19d2fd3670c56054f871160c4593a95ac8033836ef2268eea6"
+        },
+        {
+          "file": "small-event-save-error.png",
+          "contact": "light-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "5b504657085191c67116632a5aaff9580a91962efb4c060000dd070d64f359ff"
+        },
+        {
+          "file": "small-event.png",
+          "contact": "light-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "03ce66c2d09040082fa92af2d647d78d06bcb794f924b711c31f16530cde94a4"
+        },
+        {
+          "file": "small-month-10.png",
+          "contact": "light-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9971287576b469b8723bbdc2f96714b551d55d0714dfb1289136c017384fbfa0"
+        },
+        {
+          "file": "small-month-11.png",
+          "contact": "light-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "87f19e75368d4e6b7177e6154dae5118b61b1ea2d6d8df39dbac957030be4f95"
+        },
+        {
+          "file": "small-month-12.png",
+          "contact": "light-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "d221b913951d10cf3c5a50da30150d27a9bb6132fc2be9372a85d6c6e17c5488"
+        },
+        {
+          "file": "small-notes-bottom.png",
+          "contact": "light-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9fe31d8235b38a9590ce65621e1f1db3614e2427f408cd97042a246c8431e668"
+        },
+        {
+          "file": "small-notes-bulk-confirm.png",
+          "contact": "light-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "2f14c2dc18767c22a9f6f34ad33c41ca036ab0dbbc907578bf7e2e89f31477c6"
+        },
+        {
+          "file": "small-notes-source-bottom.png",
+          "contact": "light-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "3da28cf021ea585fa865b4fa19618da3c415ca43b3ffb87d2fccf03c2e603894"
+        },
+        {
+          "file": "small-notes-source.png",
+          "contact": "light-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "a09cb54c394e4c0d9f2ef9e49fc31984ed680fa937fc5a783c91165c880ca0fd"
+        },
+        {
+          "file": "small-notes-toolbar-bottom.png",
+          "contact": "light-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9fe31d8235b38a9590ce65621e1f1db3614e2427f408cd97042a246c8431e668"
+        },
+        {
+          "file": "small-notes-trash-all.png",
+          "contact": "light-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1fac0b99f58c2dd0fa8d32ff46e435adafcdf83c51a3cbeab231ba56ab78cd65"
+        },
+        {
+          "file": "small-notes-trash-multiple.png",
+          "contact": "light-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "94394d9b0b142a4a880ed4e6766afd53d15c9b0ef5dba8d7e9eeaefc3e943f39"
+        },
+        {
+          "file": "small-notes-trash-none.png",
+          "contact": "light-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "0faacda245f182a37df419883ca354e85d287dabda0aa9a548e5d38b6985d715"
+        },
+        {
+          "file": "small-notes-trash-preview-bottom.png",
+          "contact": "light-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "51d3ce4f39d701693da9b49e4af79046e6ef6410d7587016a002a079cf379ea2"
+        },
+        {
+          "file": "small-notes.png",
+          "contact": "light-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "6718fe3c5408f830e6a454a819d7e4cf4799480563ea0845cb2c0fca5ec95bbd"
+        },
+        {
+          "file": "small-overview-bottom.png",
+          "contact": "light-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "6a0227be0ef4a560971dcbae9c5004888903b2223cfd91928730035f3398101d"
+        },
+        {
+          "file": "small-overview.png",
+          "contact": "light-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9971287576b469b8723bbdc2f96714b551d55d0714dfb1289136c017384fbfa0"
+        },
+        {
+          "file": "small-recording-bottom.png",
+          "contact": "light-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "5ce0cfa1a8bff0c9096a3afedec04d191958c84d8ac3052f7428dc99f8d00116"
+        },
+        {
+          "file": "small-recording.png",
+          "contact": "light-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f7654a62a07885fef620b87deeb1e6fa50652e50f2bdfcbbfd5a9731b6d5a181"
+        },
+        {
+          "file": "small-reminder-readonly.png",
+          "contact": "light-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "dd3d727625603d48e39d046ba6d55dc3d3beb1981f695d87e09802497bf4caa1"
+        },
+        {
+          "file": "small-reminders-bottom.png",
+          "contact": "light-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "dab77dfed7d5655478cc1561b217852090aab8c01e9378ee5b7c06accb9fa7c8"
+        },
+        {
+          "file": "small-reminders-bulk-confirm.png",
+          "contact": "light-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "548402853c0a5ea98d85f46b8419588c592f5c083e26069a2fafa49875278a8a"
+        },
+        {
+          "file": "small-reminders-pending.png",
+          "contact": "light-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "dc4625927a06e95d2fa38bd1c9aa8b9456159fdca7fa37efbbf6b68005b4ae22"
+        },
+        {
+          "file": "small-reminders-trash-all.png",
+          "contact": "light-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1af7af0fc590334542679865fd3bb6c70d031838cd413578d5b1f28e28a04181"
+        },
+        {
+          "file": "small-reminders-trash-none.png",
+          "contact": "light-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "b819a38d4aef49774e3e3f5e8593d5d69b1ceecb96a317a566b548bd9f540096"
+        },
+        {
+          "file": "small-reminders-trash-pending.png",
+          "contact": "light-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "19747ebabc2bc62e527631b433b322944866a6e00cdc62d8fefd26a11a4c4400"
+        },
+        {
+          "file": "small-reminders.png",
+          "contact": "light-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "059d8f7ce22e39d8228f5b6101d877f4c6467e02cb045cd1fb0692b719bcfd01"
+        },
+        {
+          "file": "small-settings-bottom.png",
+          "contact": "light-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "93c5f48b499cb2bf0363f63232dd0bad1165f09ee8784b4fa9c751608daf5931"
+        },
+        {
+          "file": "small-settings.png",
+          "contact": "light-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f763aabe1fa00c2d27c4e8b23d5a3d57f54e19b7ce191a754bce1d0bee7ba0b5"
+        },
+        {
+          "file": "small-statistics-bottom.png",
+          "contact": "light-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "72ec86478474226ca2a832e93da2aa3d504d5db3aab9694d1742350eb9d82255"
+        },
+        {
+          "file": "small-statistics.png",
+          "contact": "light-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "76d3b3d736211d70c663a8010e8657d4223ec51d76f02b33c5b47316d03290c0"
+        },
+        {
+          "file": "snooze.png",
+          "contact": "light-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "59c7d1dd1697a33fec0c25016f418a1750b6e975cf2fdfb2969f96a8c4fb75cd"
+        },
+        {
+          "file": "statistics-day.png",
+          "contact": "light-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "15ef843d510ff7f2a1b58db5445408ef27fe67d028b5271cb8414d20ff83d27d"
+        },
+        {
+          "file": "statistics-empty.png",
+          "contact": "light-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "bf0baa9be524256110af7752057d00ca8cc16b261649286f7bc568f611265fd6"
+        },
+        {
+          "file": "statistics-month.png",
+          "contact": "light-100-17.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "3146de1d49e07f5dfe85b0c16650da90bf08f41829c47455350e42b33e99f84e"
+        },
+        {
+          "file": "statistics-week.png",
+          "contact": "light-100-17.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "817221f466d7570342f6cc6549ff47898646833b4e56dfcdc65be1b6a2f0ef52"
+        },
+        {
+          "file": "statistics-year.png",
+          "contact": "light-100-17.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "3acd8bd45cfda89d725d66f6be897e0e3ecc76776de0a1f781c5e86d6570b7ed"
+        },
+        {
+          "file": "statistics.png",
+          "contact": "light-100-17.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f20a0f267d31e83db03308ecce8a80f98ecf7e3b60f38918f508154073fddf8f"
+        }
+      ],
+      "reviewedUniqueUIFiles": 100,
+      "iconRecapturePassed": true,
+      "iconRecaptureFiles": [
+        "anniversary.png",
+        "event-advanced.png",
+        "event-leap-month.png",
+        "event-save-error.png",
+        "event-validation-error.png",
+        "event.png",
+        "small-anniversary-bottom.png",
+        "small-anniversary.png",
+        "small-event-bottom.png",
+        "small-event-save-error.png",
+        "small-event.png"
+      ],
+      "iconRecaptureReviewedUniqueUIFiles": 11,
+      "reportSHA256": "6d937fb0e3bca01c9b9def2c933bdaa4e3693f022436c1d147fc7af6b36729df"
+    },
+    {
+      "set": "dark-100",
+      "uniqueUIFiles": 100,
+      "captureEntries": 101,
+      "uniqueCaptureNames": 100,
+      "reportPassed": true,
+      "horizontalOverflow": {
+        "overview": 0,
+        "reminders": 0,
+        "notes": 0,
+        "statistics": 0,
+        "settings": 0,
+        "month-10": 0,
+        "month-11": 0,
+        "month-12": 0,
+        "notes-trash-none": 0,
+        "notes-trash-multiple": 0,
+        "notes-trash-all": 0,
+        "notes-source": 0,
+        "reminders-trash-none": 0,
+        "reminders-trash-all": 0,
+        "reminders-trash-pending": 0,
+        "small-overview": 0,
+        "small-overview-bottom": 0,
+        "small-reminders": 0,
+        "small-reminders-bottom": 0,
+        "small-notes": 0,
+        "small-notes-bottom": 0,
+        "small-statistics": 0,
+        "small-statistics-bottom": 0,
+        "small-settings": 0,
+        "small-settings-bottom": 0,
+        "small-month-10": 0,
+        "small-month-11": 0,
+        "small-month-12": 0,
+        "small-notes-trash-none": 0,
+        "small-notes-trash-multiple": 0,
+        "small-notes-trash-all": 0,
+        "small-notes-trash-preview-bottom": 0,
+        "small-notes-source": 0,
+        "small-notes-toolbar-bottom": 0,
+        "small-reminders-trash-none": 0,
+        "small-reminders-trash-all": 0,
+        "small-reminders-trash-pending": 0,
+        "reminders-active": 0,
+        "reminders-completed": 0,
+        "reminders-trash": 0,
+        "reminders-search-empty": 0,
+        "notes-trash": 0,
+        "notes-search-empty": 0,
+        "notes-protected": 0,
+        "notes-attachments": 0,
+        "small-recording": 0,
+        "small-recording-bottom": 0,
+        "small-notes-source-bottom": 0,
+        "notes-image": 0,
+        "statistics-day": 0,
+        "statistics-week": 0,
+        "statistics-month": 0,
+        "statistics-year": 0,
+        "statistics-empty": 0,
+        "settings-update-latest": 0,
+        "settings-update-available": 0,
+        "settings-update-error": 0,
+        "settings-backup-feedback": 0,
+        "overview-note-filter": 0,
+        "overview-empty": 0
+      },
+      "nonzeroHorizontalOverflow": {},
+      "missingReportedFiles": [],
+      "unreportedUIFiles": [],
+      "frames": [
+        {
+          "file": "anniversary.png",
+          "contact": "dark-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "db7cac1b336d8fd08edc3f2b2bf88601ebb58fa6770ba6a688dfaf0626123239"
+        },
+        {
+          "file": "delete-confirmation.png",
+          "contact": "dark-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1c313d589e6cdef92c45d69ca4c6571c160c795b615b3906b699b29dd1b74580"
+        },
+        {
+          "file": "error-dialog.png",
+          "contact": "dark-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "708ee3529267423ecd5b672bcecd7425863150823bc399895e72314305052786"
+        },
+        {
+          "file": "event-advanced.png",
+          "contact": "dark-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": true,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "d8ca71c3983bda2db47bc3cf2e8939ef40a39c8d2865cac250be4cb2956e2571"
+        },
+        {
+          "file": "event-bubble-long-bottom.png",
+          "contact": "dark-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1f11a7c1b48db294c71c6653144098a0f5fcd2251c2abf3e037397e2f4e2217a"
+        },
+        {
+          "file": "event-bubble-long.png",
+          "contact": "dark-100-01.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "04a38b3a9e81a4eead6b92ad2ca4c020d5ebf250ee72806c8205329e5bc64a4b"
+        },
+        {
+          "file": "event-bubble.png",
+          "contact": "dark-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1d1aa4ae6f5f33cf3cb427f98069e688736a4ea29647126bc28b6fc522ff834a"
+        },
+        {
+          "file": "event-leap-month.png",
+          "contact": "dark-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "6724d07aee9b11bad2d8a2d0971b7b76b0b2449f81f8478eef482f12c83638fb"
+        },
+        {
+          "file": "event-ledger.png",
+          "contact": "dark-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "ccc2c46e58c7194efb15477aed4ddcbf8adcb1e946ebd10239327e178a0b5102"
+        },
+        {
+          "file": "event-save-error.png",
+          "contact": "dark-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "61bcecb38698f020596c7eb83117acedf5c3ad226471a0ac77bc092845b0c953"
+        },
+        {
+          "file": "event-validation-error.png",
+          "contact": "dark-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "64f11b481bd5dbe94883bbec1ab0ce104aeaf9b5f465bc231a2582048b0366d3"
+        },
+        {
+          "file": "event.png",
+          "contact": "dark-100-02.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "2375541e157c93b8bc9d44990858a82739bf4c869d769a6b0e6759a212b9d6ed"
+        },
+        {
+          "file": "heading-menu.png",
+          "contact": "dark-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "d5df638244d9b407d37657896b9162a8eae0cea01acf10ed4e032f942aaf0ab4"
+        },
+        {
+          "file": "health-bubble.png",
+          "contact": "dark-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "577958ec4e47b84b8a6a49b39d8e1d1536a36dded7dc089b281b78f778f29412"
+        },
+        {
+          "file": "health-times.png",
+          "contact": "dark-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "8a04c89efb91320e36a03256d022101f86976a616b59629614a7216f5698d14d"
+        },
+        {
+          "file": "insert-link.png",
+          "contact": "dark-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "eacf696b0fc4a89780b49c052c01ebfc029c72d9590f9b74a59540c4bf3da0a0"
+        },
+        {
+          "file": "library-selector.png",
+          "contact": "dark-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "614da5abf578c69aa4dec8315f53a7e5130bdbf9a9a9b133f4a0fe2bce5d0202"
+        },
+        {
+          "file": "month-10.png",
+          "contact": "dark-100-03.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "e24f9cf12e1a2fff469d33470fc600665fc126d46b85e003a0de2ede76733654"
+        },
+        {
+          "file": "month-11.png",
+          "contact": "dark-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "8df5aa68f681193c7cbc17587418309c8ddb33e5068b0a330544c04e27cf5b17"
+        },
+        {
+          "file": "month-12.png",
+          "contact": "dark-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "2972877113202e584692bf54e7ad44e24ed5b2babf5595932d27b6d1cb6d4d27"
+        },
+        {
+          "file": "note-add-menu.png",
+          "contact": "dark-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "8cce6a39c4a766fbc2a0c679fec45b0fff56c2c626122066af950eb64172258c"
+        },
+        {
+          "file": "notes-attachments.png",
+          "contact": "dark-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9f4c20eb075da0b049f376c687ef7b08d8a21fa4dc9efe0e635ef5503627fc2c"
+        },
+        {
+          "file": "notes-bulk-confirm.png",
+          "contact": "dark-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1f0c90446353995bef3e4aebe44239bff99a6947cdbf87aa14c490586773382d"
+        },
+        {
+          "file": "notes-image.png",
+          "contact": "dark-100-04.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1bb92e91385e7b1933d05eb74df712c8d3bbc6d3d748a644a9a3d4b5f0b9297f"
+        },
+        {
+          "file": "notes-protected.png",
+          "contact": "dark-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "590b978665bbb6c5e8f4b182ca2c6ea35bbc603708c34a9c3abebf400b618de4"
+        },
+        {
+          "file": "notes-search-empty.png",
+          "contact": "dark-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "d8f922dc1b000eb221d8521d3dab3415de524229098c13223eca032aaf0279e4"
+        },
+        {
+          "file": "notes-source.png",
+          "contact": "dark-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "abbd538987c3b458fe69856afe2a8fd79683554e4aa44e5b608db21d7d3dc589"
+        },
+        {
+          "file": "notes-trash-all.png",
+          "contact": "dark-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "7fe039a47bf7917a03149fc80d2a0362275ba8b4c50286df2a2f188c780872c9"
+        },
+        {
+          "file": "notes-trash-multiple.png",
+          "contact": "dark-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "48074b4b1d5cf8520208945223ac560906a7940e73de67dade66d9f6eafc4eb6"
+        },
+        {
+          "file": "notes-trash-none.png",
+          "contact": "dark-100-05.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "612a2be110614453382c13db9f0ba5b4c8117ddbc0afc6940905c1cf470dde57"
+        },
+        {
+          "file": "notes-trash.png",
+          "contact": "dark-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "612a2be110614453382c13db9f0ba5b4c8117ddbc0afc6940905c1cf470dde57"
+        },
+        {
+          "file": "notes.png",
+          "contact": "dark-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "dec8da8987db9da355034111f0a5da1b471684ccdec9bb777bb87e4b5545ebe8"
+        },
+        {
+          "file": "overview-empty.png",
+          "contact": "dark-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "783b905844098a83f7371bb379bd7b5d1ae92708cf850c0c755357776c1d0b04"
+        },
+        {
+          "file": "overview-note-filter.png",
+          "contact": "dark-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "def6ff95054f29a139f61ccbe64ce132b59b4dc298bd2d64fca0101f59dd6679"
+        },
+        {
+          "file": "overview.png",
+          "contact": "dark-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "e24f9cf12e1a2fff469d33470fc600665fc126d46b85e003a0de2ede76733654"
+        },
+        {
+          "file": "playback-active.png",
+          "contact": "dark-100-06.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "14f9b5becba6e3786c755ecb4a6eae28b11af7945e71f8bf123ef06f81537462"
+        },
+        {
+          "file": "playback-completed.png",
+          "contact": "dark-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "991213fa5205c9fc4e92ffc39806cb63a136f6a4865970904ae67ccd0f38267a"
+        },
+        {
+          "file": "playback-dismissed.png",
+          "contact": "dark-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9f4c20eb075da0b049f376c687ef7b08d8a21fa4dc9efe0e635ef5503627fc2c"
+        },
+        {
+          "file": "recording-active-simulated.png",
+          "contact": "dark-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "e9a9aaf6cc5068776ce5f78fe41c86dcd37158d6747f623798067ee014b93b60"
+        },
+        {
+          "file": "recording-collapsed-simulated.png",
+          "contact": "dark-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9a3e5047f53883ba24ca0a13dc62559c6cf9deb8b8aa27e847644e9d94bb5590"
+        },
+        {
+          "file": "recording-error-simulated.png",
+          "contact": "dark-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "fb6cce8b6bf4342690005d6416299ea66b7898d530b745767706fb3c6e2610ac"
+        },
+        {
+          "file": "recording-idle.png",
+          "contact": "dark-100-07.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "aa1214dffca6425b081d9f0624a2c66e12fd6b6a94d7b035783c06b77a159bc6"
+        },
+        {
+          "file": "recording-paused-simulated.png",
+          "contact": "dark-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9e480703bc8466fd6843666ce948da77f8f8897bae2b6e0e2aaf16332541ae7e"
+        },
+        {
+          "file": "reminder-readonly.png",
+          "contact": "dark-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "3ca46bf789fcd047f2ef9d0684fa22930af1846e8b75c3be709fec652db65aed"
+        },
+        {
+          "file": "reminders-active.png",
+          "contact": "dark-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "ba2d15e4dfe3e094a9d4ca97856dc9f7ec510abac59fd9869bb95975ceb5d8b7"
+        },
+        {
+          "file": "reminders-bulk-confirm.png",
+          "contact": "dark-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9147eaabf051900466be528de6c17c4b54e6e53d1179709384069a2f6afb101c"
+        },
+        {
+          "file": "reminders-completed.png",
+          "contact": "dark-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "8f1fcb618378b51a85cea95f2e750b3f874c9d2102c4f318c559e06e11055873"
+        },
+        {
+          "file": "reminders-pending.png",
+          "contact": "dark-100-08.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "a4f4188745dc74cfe9642ebf4d856b2be24bfd511d1ce6bb0e4ddc7fb79694b2"
+        },
+        {
+          "file": "reminders-search-empty.png",
+          "contact": "dark-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "5995f2b16b99f0dbcce0a9ddd2ff46869a0311aa7c33a5513ced6c3973fdb77a"
+        },
+        {
+          "file": "reminders-trash-all.png",
+          "contact": "dark-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "5fc79a99d27110708334cc53eb7901a739762d0bea65fb7f2cfc7e6515f905ce"
+        },
+        {
+          "file": "reminders-trash-none.png",
+          "contact": "dark-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "93b33b0f4952860f75b14235ba2b30bf5f35650019a1ee26f9009c68e30ffb57"
+        },
+        {
+          "file": "reminders-trash-pending.png",
+          "contact": "dark-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "2b4216f20663248fbe43c33414fcac8491cb9f860a5d140f3d7bb82039b58824"
+        },
+        {
+          "file": "reminders-trash.png",
+          "contact": "dark-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "93b33b0f4952860f75b14235ba2b30bf5f35650019a1ee26f9009c68e30ffb57"
+        },
+        {
+          "file": "reminders.png",
+          "contact": "dark-100-09.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "884fdc0cac30efcd31ecb66133b65a82c81d1e9709391e3d683041aa143a0ccc"
+        },
+        {
+          "file": "settings-backup-feedback.png",
+          "contact": "dark-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "90076c798825842fe1481351dc0277ae1b52d50281c092f2940e356725731836"
+        },
+        {
+          "file": "settings-update-available.png",
+          "contact": "dark-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "3bee7c2d4e4f5141a51bd0e59cf1d44011c8e0208ba724b8133ce79ea6357dda"
+        },
+        {
+          "file": "settings-update-error.png",
+          "contact": "dark-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "53af9ab31aa1a23c6dc04c34ef381f77594a8e4e5e4c480fbd54097103ff126e"
+        },
+        {
+          "file": "settings-update-latest.png",
+          "contact": "dark-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "69b86c6c816234eb8d4beb4756e0489e35a99aba9dc205587912a5856e91edb5"
+        },
+        {
+          "file": "settings.png",
+          "contact": "dark-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "31a8a1cf793f1fbbbd144ac039e03493c47ad9f70279bbe50d237359d5c8f7f1"
+        },
+        {
+          "file": "small-anniversary-bottom.png",
+          "contact": "dark-100-10.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "9e635ba06beddb331e3f389a9199e937cbabf12cba0cd24cf5fc7577d0938500"
+        },
+        {
+          "file": "small-anniversary.png",
+          "contact": "dark-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "f1b175c3f4bf935cbe1d104b1e7b45395d3e3bb7ea45a357f2af6eb19ee24a7b"
+        },
+        {
+          "file": "small-event-bottom.png",
+          "contact": "dark-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "5453c5e052585939a9b016cf9ae6ece4584f3867c4f095bcca9ff96893d86d3a"
+        },
+        {
+          "file": "small-event-save-error.png",
+          "contact": "dark-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "c88fcd547bf9b852e985ccf34b5dd460b1e3c3c350444867fcc1486a6667bc69"
+        },
+        {
+          "file": "small-event.png",
+          "contact": "dark-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": true,
+          "result": "pass",
+          "sha256": "3c64c84f7b50b6cfbcd5c3a8ea31f0ac84eb1f2994b75def4275ed73aa43250d"
+        },
+        {
+          "file": "small-month-10.png",
+          "contact": "dark-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "ab9178e4a2d3a5133ff67701595b15fb9b8c1a8153f1a1b9140a31e5e1e33bc4"
+        },
+        {
+          "file": "small-month-11.png",
+          "contact": "dark-100-11.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "5eeb7f6563f15d62e0b9f6dd57e17739af69b995d5a82ff18933111335bfe7e4"
+        },
+        {
+          "file": "small-month-12.png",
+          "contact": "dark-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "236417a33bce74796c9307fa382c90430977f67a1df9016e52c082b61068ec41"
+        },
+        {
+          "file": "small-notes-bottom.png",
+          "contact": "dark-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": true,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "a2752afb0a11a62d61ce27963fca5bd30e7c8416baa621b4d96e868bbf01d1c7"
+        },
+        {
+          "file": "small-notes-bulk-confirm.png",
+          "contact": "dark-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1f0c90446353995bef3e4aebe44239bff99a6947cdbf87aa14c490586773382d"
+        },
+        {
+          "file": "small-notes-source-bottom.png",
+          "contact": "dark-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "08e8b743045ec792f468833e00025138a1d1dcde89e6f9f36b00aa38e42d2746"
+        },
+        {
+          "file": "small-notes-source.png",
+          "contact": "dark-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "c3f08e072a7da88358ef73b913cf3f7df4c67762b1cdee797c8de330b006db19"
+        },
+        {
+          "file": "small-notes-toolbar-bottom.png",
+          "contact": "dark-100-12.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "a2752afb0a11a62d61ce27963fca5bd30e7c8416baa621b4d96e868bbf01d1c7"
+        },
+        {
+          "file": "small-notes-trash-all.png",
+          "contact": "dark-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "4b2286255d8464e406b433d57ba1f1c7bd7da7b2eaefd8ae701b1041f5a4ba2a"
+        },
+        {
+          "file": "small-notes-trash-multiple.png",
+          "contact": "dark-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "6bd896b955b3278bdf5462525a143123aa2aaf19dfbda57313e5c73b1ee700e3"
+        },
+        {
+          "file": "small-notes-trash-none.png",
+          "contact": "dark-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "1923c675c3e214bc8557262242023ff1e063480c285732573319ac96505fbbe2"
+        },
+        {
+          "file": "small-notes-trash-preview-bottom.png",
+          "contact": "dark-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "502028834be253d0c416f24e3a4b04d5f4e5743003ffb9dd2867c9520204df1a"
+        },
+        {
+          "file": "small-notes.png",
+          "contact": "dark-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "decc4012cfbb9cec06a3c00dafe4612b6ff2cfe53d1b2c310df5fa861c991ec3"
+        },
+        {
+          "file": "small-overview-bottom.png",
+          "contact": "dark-100-13.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "dc0b40b6fa85ed5cf2cca10776fbf38fe62e09fa6035e16891f028170e0a1102"
+        },
+        {
+          "file": "small-overview.png",
+          "contact": "dark-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "ab9178e4a2d3a5133ff67701595b15fb9b8c1a8153f1a1b9140a31e5e1e33bc4"
+        },
+        {
+          "file": "small-recording-bottom.png",
+          "contact": "dark-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f308493f659e2e8de88ed847ea9dfa1d3a7a39f710ebe49d80fb369ce98cf8ef"
+        },
+        {
+          "file": "small-recording.png",
+          "contact": "dark-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "6ea60b60f6473c103b7bf928f9ba5156db0d0b031ad86a13c63f321a28d14064"
+        },
+        {
+          "file": "small-reminder-readonly.png",
+          "contact": "dark-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "6ccd2fac21ce060c0e1141a44b05170a118dc533e5a0315ec82adc58a581cb1a"
+        },
+        {
+          "file": "small-reminders-bottom.png",
+          "contact": "dark-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "eb86a29ccc5717805a0009e6647c96c48a269a89682379e00e68ae8107001b23"
+        },
+        {
+          "file": "small-reminders-bulk-confirm.png",
+          "contact": "dark-100-14.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "9147eaabf051900466be528de6c17c4b54e6e53d1179709384069a2f6afb101c"
+        },
+        {
+          "file": "small-reminders-pending.png",
+          "contact": "dark-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "a4f4188745dc74cfe9642ebf4d856b2be24bfd511d1ce6bb0e4ddc7fb79694b2"
+        },
+        {
+          "file": "small-reminders-trash-all.png",
+          "contact": "dark-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "c1f093490d731970cffe352af9bed72569be2e9ee551d217d4b31859c9ec5ad8"
+        },
+        {
+          "file": "small-reminders-trash-none.png",
+          "contact": "dark-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "422ef78b4ba677f0884a9923969e003f34b0eb2b7574277730da2e0897a8ff50"
+        },
+        {
+          "file": "small-reminders-trash-pending.png",
+          "contact": "dark-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "d008ed2e1fa0d55b89bce758f1a43eaa660094dfd818e3622d9e78e693c41a05"
+        },
+        {
+          "file": "small-reminders.png",
+          "contact": "dark-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "72077bb6b904a38050adc19706bad8a52435ed6397f352584ab3a4b692142bec"
+        },
+        {
+          "file": "small-settings-bottom.png",
+          "contact": "dark-100-15.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "703491ffc49630620036266d2b19b1413db37ef9a7008e9e30159daea798298b"
+        },
+        {
+          "file": "small-settings.png",
+          "contact": "dark-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "812faf6dbb8fdbec4c301cdcf137120c870c21d2da9ac2796bdf5a7a20e561ca"
+        },
+        {
+          "file": "small-statistics-bottom.png",
+          "contact": "dark-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "2f7d609391ba0cf4e72ca257531416db105f81a4480e8df8464a98cb9552ceb5"
+        },
+        {
+          "file": "small-statistics.png",
+          "contact": "dark-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "f2bb35bdb5d43219a42edc8c9f2aaa1731fa3e9028b506c563c86a36f5d91c0b"
+        },
+        {
+          "file": "snooze.png",
+          "contact": "dark-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "cacf189d0409269c6fb6348aa0d6d711c0e4616096680d6ae3bf2d5845d8c514"
+        },
+        {
+          "file": "statistics-day.png",
+          "contact": "dark-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "500f5d2d4cd5b3f30b65464805bfca17e4672c02faf5832f0b3be16a1be79206"
+        },
+        {
+          "file": "statistics-empty.png",
+          "contact": "dark-100-16.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "c55c3f38497bcd447a263f7269622cab77e3215bc9bc0ab0af6c0f7424015250"
+        },
+        {
+          "file": "statistics-month.png",
+          "contact": "dark-100-17.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "3ae34dd63f67ceb6795508b4581245b89811f07177705e97cfa31e7ba917cb6f"
+        },
+        {
+          "file": "statistics-week.png",
+          "contact": "dark-100-17.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "31918e62b14e46ee66fcf5dc398d69431cfa08216bbf8b40a42d7c1175817b2f"
+        },
+        {
+          "file": "statistics-year.png",
+          "contact": "dark-100-17.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "27637315d14185c369f049b11c0aa0026479b4c7db5001cdead585992fb06f65"
+        },
+        {
+          "file": "statistics.png",
+          "contact": "dark-100-17.jpg",
+          "reviewed": true,
+          "originalReviewed": false,
+          "iconRecaptureReviewed": false,
+          "result": "pass",
+          "sha256": "ff8d3f840ba96fa4e434e1aef8f9328860927cb1c9f0f41d6fe4b492e3f7d245"
+        }
+      ],
+      "reviewedUniqueUIFiles": 100,
+      "iconRecapturePassed": true,
+      "iconRecaptureFiles": [
+        "anniversary.png",
+        "event-advanced.png",
+        "event-leap-month.png",
+        "event-save-error.png",
+        "event-validation-error.png",
+        "event.png",
+        "small-anniversary-bottom.png",
+        "small-anniversary.png",
+        "small-event-bottom.png",
+        "small-event-save-error.png",
+        "small-event.png"
+      ],
+      "iconRecaptureReviewedUniqueUIFiles": 11,
+      "reportSHA256": "76ae8446d91a7a1c4f328cd2d37334919105e3240dafbd19b6659d24d90591b7"
+    }
+  ],
+  "reviewedUniqueUIFiles": 200,
+  "totalUniqueUIFiles": 200,
+  "passed": true,
+  "reviewer": "visual_inventory",
+  "completedAtUTC": "2026-09-17T15:32:11.917488+00:00",
+  "method": "Every unique UI PNG visually inspected in 34 contact sheets; suspect originals opened; all 22 icon recaptures reinspected after contact regeneration.",
+  "excludedDataFiles": [
+    "light-100/image-fixture.png",
+    "dark-100/image-fixture.png"
+  ],
+  "resolvedIssues": [
+    {
+      "problem": "Disclosure icons initially rendered as colored noise.",
+      "resolution": "Fixed pixmap rendering; regenerated EventEditor captures show clean open/closed chevrons in both themes.",
+      "verification": "All 11 recaptured UI files in each theme reviewed again; event-advanced originals inspected in both themes."
+    }
+  ]
+}

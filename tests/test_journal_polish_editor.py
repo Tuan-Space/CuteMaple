@@ -45,7 +45,7 @@ def test_inline_commands_round_trip_and_original_backup(editor):
     assert store.rows('SELECT body FROM note_originals')[0]['body']==original
     for text,button in [('重点',edit.bold),('斜体',edit.italic),('删除',edit.strike)]:
         select(edit,text);edit.update_format_state();assert button.isChecked()
-    edit.mode.setCurrentIndex(1);assert not edit.format_actions.isVisible();assert edit.edit.toPlainText()==body
+    edit.mode.setCurrentIndex(1);assert all(not group.isVisible() for group in edit.rich_tool_groups);assert edit.edit.toPlainText()==body
     edit.mode.setCurrentIndex(0);assert not edit.preview.literal
 
 

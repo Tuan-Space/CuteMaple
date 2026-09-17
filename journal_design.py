@@ -1,7 +1,7 @@
 """A quiet, readable visual system for the personal journal."""
 from PySide6.QtCore import Qt,QDate,Signal,QSize,QRectF,QPointF
 from PySide6.QtGui import QColor,QFont,QFontDatabase,QFontMetricsF,QPainter,QPen,QPolygonF,QTextDocument,QTextOption,QAbstractTextDocumentLayout,QPalette
-from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QHBoxLayout,QGridLayout,QCheckBox,QSizePolicy,QButtonGroup,QStyledItemDelegate,QStyle,QDateEdit,QComboBox,QStyleOptionComboBox
+from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QHBoxLayout,QGridLayout,QCheckBox,QSizePolicy,QButtonGroup,QStyledItemDelegate,QStyle,QDateEdit,QComboBox,QStyleOptionComboBox,QListWidget
 
 TYPE_NAMES={'todo':'待办','schedule':'日程','anniversary':'纪念日','note':'笔记','habit':'健康'}
 TYPE_ORDER=tuple(TYPE_NAMES)
@@ -76,6 +76,13 @@ QPushButton#primary {{ background:{c['accent']}; color:{c['background']}; font-w
 QPushButton#quiet {{ background:transparent; color:{c['muted']}; }}
 QPushButton#quiet:hover {{ background:{c['hover']}; color:{c['text']}; }}
 QPushButton#quiet:checked {{ background:{c['selection']}; color:{c['selected']}; font-weight:600; }}
+QPushButton#secondary,QPushButton#danger {{ background:{c['button']}; border:1px solid {c['border']}; }}
+QPushButton#danger {{ color:{c['danger']}; }}
+QPushButton#secondary:hover,QPushButton#danger:hover {{ background:{c['hover']}; border-color:{c['accent']}; }}
+QPushButton#secondary:focus,QPushButton#danger:focus {{ border-color:{c['focus']}; }}
+QPushButton#secondary:disabled,QPushButton#danger:disabled {{ color:{c['subtle']}; background:{c['disabled']}; border-color:{c['line']}; }}
+QLabel#error {{ color:{c['danger']}; background:{c['inset']}; padding:8px; border-radius:6px; }}
+QLabel#validationError {{ color:{c['danger']}; font-size:10pt; }}
 QPushButton#nav {{ font-family:'{fonts['display']}'; font-size:12pt; background:transparent; text-align:left; padding:10px 14px; color:{c['muted']}; }}
 QPushButton#nav:checked {{ background:{c['selection']}; color:{c['selected']}; font-weight:600; }}
 QPushButton#filter {{ background:transparent; color:{c['muted']}; padding:6px 12px; }}
@@ -146,6 +153,11 @@ class JournalDateEdit(QDateEdit):
 
 class WrappedItem(QStyledItemDelegate):
     """Readable journal rows; presentation metadata never replaces business data."""
+    def editorEvent(self,event,model,option,index):
+        # Qt's default delegate has an invisible checkbox hit area on the left.
+        # The list owns the single visible checkbox on the right and its scope.
+        if index.data(Qt.CheckStateRole) is not None:return False
+        return super().editorEvent(event,model,option,index)
     def presentation(self,index):
         data=index.data(ITEM_PRESENTATION_ROLE)
         if isinstance(data,dict):return data
@@ -186,7 +198,7 @@ class WrappedItem(QStyledItemDelegate):
             return subtitle,left,available
         return None
     def sizeHint(self,option,index):
-        width=self.parent().viewport().width();doc=self.document(index,width);_,badges_height=self.badge_layout(index,width)
+        width=self.parent().viewport().width();content_width=width-(36 if index.data(Qt.CheckStateRole) is not None else 0);doc=self.document(index,content_width);_,badges_height=self.badge_layout(index,content_width)
         height=doc.size().height()+28+(badges_height+8 if badges_height else 0)
         return QSize(width,max(64,int(height)))
     def paint(self,painter,option,index):
@@ -198,18 +210,86 @@ class WrappedItem(QStyledItemDelegate):
             painter.setPen(QPen(QColor(c['line']),1));painter.drawLine(QPointF(option.rect.left()+16,option.rect.bottom()),QPointF(option.rect.right()-16,option.rect.bottom()))
         if option.state & QStyle.State_HasFocus:
             painter.setPen(QPen(QColor(c['focus']),1));painter.setBrush(Qt.NoBrush);painter.drawRoundedRect(QRectF(option.rect).adjusted(3,2,-3,-2),7,7)
+        check=index.data(Qt.CheckStateRole);content_width=option.rect.width()-(36 if check is not None else 0)
+        if check is not None:
+            rect=self.check_rect(option.rect);on=check in (Qt.Checked,Qt.Checked.value)
+            painter.setBrush(QColor(c['accent'] if on else c['card']));painter.setPen(QPen(QColor(c['accent'] if on else c['border']),1.5));painter.drawRoundedRect(rect,4,4)
+            if on:
+                painter.setPen(QPen(QColor(c['card']),2,Qt.SolidLine,Qt.RoundCap,Qt.RoundJoin));painter.drawPolyline(QPolygonF([QPointF(rect.left()+4,rect.top()+9),QPointF(rect.left()+8,rect.top()+13),QPointF(rect.left()+14,rect.top()+5)]))
         painter.translate(option.rect.x()+16,option.rect.y()+14)
-        doc=self.document(index,option.rect.width());ctx=QAbstractTextDocumentLayout.PaintContext();ctx.palette.setColor(QPalette.Text,QColor(c['selected'] if selected else c['text']));doc.documentLayout().draw(painter,ctx)
-        badges,_=self.badge_layout(index,option.rect.width());painter.translate(0,doc.size().height()+8);painter.setFont(journal_font('body',8.5))
+        doc=self.document(index,content_width);ctx=QAbstractTextDocumentLayout.PaintContext();ctx.palette.setColor(QPalette.Text,QColor(c['selected'] if selected else c['text']));doc.documentLayout().draw(painter,ctx)
+        badges,_=self.badge_layout(index,content_width);painter.translate(0,doc.size().height()+8);painter.setFont(journal_font('body',8.5))
         for text,color,rect in badges:
             fill=QColor(color);fill.setAlpha(28 if QColor(c['background']).lightness()<128 else 18)
             painter.setPen(Qt.NoPen);painter.setBrush(fill);painter.drawRoundedRect(rect,5,5)
             painter.setPen(QColor(color));painter.drawText(rect,Qt.AlignCenter,text)
-        subtitle=self.inline_subtitle(index,option.rect.width())
+        subtitle=self.inline_subtitle(index,content_width)
         if subtitle:
             text,left,width=subtitle;painter.setFont(journal_font('body',9));painter.setPen(QColor(c['muted']))
             painter.drawText(QRectF(left,0,width,21),Qt.AlignVCenter|Qt.AlignLeft,text)
         painter.restore()
+
+    @staticmethod
+    def check_rect(rect):return QRectF(rect.right()-30,rect.center().y()-9,18,18)
+
+
+class CheckableJournalList(QListWidget):
+    """The right checkbox changes the batch scope without changing the preview."""
+    checkChanged=Signal(object,bool)
+    def toggle_item(self,item):
+        if item is None or item.data(Qt.CheckStateRole) is None:return
+        checked=item.checkState()!=Qt.Checked;item.setCheckState(Qt.Checked if checked else Qt.Unchecked);self.checkChanged.emit(item,checked)
+    def checkbox_at(self,pos):
+        item=self.itemAt(pos)
+        return item if item and item.data(Qt.CheckStateRole) is not None and WrappedItem.check_rect(self.visualItemRect(item)).adjusted(-7,-9,7,9).contains(pos) else None
+    def mousePressEvent(self,event):
+        self._check_press=self.checkbox_at(event.position().toPoint()) if event.button()==Qt.LeftButton else None
+        if self._check_press is not None:event.accept();return
+        super().mousePressEvent(event)
+    def mouseReleaseEvent(self,event):
+        pressed=getattr(self,'_check_press',None);self._check_press=None
+        if pressed is not None:
+            if self.checkbox_at(event.position().toPoint()) is pressed:self.toggle_item(pressed)
+            event.accept();return
+        super().mouseReleaseEvent(event)
+    def keyPressEvent(self,event):
+        if event.key()==Qt.Key_Space and self.currentItem() and self.currentItem().data(Qt.CheckStateRole) is not None:
+            self.toggle_item(self.currentItem());event.accept();return
+        super().keyPressEvent(event)
+
+
+class BatchCheckBox(QCheckBox):
+    def paintEvent(self,event):
+        super().paintEvent(event)
+        if self.checkState()==Qt.Unchecked:return
+        from PySide6.QtWidgets import QStyleOptionButton
+        option=QStyleOptionButton();self.initStyleOption(option);rect=self.style().subElementRect(QStyle.SE_CheckBoxIndicator,option,self)
+        c=colors(self);p=QPainter(self);p.setRenderHint(QPainter.Antialiasing);p.setPen(QPen(QColor(c['card'] if self.checkState()==Qt.Checked else c['text']),2,Qt.SolidLine,Qt.RoundCap,Qt.RoundJoin));x,y=rect.center().x(),rect.center().y()
+        if self.checkState()==Qt.PartiallyChecked:p.drawLine(QPointF(x-4,y),QPointF(x+4,y))
+        else:p.drawPolyline(QPolygonF([QPointF(x-4,y),QPointF(x-1,y+3),QPointF(x+4,y-3)]))
+
+
+class TrashBar(QWidget):
+    selectAllRequested=Signal(bool)
+    restoreRequested=Signal()
+    deleteRequested=Signal()
+    attentionRequested=Signal()
+    def __init__(self,parent=None):
+        super().__init__(parent);self.setObjectName('surface');self.setAttribute(Qt.WA_StyledBackground)
+        box=QVBoxLayout(self);box.setContentsMargins(12,10,12,10);box.setSpacing(8)
+        row=QHBoxLayout();self.all=BatchCheckBox();self.all.clicked.connect(self.selectAllRequested);row.addWidget(self.all);row.addStretch();self.count=QLabel('已选 0 项');self.count.setObjectName('muted');row.addWidget(self.count);box.addLayout(row)
+        row=QHBoxLayout();self.restore=QPushButton('恢复选中');self.delete=QPushButton('永久删除选中');self.restore.setObjectName('secondary');self.delete.setObjectName('danger')
+        for button,signal in ((self.restore,self.restoreRequested),(self.delete,self.deleteRequested)):
+            button.setMinimumWidth(126);button.setCursor(Qt.PointingHandCursor);button.clicked.connect(signal);row.addWidget(button)
+        row.addStretch();box.addLayout(row)
+        self.result=QLabel();self.result.setWordWrap(True);self.result.setObjectName('pageDescription');self.result.hide();box.addWidget(self.result)
+        self.attention=QPushButton('查看待处理项目');self.attention.setObjectName('secondary');self.attention.clicked.connect(self.attentionRequested);self.attention.hide();box.addWidget(self.attention,0,Qt.AlignLeft)
+        self.update_selection(0,0)
+    def update_selection(self,total,selected):
+        self.all.setText(f'全选当前结果（共 {total} 项）');self.all.setEnabled(total>0);self.all.setTristate(0<selected<total);self.all.setCheckState(Qt.Checked if total and selected==total else Qt.PartiallyChecked if selected else Qt.Unchecked)
+        self.count.setText(f'已选 {selected} 项');self.restore.setEnabled(selected>0);self.delete.setEnabled(selected>0)
+    def feedback(self,text='',pending=False):
+        self.result.setText(text);self.result.setVisible(bool(text));self.attention.setVisible(pending)
 
 class Toggle(QCheckBox):
     def __init__(self,text='',parent=None):
@@ -264,7 +344,7 @@ class MonthCalendar(QWidget):
         self.year=ThemedSpinBox();self.year.setRange(1900,2199);self.year.setSuffix(' 年');self.year.setFixedWidth(108);self.month=MonthPicker();self.month.addItems([str(n)+' 月' for n in range(1,13)]);self.month.setSizeAdjustPolicy(QComboBox.AdjustToContents);self.month.setSizePolicy(QSizePolicy.Minimum,QSizePolicy.Fixed);header.addWidget(self.year);header.addWidget(self.month)
         for text,action in [('‹',lambda:self.shift(-1)),('›',lambda:self.shift(1))]:
             b=QPushButton(text);b.setObjectName('quiet');b.setFixedWidth(34);b.clicked.connect(action);header.addWidget(b)
-        header.addStretch();self.today=QPushButton('今天');self.today.setToolTip('回到今天');self.today.setObjectName('quiet');self.today.clicked.connect(lambda:self.setSelectedDate(QDate.currentDate()));header.addWidget(self.today);outer.addLayout(header)
+        header.addStretch();self.today=QPushButton('今天');self.today.setToolTip('回到今天');self.today.setObjectName('secondary');self.today.setCursor(Qt.PointingHandCursor);self.today.clicked.connect(lambda:self.setSelectedDate(QDate.currentDate()));header.addWidget(self.today);outer.addLayout(header)
         self.year.valueChanged.connect(lambda y:self.setCurrentPage(y,self.monthShown()));self.month.currentIndexChanged.connect(lambda m:self.setCurrentPage(self.yearShown(),m+1));grid=QGridLayout();grid.setSpacing(2);self.cells=[]
         for col,name in enumerate(['一','二','三','四','五','六','日']):
             label=QLabel(name);label.setObjectName('muted');label.setAlignment(Qt.AlignCenter);grid.addWidget(label,0,col);grid.setColumnStretch(col,1)
