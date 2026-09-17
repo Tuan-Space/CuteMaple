@@ -3,8 +3,9 @@ from __future__ import annotations
 import random
 from datetime import datetime
 from PySide6.QtCore import Qt, Signal, QRect
-from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QDialog,QSpinBox,QComboBox,QDialogButtonBox,QMessageBox
+from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QDialog,QSpinBox,QComboBox,QDialogButtonBox,QMessageBox,QScrollArea,QSizePolicy
 from monitor_ui import ThemeBinding,clamp_rect
+from monitor_ui import ThemedSpinBox as QSpinBox,ThemedComboBox as QComboBox
 from journal_store import HABITS
 
 MESSAGES={
@@ -15,16 +16,18 @@ MESSAGES={
 
 def snooze_seconds(parent):
     dialog=QDialog(parent); dialog.setWindowTitle('稍后提醒'); dialog.theme=ThemeBinding(dialog,'journal')
-    layout=QVBoxLayout(dialog); layout.addWidget(QLabel('从现在开始，过多久再提醒？'))
+    dialog.resize(400,230);layout=QVBoxLayout(dialog);layout.setContentsMargins(20,20,20,20);layout.setSpacing(16);title=QLabel('给自己留一点时间');title.setObjectName('section');layout.addWidget(title)
+    caption=QLabel('从现在开始，过多久再提醒？');caption.setObjectName('muted');layout.addWidget(caption)
     presets=QHBoxLayout(); result=[]
     for text,value in [('10 分钟',600),('1 小时',3600),('1 天',86400)]:
         button=QPushButton(text); button.clicked.connect(lambda _,v=value:(result.append(v),dialog.accept())); presets.addWidget(button)
     layout.addLayout(presets)
     row=QHBoxLayout(); amount=QSpinBox(); amount.setRange(1,366); amount.setValue(10); unit=QComboBox(); unit.addItems(['分钟','小时','天']); row.addWidget(amount); row.addWidget(unit); layout.addLayout(row)
     buttons=QDialogButtonBox(QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
-    buttons.button(QDialogButtonBox.Ok).setText('确定');buttons.button(QDialogButtonBox.Cancel).setText('取消')
+    buttons.button(QDialogButtonBox.Ok).setText('确定');buttons.button(QDialogButtonBox.Ok).setObjectName('primary');buttons.button(QDialogButtonBox.Cancel).setText('取消')
     buttons.accepted.connect(lambda:(result.append(amount.value()*[60,3600,86400][unit.currentIndex()]),dialog.accept())); buttons.rejected.connect(dialog.reject); layout.addWidget(buttons)
-    return result[0] if dialog.exec()==QDialog.Accepted else None
+    accepted=dialog.exec()==QDialog.Accepted;dialog.deleteLater()
+    return result[0] if accepted else None
 
 
 class ReminderBubble(QWidget):
@@ -34,13 +37,15 @@ class ReminderBubble(QWidget):
         super().__init__(None,Qt.Tool|Qt.FramelessWindowHint|Qt.WindowStaysOnTopHint|Qt.WindowDoesNotAcceptFocus)
         self.setAttribute(Qt.WA_ShowWithoutActivating)
         self.store,self.pet=store,pet; self.current=None; self.items=[]; self.text_cache={}; self.last_phrase={};self.save_errors={}
-        self.setObjectName('journalBubble'); self.setFixedWidth(370)
+        self.setObjectName('journalBubble'); self.setFixedWidth(370);self.setAttribute(Qt.WA_StyledBackground)
         self.theme=ThemeBinding(self,'journal')
-        layout=QVBoxLayout(self); layout.setContentsMargins(16,12,16,12); layout.setSpacing(9)
-        header=QHBoxLayout(); self.heading=QLabel('美腻枫 · 小提醒'); self.heading.setObjectName('section'); header.addWidget(self.heading); header.addStretch()
+        layout=QVBoxLayout(self); layout.setContentsMargins(18,16,18,16); layout.setSpacing(12)
+        header=QHBoxLayout(); self.heading=QLabel('小提醒'); self.heading.setObjectName('section'); header.addWidget(self.heading); header.addStretch()
         self.count=QLabel();self.count.setObjectName('muted'); header.addWidget(self.count); layout.addLayout(header)
-        self.text=QLabel(); self.text.setTextFormat(Qt.PlainText); self.text.setWordWrap(True); layout.addWidget(self.text)
-        self.meta=QLabel(); self.meta.setWordWrap(True); self.meta.setObjectName('metricName'); layout.addWidget(self.meta)
+        self.content_area=QScrollArea();self.content_area.setWidgetResizable(True);self.content_area.setFrameShape(QScrollArea.NoFrame);self.content_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff);self.content_area.viewport().setObjectName('journalViewport');layout.addWidget(self.content_area)
+        self.content_card=QWidget();self.content_card.setObjectName('surface');self.content_card.setAttribute(Qt.WA_StyledBackground);content=QVBoxLayout(self.content_card);content.setContentsMargins(14,12,14,12);content.setSpacing(10);self.content_area.setWidget(self.content_card)
+        self.text=QLabel(); self.text.setTextFormat(Qt.PlainText); self.text.setWordWrap(True);self.text.setSizePolicy(QSizePolicy.Ignored,QSizePolicy.Preferred);self.text.setObjectName('cardTitle'); content.addWidget(self.text)
+        self.meta=QLabel(); self.meta.setWordWrap(True);self.meta.setSizePolicy(QSizePolicy.Ignored,QSizePolicy.Preferred); self.meta.setObjectName('metricName'); content.addWidget(self.meta)
         actions=QHBoxLayout(); self.ack=QPushButton('知道了'); self.done=QPushButton('已完成'); self.later=QPushButton('稍后提醒')
         self.done.setObjectName('primary')
         for widget in (self.ack,self.done,self.later): actions.addWidget(widget)
@@ -66,12 +71,14 @@ class ReminderBubble(QWidget):
         self.count.setVisible(multiple);self.previous.setVisible(multiple);self.following.setVisible(multiple)
         if row['habit']:
             kind=row['habit']
+            self.heading.setText('照顾自己 · '+HABITS[kind][0])
             if row['id'] not in self.text_cache:
                 options=[s for s in MESSAGES[kind] if s!=self.last_phrase.get(kind)]
                 self.text_cache[row['id']]=self.last_phrase[kind]=random.choice(options)
             self.text.setText(self.text_cache[row['id']]); self.meta.setText('');self.meta.hide()
             self.done.setText('已喝水' if kind=='water' else '已完成'); self.later.setText('未喝水' if kind=='water' else '未完成'); self.ack.hide()
         else:
+            self.heading.setText('日程提醒' if row.get('kind')=='schedule' else '小提醒')
             self.meta.show()
             due=datetime.fromtimestamp(row['due']).strftime('%Y-%m-%d %H:%M:%S')
             remaining=max(0,round((row['due']-self.store.clock())/60))
@@ -103,8 +110,16 @@ class ReminderBubble(QWidget):
         if seconds: self.respond('snooze',seconds)
 
     def follow(self):
-        self.adjustSize()
         area=self.pet._screen_area()
+        # Measure at the real card width, reserving room for its scrollbar.
+        # A long reminder scrolls inside the card; response actions stay visible.
+        margins=self.layout().contentsMargins();text_width=max(40,self.width()-margins.left()-margins.right()-38)
+        text_height=max(self.text.fontMetrics().height(),self.text.heightForWidth(text_width));self.text.setMinimumHeight(text_height)
+        meta_height=max(self.meta.fontMetrics().height(),self.meta.heightForWidth(text_width)) if not self.meta.isHidden() else 0;self.meta.setMinimumHeight(meta_height)
+        content_height=text_height+meta_height+26+(10 if meta_height else 0);self.content_card.setMinimumHeight(content_height)
+        self.layout().invalidate();other_height=self.layout().minimumSize().height()-self.content_area.minimumHeight()
+        self.content_area.setFixedHeight(min(content_height,max(48,area.height()-other_height-16)))
+        self.adjustSize()
         if self.pet.isVisible() and not self.pet._pet_hidden:
             anchor=self.pet._bubble_anchor_rect()
             x=anchor.center().x()-self.width()//2

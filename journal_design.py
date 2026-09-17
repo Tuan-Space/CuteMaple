@@ -1,36 +1,82 @@
 """A quiet, readable visual system for the personal journal."""
 from PySide6.QtCore import Qt,QDate,Signal,QSize,QRectF,QPointF
-from PySide6.QtGui import QColor,QFont,QPainter,QPen,QPolygonF,QTextDocument,QTextOption,QAbstractTextDocumentLayout,QPalette
-from PySide6.QtWidgets import QWidget,QPushButton,QLabel,QVBoxLayout,QHBoxLayout,QGridLayout,QCheckBox,QSizePolicy,QButtonGroup,QStyledItemDelegate,QStyle,QDateEdit
+from PySide6.QtGui import QColor,QFont,QFontDatabase,QFontMetricsF,QPainter,QPen,QPolygonF,QTextDocument,QTextOption,QAbstractTextDocumentLayout,QPalette
+from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QVBoxLayout,QHBoxLayout,QGridLayout,QCheckBox,QSizePolicy,QButtonGroup,QStyledItemDelegate,QStyle,QDateEdit,QComboBox,QStyleOptionComboBox
 
 TYPE_NAMES={'todo':'待办','schedule':'日程','anniversary':'纪念日','note':'笔记','habit':'健康'}
 TYPE_ORDER=tuple(TYPE_NAMES)
+ITEM_PRESENTATION_ROLE=int(Qt.UserRole)+1
+
+
+def load_journal_fonts():
+    """Share the packaged display face while retaining a readable body face."""
+    import os
+    from pathlib import Path
+    app=QApplication.instance()
+    if app is None:return {'body':'Microsoft YaHei UI','display':'Microsoft YaHei UI'}
+    cached=getattr(app,'_journal_fonts',None)
+    if cached:return cached
+    families=QFontDatabase.families()
+    if 'Microsoft YaHei UI' not in families:
+        # Offscreen verification must use the same Windows body font as the app.
+        font_root=Path(os.environ.get('WINDIR','C:/Windows'))/'Fonts'
+        for filename in ('msyh.ttc','msyhbd.ttc'):
+            path=font_root/filename
+            if path.is_file():QFontDatabase.addApplicationFont(str(path))
+        families=QFontDatabase.families()
+    body=next((name for name in ('Microsoft YaHei UI','Microsoft YaHei','Noto Sans CJK SC','Segoe UI') if name in families),QFontDatabase.systemFont(QFontDatabase.GeneralFont).family())
+    from pet_core import resource_root
+    font_id=QFontDatabase.addApplicationFont(str(resource_root()/'assets'/'fonts'/'雅痞-简+常规体.otf'))
+    display=QFontDatabase.applicationFontFamilies(font_id) if font_id>=0 else []
+    result={'body':body,'display':display[0] if display else body}
+    if app is not None:app._journal_fonts=result
+    return result
+
+
+def journal_font(role='body',point_size=None):
+    fonts=load_journal_fonts();display=role in ('display','title','section','nav','empty')
+    font=QFont(fonts['display' if display else 'body'])
+    font.setPointSizeF(point_size if point_size is not None else 11 if display else 10)
+    font.setHintingPreference(QFont.PreferVerticalHinting)
+    font.setStyleStrategy(QFont.PreferAntialias|QFont.PreferQuality)
+    return font
 
 def palette(dark=False):
     if dark:
-        return dict(background='#1d2835',card='#263443',inset='#202e3d',border='#415970',text='#eaf3fc',muted='#abbdd0',accent='#87bbff',button='#314357',hover='#3b5067',pressed='#46617e',disabled='#293746',focus='#87bbff',status='#2c435c',selection='#365c83',selected='#f1f7ff',soft='#314357',todo='#ffb46a',schedule='#54d6d1',anniversary='#d2a0ff',note='#73acff',habit='#9bd761',outside='#6c8298',weekend='#87bbff',maple='#f3ac69')
-    return dict(background='#edf5ff',card='#ffffff',inset='#f2f7fd',border='#cbdcf0',text='#243e59',muted='#596f86',accent='#346fca',button='#e2edfb',hover='#d6e7fd',pressed='#c3dbfa',disabled='#ecf2f8',focus='#346fca',status='#e4efff',selection='#d5e7ff',selected='#194b8f',soft='#e8f1fd',todo='#ce6614',schedule='#008b8b',anniversary='#974ad2',note='#3478e7',habit='#4b8c20',outside='#a1afbe',weekend='#397bd8',maple='#c87531')
+        return dict(background='#1d2835',card='#263544',inset='#21303f',border='#445d73',line='#354b5f',subtle='#8195aa',secondary='#c1d0df',text='#eaf2fa',muted='#a2b7ca',accent='#91bdff',button='#30475e',hover='#354e66',pressed='#40627e',disabled='#2b3948',focus='#91bdff',status='#2c4055',selection='#304d6d',selected='#edf5ff',soft='#293e53',todo='#ffb369',schedule='#81b3ff',anniversary='#c2a0ff',note='#f48cba',habit='#89d098',outside='#71869c',weekend='#aacbff',maple='#f3ac69',success='#89d098',warning='#ffbe78',danger='#ff9f9f')
+    return dict(background='#edf4fc',card='#fbfdff',inset='#f0f5fb',border='#cbd9e8',line='#dee7f1',subtle='#7c8ea1',secondary='#49627c',text='#263e56',muted='#60758b',accent='#326cc1',button='#e4edf9',hover='#dce9fa',pressed='#cbdff6',disabled='#eaf0f7',focus='#326cc1',status='#eaf2fc',selection='#dfebfc',selected='#204f91',soft='#eaf2fb',todo='#bd6518',schedule='#326ed1',anniversary='#8551bd',note='#bf4677',habit='#33854a',outside='#99aaba',weekend='#3974c8',maple='#c87531',success='#33854a',warning='#a86b18',danger='#b54b50')
 
 def style(c):
+    fonts=load_journal_fonts()
     return f"""
 QWidget#journalWindow, QWidget#journalBubble, QWidget#journalPage, QWidget#journalViewport, QDialog {{ background:{c['background']}; color:{c['text']}; }}
-QWidget {{ font-family:'Microsoft YaHei UI','Segoe UI'; font-size:10pt; }}
+QWidget {{ font-family:'{fonts['body']}'; font-size:10pt; }}
 QLabel,QCheckBox {{ color:{c['text']}; background:transparent; }}
-QLabel#title {{ font-size:19pt; font-weight:600; }}
-QLabel#section {{ font-size:11pt; font-weight:600; }}
+QLabel#title {{ font-family:'{fonts['display']}'; font-size:22pt; font-weight:400; }}
+QLabel#section,QLabel#emptyTitle {{ font-family:'{fonts['display']}'; font-size:12pt; font-weight:400; }}
+QLabel#cardTitle {{ color:{c['text']}; font-weight:600; }}
+QLabel#pageDescription {{ color:{c['secondary']}; font-size:9pt; }}
+QLabel#metricValue {{ color:{c['text']}; font-size:23pt; font-weight:600; }}
+QWidget#journalSidebar {{ border-right:1px solid {c['line']}; }}
+QProgressBar#habitProgress {{ background:{c['inset']}; border:0; border-radius:2px; }}
+QProgressBar#habitProgress::chunk {{ background:{c['habit']}; border:0; border-radius:2px; }}
 QLabel#metricName,QLabel#muted {{ color:{c['muted']}; font-size:9pt; }}
 QLabel#status {{ color:{c['muted']}; padding:8px; background:{c['inset']}; border-radius:8px; }}
-QWidget#surface {{ background:{c['card']}; border-radius:12px; }}
+QWidget#surface,QWidget#sectionCard {{ background:{c['card']}; border:1px solid {c['line']}; border-radius:12px; }}
+QWidget#formatToolbar {{ background:{c['inset']}; border:1px solid {c['line']}; border-radius:8px; }}
+QWidget#mediaPanel {{ background:{c['inset']}; border:1px solid {c['border']}; border-radius:10px; }}
+QLabel#mediaStatus,QLabel#noteFormatHint {{ color:{c['muted']}; font-size:9pt; }}
 QPushButton,QToolButton {{ background:{c['button']}; color:{c['text']}; border:1px solid transparent; border-radius:7px; padding:7px 12px; min-height:18px; }}
 QPushButton:hover,QToolButton:hover {{ background:{c['hover']}; }}
 QPushButton:pressed {{ background:{c['pressed']}; }}
+QPushButton:checked,QToolButton:checked {{ background:{c['selection']}; color:{c['selected']}; border-color:{c['border']}; }}
 QPushButton:disabled {{ color:{c['muted']}; background:{c['disabled']}; }}
 QPushButton:focus,QToolButton:focus {{ border-color:{c['focus']}; }}
 QPushButton#primary {{ background:{c['accent']}; color:{c['background']}; font-weight:600; }}
 QPushButton#quiet {{ background:transparent; color:{c['muted']}; }}
 QPushButton#quiet:hover {{ background:{c['hover']}; color:{c['text']}; }}
 QPushButton#quiet:checked {{ background:{c['selection']}; color:{c['selected']}; font-weight:600; }}
-QPushButton#nav {{ background:transparent; text-align:left; padding:10px 14px; color:{c['muted']}; }}
+QPushButton#nav {{ font-family:'{fonts['display']}'; font-size:12pt; background:transparent; text-align:left; padding:10px 14px; color:{c['muted']}; }}
 QPushButton#nav:checked {{ background:{c['selection']}; color:{c['selected']}; font-weight:600; }}
 QPushButton#filter {{ background:transparent; color:{c['muted']}; padding:6px 12px; }}
 QPushButton#filter:checked {{ background:{c['selection']}; color:{c['selected']}; font-weight:600; }}
@@ -38,6 +84,7 @@ QPushButton#calendarDay {{ padding:0; min-width:36px; min-height:58px; border:0;
 QSpinBox::up-button,QTimeEdit::up-button,QDateTimeEdit::up-button {{ width:18px; border:0; background:transparent; }}
 QSpinBox::down-button,QTimeEdit::down-button,QDateTimeEdit::down-button {{ width:18px; border:0; background:transparent; }}
 QLineEdit,QComboBox,QSpinBox,QTimeEdit,QDateEdit,QDateTimeEdit {{ background:{c['inset']}; color:{c['text']}; border:1px solid transparent; border-radius:7px; padding:7px 10px; min-height:19px; selection-background-color:{c['selection']}; selection-color:{c['selected']}; }}
+QLineEdit:hover,QComboBox:hover,QSpinBox:hover,QDateEdit:hover,QTimeEdit:hover {{ border-color:{c['line']}; }}
 QLineEdit:focus,QComboBox:focus,QSpinBox:focus,QTimeEdit:focus,QDateEdit:focus,QDateTimeEdit:focus {{ border-color:{c['focus']}; }}
 QLineEdit#noteTitle {{ background:{c['card']}; font-size:15pt; font-weight:600; padding:6px 0; }}
 QComboBox {{ padding-right:24px; }}
@@ -46,12 +93,18 @@ QComboBox::down-arrow {{ image:none; }}
 QDateEdit::drop-down {{ border:0; width:22px; }}
 QDateEdit::down-arrow {{ image:none; }}
 QComboBox QAbstractItemView {{ background:{c['card']}; color:{c['text']}; border:1px solid {c['border']}; selection-background-color:{c['selection']}; selection-color:{c['selected']}; padding:6px; }}
-QPlainTextEdit,QTextBrowser,QTextEdit {{ background:{c['card']}; color:{c['text']}; border:0; border-radius:8px; padding:10px; selection-background-color:{c['selection']}; selection-color:{c['selected']}; }}
+QPlainTextEdit,QTextBrowser,QTextEdit {{ background:{c['card']}; color:{c['text']}; border:1px solid {c['line']}; border-radius:8px; padding:12px; selection-background-color:{c['selection']}; selection-color:{c['selected']}; }}
+QPushButton#formatButton,QToolButton#formatButton {{ padding:4px 7px; min-height:20px; border-radius:5px; background:transparent; }}
+QPushButton#formatButton:hover,QToolButton#formatButton:hover {{ background:{c['hover']}; }}
+QPushButton#formatButton:checked,QToolButton#formatButton:checked {{ background:{c['selection']}; color:{c['selected']}; border-color:{c['border']}; }}
 QMenu {{ background:{c['card']}; color:{c['text']}; border:1px solid {c['border']}; padding:5px; }}
 QMenu::item {{ padding:8px 20px; border-radius:4px; }}
 QMenu::item:selected {{ background:{c['selection']}; color:{c['selected']}; }}
-QListWidget,QTableWidget {{ background:{c['card']}; color:{c['text']}; border:0; border-radius:10px; outline:0; }}
-QListWidget::item {{ padding:12px 14px; margin:2px 4px; border-radius:7px; }}
+QListWidget,QTableWidget {{ background:{c['card']}; color:{c['text']}; border:1px solid {c['line']}; border-radius:10px; outline:0; }}
+QTableWidget {{ alternate-background-color:{c['inset']}; gridline-color:{c['line']}; selection-background-color:{c['selection']}; selection-color:{c['selected']}; }}
+QTableWidget::item {{ padding:6px 8px; border-bottom:1px solid {c['line']}; }}
+QListWidget::item {{ padding:10px 12px; margin:0; border-bottom:1px solid {c['line']}; }}
+QListWidget#attachmentList::item {{ padding:8px 10px; }}
 QListWidget::item:hover {{ background:{c['inset']}; }}
 QListWidget::item:selected {{ background:{c['selection']}; color:{c['selected']}; }}
 QHeaderView::section {{ background:{c['inset']}; color:{c['muted']}; border:0; padding:8px; }}
@@ -63,6 +116,11 @@ QScrollBar:vertical {{ width:7px; background:transparent; margin:2px; }}
 QScrollBar::handle:vertical {{ background:{c['border']}; border-radius:3px; min-height:28px; }}
 QScrollBar::add-line:vertical,QScrollBar::sub-line:vertical {{ height:0; }}
 QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {{ background:transparent; }}
+QScrollBar:horizontal {{ height:7px; background:transparent; margin:2px; }}
+QScrollBar::handle:horizontal {{ background:{c['border']}; border-radius:3px; min-width:28px; }}
+QScrollBar::add-line:horizontal,QScrollBar::sub-line:horizontal {{ width:0; }}
+QScrollBar::add-page:horizontal,QScrollBar::sub-page:horizontal {{ background:transparent; }}
+QAbstractScrollArea::corner {{ background:{c['background']}; border:0; }}
 QSplitter::handle {{ background:{c['background']}; width:14px; }}
 QToolTip {{ background:{c['card']}; color:{c['text']}; border:1px solid {c['border']}; padding:5px; }}
 """
@@ -86,21 +144,72 @@ class JournalDateEdit(QDateEdit):
     def paintEvent(self,event):
         super().paintEvent(event);c=colors(self);p=QPainter(self);p.setRenderHint(QPainter.Antialiasing);p.setPen(Qt.NoPen);p.setBrush(QColor(c['text']));x,y=self.width()-12,self.height()/2;p.drawPolygon(QPolygonF([QPointF(x-4,y-2),QPointF(x+4,y-2),QPointF(x,y+3)]))
 
-class MapleBrand(QWidget):
-    def __init__(self):super().__init__();self.setMinimumHeight(38);self.setMinimumWidth(80)
-    def paintEvent(self,event):
-        c=colors(self);p=QPainter(self);p.setRenderHint(QPainter.Antialiasing);p.setPen(Qt.NoPen);p.setBrush(QColor(c['maple']))
-        points=[(15,2),(18,10),(22,7),(21,14),(28,12),(24,19),(27,21),(17,24),(16,32),(14,32),(14,24),(4,21),(7,19),(2,12),(9,14),(8,7),(12,10)]
-        p.drawPolygon(QPolygonF([QPointF(x,y+2) for x,y in points]));p.setPen(QColor(c['text']));font=QFont(self.font());font.setPointSize(11);font.setBold(True);p.setFont(font);p.drawText(self.rect().adjusted(35,0,0,0),Qt.AlignVCenter,'美腻枫')
-
 class WrappedItem(QStyledItemDelegate):
+    """Readable journal rows; presentation metadata never replaces business data."""
+    def presentation(self,index):
+        data=index.data(ITEM_PRESENTATION_ROLE)
+        if isinstance(data,dict):return data
+        lines=str(index.data(Qt.DisplayRole) or '').split('\n',1)
+        return {'title':lines[0],'subtitle':lines[1] if len(lines)>1 else '',
+                'empty':not bool(index.flags() & Qt.ItemIsEnabled)}
     def document(self,index,width):
-        doc=QTextDocument();doc.setDefaultFont(self.parent().font());doc.setDocumentMargin(0);option=doc.defaultTextOption();option.setWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere);doc.setDefaultTextOption(option);doc.setPlainText(index.data(Qt.DisplayRole));doc.setTextWidth(max(40,width-32));return doc
+        from html import escape
+        data=self.presentation(index);c=colors(self.parent());empty=data.get('empty',False)
+        doc=QTextDocument();doc.setDefaultFont(journal_font('empty' if empty else 'body',12 if empty else 10));doc.setDocumentMargin(0)
+        option=doc.defaultTextOption();option.setWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere);doc.setDefaultTextOption(option)
+        title=escape(str(data.get('title',''))).replace('\n','<br>')
+        subtitle=escape(str(data.get('subtitle',''))).replace('\n','<br>') if not self.inline_subtitle(index,width) else ''
+        body=f'<p style="margin:0; font-weight:{400 if empty else 600};">{title}</p>'
+        if subtitle:body+=f'<p style="margin:5px 0 0; font-family:&quot;{load_journal_fonts()["body"]}&quot;; font-size:9pt; color:{c["muted"]};">{subtitle}</p>'
+        doc.setHtml(body);doc.setTextWidth(max(24,width-32));return doc
+    def badges(self,index):
+        data=self.presentation(index);c=colors(self.parent());badges=[]
+        category=data.get('category','')
+        if category in TYPE_NAMES:badges.append((TYPE_NAMES[category],c[category]))
+        if data.get('status'):badges.append((str(data['status']),c.get(data.get('status_tone','muted'),c['muted'])))
+        return badges
+    def badge_layout(self,index,width):
+        metrics=QFontMetricsF(journal_font('body',8.5));x=y=0;result=[];available=max(24,width-32)
+        for text,color in self.badges(index):
+            text=metrics.elidedText(text,Qt.ElideRight,max(8,int(available-16)))
+            length=min(available,metrics.horizontalAdvance(text)+16)
+            if x and x+length>available:x=0;y+=25
+            result.append((text,color,QRectF(x,y,length,21)));x+=length+6
+        return result,(y+21 if result else 0)
+    def inline_subtitle(self,index,width):
+        subtitle=str(self.presentation(index).get('subtitle',''))
+        if not subtitle or '\n' in subtitle:return None
+        badges,height=self.badge_layout(index,width)
+        if not badges or height>21:return None
+        left=badges[-1][2].right()+10;available=max(24,width-32)-left
+        if QFontMetricsF(journal_font('body',9)).horizontalAdvance(subtitle)<=available:
+            return subtitle,left,available
+        return None
     def sizeHint(self,option,index):
-        width=self.parent().viewport().width();doc=self.document(index,width);return QSize(width,int(doc.size().height())+28)
+        width=self.parent().viewport().width();doc=self.document(index,width);_,badges_height=self.badge_layout(index,width)
+        height=doc.size().height()+28+(badges_height+8 if badges_height else 0)
+        return QSize(width,max(64,int(height)))
     def paint(self,painter,option,index):
-        c=colors(self.parent());selected=bool(option.state & QStyle.State_Selected);painter.save();painter.setRenderHint(QPainter.Antialiasing);painter.setPen(Qt.NoPen);painter.setBrush(QColor(c['selection'] if selected else c['inset'] if option.state & QStyle.State_MouseOver else c['card']));painter.drawRoundedRect(QRectF(option.rect).adjusted(2,2,-2,-2),8,8);painter.translate(option.rect.x()+16,option.rect.y()+14)
-        doc=self.document(index,option.rect.width());ctx=QAbstractTextDocumentLayout.PaintContext();ctx.palette.setColor(QPalette.Text,QColor(c['selected'] if selected else c['text']));doc.documentLayout().draw(painter,ctx);painter.restore()
+        c=colors(self.parent());selected=bool(option.state & QStyle.State_Selected)
+        painter.save();painter.setClipRect(option.rect);painter.setRenderHint(QPainter.Antialiasing)
+        painter.setPen(Qt.NoPen);painter.setBrush(QColor(c['selection'] if selected else c['inset'] if option.state & QStyle.State_MouseOver else c['card']))
+        painter.drawRoundedRect(QRectF(option.rect).adjusted(3,2,-3,-2),7,7)
+        if not self.presentation(index).get('empty'):
+            painter.setPen(QPen(QColor(c['line']),1));painter.drawLine(QPointF(option.rect.left()+16,option.rect.bottom()),QPointF(option.rect.right()-16,option.rect.bottom()))
+        if option.state & QStyle.State_HasFocus:
+            painter.setPen(QPen(QColor(c['focus']),1));painter.setBrush(Qt.NoBrush);painter.drawRoundedRect(QRectF(option.rect).adjusted(3,2,-3,-2),7,7)
+        painter.translate(option.rect.x()+16,option.rect.y()+14)
+        doc=self.document(index,option.rect.width());ctx=QAbstractTextDocumentLayout.PaintContext();ctx.palette.setColor(QPalette.Text,QColor(c['selected'] if selected else c['text']));doc.documentLayout().draw(painter,ctx)
+        badges,_=self.badge_layout(index,option.rect.width());painter.translate(0,doc.size().height()+8);painter.setFont(journal_font('body',8.5))
+        for text,color,rect in badges:
+            fill=QColor(color);fill.setAlpha(28 if QColor(c['background']).lightness()<128 else 18)
+            painter.setPen(Qt.NoPen);painter.setBrush(fill);painter.drawRoundedRect(rect,5,5)
+            painter.setPen(QColor(color));painter.drawText(rect,Qt.AlignCenter,text)
+        subtitle=self.inline_subtitle(index,option.rect.width())
+        if subtitle:
+            text,left,width=subtitle;painter.setFont(journal_font('body',9));painter.setPen(QColor(c['muted']))
+            painter.drawText(QRectF(left,0,width,21),Qt.AlignVCenter|Qt.AlignLeft,text)
+        painter.restore()
 
 class Toggle(QCheckBox):
     def __init__(self,text='',parent=None):
@@ -119,18 +228,22 @@ class CalendarDay(QPushButton):
     def __init__(self,calendar):
         super().__init__();self.calendar=calendar;self.date=QDate();self.setObjectName('calendarDay');self.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding);self.setMinimumSize(54,62);self.setCursor(Qt.PointingHandCursor)
         self.clicked.connect(lambda:self.calendar.setSelectedDate(self.date));self.setContextMenuPolicy(Qt.CustomContextMenu);self.customContextMenuRequested.connect(lambda pos:self.calendar.contextRequested.emit(self.date,self.mapToGlobal(pos)))
+    def marker_rects(self):
+        present=self.calendar.marks.get(self.date.toString('yyyy-MM-dd'),())
+        kinds=[kind for kind in TYPE_ORDER if kind in present]
+        width=len(kinds)*7+max(0,len(kinds)-1)*3
+        start=(self.width()-width)/2
+        return [(kind,QRectF(start+i*10,self.height()-14,7,7)) for i,kind in enumerate(kinds)]
     def paintEvent(self,event):
         c=colors(self);p=QPainter(self);p.setRenderHint(QPainter.Antialiasing);selected=self.date==self.calendar.selectedDate();current=self.date.month()==self.calendar.monthShown() and self.date.year()==self.calendar.yearShown()
         label,holiday,detail=self.calendar.holidays.info(self.date) if self.calendar.holidays else ('',None,'')
-        p.setPen(Qt.NoPen);p.setBrush(QColor(c['accent'] if selected else c['inset'] if self.underMouse() or holiday and holiday['isOffDay'] else c['card']));rect=QRectF(self.rect()).adjusted(2,2,-2,-2);p.drawRoundedRect(rect,9,9)
-        ink=c['background'] if selected else c['outside'] if not current else c['weekend'] if self.date.dayOfWeek()>5 else c['text'];p.setPen(QColor(ink));font=QFont(self.font());font.setPointSize(13);font.setBold(self.date==QDate.currentDate());p.setFont(font);p.drawText(QRectF(0,4,self.width(),24),Qt.AlignCenter,str(self.date.day()))
-        font.setPointSize(8);font.setBold(False);p.setFont(font);p.setPen(QColor(c['background'] if selected else c['muted'] if current else c['outside']));p.drawText(QRectF(1,29,self.width()-2,17),Qt.AlignCenter,label)
+        p.setPen(QPen(QColor(c['focus'] if selected else c['line']),1));p.setBrush(QColor(c['selection'] if selected else c['inset'] if self.underMouse() or holiday and holiday['isOffDay'] else c['card']));rect=QRectF(self.rect()).adjusted(2,2,-2,-2);p.drawRoundedRect(rect,9,9)
+        ink=c['selected'] if selected else c['outside'] if not current else c['weekend'] if self.date.dayOfWeek()>5 else c['text'];p.setPen(QColor(ink));font=journal_font('body',13);font.setBold(selected or self.date==QDate.currentDate());p.setFont(font);p.drawText(QRectF(0,4,self.width(),24),Qt.AlignCenter,str(self.date.day()))
+        font.setPointSize(8);font.setBold(False);p.setFont(font);p.setPen(QColor(c['selected'] if selected else c['muted'] if current else c['outside']));p.drawText(QRectF(1,29,self.width()-2,17),Qt.AlignCenter,label)
         if holiday:
             badge=QRectF(self.width()-17,3,13,13);p.setPen(Qt.NoPen);p.setBrush(QColor(c['weekend'] if holiday['isOffDay'] else c['maple']));p.drawRoundedRect(badge,4,4);font.setPointSize(6);p.setFont(font);p.setPen(QColor(c['card']));p.drawText(badge,Qt.AlignCenter,'休' if holiday['isOffDay'] else '班')
-        types=self.calendar.marks.get(self.date.toString('yyyy-MM-dd'),());start=self.width()/2-24
-        for i,kind in enumerate(TYPE_ORDER):
-            if kind not in types:continue
-            color=QColor(c[kind]);color.setAlpha(255 if current else 85);p.setBrush(color);p.setPen(QPen(QColor(c['card']),1));p.drawEllipse(QRectF(start+i*10,self.height()-11,7,7))
+        for kind,marker in self.marker_rects():
+            color=QColor(c[kind]);color.setAlpha(255 if current else 100);p.setBrush(color);p.setPen(QPen(QColor(c['card']),1));p.drawEllipse(marker)
         if self.date==QDate.currentDate() and not selected or self.hasFocus():p.setPen(QPen(QColor(c['focus']),1.5));p.setBrush(Qt.NoBrush);p.drawRoundedRect(rect,9,9)
 
 class MonthCalendar(QWidget):
@@ -139,9 +252,16 @@ class MonthCalendar(QWidget):
     contextRequested=Signal(QDate,object)
     def __init__(self,parent=None):
         from monitor_ui import ThemedComboBox,ThemedSpinBox
+        class MonthPicker(ThemedComboBox):
+            def sizeHint(self):
+                size=super().sizeHint();option=QStyleOptionComboBox();self.initStyleOption(option);option.rect.setSize(size)
+                field=self.style().subControlRect(QStyle.CC_ComboBox,option,QStyle.SC_ComboBoxEditField,self)
+                required=max((self.fontMetrics().horizontalAdvance(self.itemText(i)) for i in range(self.count())),default=0)
+                size.setWidth(size.width()+max(0,required+8-field.width()));return size
+            def minimumSizeHint(self):return self.sizeHint()
         super().__init__(parent);self._selected=QDate.currentDate();self._month=self._selected;self.marks={};self.holidays=None;self.setObjectName('surface');self.setAttribute(Qt.WA_StyledBackground)
         outer=QVBoxLayout(self);outer.setContentsMargins(12,14,12,12);outer.setSpacing(10);header=QHBoxLayout();header.setSpacing(4)
-        self.year=ThemedSpinBox();self.year.setRange(1900,2199);self.year.setSuffix(' 年');self.year.setFixedWidth(108);self.month=ThemedComboBox();self.month.addItems([str(n)+' 月' for n in range(1,13)]);self.month.setFixedWidth(85);header.addWidget(self.year);header.addWidget(self.month)
+        self.year=ThemedSpinBox();self.year.setRange(1900,2199);self.year.setSuffix(' 年');self.year.setFixedWidth(108);self.month=MonthPicker();self.month.addItems([str(n)+' 月' for n in range(1,13)]);self.month.setSizeAdjustPolicy(QComboBox.AdjustToContents);self.month.setSizePolicy(QSizePolicy.Minimum,QSizePolicy.Fixed);header.addWidget(self.year);header.addWidget(self.month)
         for text,action in [('‹',lambda:self.shift(-1)),('›',lambda:self.shift(1))]:
             b=QPushButton(text);b.setObjectName('quiet');b.setFixedWidth(34);b.clicked.connect(action);header.addWidget(b)
         header.addStretch();self.today=QPushButton('今天');self.today.setToolTip('回到今天');self.today.setObjectName('quiet');self.today.clicked.connect(lambda:self.setSelectedDate(QDate.currentDate()));header.addWidget(self.today);outer.addLayout(header)
@@ -160,7 +280,10 @@ class MonthCalendar(QWidget):
     def setCurrentPage(self,year,month):
         value=QDate(year,month,1)
         if not value.isValid() or not 1900<=year<=2199:return
+        selection_changed=self._selected.year()!=year or self._selected.month()!=month
+        if selection_changed:self._selected=QDate(year,month,min(self._selected.day(),value.daysInMonth()))
         self._month=value;self.repaint_month();self.currentPageChanged.emit(year,month)
+        if selection_changed:self.selectionChanged.emit()
     def setSelectedDate(self,value):
         if not value.isValid():return
         changed=value.year()!=self.yearShown() or value.month()!=self.monthShown();self._selected=value

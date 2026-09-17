@@ -1,0 +1,171 @@
+{
+  "theme": "light",
+  "scale": "1",
+  "fonts": {
+    "body": "Microsoft YaHei UI",
+    "display": "Yuppy SC"
+  },
+  "fixedTime": "2026-10-17T12:00:00",
+  "recordingStatesSimulated": true,
+  "captures": [
+    {
+      "name": "overview",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "reminders",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "notes",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "statistics",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "settings",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "month-10",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "month-11",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "month-12",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "event",
+      "width": 560,
+      "height": 620
+    },
+    {
+      "name": "anniversary",
+      "width": 560,
+      "height": 620
+    },
+    {
+      "name": "small-overview",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-overview-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-statistics",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-statistics-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-settings",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-settings-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-month-10",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-month-11",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-month-12",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-event",
+      "width": 540,
+      "height": 420
+    },
+    {
+      "name": "small-event-bottom",
+      "width": 540,
+      "height": 420
+    },
+    {
+      "name": "small-anniversary",
+      "width": 540,
+      "height": 420
+    },
+    {
+      "name": "small-anniversary-bottom",
+      "width": 540,
+      "height": 420
+    }
+  ],
+  "horizontalOverflow": {
+    "overview": 0,
+    "reminders": 0,
+    "notes": 0,
+    "statistics": 0,
+    "settings": 0,
+    "month-10": 0,
+    "month-11": 0,
+    "month-12": 0,
+    "small-overview": 0,
+    "small-overview-bottom": 0,
+    "small-reminders": 0,
+    "small-reminders-bottom": 0,
+    "small-notes": 0,
+    "small-notes-bottom": 0,
+    "small-statistics": 0,
+    "small-statistics-bottom": 0,
+    "small-settings": 0,
+    "small-settings-bottom": 0,
+    "small-month-10": 0,
+    "small-month-11": 0,
+    "small-month-12": 0
+  },
+  "passed": true
+}

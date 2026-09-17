@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def run(args):
-    p=argparse.ArgumentParser();p.add_argument('--profile',required=True,type=Path);p.add_argument('--output',required=True,type=Path);p.add_argument('--theme',choices=['light','dark'],default='light');p.add_argument('--hardware',action='store_true');a=p.parse_args(args)
+    p=argparse.ArgumentParser();p.add_argument('--profile',required=True,type=Path);p.add_argument('--output',required=True,type=Path);p.add_argument('--theme',choices=['light','dark'],default='light');p.add_argument('--hardware',action='store_true');p.add_argument('--playback',action='store_true',help='Verify generated silent audio playback without using the microphone');a=p.parse_args(args)
     root=a.profile.resolve();personal=(Path(os.environ.get('APPDATA',Path.home()))/'美腻枫').resolve()
     if root==personal or root.is_relative_to(personal) or personal.is_relative_to(root):raise ValueError('Use an isolated verification profile')
     if (root/'library'/'journal.sqlite3').exists():raise ValueError('Use a fresh profile')
@@ -23,6 +23,9 @@ def run(args):
     for title,kind,delta in [('给未来的自己写封信','todo',1),('约朋友喝茶','schedule',2),('值得纪念的那一天','anniversary',3)]:
         store.save_event(title,kind,'这是隔离验收资料，不会进入个人资料库。',Rule((now+timedelta(days=delta)).isoformat(timespec='seconds'),period='weekly' if kind=='schedule' else 'once'))
     note_id=store.save_note('九月的一页','# 今天的小事\n\n慢一点，也很好。\n\n- [x] 整理桌面\n- [ ] 看一看远处\n\n**给自己留一点时间。**')
+    for n,title in enumerate(('整理旅行照片','读完手边的书','写下今天的灵感','给阳台植物浇水','准备下周的小目标','下午一起整理旅行照片和准备周末的小计划，记得带上相机与充电器')):
+        store.save_note(title,'## 值得记录\n\n一段 **重要** 的文字，和 *一点灵感*。\n\n- 阅读\n- 散步')
+        store.save_event(title,'todo' if n%2 else 'schedule','隔离验收。',Rule((now+timedelta(hours=n+1)).isoformat(timespec='seconds')))
     store.save_event('相识的日子','anniversary','',MilestoneRule((now-timedelta(days=99)).replace(hour=9,minute=0,second=0).isoformat(timespec='seconds'),hundreds=True,days=(520,1314)))
     def observer(app,pet):
         app.styleHints().setColorScheme(Qt.ColorScheme.Dark if a.theme=='dark' else Qt.ColorScheme.Light)
@@ -40,6 +43,7 @@ def run(args):
                     tasks.append(action)
                 tasks.append(event_dialog)
                 if a.hardware:tasks.append(record)
+                elif a.playback:tasks.append(check_silent_playback)
                 else:tasks.append(check_independent)
                 next_task()
             except Exception as error:fail(error)
@@ -50,6 +54,23 @@ def run(args):
             if tasks:QTimer.singleShot(400,next_task)
         def event_dialog():
             dialog=EventEditor(store,parent=window,initial_kind='anniversary');dialog.title.setText('相识的日子');dialog.hundreds.setChecked(True);dialog.day520.setChecked(True);dialog.show();app.processEvents();dialog.grab().save(str(output/'event-editor.png'));report['screens'].append('event-editor');dialog.close()
+        def check_silent_playback():
+            import wave
+            tone=root/'playback-check.wav'
+            with wave.open(str(tone),'wb') as wav:
+                wav.setnchannels(1);wav.setsampwidth(2);wav.setframerate(8000);wav.writeframes(b'\0\0'*4000)
+            window.tabs.setCurrentIndex(2);media=window.note_editor.media;media.output.setVolume(0);media.load(tone)
+            QTimer.singleShot(200,lambda:capture('playback-active'))
+            QTimer.singleShot(1600,check_silent_end)
+        def check_silent_end():
+            from PySide6.QtMultimedia import QMediaPlayer
+            from PySide6.QtTest import QTest
+            media=window.note_editor.media;report['playbackEnded']=media.player.mediaStatus()==QMediaPlayer.EndOfMedia and media.playback_completed
+            capture('playback-completed');QTest.mouseClick(window.note_editor.title,Qt.LeftButton)
+            report['playbackDismissed']=not media.play_panel.isVisible() and media.player.source().isEmpty()
+            capture('playback-dismissed')
+            if not report['playbackEnded'] or not report['playbackDismissed']:report['errors'].append('音频播完或外部点击收起失败')
+            check_independent()
         def record():
             window.tabs.setCurrentIndex(2);media=window.note_editor.media
             media.begin();QTimer.singleShot(2200,lambda:(media.finish(),QTimer.singleShot(1200,check_record)))

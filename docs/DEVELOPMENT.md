@@ -82,6 +82,10 @@ CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只
 
 手账视觉配色与总览日期格位于 `journal_design.py`，六框公农历输入位于 `journal_dates.py`。`MilestoneRule` 与普通 `Rule` 通过 `parse_rule` 统一读取；调度与总览共用 `between`。天数从起始日算第 1 天，同日合并。
 
+2.2.3 的字体通过 `load_journal_fonts()` / `journal_font()` 共享初始化：标题、导航、分区及空态用内置雅痞，正文与数值用系统阅读字体。`WrappedItem` 的展示数据放在 `ITEM_PRESENTATION_ROLE`，`Qt.UserRole` 继续保留业务记录。日期标记只为实际类别布局，年月切换将选中日投射到新月同日或月末。笔记工具栏按宽度换行，父滚动页面使用编辑器布局的实际最小高度，不能只设置固定编辑器高度。
+
+视觉审查工具 `tools/verify_journal_polish.py --theme light --output <全新目录> --extended` 使用固定日期和密集隔离数据；通过 `QT_SCALE_FACTOR` 设定 1、1.25、1.5、2，浅深色分别运行。它覆盖各页、大小窗口、两位数月份、菜单、错误状态及媒体状态，录音状态为模拟，不开启麦克风。Qt 多媒体的真实播放验证必须用 Qt 事件循环等待，避免当前 Windows 后端与 `QTest.qWait` 组合阻塞。
+
 数据库版本为 3，迁移前在 backups 保存快照。`archived` 表示不再调度，`deleted` 区分主动删除；单次删除由 `occurrence_exclusions` 防止重建，永久删除保留最小排除键。旧历史只有存在主动删除审计记录才转入回收站。恢复周期不补发删除期间的提醒。
 
 正文使用 Qt 可编辑文档，Markdown 为存储格式；未修改不重新序列化，复杂 HTML/扩展语法按原文显示，首次编辑原稿保存在 `note_originals`。图片仅允许资料库内的相对附件。文件复制与备份通过 `journal_jobs.py` 在后台执行，实时数据库写入仍在 Qt 主线程。
@@ -97,5 +101,7 @@ CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只
 安装标识固定在 `installer/CuteMaple.iss`，不要随版本改变。安装器仅清理上次安装清单中不再需要的文件，拒绝跨目录与目录链接；资料库永远不进入卸载清单。中文向导翻译来自 Inno Setup 官方仓库，文件内保留贡献者说明。
 
 手账回归：`python -m pytest tests/test_journal.py tests/test_journal_ui.py`。`main.py --verify-journal --profile <全新测试路径> --output <结果路径>` 在隔离资料库生成界面证据；只有显式追加 `--hardware` 才短暂使用麦克风和播放测试音。不要把录音测试资料放进源码或交付包。
+
+该入口另支持 `--playback`：仅播放生成的静音 WAV，验证自然结束与外部点击收起，不使用麦克风。`tests/test_journal_polish_*.py` 覆盖格式保存往返、真实窗口字体、日历布局、播放器状态及小窗口内容互不重叠。
 
 完整源码归档使用 `tools/package_release.py <源码目录> <输出ZIP> --source`，版本从 `VERSION` 读取。若本地保留了未提交的模型编辑稿，可显式增加 `--committed-file assets/authoring/model/Maple.cmo3`：归档使用已提交且已物化的 LFS 模型原件，本地编辑稿不会被覆盖。

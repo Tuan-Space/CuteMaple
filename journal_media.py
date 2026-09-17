@@ -14,25 +14,27 @@ class MediaBar(QWidget):
     recorded=Signal(str)
     recordingStarted=Signal()
     def __init__(self,root,parent=None):
-        super().__init__(parent); self.root=Path(root); self.path=None; self.failure=False; self.pending_finalize=False
+        super().__init__(parent); self.root=Path(root); self.path=None; self.failure=False; self.pending_finalize=False;self.playback_completed=False
+        self.setObjectName('mediaPanel');self.setAttribute(Qt.WA_StyledBackground)
         self.player=QMediaPlayer(self); self.output=QAudioOutput(self); self.player.setAudioOutput(self.output)
         self.capture=QMediaCaptureSession(self); self.audio_input=QAudioInput(self)
         self.recorder=QMediaRecorder(self); self.capture.setAudioInput(self.audio_input); self.capture.setRecorder(self.recorder)
         self.devices=QMediaDevices(self); self.devices.audioInputsChanged.connect(self.refresh_devices)
-        layout=QVBoxLayout(self); layout.setContentsMargins(0,0,0,0)
+        layout=QVBoxLayout(self); layout.setContentsMargins(10,8,10,8);layout.setSpacing(8)
         self.play_panel=QWidget();row=QHBoxLayout(self.play_panel);row.setContentsMargins(0,0,0,0); self.play=QPushButton('播放'); self.play.clicked.connect(self.toggle_play)
         self.seek=QSlider(Qt.Horizontal); self.seek.sliderMoved.connect(self.player.setPosition)
         self.play_time=QLabel('00:00'); row.addWidget(self.play); row.addWidget(self.seek,1); row.addWidget(self.play_time); layout.addWidget(self.play_panel);self.play_panel.hide()
         self.player.positionChanged.connect(self.position); self.player.durationChanged.connect(lambda n:self.seek.setRange(0,n))
+        self.player.playbackStateChanged.connect(self.playback_state_changed);self.player.mediaStatusChanged.connect(self.media_status_changed)
         self.record_panel=QWidget();rl=QVBoxLayout(self.record_panel);rl.setContentsMargins(0,0,0,0);row=QHBoxLayout(); self.inputs=QComboBox(); self.start=QPushButton('开始'); self.pause=QPushButton('暂停'); self.stop=QPushButton('结束并保存')
         rl.addWidget(self.inputs)
         for w in (self.start,self.pause,self.stop):row.addWidget(w)
-        rl.addLayout(row);layout.addWidget(self.record_panel);self.record_panel.hide(); self.status=QLabel('麦克风未使用'); self.status.setWordWrap(True); layout.addWidget(self.status)
+        rl.addLayout(row);layout.addWidget(self.record_panel);self.record_panel.hide(); self.status=QLabel('麦克风未使用');self.status.setObjectName('mediaStatus'); self.status.setWordWrap(True); layout.addWidget(self.status)
         self.start.clicked.connect(self.begin); self.pause.clicked.connect(self.pause_recording); self.stop.clicked.connect(self.finish)
         self.recorder.durationChanged.connect(lambda n:self.status.setText(('录音已暂停 · ' if self.recorder.recorderState()==QMediaRecorder.PausedState else '● 正在使用麦克风 · ')+f'{n//60000:02}:{n//1000%60:02}'))
         self.recorder.recorderStateChanged.connect(self.state_changed); self.recorder.errorOccurred.connect(self.record_error)
         self.compact_stop=QPushButton('停止录音');self.compact_stop.clicked.connect(self.finish);layout.addWidget(self.compact_stop);self.compact_stop.hide()
-        self.player.errorOccurred.connect(lambda *_:self.status.setText('音频无法播放：'+self.player.errorString()+'；可打开附件文件夹。'))
+        self.player.errorOccurred.connect(self.playback_error)
         self.refresh_devices(); self.state_changed(QMediaRecorder.StoppedState)
 
     def refresh_devices(self):
@@ -46,16 +48,37 @@ class MediaBar(QWidget):
         self.play_time.setText(f'{n//60000:02}:{n//1000%60:02}')
 
     def load(self,path):
-        self.show();self.play_panel.show()
-        self.player.setSource(QUrl.fromLocalFile(str(path))); self.player.play(); self.play.setText('暂停音频')
+        self.playback_completed=False;self.player.stop();self.show();self.play_panel.show()
+        if self.recorder.recorderState()==QMediaRecorder.StoppedState and not self.pending_finalize and not self.record_panel.isVisible():self.status.hide()
+        self.player.setSource(QUrl.fromLocalFile(str(path))); self.player.play()
 
     def toggle_play(self):
         if self.player.playbackState()==QMediaPlayer.PlayingState:
-            self.player.pause(); self.play.setText('播放音频')
-        else:self.player.play(); self.play.setText('暂停音频')
+            self.player.pause()
+        else:
+            if self.playback_completed:self.player.setPosition(0)
+            self.playback_completed=False;self.player.play()
+
+    def playback_state_changed(self,state):
+        self.play.setText('暂停音频' if state==QMediaPlayer.PlayingState else '重新播放' if self.playback_completed else '播放音频')
+
+    def media_status_changed(self,status):
+        if status==QMediaPlayer.EndOfMedia:
+            self.playback_completed=True;self.play.setText('重新播放')
+
+    def playback_error(self,*_):
+        self.playback_completed=True;self.play.setText('重新播放');self.status.show();self.status.setText('音频无法播放：'+self.player.errorString()+'；可打开附件文件夹。')
+
+    def dismiss_playback(self):
+        self.playback_completed=False;self.player.stop();self.player.setSource(QUrl());self.play_panel.hide();self.position(0);self.seek.setRange(0,0);self.play.setText('播放音频');self.update_visibility()
+
+    def update_visibility(self):
+        recording=self.recorder.recorderState()!=QMediaRecorder.StoppedState or self.pending_finalize
+        visible=recording or not self.record_panel.isHidden() or not self.play_panel.isHidden()
+        self.status.setVisible(recording or not self.record_panel.isHidden());self.setVisible(visible)
 
     def begin(self):
-        self.show();self.record_panel.show()
+        self.show();self.record_panel.show();self.status.show()
         if self.recorder.recorderState()!=QMediaRecorder.StoppedState or self.pending_finalize:return
         device=QMediaDevices.defaultAudioInput()
         if self.inputs.currentData():
@@ -80,10 +103,10 @@ class MediaBar(QWidget):
 
     def finish(self):
         if self.recorder.recorderState()!=QMediaRecorder.StoppedState:self.recorder.stop()
-        self.player.stop()
+        self.dismiss_playback()
 
     def record_error(self,*_):
-        self.failure=True
+        self.failure=True;self.status.show()
         self.status.setText('录音异常：'+self.recorder.errorString()+'。已写入的文件保留在资料库 recordings 中。')
 
     def state_changed(self,state):

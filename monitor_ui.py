@@ -74,14 +74,13 @@ class ThemeBinding(QObject):
     def apply(self, *_):
         w, c = self.widget, system_theme()
         if self.kind == 'journal':
-            from journal_design import palette as journal_palette,style as journal_style
-            from PySide6.QtGui import QFont
+            from journal_design import palette as journal_palette,style as journal_style,journal_font
             c=journal_palette(c is DARK)
             palette=QPalette(QApplication.instance().palette())
-            for role,key in ((QPalette.Window,'background'),(QPalette.Base,'card'),(QPalette.WindowText,'text'),(QPalette.Text,'text'),(QPalette.ButtonText,'text'),(QPalette.Button,'button'),(QPalette.Highlight,'selection'),(QPalette.HighlightedText,'selected')):
+            for role,key in ((QPalette.Window,'background'),(QPalette.Base,'card'),(QPalette.AlternateBase,'inset'),(QPalette.WindowText,'text'),(QPalette.Text,'text'),(QPalette.ButtonText,'text'),(QPalette.Button,'button'),(QPalette.Highlight,'selection'),(QPalette.HighlightedText,'selected')):
                 palette.setColor(role,QColor(c[key]))
             w.setPalette(palette)
-            w._theme=c;w.setFont(QFont('Microsoft YaHei UI',10));w.setStyleSheet(journal_style(c));w.update()
+            w._theme=c;w.setFont(journal_font());w.setStyleSheet(journal_style(c));w.update()
             if hasattr(w,'refresh_theme'):w.refresh_theme()
             return
         w._theme = c
@@ -110,6 +109,14 @@ def bind_theme(widget, kind='panel'):
 
 
 class ThemedComboBox(QComboBox):
+    def showPopup(self):
+        super().showPopup()
+        if 'inset' in getattr(self.window(), '_theme', {}):
+            # The native popup is a separate window and does not inherit the
+            # journal palette. Its margins must match the styled item view.
+            view = self.view()
+            view.window().setPalette(view.palette())
+
     def paintEvent(self, event):
         super().paintEvent(event)
         c = getattr(self.window(), '_theme', LIGHT)

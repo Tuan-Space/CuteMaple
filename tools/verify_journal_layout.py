@@ -6,7 +6,7 @@ p=argparse.ArgumentParser();p.add_argument('--output',required=True,type=Path);p
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
 from PySide6.QtWidgets import QApplication
 from PySide6.QtTest import QTest
-from PySide6.QtGui import QFontDatabase,QFont
+from journal_design import journal_font
 from PySide6.QtCore import Qt
 from journal_store import JournalStore
 from journal_ui import JournalWindow
@@ -14,9 +14,7 @@ from journal_editors import EventEditor
 from journal_recurrence import Rule,MilestoneRule
 from datetime import datetime,timedelta
 a.output.mkdir(parents=True,exist_ok=True);app=QApplication([])
-for font in ('msyh.ttc','msyhbd.ttc'):
-    QFontDatabase.addApplicationFont(str(Path(os.environ.get('WINDIR','C:/Windows'))/'Fonts'/font))
-app.setFont(QFont('Microsoft YaHei UI',10))
+app.setFont(journal_font())
 app.styleHints().setColorScheme(Qt.ColorScheme.Dark if a.theme=='dark' else Qt.ColorScheme.Light)
 import monitor_ui,journal_ui
 colors=monitor_ui.DARK if a.theme=='dark' else monitor_ui.LIGHT

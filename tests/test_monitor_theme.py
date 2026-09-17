@@ -3,7 +3,7 @@ os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
 import pytest
 from PySide6.QtWidgets import QApplication,QPushButton,QLabel
 from PySide6.QtGui import QColor,QPalette,QFont,QFontDatabase
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt,QRect
 from pathlib import Path
 import monitor_ui as ui
 from resource_monitor import NetworkSnapshot,MemorySnapshot
@@ -52,6 +52,11 @@ def test_theme_signal_updates_existing_visible_and_hidden_panels_without_reset(m
 def test_long_network_and_status_keep_close_and_cleanup_outside_scroll(monkeypatch):
     app=QApplication.instance() or QApplication([])
     monkeypatch.setattr(ui,'system_theme',lambda:ui.DARK)
+    # Constrain the screen explicitly: real fonts can fit this sample on a tall
+    # screen, so an empty offscreen font database must not define this scenario.
+    class SmallScreen:
+        def availableGeometry(self):return QRect(0,0,1280,600)
+    monkeypatch.setattr(ui.DetailsPanel,'screen',lambda self:SmallScreen())
     panel=ui.DetailsPanel();panel.update_stats(NetworkSnapshot(1024,2048,0,0,{'Very long Ethernet adapter name '*8:(1024,2048)}),MemorySnapshot())
     panel.show_result({'status':'failed','message':'Detailed failure message '*8});panel.show();app.processEvents()
     assert '1.0 KB/s' in panel.net_down.text() and '2.0 KB/s' in panel.net_up.text()
