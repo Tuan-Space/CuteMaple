@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from journal_recurrence import Rule,MilestoneRule,parse_rule,civil_timestamp
 
-SCHEMA = 2
+SCHEMA = 3
 HABITS = {'water': ('喝水', 60), 'walk': ('走动', 60), 'eyes': ('看远处', 20)}
 
 
@@ -51,9 +51,9 @@ class JournalStore:
                 raise ValueError('资料库来自较新版本，请先升级程序')
             if not version and self.db.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchone():
                 raise ValueError('不是有效的美腻枫资料库')
-            if version==1:
+            if 0 < version < SCHEMA:
                 folder=self.root/'backups';folder.mkdir(exist_ok=True)
-                target=sqlite3.connect(folder/('migration-v1-to-v2-'+uuid.uuid4().hex+'.sqlite3'))
+                target=sqlite3.connect(folder/(f'migration-v{version}-to-v{SCHEMA}-'+uuid.uuid4().hex+'.sqlite3'))
                 try:self.db.backup(target)
                 finally:target.close()
             self.db.execute('PRAGMA journal_mode=WAL')
@@ -97,15 +97,22 @@ class JournalStore:
           mime TEXT NOT NULL, size INTEGER NOT NULL, sha256 TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS note_files(note_id TEXT NOT NULL REFERENCES notes(id) ON DELETE CASCADE,
           file_id TEXT NOT NULL REFERENCES files(id), PRIMARY KEY(note_id,file_id));
-        PRAGMA user_version=2;
+        CREATE TABLE IF NOT EXISTS occurrence_exclusions(event_id TEXT NOT NULL REFERENCES events(id), due REAL NOT NULL,
+          deleted REAL, snapshot TEXT, PRIMARY KEY(event_id,due));
+        CREATE TABLE IF NOT EXISTS note_originals(note_id TEXT PRIMARY KEY REFERENCES notes(id) ON DELETE CASCADE, body TEXT NOT NULL);
         ''')
         if 'next_check' not in {r[1] for r in self.db.execute('PRAGMA table_info(events)')}:
             self.db.execute('ALTER TABLE events ADD COLUMN next_check REAL NOT NULL DEFAULT 0')
+        if 'deleted' not in {r[1] for r in self.db.execute('PRAGMA table_info(events)')}:
+            self.db.execute('ALTER TABLE events ADD COLUMN deleted REAL')
+            self.db.execute('ALTER TABLE events ADD COLUMN previous_archived INTEGER NOT NULL DEFAULT 0')
+            self.db.execute("UPDATE events SET deleted=updated WHERE archived=1 AND id IN (SELECT entity FROM audit WHERE action='event_archived')")
         self.db.execute('CREATE INDEX IF NOT EXISTS event_next_check ON events(archived,next_check)')
         with self.db:
             self.db.execute("INSERT OR IGNORE INTO meta VALUES('library_id',?)", (uuid.uuid4().hex,))
             for kind, (_, minutes) in HABITS.items():
                 self.db.execute('INSERT OR IGNORE INTO habits VALUES(?,0,?,?,?,0)', (kind,minutes,'00:00','00:00'))
+            self.db.execute('PRAGMA user_version=3')
 
     def rows(self, sql, args=()):
         return [dict(x) for x in self.db.execute(sql, args)]
@@ -132,27 +139,87 @@ class JournalStore:
         next_check=now if first<=now else min(when for when in (first-a for a in (*rule.advances,0)) if when>=now)
         with self.db:
             if event_id:
-                self.db.execute('UPDATE events SET title=?,kind=?,body=?,rule=?,updated=?,cursor=?,archived=0,next_check=? WHERE id=?',
+                self.db.execute('UPDATE events SET title=?,kind=?,body=?,rule=?,updated=?,cursor=?,archived=0,next_check=?,deleted=NULL WHERE id=?',
                     (title.strip(),kind,body,json.dumps(rule.mapping()),now,now-.001,next_check,identity))
                 self.db.execute("DELETE FROM alerts WHERE event_id=? AND due IN (SELECT due FROM occurrences WHERE event_id=? AND state IN ('pending','missed'))", (identity,identity))
                 self.db.execute("DELETE FROM occurrences WHERE event_id=? AND state IN ('pending','missed')", (identity,))
             else:
-                self.db.execute('INSERT INTO events VALUES(?,?,?,?,?,?,?,?,0,?)',
+                self.db.execute('INSERT INTO events(id,title,kind,body,rule,created,updated,cursor,archived,next_check) VALUES(?,?,?,?,?,?,?,?,0,?)',
                     (identity,title.strip(),kind,body,json.dumps(rule.mapping()),now,now,now-.001,next_check))
             self.audit(identity,'event_saved',rule.mapping())
         return identity
 
     def archive_event(self, event_id):
         with self.db:
-            self.db.execute('UPDATE events SET archived=1 WHERE id=?', (event_id,))
+            self.db.execute('UPDATE events SET previous_archived=archived,archived=1,deleted=? WHERE id=? AND deleted IS NULL', (self.clock(),event_id))
             self.db.execute("UPDATE alerts SET state='cancelled' WHERE event_id=? AND state='pending'", (event_id,))
             self.db.execute("UPDATE occurrences SET state='cancelled' WHERE event_id=? AND state IN ('pending','missed')", (event_id,))
             self.audit(event_id,'event_archived',{})
 
-    def events(self, search='', archived=False, kind=None, offset=0, limit=100):
-        return self.rows('SELECT * FROM events WHERE archived=? AND (title LIKE ? OR body LIKE ?)'
+    def events(self, search='', archived=False, kind=None, offset=0, limit=100, status=None):
+        clause='deleted IS NOT NULL' if status=='trash' else 'deleted IS NULL AND archived='+str(int(status=='completed' if status else archived))
+        return self.rows('SELECT * FROM events WHERE '+clause+' AND (title LIKE ? OR body LIKE ?)'
                          + (' AND kind=?' if kind else '') + ' ORDER BY updated DESC,id DESC LIMIT ? OFFSET ?',
-                         (int(archived),'%'+search+'%','%'+search+'%') + ((kind,) if kind else ()) + (limit,offset))
+                         ('%'+search+'%','%'+search+'%') + ((kind,) if kind else ()) + (limit,offset))
+
+    def restore_event(self, identity, rule=None):
+        rows=self.rows('SELECT * FROM events WHERE id=? AND deleted IS NOT NULL',(identity,))
+        if not rows:return False
+        event=rows[0];old=parse_rule(event['rule']);now=self.clock()
+        if isinstance(old,Rule) and old.period=='once' and civil_timestamp(old.base,old.zone)<=now and not event['previous_archived']:
+            if rule is None or civil_timestamp(rule.base,rule.zone)<=now:raise ValueError('请为过期提醒选择新的时间')
+        with self.db:
+            if rule is not None:
+                self.save_event(event['title'],event['kind'],event['body'],rule,identity)
+            else:
+                future=old.preview(after=now+.001,count=1)
+                archived=int(bool(event['previous_archived']) or not future)
+                self.db.execute('UPDATE events SET deleted=NULL,archived=?,cursor=?,updated=?,next_check=? WHERE id=?',(archived,now,now,now,identity))
+                self.db.execute("DELETE FROM alerts WHERE event_id=? AND state='cancelled' AND due>?",(identity,now))
+                self.db.execute("DELETE FROM occurrences WHERE event_id=? AND state='cancelled' AND due>? AND NOT EXISTS(SELECT 1 FROM occurrence_exclusions x WHERE x.event_id=occurrences.event_id AND x.due=occurrences.due)",(identity,now))
+            self.audit(identity,'event_restored',{})
+        self._event_wake.pop(identity,None);return True
+
+    def purge_event(self, identity):
+        with self.db:
+            if not self.db.execute('SELECT 1 FROM events WHERE id=? AND deleted IS NOT NULL',(identity,)).fetchone():return False
+            for table in ('alerts','occurrences','occurrence_exclusions'):self.db.execute(f'DELETE FROM {table} WHERE event_id=?',(identity,))
+            self.db.execute('DELETE FROM audit WHERE entity=? OR entity LIKE ?',(identity,identity+':%'))
+            self.db.execute('DELETE FROM events WHERE id=?',(identity,))
+            self.db.execute('DELETE FROM meta WHERE key=?',('event_input_lunar:'+identity,))
+        self._event_wake.pop(identity,None);return True
+
+    def trash_occurrence(self,identity,due):
+        event=self.rows('SELECT * FROM events WHERE id=? AND deleted IS NULL',(identity,))
+        if not event:return False
+        rows=self.rows('SELECT * FROM occurrences WHERE event_id=? AND due=?',(identity,due))
+        snapshot=rows[0] if rows else dict(event_id=identity,due=due,state='pending',answered=None,title=event[0]['title'])
+        with self.db:
+            self.db.execute('INSERT OR IGNORE INTO occurrence_exclusions VALUES(?,?,?,?)',(identity,due,self.clock(),json.dumps(snapshot,ensure_ascii=False)))
+            self.db.execute("UPDATE alerts SET state='cancelled' WHERE event_id=? AND due=? AND state='pending'",(identity,due))
+            self.db.execute('DELETE FROM occurrences WHERE event_id=? AND due=?',(identity,due))
+        return True
+
+    def restore_occurrence(self,identity,due):
+        rows=self.rows('SELECT snapshot FROM occurrence_exclusions WHERE event_id=? AND due=? AND deleted IS NOT NULL',(identity,due))
+        if not rows:return False
+        snap=json.loads(rows[0]['snapshot']);now=self.clock()
+        with self.db:
+            self.db.execute('DELETE FROM occurrence_exclusions WHERE event_id=? AND due=?',(identity,due))
+            self.db.execute('INSERT OR REPLACE INTO occurrences VALUES(?,?,?,?,?)',(identity,due,snap['state'],snap['answered'],snap['title']))
+            self.db.execute("DELETE FROM alerts WHERE event_id=? AND due=? AND state='cancelled'",(identity,due))
+            if snap['state'] not in ('completed','cancelled'):
+                self.db.execute("INSERT OR IGNORE INTO alerts VALUES(?,?,?,?,?,'pending',NULL,?)",(f'{identity}:{due:.0f}:0',identity,due,0,max(now,due),now))
+                self.db.execute('UPDATE events SET archived=0,next_check=? WHERE id=? AND deleted IS NULL',(now,identity))
+        return True
+
+    def purge_occurrence(self,identity,due):
+        with self.db:
+            self.db.execute('UPDATE occurrence_exclusions SET deleted=NULL,snapshot=NULL WHERE event_id=? AND due=?',(identity,due))
+            self.db.execute('DELETE FROM alerts WHERE event_id=? AND due=?',(identity,due))
+
+    def excluded(self,identity,due):
+        return self.db.execute('SELECT 1 FROM occurrence_exclusions WHERE event_id=? AND due=?',(identity,due)).fetchone() is not None
 
     def set_habit(self, kind, enabled, minutes, start='00:00', end='00:00'):
         if kind not in HABITS or not 1 <= int(minutes) <= 1440:
@@ -203,6 +270,7 @@ class JournalStore:
                 if len(candidates)==5000:
                     processed_until=min(now,candidates[-1][1])
                 for _,due in candidates:
+                    if self.excluded(event['id'],due):continue
                     stages=[(due-a,a) for a in rule.advances]+[(due,0)]
                     eligible=[(when,a) for when,a in stages if when>=event['created'] and when<=now and when>event['cursor']]
                     # A newly-created past event still needs its due reminder.
@@ -322,6 +390,7 @@ class JournalStore:
         self.collect_attachments()
 
     def collect_attachments(self):
+        if getattr(self,'background_backup',False):return
         referenced={r[0] for r in self.db.execute('SELECT DISTINCT file_id FROM note_files')}
         for backup in (self.root/'backups').glob('*.sqlite3'):
             connection=sqlite3.connect(backup.resolve().as_uri()+'?mode=ro',uri=True)
@@ -333,6 +402,9 @@ class JournalStore:
                 with self.db:self.db.execute('DELETE FROM files WHERE id=?',(row['id'],))
 
     def attach(self, note_id, source):
+        return self.finish_attachment(note_id,self.prepare_attachment(source))
+
+    def prepare_attachment(self,source):
         source=Path(source)
         if not source.is_file():
             raise ValueError('附件不是文件')
@@ -347,13 +419,19 @@ class JournalStore:
                     digest.update(chunk); out.write(chunk)
                 out.flush(); os.fsync(out.fileno())
             temp.replace(dest)
-            with self.db:
-                self.db.execute('INSERT INTO files VALUES(?,?,?,?,?,?)',(identity,source.name,dest.relative_to(self.root).as_posix(),mimetypes.guess_type(source.name)[0] or 'application/octet-stream',dest.stat().st_size,digest.hexdigest()))
-                self.db.execute('INSERT INTO note_files VALUES(?,?)',(note_id,identity))
-            return self.rows('SELECT * FROM files WHERE id=?',(identity,))[0]
+            return dict(id=identity,name=source.name,relative=dest.relative_to(self.root).as_posix(),mime=mimetypes.guess_type(source.name)[0] or 'application/octet-stream',size=dest.stat().st_size,sha256=digest.hexdigest())
         except Exception:
             temp.unlink(missing_ok=True); dest.unlink(missing_ok=True)
             raise
+
+    def finish_attachment(self,note_id,row):
+        try:
+            with self.db:
+                self.db.execute('INSERT INTO files VALUES(?,?,?,?,?,?)',tuple(row[k] for k in ('id','name','relative','mime','size','sha256')))
+                self.db.execute('INSERT INTO note_files VALUES(?,?)',(note_id,row['id']))
+            return row
+        except Exception:
+            self.attachment_path(row['relative']).unlink(missing_ok=True);raise
 
     def attachments(self, note_id):
         return self.rows('SELECT f.* FROM files f JOIN note_files n ON f.id=n.file_id WHERE n.note_id=?',(note_id,))
@@ -381,11 +459,15 @@ class JournalStore:
         temp_zip=destination.with_suffix(destination.suffix+'.part')
         try:
             target=sqlite3.connect(temp_db)
-            try: self.db.backup(target)
-            finally: target.close()
+            source=sqlite3.connect(self.path.resolve().as_uri()+'?mode=ro',uri=True)
+            try: source.backup(target)
+            finally: target.close();source.close()
+            snapshot=sqlite3.connect(temp_db);snapshot.row_factory=sqlite3.Row
+            try:files=[dict(r) for r in snapshot.execute('SELECT * FROM files')]
+            finally:snapshot.close()
             with zipfile.ZipFile(temp_zip,'w',compression=zipfile.ZIP_DEFLATED) as archive:
                 archive.write(temp_db,'journal.sqlite3')
-                for row in self.rows('SELECT * FROM files'):
+                for row in files:
                     path=self.attachment_path(row['relative'])
                     archive.write(path,row['relative'])
                 settings=self.root/'settings.json'

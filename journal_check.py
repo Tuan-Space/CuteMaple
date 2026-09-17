@@ -35,12 +35,12 @@ def run(args):
         def begin():
             try:
                 window.show();window.note_editor.load(store.rows('SELECT * FROM notes WHERE id=?',(note_id,))[0])
-                for index,name in enumerate(['reminders','notes','calendar','statistics','settings']):
+                for index,name in enumerate(['overview','reminders','notes','statistics','settings']):
                     def action(i=index,n=name):window.tabs.setCurrentIndex(i);capture(n)
                     tasks.append(action)
                 tasks.append(event_dialog)
                 if a.hardware:tasks.append(record)
-                else:tasks.append(finish)
+                else:tasks.append(check_independent)
                 next_task()
             except Exception as error:fail(error)
         def next_task():
@@ -51,7 +51,7 @@ def run(args):
         def event_dialog():
             dialog=EventEditor(store,parent=window,initial_kind='anniversary');dialog.title.setText('相识的日子');dialog.hundreds.setChecked(True);dialog.day520.setChecked(True);dialog.show();app.processEvents();dialog.grab().save(str(output/'event-editor.png'));report['screens'].append('event-editor');dialog.close()
         def record():
-            window.tabs.setCurrentIndex(1);media=window.note_editor.media
+            window.tabs.setCurrentIndex(2);media=window.note_editor.media
             media.begin();QTimer.singleShot(2200,lambda:(media.finish(),QTimer.singleShot(1200,check_record)))
         def check_record():
             files=store.attachments(note_id);recordings=[r for r in files if r['mime'].startswith('audio/')]
@@ -84,6 +84,22 @@ def run(args):
             QTimer.singleShot(1500,check_silence)
         def check_silence():
             report['silenceReleasedSleepLatch']=not pet._audio_prevents_sleep
+            check_independent()
+        def check_independent():
+            if not pet._presentation_ready:fail('Live2D 首帧未就绪');return
+            window.show();pet._detach_for_drag();pet.move(pet._screen_area().center().x(),pet._screen_area().top()+150)
+            pet.motion_mode='fall';pet._motion_y=float(pet.y());pet._motion_updated_at=time.monotonic();pet._fall_velocity=0;pet.start_state('fall_float');pet.motion_timer.start();report['fallStartY']=pet.y()
+            QTimer.singleShot(700,check_fall)
+        def check_fall():
+            report['journalVisibleDuringFall']=window.isVisible();report['fallEndY']=pet.y();report['fallContinuesWithJournal']=pet.y()>report['fallStartY']
+            pet._attach_side('left');report['wallWaitBefore']=pet._climb_cadence.remaining
+            QTimer.singleShot(900,check_wall)
+        def check_wall():
+            report['wallWaitAfter']=pet._climb_cadence.remaining;report['wallClockContinuesWithJournal']=report['wallWaitAfter']<report['wallWaitBefore'];pet._attach_top()
+            QTimer.singleShot(700,check_swing)
+        def check_swing():
+            report['swingContinuesWithJournal']=pet.base_mode=='top_swing' and not pet.movement_paused and pet._presentation_ready
+            if not all(report.get(k) for k in ('fallContinuesWithJournal','wallClockContinuesWithJournal','swingContinuesWithJournal')):report['errors'].append('手账与人物独立运行检查失败')
             finish()
         def fail(error):
             report['errors'].append(str(error));finish()

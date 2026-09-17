@@ -71,5 +71,5 @@ def test_v1_migration_backup_and_legacy_rules(tmp_path):
     n=s.save_note('保留笔记','正文');r=Rule('2026-01-01T09:00:00',period='yearly')
     s.save_event('原纪念日','anniversary','',r);s.db.execute('PRAGMA user_version=1');s.close()
     s=JournalStore(root);assert s.notes()[0]['id']==n;assert type(parse_rule(s.events()[0]['rule'])) is Rule
-    backups=list((root/'backups').glob('migration-v1-to-v2-*.sqlite3'));assert len(backups)==1
+    backups=list((root/'backups').glob('migration-v1-to-v3-*.sqlite3'));assert len(backups)==1
     old=sqlite3.connect(backups[0]);assert old.execute('PRAGMA user_version').fetchone()[0]==1;assert old.execute('SELECT body FROM notes').fetchone()[0]=='正文';old.close();s.close()

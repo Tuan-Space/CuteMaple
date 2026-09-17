@@ -9,7 +9,7 @@ from monitor_ui import cleanup_summary
 class JournalService(QObject):
     def __init__(self,store,pet):
         super().__init__(pet);self.store,self.pet=store,pet
-        self.window=JournalWindow(store,pet);self.window.visibilityChanged.connect(pet._journal_visibility)
+        self.window=JournalWindow(store,pet)
         self.bubble=ReminderBubble(store,pet);self.bubble.openRequested.connect(self.open)
         self.bubble.changed.connect(self.window.refresh_current)
         self.timer=QTimer(self);self.timer.setInterval(1000);self.timer.timeout.connect(self.tick);self.timer.start()
@@ -42,5 +42,6 @@ class JournalService(QObject):
         if self.bubble.isVisible():self.bubble.follow()
 
     def close(self):
+        if getattr(self.window,'backup_job',None):self.window.notice('正在完成备份，请稍候');return False
         if not self.window.note_editor.finish():return False
         self.timer.stop();self.follow_timer.stop();self.bubble.hide();self.window.hide();self.store.close();return True

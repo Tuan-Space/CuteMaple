@@ -135,7 +135,6 @@ class PetWindow(QWidget):
         super().__init__(None, Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.app, self.settings = app, settings
         self.journal = None
-        self.journal_pause_active = False
         self._audio_prevents_sleep = False
         self._last_audible_at = -float('inf')
         self._last_dialogue = None
@@ -581,7 +580,7 @@ class PetWindow(QWidget):
     def _wall_resting(self) -> bool:
         return (self._climb_cadence.active and self.motion_mode == "climb"
                 and self.state in {"climb_left", "climb_right"}
-                and (self._climb_cadence.waiting or self.panel_pause_active or self.journal_pause_active))
+                and (self._climb_cadence.waiting or self.panel_pause_active))
 
     def _sync_climb_control(self, *, force: bool = False) -> None:
         if not self._climb_cadence.active or self._top_transition or self.state not in {"climb_left", "climb_right"}:
@@ -597,7 +596,7 @@ class PetWindow(QWidget):
         now = time.monotonic()
         elapsed = min(.25, max(0.0, now - self._climb_clock))
         self._climb_clock = now
-        blocked = not self._presentation_ready or self.activity_paused or self.panel_pause_active or self.journal_pause_active or not self.isVisible() or self.dragging or bool(self._top_transition)
+        blocked = not self._presentation_ready or self.activity_paused or self.panel_pause_active or not self.isVisible() or self.dragging or bool(self._top_transition)
         if self._climb_cadence.tick(elapsed, blocked):
             self._motion_updated_at = now
             self._motion_y = float(self.y())
@@ -1157,7 +1156,7 @@ class PetWindow(QWidget):
 
     @property
     def movement_paused(self) -> bool:
-        return not self._presentation_ready or self.settings.paused or self.panel_pause_active or self.journal_pause_active
+        return not self._presentation_ready or self.settings.paused or self.panel_pause_active
 
     def start_state(self, state: str, duration_ms: int = 0) -> None:
         if state not in ANIMATIONS:
@@ -1378,20 +1377,6 @@ class PetWindow(QWidget):
     def open_journal(self) -> None:
         if self.journal is not None:
             self.journal.open()
-
-    def _journal_visibility(self, visible: bool) -> None:
-        if visible == self.journal_pause_active:
-            return
-        if visible:
-            self._journal_paused_at = time.monotonic()
-        elif self.motion_mode in {"walk_out", "walk_back"}:
-            self.walk_leg_started_at += max(0.0, time.monotonic() - getattr(self, "_journal_paused_at", time.monotonic()))
-        self.journal_pause_active = visible
-        self._sync_runtime_pause()
-        if visible:
-            self.behavior_timer.stop(); self.motion_timer.stop()
-        else:
-            self._resume_activity()
 
     def _begin_wake(self) -> None:
         if self.sleep_phase in ("enter", "loop"):

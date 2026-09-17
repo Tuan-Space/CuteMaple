@@ -23,7 +23,7 @@ def test_batches_no_dead_pages(view,count):
     for n in range(count):s.save_event(f'提醒 {n}','todo','',Rule('2026-10-01T09:00:00'));s.save_note(f'笔记 {n}','正文')
     w.refresh_events();assert w.event_more==(count>50)
     assert len([w.events_list.item(i) for i in range(w.events_list.count()) if w.events_list.item(i).data(Qt.UserRole)])==min(count,50)
-    w.tabs.setCurrentIndex(1);a.processEvents();assert w.note_more==(count>50)
+    w.tabs.setCurrentIndex(2);a.processEvents();assert w.note_more==(count>50)
     w.note_editor.title.setText('没有保存的内容');w.note_editor.timer.stop()
     for _ in range(3):
         bar=w.notes_list.verticalScrollBar();bar.setValue(bar.maximum());a.processEvents()
@@ -53,7 +53,7 @@ def test_theme_and_milestone_form(view,monkeypatch):
     from journal_editors import EventEditor
     a,s,w=view;w.tabs.setCurrentIndex(2);w.refresh_calendar()
     old=w.legend.text();monkeypatch.setattr(monitor_ui,'system_theme',lambda:monitor_ui.DARK);w.theme.apply()
-    assert w._theme['background']=='#202326';assert w.legend.text()!=old
+    assert w._theme['background']=='#1d2835';assert w.legend.text()!=old
     d=EventEditor(s,parent=w,initial_kind='anniversary');d.show();a.processEvents()
     assert d.is_milestone();assert not d.advanced.isVisible();assert d.start.time().hour()==9
     d.title.setText('相识');d.hundreds.setChecked(True);d.day520.setChecked(True);d.custom_days.setText('30、1000');d.save()

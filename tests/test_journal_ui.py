@@ -36,10 +36,10 @@ def test_double_click_only_opens_journal(monkeypatch):
 
 def test_note_save_preview_calendar_and_trash(tmp_path):
     a=app();s=JournalStore(tmp_path/'library',create=True);w=JournalWindow(s,None);w.show();a.processEvents()
-    w.note_editor.title.setText('测试手账');w.note_editor.edit.setPlainText('# 标题\n\n- [ ] 清单\n<script>alert(1)</script>')
+    w.note_editor.title.setText('测试手账');w.note_editor.mode.setCurrentIndex(1);w.note_editor.edit.setPlainText('# 标题\n\n- [ ] 清单\n<script>alert(1)</script>')
     assert w.note_editor.save();identity=w.note_editor.identity
     assert s.notes()[0]['title']=='测试手账'
-    w.note_editor.mode.setCurrentIndex(1);assert '标题' in w.note_editor.preview.toPlainText()
+    w.note_editor.mode.setCurrentIndex(0);assert '标题' in w.note_editor.preview.toPlainText()
     w.tabs.setCurrentIndex(2);w.refresh_calendar();assert any(x[0]=='note' for items in w.calendar_items.values() for x in items)
     s.trash_note(identity);assert not s.notes();s.trash_note(identity,True);assert s.notes()
     w.close();s.close()

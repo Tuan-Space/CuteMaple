@@ -80,7 +80,13 @@ CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只
 
 农历依赖固定为 lunar-python 1.4.8，时区数据固定为 tzdata 2025.2；许可保存在 `third_party`。录音和播放使用 Qt Multimedia，打包必须包含其 FFmpeg 后端，不可凭 DLL 名称删除依赖。
 
-手账视觉配色与月历日期格位于 `journal_design.py`。`MilestoneRule` 为纪念日里程碑规则，与普通 `Rule` 通过 `parse_rule` 统一读取；调度与月历共用 `between`，不要另外维护周年算法。天数从起始日算第 1 天，同日合并。数据库版本为 2，首次打开旧版资料库会先在 backups 保存迁移前快照；旧的普通纪念日规则不会自动转换。
+手账视觉配色与总览日期格位于 `journal_design.py`，六框公农历输入位于 `journal_dates.py`。`MilestoneRule` 与普通 `Rule` 通过 `parse_rule` 统一读取；调度与总览共用 `between`。天数从起始日算第 1 天，同日合并。
+
+数据库版本为 3，迁移前在 backups 保存快照。`archived` 表示不再调度，`deleted` 区分主动删除；单次删除由 `occurrence_exclusions` 防止重建，永久删除保留最小排除键。旧历史只有存在主动删除审计记录才转入回收站。恢复周期不补发删除期间的提醒。
+
+正文使用 Qt 可编辑文档，Markdown 为存储格式；未修改不重新序列化，复杂 HTML/扩展语法按原文显示，首次编辑原稿保存在 `note_originals`。图片仅允许资料库内的相对附件。文件复制与备份通过 `journal_jobs.py` 在后台执行，实时数据库写入仍在 Qt 主线程。
+
+节假日由 `journal_holidays.py` 提供，内置 `assets/holidays/2026.json`，来源为 MIT 许可的 NateScarlet/holiday-cn，记录内含国务院通知链接。仅用户点击更新才联网；验证年份、格式、出处后原子替换资料库内缓存。尚未公布的空数据不能覆盖旧数据。首次打开手账、编辑或关闭均不暂停人物动作。
 
 安装器使用 Inno Setup 6.7.3（从 https://jrsoftware.org/isdl.php 获取并核验签名）。安装该开发工具后运行：
 

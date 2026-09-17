@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt,QUrl,Signal,QTimer
 from PySide6.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QPushButton,QLabel,QComboBox,QSlider
 from PySide6.QtMultimedia import (QMediaPlayer,QAudioOutput,QMediaDevices,QMediaCaptureSession,
     QAudioInput,QMediaRecorder,QMediaFormat)
+from monitor_ui import ThemedComboBox as QComboBox
 
 
 class MediaBar(QWidget):
@@ -30,6 +31,7 @@ class MediaBar(QWidget):
         self.start.clicked.connect(self.begin); self.pause.clicked.connect(self.pause_recording); self.stop.clicked.connect(self.finish)
         self.recorder.durationChanged.connect(lambda n:self.status.setText(('录音已暂停 · ' if self.recorder.recorderState()==QMediaRecorder.PausedState else '● 正在使用麦克风 · ')+f'{n//60000:02}:{n//1000%60:02}'))
         self.recorder.recorderStateChanged.connect(self.state_changed); self.recorder.errorOccurred.connect(self.record_error)
+        self.compact_stop=QPushButton('停止录音');self.compact_stop.clicked.connect(self.finish);layout.addWidget(self.compact_stop);self.compact_stop.hide()
         self.player.errorOccurred.connect(lambda *_:self.status.setText('音频无法播放：'+self.player.errorString()+'；可打开附件文件夹。'))
         self.refresh_devices(); self.state_changed(QMediaRecorder.StoppedState)
 
@@ -86,6 +88,7 @@ class MediaBar(QWidget):
 
     def state_changed(self,state):
         stopped=state==QMediaRecorder.StoppedState
+        self.compact_stop.setVisible(not stopped)
         self.start.setEnabled(stopped); self.inputs.setEnabled(stopped); self.pause.setEnabled(not stopped); self.stop.setEnabled(not stopped)
         self.pause.setText('继续' if state==QMediaRecorder.PausedState else '暂停')
         if stopped and self.path:

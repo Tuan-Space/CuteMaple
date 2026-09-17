@@ -1,4 +1,4 @@
-param(
+﻿param(
     [ValidateSet("Directory")]
     [string]$Mode = "Directory",
     [switch]$InstallDependencies,
@@ -38,14 +38,14 @@ if (-not $SkipTests) {
 }
 $RuntimeModules = @("main.py", "pet_app.py", "pet_core.py", "resource_monitor.py", "memory_cleaner.py", "cleanup_check.py",
                     "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py",
-                    "journal_recurrence.py", "journal_store.py", "journal_library.py", "journal_reminders.py", "journal_media.py", "journal_editors.py", "journal_ui.py", "journal_design.py", "journal_service.py", "journal_install.py", "journal_check.py")
+                    "journal_recurrence.py", "journal_store.py", "journal_library.py", "journal_reminders.py", "journal_media.py", "journal_editors.py", "journal_ui.py", "journal_design.py", "journal_dates.py", "journal_holidays.py", "journal_jobs.py", "journal_service.py", "journal_install.py", "journal_check.py")
 foreach ($Module in $RuntimeModules) {
     Copy-Item -LiteralPath (Join-Path $ProjectRoot $Module) -Destination $Stage
 }
 Copy-Item -LiteralPath (Join-Path $ProjectRoot 'VERSION') -Destination $Stage
 $StageAssets = Join-Path $Stage "assets"
 New-Item -ItemType Directory -Force -Path $StageAssets | Out-Null
-foreach ($Folder in @("fonts")) {
+foreach ($Folder in @("fonts", "holidays")) {
     Copy-Item -LiteralPath (Join-Path $ProjectRoot ("assets\" + $Folder)) -Destination $StageAssets -Recurse
 }
 Copy-Item -LiteralPath (Join-Path $ProjectRoot "assets\icon.png") -Destination $StageAssets
@@ -75,7 +75,7 @@ $Arguments = @(
     "--include-module=PySide6.QtWebChannel", "--include-module=PySide6.QtNetwork",
     "--include-module=PySide6.QtMultimedia", "--include-qt-plugins=multimedia", "--include-package=lunar_python", "--include-package=tzdata", "--include-package-data=tzdata",
     "--windows-console-mode=disable", "--windows-icon-from-ico=assets\app.ico",
-    "--include-data-dir=assets/fonts=assets/fonts",
+    "--include-data-dir=assets/fonts=assets/fonts", "--include-data-dir=assets/holidays=assets/holidays",
     "--include-data-dir=assets/live2d=assets/live2d",
     "--include-data-files=assets/icon.png=assets/icon.png",
     "--include-data-dir=web/dist=web/dist",
@@ -125,7 +125,7 @@ Copy-Item -LiteralPath $Helper -Destination $HelperTarget
 Copy-Item -LiteralPath (Join-Path $NativeOutput 'native-build.json') -Destination $HelperTarget
 $Licenses = Join-Path $Standalone 'licenses'
 New-Item -ItemType Directory -Force -Path $Licenses | Out-Null
-foreach ($Dependency in @('lunar-python-1.4.8','tzdata-2025.2','nlohmann-json-3.11.3')) {
+foreach ($Dependency in @('lunar-python-1.4.8','tzdata-2025.2','nlohmann-json-3.11.3','holiday-cn')) {
     $LicenseTarget = Join-Path $Licenses $Dependency
     New-Item -ItemType Directory -Force -Path $LicenseTarget | Out-Null
     Get-ChildItem -LiteralPath (Join-Path $ProjectRoot ('third_party\'+$Dependency)) -File -Filter 'LICENSE*' | Copy-Item -Destination $LicenseTarget
