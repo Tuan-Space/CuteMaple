@@ -11,9 +11,9 @@ import uuid
 import zipfile
 from datetime import datetime, timedelta
 from pathlib import Path
-from journal_recurrence import Rule,civil_timestamp
+from journal_recurrence import Rule,MilestoneRule,parse_rule,civil_timestamp
 
-SCHEMA = 1
+SCHEMA = 2
 HABITS = {'water': ('喝水', 60), 'walk': ('走动', 60), 'eyes': ('看远处', 20)}
 
 
@@ -51,6 +51,11 @@ class JournalStore:
                 raise ValueError('资料库来自较新版本，请先升级程序')
             if not version and self.db.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchone():
                 raise ValueError('不是有效的美腻枫资料库')
+            if version==1:
+                folder=self.root/'backups';folder.mkdir(exist_ok=True)
+                target=sqlite3.connect(folder/('migration-v1-to-v2-'+uuid.uuid4().hex+'.sqlite3'))
+                try:self.db.backup(target)
+                finally:target.close()
             self.db.execute('PRAGMA journal_mode=WAL')
             self.db.execute('PRAGMA synchronous=FULL')
             self._schema()
@@ -92,7 +97,7 @@ class JournalStore:
           mime TEXT NOT NULL, size INTEGER NOT NULL, sha256 TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS note_files(note_id TEXT NOT NULL REFERENCES notes(id) ON DELETE CASCADE,
           file_id TEXT NOT NULL REFERENCES files(id), PRIMARY KEY(note_id,file_id));
-        PRAGMA user_version=1;
+        PRAGMA user_version=2;
         ''')
         if 'next_check' not in {r[1] for r in self.db.execute('PRAGMA table_info(events)')}:
             self.db.execute('ALTER TABLE events ADD COLUMN next_check REAL NOT NULL DEFAULT 0')
@@ -146,7 +151,7 @@ class JournalStore:
 
     def events(self, search='', archived=False, kind=None, offset=0, limit=100):
         return self.rows('SELECT * FROM events WHERE archived=? AND (title LIKE ? OR body LIKE ?)'
-                         + (' AND kind=?' if kind else '') + ' ORDER BY updated DESC LIMIT ? OFFSET ?',
+                         + (' AND kind=?' if kind else '') + ' ORDER BY updated DESC,id DESC LIMIT ? OFFSET ?',
                          (int(archived),'%'+search+'%','%'+search+'%') + ((kind,) if kind else ()) + (limit,offset))
 
     def set_habit(self, kind, enabled, minutes, start='00:00', end='00:00'):
@@ -185,11 +190,11 @@ class JournalStore:
                 cached=self._event_wake.get(event['id'])
                 if cached and cached[0]==event['updated'] and now<cached[1]:
                     continue
-                rule=Rule(**json.loads(event['rule']))
+                rule=parse_rule(event['rule'])
                 if now < event['cursor']:
                     continue
                 window_start = event['cursor'] - .001
-                if event['cursor'] < event['updated']:
+                if event['cursor'] < event['updated'] and not isinstance(rule,MilestoneRule):
                     window_start=min(window_start,civil_timestamp(rule.base,rule.zone))
                 candidates=list(rule.between(window_start,now+max(rule.advances,default=0),limit=5000))
                 # Find occurrences whose current reminder stage is now due. Older
@@ -201,7 +206,7 @@ class JournalStore:
                     stages=[(due-a,a) for a in rule.advances]+[(due,0)]
                     eligible=[(when,a) for when,a in stages if when>=event['created'] and when<=now and when>event['cursor']]
                     # A newly-created past event still needs its due reminder.
-                    if not eligible and due<=now and event['cursor']<event['updated']:
+                    if not eligible and due<=now and event['cursor']<event['updated'] and not isinstance(rule,MilestoneRule):
                         eligible=[(now,0)]
                     if not eligible:
                         continue
@@ -209,7 +214,8 @@ class JournalStore:
                     old=self.db.execute('SELECT state FROM occurrences WHERE event_id=? AND due=?',(event['id'],due)).fetchone()
                     if old and old[0] in ('completed','cancelled'):
                         continue
-                    self.db.execute('INSERT OR IGNORE INTO occurrences(event_id,due,title) VALUES(?,?,?)',(event['id'],due,event['title']))
+                    title=event['title']+(' · '+' / '.join(rule.labels(due)) if isinstance(rule,MilestoneRule) else '')
+                    self.db.execute('INSERT OR IGNORE INTO occurrences(event_id,due,title) VALUES(?,?,?)',(event['id'],due,title))
                     identity=f"{event['id']}:{due:.0f}:{stage}"
                     self.db.execute("INSERT OR IGNORE INTO alerts VALUES(?,?,?,?,?,'pending',NULL,?)",(identity,event['id'],due,stage,when,now))
                     # Same occurrence: a newer stage replaces its snoozed earlier stage.
@@ -232,7 +238,7 @@ class JournalStore:
 
     def pending(self, now=None):
         now=self.clock() if now is None else now
-        rows=self.rows("SELECT a.*,e.title,e.body,e.kind,(SELECT COUNT(*) FROM occurrences o WHERE o.event_id=a.event_id AND o.state='missed') missed FROM alerts a LEFT JOIN events e ON e.id=a.event_id WHERE a.state='pending' AND a.notify<=? ORDER BY a.notify,a.id",(now,))
+        rows=self.rows("SELECT a.*,COALESCE(o.title,e.title) title,e.body,e.kind,(SELECT COUNT(*) FROM occurrences x WHERE x.event_id=a.event_id AND x.state='missed') missed FROM alerts a LEFT JOIN events e ON e.id=a.event_id LEFT JOIN occurrences o ON o.event_id=a.event_id AND o.due=a.due WHERE a.state='pending' AND a.notify<=? ORDER BY a.notify,a.id",(now,))
         result=[]; seen=set()
         for row in sorted(rows,key=lambda r:(r['event_id'] or '',-r['due'],r['stage'])):
             key=row['event_id'] or row['id']
@@ -301,7 +307,7 @@ class JournalStore:
         return identity
 
     def notes(self, search='', trash=False, offset=0, limit=100):
-        return self.rows('SELECT * FROM notes WHERE deleted IS '+('NOT NULL' if trash else 'NULL')+' AND (title LIKE ? OR body LIKE ?) ORDER BY created DESC LIMIT ? OFFSET ?',('%'+search+'%','%'+search+'%',limit,offset))
+        return self.rows('SELECT * FROM notes WHERE deleted IS '+('NOT NULL' if trash else 'NULL')+' AND (title LIKE ? OR body LIKE ?) ORDER BY created DESC,id DESC LIMIT ? OFFSET ?',('%'+search+'%','%'+search+'%',limit,offset))
 
     def trash_note(self, identity, restore=False):
         with self.db:

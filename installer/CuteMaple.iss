@@ -35,7 +35,7 @@ Name: "chinesesimp"; MessagesFile: "ChineseSimplified.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "快捷方式："
-Name: "autostart"; Description: "登录 Windows 时启动美腻枫"; GroupDescription: "启动选项："; Flags: unchecked
+Name: "autostart"; Description: "开机自动启动美腻枫"; GroupDescription: "启动选项："; Flags: unchecked
 
 [Files]
 Source: "{#PackageDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

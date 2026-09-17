@@ -19,14 +19,14 @@ class MediaBar(QWidget):
         self.recorder=QMediaRecorder(self); self.capture.setAudioInput(self.audio_input); self.capture.setRecorder(self.recorder)
         self.devices=QMediaDevices(self); self.devices.audioInputsChanged.connect(self.refresh_devices)
         layout=QVBoxLayout(self); layout.setContentsMargins(0,0,0,0)
-        row=QHBoxLayout(); self.play=QPushButton('播放音频'); self.play.clicked.connect(self.toggle_play)
+        self.play_panel=QWidget();row=QHBoxLayout(self.play_panel);row.setContentsMargins(0,0,0,0); self.play=QPushButton('播放'); self.play.clicked.connect(self.toggle_play)
         self.seek=QSlider(Qt.Horizontal); self.seek.sliderMoved.connect(self.player.setPosition)
-        self.play_time=QLabel('00:00'); row.addWidget(self.play); row.addWidget(self.seek,1); row.addWidget(self.play_time); layout.addLayout(row)
+        self.play_time=QLabel('00:00'); row.addWidget(self.play); row.addWidget(self.seek,1); row.addWidget(self.play_time); layout.addWidget(self.play_panel);self.play_panel.hide()
         self.player.positionChanged.connect(self.position); self.player.durationChanged.connect(lambda n:self.seek.setRange(0,n))
-        row=QHBoxLayout(); self.inputs=QComboBox(); self.start=QPushButton('开始录音'); self.pause=QPushButton('暂停'); self.stop=QPushButton('结束并保存')
-        row.addWidget(self.inputs,1)
+        self.record_panel=QWidget();rl=QVBoxLayout(self.record_panel);rl.setContentsMargins(0,0,0,0);row=QHBoxLayout(); self.inputs=QComboBox(); self.start=QPushButton('开始'); self.pause=QPushButton('暂停'); self.stop=QPushButton('结束并保存')
+        rl.addWidget(self.inputs)
         for w in (self.start,self.pause,self.stop):row.addWidget(w)
-        layout.addLayout(row); self.status=QLabel('麦克风未使用'); self.status.setWordWrap(True); layout.addWidget(self.status)
+        rl.addLayout(row);layout.addWidget(self.record_panel);self.record_panel.hide(); self.status=QLabel('麦克风未使用'); self.status.setWordWrap(True); layout.addWidget(self.status)
         self.start.clicked.connect(self.begin); self.pause.clicked.connect(self.pause_recording); self.stop.clicked.connect(self.finish)
         self.recorder.durationChanged.connect(lambda n:self.status.setText(('录音已暂停 · ' if self.recorder.recorderState()==QMediaRecorder.PausedState else '● 正在使用麦克风 · ')+f'{n//60000:02}:{n//1000%60:02}'))
         self.recorder.recorderStateChanged.connect(self.state_changed); self.recorder.errorOccurred.connect(self.record_error)
@@ -44,6 +44,7 @@ class MediaBar(QWidget):
         self.play_time.setText(f'{n//60000:02}:{n//1000%60:02}')
 
     def load(self,path):
+        self.show();self.play_panel.show()
         self.player.setSource(QUrl.fromLocalFile(str(path))); self.player.play(); self.play.setText('暂停音频')
 
     def toggle_play(self):
@@ -52,6 +53,7 @@ class MediaBar(QWidget):
         else:self.player.play(); self.play.setText('暂停音频')
 
     def begin(self):
+        self.show();self.record_panel.show()
         if self.recorder.recorderState()!=QMediaRecorder.StoppedState or self.pending_finalize:return
         device=QMediaDevices.defaultAudioInput()
         if self.inputs.currentData():

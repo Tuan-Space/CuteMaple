@@ -162,12 +162,12 @@ def test_shared_menu_and_petting_twice(monkeypatch):
 
     menu = pet._create_context_menu()
     assert [action.text() for action in menu.actions() if not action.isSeparator()] == [
-        "枫叶手账 · 提醒与笔记", "隐藏美腻枫", "暂停活动", "互动", "大小", "开机自动启动", "性能与内存", "退出",
+        "枫叶手账 · 提醒与笔记", "隐藏美腻枫", "暂停活动", "互动", "大小", "开机自动启动美腻枫", "性能与内存", "退出",
     ]
     tray_menu = pet.tray.contextMenu()
     pet._sync_context_menu(tray_menu)
     assert [action.text() for action in tray_menu.actions() if not action.isSeparator()] == [
-        "枫叶手账 · 提醒与笔记", "隐藏美腻枫", "暂停活动", "互动", "大小", "开机自动启动", "性能与内存", "退出",
+        "枫叶手账 · 提醒与笔记", "隐藏美腻枫", "暂停活动", "互动", "大小", "开机自动启动美腻枫", "性能与内存", "退出",
     ]
     pet.hide_pet()
     pet._sync_context_menu(tray_menu)

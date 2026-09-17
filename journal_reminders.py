@@ -14,7 +14,7 @@ MESSAGES={
 
 
 def snooze_seconds(parent):
-    dialog=QDialog(parent); dialog.setWindowTitle('稍后提醒'); dialog.theme=ThemeBinding(dialog)
+    dialog=QDialog(parent); dialog.setWindowTitle('稍后提醒'); dialog.theme=ThemeBinding(dialog,'journal')
     layout=QVBoxLayout(dialog); layout.addWidget(QLabel('从现在开始，过多久再提醒？'))
     presets=QHBoxLayout(); result=[]
     for text,value in [('10 分钟',600),('1 小时',3600),('1 天',86400)]:
@@ -33,21 +33,24 @@ class ReminderBubble(QWidget):
     def __init__(self,store,pet):
         super().__init__(None,Qt.Tool|Qt.FramelessWindowHint|Qt.WindowStaysOnTopHint|Qt.WindowDoesNotAcceptFocus)
         self.setAttribute(Qt.WA_ShowWithoutActivating)
-        self.store,self.pet=store,pet; self.current=None; self.items=[]; self.text_cache={}; self.last_phrase={}
+        self.store,self.pet=store,pet; self.current=None; self.items=[]; self.text_cache={}; self.last_phrase={};self.save_errors={}
         self.setObjectName('journalBubble'); self.setFixedWidth(370)
         self.theme=ThemeBinding(self,'journal')
         layout=QVBoxLayout(self); layout.setContentsMargins(16,12,16,12); layout.setSpacing(9)
         header=QHBoxLayout(); self.heading=QLabel('美腻枫 · 小提醒'); self.heading.setObjectName('section'); header.addWidget(self.heading); header.addStretch()
-        self.count=QLabel(); header.addWidget(self.count); layout.addLayout(header)
+        self.count=QLabel();self.count.setObjectName('muted'); header.addWidget(self.count); layout.addLayout(header)
         self.text=QLabel(); self.text.setTextFormat(Qt.PlainText); self.text.setWordWrap(True); layout.addWidget(self.text)
         self.meta=QLabel(); self.meta.setWordWrap(True); self.meta.setObjectName('metricName'); layout.addWidget(self.meta)
         actions=QHBoxLayout(); self.ack=QPushButton('知道了'); self.done=QPushButton('已完成'); self.later=QPushButton('稍后提醒')
+        self.done.setObjectName('primary')
         for widget in (self.ack,self.done,self.later): actions.addWidget(widget)
         layout.addLayout(actions)
         self.ack.clicked.connect(lambda:self.respond('ack')); self.done.clicked.connect(lambda:self.respond('done')); self.later.clicked.connect(self.defer)
         nav=QHBoxLayout(); previous=QPushButton('上一条'); following=QPushButton('下一条'); details=QPushButton('打开手账')
+        self.previous,self.following=previous,following
         previous.clicked.connect(lambda:self.navigate(-1)); following.clicked.connect(lambda:self.navigate(1)); details.clicked.connect(self.openRequested)
         for widget in (previous,following,details): nav.addWidget(widget)
+        for widget in (previous,following,details):widget.setObjectName('quiet')
         layout.addLayout(nav)
         self.cleanup=QLabel(); self.cleanup.setWordWrap(True); self.cleanup.setObjectName('status'); self.cleanup.hide(); layout.addWidget(self.cleanup)
 
@@ -59,20 +62,24 @@ class ReminderBubble(QWidget):
         if self.current not in identities: self.current=identities[0]
         row=self.items[identities.index(self.current)]
         self.count.setText(f'{identities.index(self.current)+1} / {len(self.items)}')
+        multiple=len(self.items)>1
+        self.count.setVisible(multiple);self.previous.setVisible(multiple);self.following.setVisible(multiple)
         if row['habit']:
             kind=row['habit']
             if row['id'] not in self.text_cache:
                 options=[s for s in MESSAGES[kind] if s!=self.last_phrase.get(kind)]
                 self.text_cache[row['id']]=self.last_phrase[kind]=random.choice(options)
-            self.text.setText(self.text_cache[row['id']]); self.meta.setText('请手动回应，这条提醒不会自动消失。')
+            self.text.setText(self.text_cache[row['id']]); self.meta.setText('');self.meta.hide()
             self.done.setText('已喝水' if kind=='water' else '已完成'); self.later.setText('未喝水' if kind=='water' else '未完成'); self.ack.hide()
         else:
+            self.meta.show()
             due=datetime.fromtimestamp(row['due']).strftime('%Y-%m-%d %H:%M:%S')
             remaining=max(0,round((row['due']-self.store.clock())/60))
             prefix=f'提前提醒 · 约 {remaining} 分钟后到期' if row['stage'] else '到期提醒'
             self.text.setText(row['title']+'\n'+(row['body'] or '')[:500])
-            self.meta.setText(f'{prefix}\n原到期：{due}'+(f"\n曾错过 {row['missed']} 次，可在事件记录查看。" if row['missed'] else ''))
+            self.meta.setText(f'{prefix} · {due}'+(f"\n另有 {row['missed']} 次未处理" if row['missed'] else ''))
             self.done.setText('已完成'); self.later.setText('稍后提醒'); self.ack.setVisible(row['stage']>0)
+        if self.current in self.save_errors:self.meta.setText(self.save_errors[self.current]);self.meta.show()
         self.follow(); self.show()
 
     def navigate(self,step):
@@ -82,9 +89,11 @@ class ReminderBubble(QWidget):
     def respond(self,action,delay=0):
         if not self.current: return
         try:
-            self.store.respond(self.current,action,delay); self.refresh(); self.changed.emit()
+            self.store.respond(self.current,action,delay);self.save_errors.pop(self.current,None);self.refresh();self.changed.emit()
         except Exception as error:
-            self.meta.setText('未能保存，请重试：'+str(error))
+            self.save_errors[self.current]='未能保存，请重试：'+str(error)
+            self.meta.setText(self.save_errors[self.current])
+            self.meta.show()
 
     def defer(self):
         row=next((x for x in self.items if x['id']==self.current),None)

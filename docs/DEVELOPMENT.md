@@ -80,6 +80,8 @@ CMO/CAN 中的共享参数、网格和道具隐藏曲线应保留；运行时只
 
 农历依赖固定为 lunar-python 1.4.8，时区数据固定为 tzdata 2025.2；许可保存在 `third_party`。录音和播放使用 Qt Multimedia，打包必须包含其 FFmpeg 后端，不可凭 DLL 名称删除依赖。
 
+手账视觉配色与月历日期格位于 `journal_design.py`。`MilestoneRule` 为纪念日里程碑规则，与普通 `Rule` 通过 `parse_rule` 统一读取；调度与月历共用 `between`，不要另外维护周年算法。天数从起始日算第 1 天，同日合并。数据库版本为 2，首次打开旧版资料库会先在 backups 保存迁移前快照；旧的普通纪念日规则不会自动转换。
+
 安装器使用 Inno Setup 6.7.3（从 https://jrsoftware.org/isdl.php 获取并核验签名）。安装该开发工具后运行：
 
 ```powershell

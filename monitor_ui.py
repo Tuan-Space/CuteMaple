@@ -73,6 +73,17 @@ class ThemeBinding(QObject):
 
     def apply(self, *_):
         w, c = self.widget, system_theme()
+        if self.kind == 'journal':
+            from journal_design import palette as journal_palette,style as journal_style
+            from PySide6.QtGui import QFont
+            c=journal_palette(c is DARK)
+            palette=QPalette(QApplication.instance().palette())
+            for role,key in ((QPalette.Window,'background'),(QPalette.Base,'card'),(QPalette.WindowText,'text'),(QPalette.Text,'text'),(QPalette.ButtonText,'text'),(QPalette.Button,'button'),(QPalette.Highlight,'selection'),(QPalette.HighlightedText,'selected')):
+                palette.setColor(role,QColor(c[key]))
+            w.setPalette(palette)
+            w._theme=c;w.setFont(QFont('Microsoft YaHei UI',10));w.setStyleSheet(journal_style(c));w.update()
+            if hasattr(w,'refresh_theme'):w.refresh_theme()
+            return
         w._theme = c
         palette = QPalette(QApplication.instance().palette())
         for role, key in ((QPalette.Window,'background'),(QPalette.Base,'card'),(QPalette.WindowText,'text'),
@@ -89,21 +100,6 @@ class ThemeBinding(QObject):
             style += (f"QLabel {{ background: {c['card']}; color: {c['text']}; "
                       f"border: 2px solid {c['border']}; border-radius: 14px; "
                       "padding: 10px 14px; font-size: 11pt; }")
-        elif self.kind == 'journal':
-            style += f"""
-QWidget#journalWindow, QWidget#journalBubble, QWidget#journalPage, QWidget#journalViewport {{ background: {c['background']}; color: {c['text']}; }}
-QTabWidget::pane {{ border: 1px solid {c['border']}; border-radius: 10px; top: -1px; background: {c['background']}; }}
-QTabBar::tab {{ background: {c['background']}; color: {c['muted']}; padding: 9px 20px; border: none; min-width: 42px; }}
-QTabBar::tab:selected {{ color: {c['accent']}; background: {c['status']}; border-bottom: 2px solid {c['accent']}; }}
-QLineEdit, QPlainTextEdit, QTextBrowser, QListWidget, QTableWidget, QSpinBox, QTimeEdit, QDateTimeEdit {{ background: {c['card']}; color: {c['text']}; selection-background-color: {c['selection']}; selection-color: {c['selected']}; border: 1px solid {c['border']}; border-radius: 6px; padding: 6px; font-size: 11pt; }}
-QListWidget::item {{ padding: 10px 8px; border-bottom: 1px solid {c['status']}; }}
-QListWidget::item:selected {{ background: {c['status']}; color: {c['text']}; border-left: 3px solid {c['accent']}; }}
-QHeaderView::section {{ background: {c['status']}; color: {c['text']}; border: none; padding: 6px; }}
-QCalendarWidget QWidget {{ background: {c['background']}; color: {c['text']}; }}
-QCalendarWidget QAbstractItemView {{ selection-background-color: {c['selection']}; selection-color: {c['selected']}; }}
-QToolButton {{ background: {c['button']}; color: {c['text']}; padding: 5px; border: none; }}
-QSplitter::handle {{ background: {c['background']}; width: 10px; }}
-"""
         w.setStyleSheet(style)
         w.update()
         if hasattr(w,"_fit_contents"): QTimer.singleShot(0,w._fit_contents)
@@ -148,7 +144,7 @@ class ThemedCheckBox(QCheckBox):
         option=QStyleOptionButton(); self.initStyleOption(option)
         rect=self.style().subElementRect(QStyle.SE_CheckBoxIndicator,option,self)
         painter=QPainter(self); painter.setRenderHint(QPainter.Antialiasing)
-        painter.setPen(QPen(QColor(c['selected']),2))
+        painter.setPen(QPen(QColor(c['background'] if 'inset' in c else c['selected']),2))
         x,y=rect.center().x(),rect.center().y()
         painter.drawPolyline(QPolygonF([QPointF(x-4,y),QPointF(x-1,y+3),QPointF(x+4,y-3)]))
 

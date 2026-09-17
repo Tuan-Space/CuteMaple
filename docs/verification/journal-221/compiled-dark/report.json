@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "theme": "dark",
+  "hardwareRequested": false,
+  "screens": [
+    "reminders",
+    "notes",
+    "calendar",
+    "statistics",
+    "settings",
+    "event-editor"
+  ],
+  "errors": [],
+  "rendererReady": true
+}

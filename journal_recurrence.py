@@ -167,3 +167,81 @@ class Rule:
         elif self.end:
             text += ' · 截至 ' + self.end
         return text
+
+
+@dataclass
+class MilestoneRule:
+    start: str
+    zone: str = 'Asia/Shanghai'
+    calendar: str = 'solar'
+    yearly: bool = True
+    hundreds: bool = False
+    days: tuple[int, ...] = ()
+    missing: str = 'last'
+    strict_leap: bool = False
+    advances: tuple[int, ...] = ()
+    schedule_type: str = 'milestone'
+
+    def __post_init__(self):
+        self.base=datetime.fromisoformat(self.start).replace(tzinfo=None,microsecond=0)
+        self.days=tuple(sorted(set(self.days)))
+        if any(type(n) is not int or not 1<=n<=3652059 for n in self.days):raise ValueError('特殊天数请填写正整数')
+        if not (self.yearly or self.hundreds or self.days):raise ValueError('至少选择一种提醒')
+        self.annual=Rule(self.start,zone=self.zone,period='yearly',calendar=self.calendar,missing=self.missing,strict_leap=self.strict_leap,advances=self.advances)
+        self.advances=self.annual.advances
+
+    def mapping(self):return asdict(self)
+
+    def between(self,lower,upper,limit=10000):
+        import heapq
+        if upper<lower:return
+        def annual():
+            if self.yearly:
+                for index,stamp in self.annual.between(lower,upper,limit+1):
+                    if index>0:yield stamp
+        def day_stamp(n):
+            try:return civil_timestamp(self.base+timedelta(days=n-1),self.zone)
+            except (OverflowError,ValueError):return None
+        def hundreds():
+            if not self.hundreds:return
+            local=datetime.fromtimestamp(lower,ZoneInfo(self.zone)).date();elapsed=(local-self.base.date()).days+1
+            n=max(100,((elapsed+99)//100)*100)
+            while True:
+                stamp=day_stamp(n)
+                if stamp is None or stamp>upper:return
+                if stamp>=lower:yield stamp
+                n+=100
+        def special():
+            for n in self.days:
+                stamp=day_stamp(n)
+                if stamp is not None and lower<=stamp<=upper:yield stamp
+        last=None;count=0
+        for stamp in heapq.merge(annual(),hundreds(),special()):
+            if stamp==last:continue
+            last=stamp;yield count,stamp;count+=1
+            if count>=limit:return
+
+    def preview(self,after=None,count=3):
+        lower=civil_timestamp(self.base,self.zone) if after is None else after
+        return list(self.between(lower,253370000000,count))
+
+    def labels(self,stamp):
+        local=datetime.fromtimestamp(stamp,ZoneInfo(self.zone));n=(local.date()-self.base.date()).days+1;result=[]
+        if (self.hundreds and n>0 and n%100==0) or n in self.days:result.append(f'第 {n} 天')
+        if self.yearly:
+            for index,due in self.annual.between(stamp,stamp,1):
+                if index>0:result.insert(0,f'{index} 周年')
+        return result
+
+    def describe(self):
+        parts=[]
+        if self.yearly:parts.append('每周年')
+        if self.hundreds:parts.append('每 100 天')
+        parts.extend(f'{n} 天' for n in self.days)
+        return '、'.join(parts)
+
+
+def parse_rule(value):
+    import json
+    data=json.loads(value) if isinstance(value,str) else dict(value)
+    return MilestoneRule(**data) if data.get('schedule_type')=='milestone' else Rule(**data)

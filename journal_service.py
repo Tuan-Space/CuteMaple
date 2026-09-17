@@ -35,7 +35,8 @@ class JournalService(QObject):
         except Exception as error:
             self.store._event_wake.clear()
             self.window.status.setText('资料暂时无法保存，请检查文件夹：'+str(error))
-            if self.bubble.isVisible():self.bubble.meta.setText('保存异常，提醒仍保留：'+str(error))
+            self.window.status.show()
+            if self.bubble.isVisible():self.bubble.meta.setText('保存异常，提醒仍保留：'+str(error));self.bubble.meta.show()
 
     def follow(self):
         if self.bubble.isVisible():self.bubble.follow()

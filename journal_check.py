@@ -14,7 +14,7 @@ def run(args):
     output=a.output.resolve();output.mkdir(parents=True,exist_ok=True)
     from PySide6.QtCore import QTimer,Qt
     from journal_store import JournalStore
-    from journal_recurrence import Rule
+    from journal_recurrence import Rule,MilestoneRule
     from journal_service import JournalService
     from journal_editors import EventEditor
     report={'passed':False,'theme':a.theme,'hardwareRequested':a.hardware,'screens':[],'errors':[]}
@@ -23,6 +23,7 @@ def run(args):
     for title,kind,delta in [('给未来的自己写封信','todo',1),('约朋友喝茶','schedule',2),('值得纪念的那一天','anniversary',3)]:
         store.save_event(title,kind,'这是隔离验收资料，不会进入个人资料库。',Rule((now+timedelta(days=delta)).isoformat(timespec='seconds'),period='weekly' if kind=='schedule' else 'once'))
     note_id=store.save_note('九月的一页','# 今天的小事\n\n慢一点，也很好。\n\n- [x] 整理桌面\n- [ ] 看一看远处\n\n**给自己留一点时间。**')
+    store.save_event('相识的日子','anniversary','',MilestoneRule((now-timedelta(days=99)).replace(hour=9,minute=0,second=0).isoformat(timespec='seconds'),hundreds=True,days=(520,1314)))
     def observer(app,pet):
         app.styleHints().setColorScheme(Qt.ColorScheme.Dark if a.theme=='dark' else Qt.ColorScheme.Light)
         pet.journal=JournalService(store,pet)
@@ -48,7 +49,7 @@ def run(args):
             except Exception as error:fail(error);return
             if tasks:QTimer.singleShot(400,next_task)
         def event_dialog():
-            dialog=EventEditor(store,parent=window);dialog.show();app.processEvents();dialog.grab().save(str(output/'event-editor.png'));report['screens'].append('event-editor');dialog.close()
+            dialog=EventEditor(store,parent=window,initial_kind='anniversary');dialog.title.setText('相识的日子');dialog.hundreds.setChecked(True);dialog.day520.setChecked(True);dialog.show();app.processEvents();dialog.grab().save(str(output/'event-editor.png'));report['screens'].append('event-editor');dialog.close()
         def record():
             window.tabs.setCurrentIndex(1);media=window.note_editor.media
             media.begin();QTimer.singleShot(2200,lambda:(media.finish(),QTimer.singleShot(1200,check_record)))

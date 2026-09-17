@@ -1,0 +1,12 @@
+{
+  "completed": "2026-09-17T12:01:30.2107887+08:00",
+  "newDetections": [],
+  "started": "2026-09-17T12:01:26.6669774+08:00",
+  "antivirus": true,
+  "realTimeProtection": true,
+  "targets": [
+    "F:\\cutemaple\\CuteMaple-Live2D\\dist\\CuteMaple-Live2D-Directory-20260917-115135\\CuteMaple-Live2D",
+    "F:\\cutemaple\\CuteMaple-2.2.1-Setup-x64.exe"
+  ],
+  "signature": "1.459.234.0"
+}

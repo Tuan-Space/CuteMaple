@@ -1,0 +1,44 @@
+{
+  "passed": false,
+  "theme": "light",
+  "hardwareRequested": true,
+  "screens": [
+    "reminders",
+    "notes",
+    "calendar",
+    "statistics",
+    "settings",
+    "event-editor"
+  ],
+  "errors": [],
+  "recordingSaved": true,
+  "recordingStatus": "录音已保存到当前笔记 · 麦克风未使用",
+  "recordingSeconds": 2.1546666666666665,
+  "audibleOutputDetected": false,
+  "audioDetectionStatus": {
+    "attempt": 0,
+    "endpointId": "{0.0.0.00000000}.{7c82a0d4-53b3-4a39-b6f6-613ba8a41f14}",
+    "endpointName": "扬声器 (USB Audio and HID)",
+    "endpoints": [
+      {
+        "id": "{0.0.0.00000000}.{04f22472-85cd-46db-aad7-cb6611615f51}",
+        "isDefault": false,
+        "name": "扬声器 (ToDesk Virtual Audio)"
+      },
+      {
+        "id": "{0.0.0.00000000}.{7c82a0d4-53b3-4a39-b6f6-613ba8a41f14}",
+        "isDefault": true,
+        "name": "扬声器 (USB Audio and HID)"
+      }
+    ],
+    "error": "",
+    "muted": true,
+    "peak": 0.0,
+    "state": "muted"
+  },
+  "playerPositionMs": 1621,
+  "playerError": "",
+  "audioRepliesDisabled": true,
+  "silenceReleasedSleepLatch": true,
+  "rendererReady": true
+}

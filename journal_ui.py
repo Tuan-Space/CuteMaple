@@ -16,7 +16,11 @@ from monitor_ui import ThemeBinding,system_theme
 from monitor_ui import ThemedComboBox as QComboBox
 from monitor_ui import ThemedSpinBox as QSpinBox,ThemedTimeEdit as QTimeEdit
 from journal_store import HABITS
-from journal_recurrence import Rule
+from journal_recurrence import Rule,MilestoneRule,parse_rule
+from zoneinfo import ZoneInfo
+from journal_design import MonthCalendar,Toggle,TYPE_NAMES,TYPE_ORDER
+from PySide6.QtWidgets import QStackedWidget,QButtonGroup,QMenu,QDateEdit
+from PySide6.QtCore import QTime
 from journal_editors import EventEditor,NoteEditor
 
 
@@ -44,84 +48,251 @@ class UpdateCheck(QObject):
         threading.Thread(target=run,name='journal-update-check',daemon=True).start()
 
 
-class MonthCalendar(QCalendarWidget):
-    def paintCell(self,painter,rect,value):
-        from lunar_python import Solar
-        c=system_theme();selected=value==self.selectedDate();current=value.month()==self.monthShown()
-        painter.save();painter.fillRect(rect,QColor(c['selection'] if selected else c['background']))
-        painter.setPen(QColor(c['selected'] if selected else c['text'] if current else c['muted']))
-        font=painter.font();font.setPointSize(10);painter.setFont(font)
-        painter.drawText(rect.adjusted(0,1,0,-rect.height()//2),Qt.AlignCenter,str(value.day()))
-        lunar=Solar.fromYmd(value.year(),value.month(),value.day()).getLunar()
-        text=(lunar.getMonthInChinese()+'月') if lunar.getDay()==1 else lunar.getDayInChinese()
-        font.setPointSize(8);painter.setFont(font)
-        painter.drawText(rect.adjusted(0,rect.height()//2-1,0,-2),Qt.AlignCenter,text)
-        if self.dateTextFormat(value).fontWeight()>=700:
-            painter.setBrush(QColor(c['selected'] if selected else c['accent']));painter.setPen(Qt.NoPen);painter.drawEllipse(rect.right()-7,rect.top()+5,4,4)
-        painter.restore()
-
-
 class JournalWindow(QWidget):
     visibilityChanged=Signal(bool)
     def __init__(self,store,pet):
-        super().__init__(None,Qt.Window);self.store,self.pet=store,pet;self.event_offset=0;self.note_offset=0
-        self.setWindowTitle('美腻枫 · 枫叶手账');self.resize(900,650);self.setMinimumSize(620,420)
+        super().__init__(None,Qt.Window);self.store,self.pet=store,pet
+        self.event_limit=self.note_limit=50;self._filling=False
+        self.setWindowTitle('美腻枫 · 手账');self.setMinimumSize(620,420)
+        area=self.screen().availableGeometry();self.resize(min(1000,area.width()-32),min(700,area.height()-48))
         self.setObjectName('journalWindow');self.theme=ThemeBinding(self,'journal')
-        outer=QVBoxLayout(self);outer.setContentsMargins(20,16,20,16);outer.setSpacing(12)
-        heading=QHBoxLayout();title=QLabel('枫叶手账');title.setObjectName('title');heading.addWidget(title);heading.addStretch();self.today=QLabel();self.today.setObjectName('metricName');heading.addWidget(self.today);outer.addLayout(heading)
-        self.tabs=QTabWidget();outer.addWidget(self.tabs,1)
+        outer=QHBoxLayout(self);outer.setContentsMargins(16,20,24,16);outer.setSpacing(24)
+        self.sidebar=QWidget();self.sidebar.setFixedWidth(120);nav=QVBoxLayout(self.sidebar);nav.setContentsMargins(0,0,0,0);nav.setSpacing(6)
+        brand=QLabel('美腻枫');brand.setObjectName('section');nav.addWidget(brand);nav.addSpacing(26)
+        self.nav=[];group=QButtonGroup(self);group.setExclusive(True)
+        for i,title in enumerate(['提醒','笔记','月历','统计','设置']):
+            if i==4:nav.addStretch()
+            b=self.button(title,lambda _,n=i:self.tabs.setCurrentIndex(n));b.setObjectName('nav');b.setCheckable(True);group.addButton(b);nav.addWidget(b);self.nav.append(b)
+        outer.addWidget(self.sidebar)
+        body=QVBoxLayout();body.setSpacing(18);heading=QHBoxLayout();self.page_title=QLabel('提醒');self.page_title.setObjectName('title');heading.addWidget(self.page_title);heading.addStretch();self.today=QLabel();self.today.setObjectName('muted');heading.addWidget(self.today);body.addLayout(heading)
+        self.tabs=QStackedWidget();body.addWidget(self.tabs,1);self.status=QLabel();self.status.setWordWrap(True);self.status.setObjectName('muted');self.status.hide();body.addWidget(self.status);outer.addLayout(body,1)
         self.make_events();self.make_notes();self.make_calendar();self.make_statistics();self.make_settings()
-        self.status=QLabel('把要记得的事放在这里，剩下的慢慢来。');self.status.setObjectName('metricName');outer.addWidget(self.status)
-        self.tabs.currentChanged.connect(self.refresh_current)
-        self.updates=UpdateCheck(store,self);self.updates.finished.connect(self.update_result)
-        self.refresh_current()
+        self.tabs.currentChanged.connect(self.refresh_current);self.updates=UpdateCheck(store,self);self.updates.finished.connect(self.update_result);self.refresh_current()
 
-    def button(self,text,callback):
-        button=QPushButton(text);button.clicked.connect(callback);return button
-
-    def page(self,title):
-        page=QWidget();page.setObjectName('journalPage');layout=QVBoxLayout(page);layout.setContentsMargins(8,12,8,8);layout.setSpacing(10)
-        scroll=QScrollArea();scroll.viewport().setObjectName('journalViewport');scroll.setWidgetResizable(True);scroll.setWidget(page);self.tabs.addTab(scroll,title);return layout
-
+    def button(self,text,callback,kind=''):
+        b=QPushButton(text);b.clicked.connect(callback);b.setCursor(Qt.PointingHandCursor)
+        if kind:b.setObjectName(kind)
+        return b
+    def notice(self,text):self.status.setText(text);self.status.show();QTimer.singleShot(5000,self.status.hide)
+    def refresh_theme(self):
+        if not hasattr(self,'calendar'):return
+        c=self._theme;kind=None if self.calendar_filter.currentIndex()==0 else TYPE_ORDER[self.calendar_filter.currentIndex()-1]
+        self.legend.setText(' &nbsp; '.join(f'<span style="color:{c[k]}">●</span> {TYPE_NAMES[k]}' for k in TYPE_ORDER if not kind or k==kind));self.calendar.repaint_month()
+    def page(self):
+        page=QWidget();page.setObjectName('journalPage');layout=QVBoxLayout(page);layout.setContentsMargins(0,0,8,0);layout.setSpacing(14)
+        scroll=QScrollArea();scroll.viewport().setObjectName('journalViewport');scroll.setWidgetResizable(True);scroll.setWidget(page);self.tabs.addWidget(scroll);return layout
+    def empty(self,widget,text):
+        item=QListWidgetItem(text);item.setFlags(Qt.NoItemFlags);widget.addItem(item)
+    def resizeEvent(self,event):
+        self.sidebar.setFixedWidth(76 if self.width()<860 else 120)
+        if hasattr(self,'habits_row'):
+            from PySide6.QtWidgets import QBoxLayout
+            self.habits_row.setDirection(QBoxLayout.TopToBottom if self.width()<720 else QBoxLayout.LeftToRight)
+        if hasattr(self,'calendar_split'):
+            narrow=self.width()<860;self.calendar_split.setOrientation(Qt.Vertical if narrow else Qt.Horizontal)
+            self.calendar.setMinimumHeight(470);self.day_items.setMinimumHeight(130)
+        super().resizeEvent(event)
     def make_events(self):
-        layout=self.page('提醒');bar=QHBoxLayout();self.event_search=QLineEdit();self.event_search.setPlaceholderText('搜索标题或说明')
-        self.event_kind=QComboBox();self.event_kind.addItems(['全部类型','待办','日程','纪念日']);self.history=QCheckBox('历史事件')
-        bar.addWidget(self.event_search,1);bar.addWidget(self.event_kind);bar.addWidget(self.history);bar.addWidget(self.button('＋ 新提醒',lambda:self.edit_event()));layout.addLayout(bar)
-        self.events_list=QListWidget();self.events_list.setWordWrap(True);self.events_list.itemDoubleClicked.connect(lambda _:self.edit_event(self.selected(self.events_list)));layout.addWidget(self.events_list,1)
-        row=QHBoxLayout();row.addWidget(self.button('编辑',lambda:self.edit_event(self.selected(self.events_list))));row.addWidget(self.button('发生记录',self.event_ledger));row.addWidget(self.button('删除计划并归档',self.archive_event));row.addStretch();row.addWidget(self.button('上一页',lambda:self.event_page(-1)));row.addWidget(self.button('下一页',lambda:self.event_page(1)));layout.addLayout(row)
-        layout.addWidget(QLabel('健康小提醒 · 默认关闭 · 回应后重新计时'))
-        self.habits={}
+        layout=self.page();bar=QHBoxLayout();self.event_search=QLineEdit();self.event_search.setPlaceholderText('搜索提醒');bar.addWidget(self.event_search,1)
+        self.history=self.button('历史',lambda:self.reset_events(), 'quiet');self.history.setCheckable(True);bar.addWidget(self.history);bar.addWidget(self.button('＋ 新建提醒',lambda:self.edit_event(), 'primary'));layout.addLayout(bar)
+        row=QHBoxLayout();self.event_kind=QComboBox();self.event_kind.addItems(['全部','待办','日程','纪念日']);row.addWidget(self.event_kind);row.addStretch();self.event_count=QLabel();self.event_count.setObjectName('muted');row.addWidget(self.event_count);layout.addLayout(row)
+        self.events_list=QListWidget();self.events_list.setWordWrap(True);self.events_list.itemClicked.connect(lambda item:self.edit_event(self.selected(self.events_list)) if item.data(Qt.UserRole) else None);self.events_list.setContextMenuPolicy(Qt.CustomContextMenu);self.events_list.customContextMenuRequested.connect(self.event_menu);layout.addWidget(self.events_list,1)
+        self.events_list.verticalScrollBar().valueChanged.connect(self.more_events)
+        row=QHBoxLayout();label=QLabel('照顾自己');label.setObjectName('section');row.addWidget(label);row.addStretch();row.addWidget(self.button('提醒时段',self.edit_habit_times,'quiet'));layout.addLayout(row)
+        habits_row=QHBoxLayout();self.habits_row=habits_row;habits_row.setSpacing(12);self.habits={}
         for h in self.store.rows('SELECT * FROM habits'):
-            row=QHBoxLayout();check=QCheckBox(HABITS[h['kind']][0]);check.setChecked(bool(h['enabled']));minutes=QSpinBox();minutes.setRange(1,1440);minutes.setValue(h['minutes']);minutes.setSuffix(' 分钟')
-            start=QTimeEdit();end=QTimeEdit();from PySide6.QtCore import QTime
-            start.setTime(QTime.fromString(h['start'],'HH:mm'));end.setTime(QTime.fromString(h['end'],'HH:mm'));start.setDisplayFormat('HH:mm');end.setDisplayFormat('HH:mm')
-            row.addWidget(check);row.addWidget(minutes);row.addWidget(QLabel('时段'));row.addWidget(start);row.addWidget(QLabel('至'));row.addWidget(end);row.addStretch()
-            row.addWidget(self.button('保存',lambda _,k=h['kind']:self.save_habit(k)));layout.addLayout(row);self.habits[h['kind']]=(check,minutes,start,end)
-        label=QLabel('起止时间相同表示全天；未回应时不反复催促。');label.setObjectName('metricName');layout.addWidget(label)
-        for signal in (self.event_search.textChanged,self.event_kind.currentIndexChanged,self.history.toggled):signal.connect(self.reset_events)
+            card=QWidget();card.setObjectName('surface');cl=QVBoxLayout(card);cl.setContentsMargins(14,12,14,12);top=QHBoxLayout();top.addWidget(QLabel(HABITS[h['kind']][0]));top.addStretch();check=Toggle();check.setChecked(bool(h['enabled']));check.setAccessibleName(HABITS[h['kind']][0]+'提醒');top.addWidget(check);cl.addLayout(top)
+            minutes=QSpinBox();minutes.setRange(1,1440);minutes.setValue(h['minutes']);minutes.setSuffix(' 分钟');minutes.setPrefix('每 ');cl.addWidget(minutes)
+            start=QTimeEdit();end=QTimeEdit();start.setTime(QTime.fromString(h['start'],'HH:mm'));end.setTime(QTime.fromString(h['end'],'HH:mm'));self.habits[h['kind']]=(check,minutes,start,end)
+            check.toggled.connect(lambda _,k=h['kind']:self.save_habit(k));minutes.editingFinished.connect(lambda k=h['kind']:self.save_habit(k));habits_row.addWidget(card,1)
+        layout.addLayout(habits_row)
+        self.event_search.textChanged.connect(self.reset_events);self.event_kind.currentIndexChanged.connect(self.reset_events)
+    def edit_habit_times(self):
+        d=QDialog(self);d.setWindowTitle('每日提醒时段');ThemeBinding(d,'journal');f=QFormLayout(d)
+        fields={}
+        for kind,(check,minutes,start,end) in self.habits.items():
+            row=QHBoxLayout();a=QTimeEdit(start.time());b=QTimeEdit(end.time());a.setDisplayFormat('HH:mm');b.setDisplayFormat('HH:mm');row.addWidget(a);row.addWidget(QLabel('至'));row.addWidget(b);f.addRow(HABITS[kind][0],row);fields[kind]=(a,b)
+        f.addRow(QLabel('起止时间相同表示全天。'))
+        def save():
+            for kind,(a,b) in fields.items():self.habits[kind][2].setTime(a.time());self.habits[kind][3].setTime(b.time());self.save_habit(kind)
+            d.accept()
+        f.addRow(self.button('保存',save,'primary'));d.exec()
+    def save_habit(self,kind):
+        check,minutes,start,end=self.habits[kind]
+        try:self.store.set_habit(kind,check.isChecked(),minutes.value(),start.time().toString('HH:mm'),end.time().toString('HH:mm'));self.notice('已保存')
+        except Exception as error:QMessageBox.warning(self,'未能保存',str(error))
+    def event_menu(self,pos):
+        item=self.events_list.itemAt(pos)
+        if not item or not item.data(Qt.UserRole):return
+        self.events_list.setCurrentItem(item);menu=QMenu(self);menu.addAction('查看发生记录',self.event_ledger)
+        if not self.history.isChecked():menu.addAction('删除计划',self.archive_event)
+        menu.exec(self.events_list.mapToGlobal(pos))
+    def reset_events(self,*_):self.event_limit=50;self.refresh_events()
+    def more_events(self,value):
+        bar=self.events_list.verticalScrollBar()
+        if not self._filling and self.event_more and bar.maximum()>0 and value>=bar.maximum()-20:self.event_limit+=50;self.refresh_events()
+    def event_summary(self,event):
+        rule=parse_rule(event['rule']);now=self.store.clock();future=rule.preview(after=now,count=1)
+        parts=[]
+        if isinstance(rule,MilestoneRule):
+            n=(datetime.fromtimestamp(now,ZoneInfo(rule.zone)).date()-rule.base.date()).days+1
+            parts.append(f'已经第 {n} 天' if n>0 else '尚未开始')
+        if future:
+            stamp=future[0][1];due=datetime.fromtimestamp(stamp,ZoneInfo(rule.zone));parts.append(due.strftime('%m月%d日 %H:%M'))
+            if isinstance(rule,MilestoneRule):
+                parts.extend(rule.labels(stamp));remaining=(due.date()-datetime.fromtimestamp(now,ZoneInfo(rule.zone)).date()).days;parts.append('今天' if remaining==0 else f'还有 {remaining} 天')
+            elif rule.period!='once':parts.append({'hourly':'每小时','daily':'每天','weekly':'每周','monthly':'每月','yearly':'每年'}[rule.period])
+        else:parts.append('已归档' if event['archived'] else '等待处理')
+        return ' · '.join(parts)
+    def refresh_events(self):
+        self._filling=True;bar=self.events_list.verticalScrollBar();value=bar.value();self.events_list.clear()
+        kind=[None,'todo','schedule','anniversary'][self.event_kind.currentIndex()];rows=self.store.events(self.event_search.text(),self.history.isChecked(),kind,0,self.event_limit+1);self.event_more=len(rows)>self.event_limit
+        for event in rows[:self.event_limit]:
+            item=QListWidgetItem(event['title']+'\n'+self.event_summary(event));item.setData(Qt.UserRole,event);self.events_list.addItem(item)
+        if not rows:self.empty(self.events_list,'没有历史记录' if self.history.isChecked() else '还没有提醒，记下第一件事吧')
+        self.event_count.setText('历史记录' if self.history.isChecked() else '接下来的安排');bar.setValue(value);self._filling=False
+    def edit_event(self,event=None):
+        kind=['todo','todo','schedule','anniversary'][self.event_kind.currentIndex()]
+        if EventEditor(self.store,event,self,initial_kind=kind).exec():self.refresh_events()
+
+    def make_notes(self):
+        layout=self.page();bar=QHBoxLayout();self.note_search=QLineEdit();self.note_search.setPlaceholderText('搜索笔记');bar.addWidget(self.note_search,1)
+        self.trash=self.button('回收站',lambda:self.reset_notes(),'quiet');self.trash.setCheckable(True);bar.addWidget(self.trash);bar.addWidget(self.button('＋ 写笔记',self.new_note,'primary'));layout.addLayout(bar)
+        self.note_split=QSplitter();self.notes_list=QListWidget();self.notes_list.setWordWrap(True);self.notes_list.setMinimumWidth(145);self.note_split.addWidget(self.notes_list)
+        self.note_editor=NoteEditor(self.store);self.note_split.addWidget(self.note_editor);self.note_split.setSizes([210,540]);self.note_split.setStretchFactor(1,1);layout.addWidget(self.note_split,1)
+        row=QHBoxLayout();self.note_delete=self.button('移到回收站',self.trash_note,'quiet');self.note_restore=self.button('恢复',self.restore_note);self.note_purge=self.button('永久删除',self.purge_note,'quiet')
+        for b in (self.note_delete,self.note_restore,self.note_purge):row.addWidget(b)
+        row.addStretch();layout.addLayout(row)
+        self.notes_list.itemClicked.connect(self.load_note);self.notes_list.itemSelectionChanged.connect(self.note_actions);self.notes_list.verticalScrollBar().valueChanged.connect(self.more_notes);self.note_search.textChanged.connect(self.reset_notes);self.note_editor.saved.connect(self.refresh_notes)
+    def note_actions(self):
+        selected=self.selected(self.notes_list);trash=self.trash.isChecked()
+        self.note_delete.setVisible(not trash);self.note_restore.setVisible(trash);self.note_purge.setVisible(trash)
+        for b in (self.note_delete,self.note_restore,self.note_purge):b.setEnabled(bool(selected))
+    def reset_notes(self,*_):self.note_limit=50;self.refresh_notes()
+    def more_notes(self,value):
+        bar=self.notes_list.verticalScrollBar()
+        if not self._filling and self.note_more and bar.maximum()>0 and value>=bar.maximum()-20:self.note_limit+=50;self.refresh_notes()
+    def refresh_notes(self):
+        self._filling=True;bar=self.notes_list.verticalScrollBar();value=bar.value();selected=self.selected(self.notes_list);identity=selected['id'] if selected else self.note_editor.identity;self.notes_list.clear()
+        rows=self.store.notes(self.note_search.text(),self.trash.isChecked(),0,self.note_limit+1);self.note_more=len(rows)>self.note_limit
+        for note in rows[:self.note_limit]:
+            item=QListWidgetItem(note['title']+'\n'+datetime.fromtimestamp(note['created']).strftime('%m月%d日 %H:%M'));item.setData(Qt.UserRole,note);self.notes_list.addItem(item)
+            if note['id']==identity:self.notes_list.setCurrentItem(item)
+        if not rows:self.empty(self.notes_list,'回收站是空的' if self.trash.isChecked() else '写下第一篇笔记')
+        bar.setValue(value);self._filling=False;self.note_actions()
+    def new_note(self):
+        if self.note_editor.load():self.trash.setChecked(False);self.note_editor.setEnabled(True);self.refresh_notes();self.note_editor.title.setFocus()
+    def load_note(self,item):
+        note=item.data(Qt.UserRole)
+        if note and self.note_editor.load(note):self.note_editor.setEnabled(not self.trash.isChecked())
+    def trash_note(self):
+        note=self.selected(self.notes_list)
+        if note and self.note_editor.finish():self.store.trash_note(note['id']);self.note_editor.load();self.refresh_notes()
+    def restore_note(self):
+        note=self.selected(self.notes_list)
+        if note:self.store.trash_note(note['id'],True);self.refresh_notes()
+    def purge_note(self):
+        note=self.selected(self.notes_list)
+        if note and note['deleted'] and QMessageBox.question(self,'永久删除','永久删除这篇笔记和不再使用的附件？')==QMessageBox.Yes:self.store.purge_note(note['id']);self.note_editor.load();self.refresh_notes()
+
+    def make_calendar(self):
+        layout=self.page();row=QHBoxLayout();self.calendar_filter=QComboBox();self.calendar_filter.addItems(['全部',*TYPE_NAMES.values()]);row.addWidget(self.calendar_filter);row.addStretch();layout.addLayout(row)
+        self.legend=QLabel('');self.legend.setTextFormat(Qt.RichText);layout.addWidget(self.legend)
+        self.calendar_split=QSplitter();self.calendar=MonthCalendar();self.calendar_split.addWidget(self.calendar);right=QWidget();detail=QVBoxLayout(right);detail.setContentsMargins(0,0,0,0);self.day_heading=QLabel();self.day_heading.setObjectName('section');detail.addWidget(self.day_heading)
+        self.day_items=QListWidget();self.day_items.setWordWrap(True);detail.addWidget(self.day_items,1);self.day_more=self.button('加载更多',self.more_day,'quiet');detail.addWidget(self.day_more);self.calendar_split.addWidget(right);self.calendar_split.setSizes([510,230]);layout.addWidget(self.calendar_split,1)
+        self.calendar.currentPageChanged.connect(self.refresh_calendar);self.calendar.selectionChanged.connect(self.reset_day);self.calendar_filter.currentIndexChanged.connect(self.refresh_calendar);self.day_items.itemClicked.connect(self.open_calendar_item);self.calendar_items={};self.day_limit=100
+    def refresh_calendar(self,*_):
+        year,month=self.calendar.yearShown(),self.calendar.monthShown();start=datetime(year,month,1);end=(start.replace(day=28)+timedelta(days=4)).replace(day=1);begin,finish=start.timestamp(),end.timestamp();self.calendar_items={};filter_kind=None if self.calendar_filter.currentIndex()==0 else TYPE_ORDER[self.calendar_filter.currentIndex()-1]
+        recorded=self.store.rows('SELECT o.*,e.kind,e.rule,e.body,e.archived FROM occurrences o JOIN events e ON e.id=o.event_id WHERE o.due>=? AND o.due<?',(begin,finish))
+        seen={(r['event_id'],r['due']) for r in recorded}
+        def add(kind,row,stamp):
+            if filter_kind and kind!=filter_kind:return
+            day=row['day'] if kind=='habit' else datetime.fromtimestamp(stamp).date().isoformat();self.calendar_items.setdefault(day,[]).append((kind,row,stamp))
+        for event in self.store.rows('SELECT * FROM events WHERE archived=0'):
+            rule=parse_rule(event['rule'])
+            for _,stamp in rule.between(begin,finish-.001,limit=1000):
+                if (event['id'],stamp) in seen:continue
+                row=dict(event)
+                if isinstance(rule,MilestoneRule):row['title']+=' · '+' / '.join(rule.labels(stamp))
+                add(event['kind'],row,stamp)
+        for row in recorded:
+            if row['state']=='cancelled' and row['due']>self.store.clock():continue
+            row['id']=row['event_id'];add(row['kind'],row,row['due'])
+        for note in self.store.rows('SELECT * FROM notes WHERE deleted IS NULL AND created>=? AND created<? ORDER BY created',(begin,finish)):add('note',note,note['created'])
+        for row in self.store.rows('SELECT day,COUNT(*) total,SUM(done=1) done FROM habit_log WHERE day>=? AND day<? GROUP BY day',(start.date().isoformat(),end.date().isoformat())):add('habit',row,0)
+        self.calendar.set_marks({day:{item[0] for item in entries} for day,entries in self.calendar_items.items()})
+        c=self._theme;self.legend.setText(' &nbsp; '.join(f'<span style="color:{c[k]}">●</span> {TYPE_NAMES[k]}' for k in TYPE_ORDER if not filter_kind or k==filter_kind));self.refresh_day()
+    def refresh_day(self):
+        q=self.calendar.selectedDate();day=q.toString('yyyy-MM-dd');self.day_heading.setText(q.toString('M月d日'));self.day_items.clear();entries=sorted(self.calendar_items.get(day,[]),key=lambda x:(TYPE_ORDER.index(x[0]),x[2]))
+        for kind,row,stamp in entries[:self.day_limit]:
+            text=f'健康 · 已完成 {row["done"] or 0}/{row["total"]}' if kind=='habit' else TYPE_NAMES[kind]+' · '+row['title']+'\n'+datetime.fromtimestamp(stamp).strftime('%H:%M')
+            item=QListWidgetItem(text);item.setData(Qt.UserRole,(kind,row));self.day_items.addItem(item)
+        if not entries:self.empty(self.day_items,'这一天还没有记录')
+        self.day_more.setVisible(len(entries)>self.day_limit)
+    def reset_day(self):self.day_limit=100;self.refresh_day()
+    def more_day(self):self.day_limit+=100;self.refresh_day()
+    def open_calendar_item(self,item):
+        value=item.data(Qt.UserRole)
+        if not value:return
+        kind,row=value
+        if kind=='note':
+            if self.note_editor.load(row):self.tabs.setCurrentIndex(1);self.note_editor.setEnabled(True)
+        elif kind=='habit':self.stat_date.setDate(self.calendar.selectedDate());self.tabs.setCurrentIndex(3)
+        else:
+            records=self.store.rows('SELECT * FROM events WHERE id=?',(row['id'],))
+            if records:self.edit_event(records[0]);self.refresh_calendar()
+
+    def make_statistics(self):
+        layout=self.page();row=QHBoxLayout();self.stat_period=QComboBox();self.stat_period.addItems(['日','周','月','年']);self.stat_date=QDateEdit(QDate.currentDate());self.stat_date.setCalendarPopup(True);self.stat_date.setDisplayFormat('yyyy年M月d日');row.addWidget(self.stat_period);row.addWidget(self.stat_date);row.addStretch();layout.addLayout(row)
+        cards=QHBoxLayout();self.stat_cards={}
+        for kind,(name,_) in HABITS.items():
+            card=QWidget();card.setObjectName('surface');cl=QVBoxLayout(card);cl.setContentsMargins(18,16,18,16);cl.addWidget(QLabel(name));big=QLabel('0');big.setObjectName('title');cl.addWidget(big);small=QLabel();small.setObjectName('muted');small.setWordWrap(True);cl.addWidget(small);self.stat_cards[kind]=(big,small);cards.addWidget(card,1)
+        layout.addLayout(cards);self.stat_summary=QLabel();self.stat_summary.setObjectName('muted');layout.addWidget(self.stat_summary);self.stat_list=QListWidget();layout.addWidget(self.stat_list,1)
+        row=QHBoxLayout();self.correct_yes=self.button('更正为已完成',lambda:self.correct_stat(True),'quiet');self.correct_no=self.button('更正为未完成',lambda:self.correct_stat(False),'quiet');row.addWidget(self.correct_yes);row.addWidget(self.correct_no);row.addStretch();layout.addLayout(row)
+        self.stat_list.itemSelectionChanged.connect(self.stat_actions);self.stat_period.currentIndexChanged.connect(self.refresh_statistics);self.stat_date.dateChanged.connect(self.refresh_statistics)
+    def stat_actions(self):
+        row=self.selected(self.stat_list);enabled=bool(row and row['answered'] is not None);self.correct_yes.setEnabled(enabled);self.correct_no.setEnabled(enabled)
+    def refresh_statistics(self,*_):
+        start,end=self.stat_range();rows={r['kind']:r for r in self.store.statistics(start,end)};self.stat_summary.setText(start+' — '+end);self.stat_list.clear()
+        for kind,(big,small) in self.stat_cards.items():
+            r=rows.get(kind,{});done=r.get('done') or 0;no=r.get('no') or 0;pending=r.get('pending') or 0;big.setText(f'{done} 次');small.setText(('完成率 '+f'{done/(done+no):.0%}' if done+no else '还没有回应')+f' · 待回应 {pending}')
+        for row in self.store.rows('SELECT * FROM habit_log WHERE day>=? AND day<=? ORDER BY due DESC LIMIT 1000',(start,end)):
+            state='待回应' if row['done'] is None else '已完成' if row['done'] else '未完成';item=QListWidgetItem(HABITS[row['kind']][0]+' · '+state+'\n'+datetime.fromtimestamp(row['due']).strftime('%m月%d日 %H:%M'));item.setData(Qt.UserRole,row);self.stat_list.addItem(item)
+        if not self.stat_list.count():self.empty(self.stat_list,'这一段时间还没有健康记录')
+        self.stat_actions()
+    def make_settings(self):
+        layout=self.page();scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.viewport().setObjectName('journalViewport');content=QWidget();content.setObjectName('journalPage');sl=QVBoxLayout(content);sl.setContentsMargins(0,0,0,0);sl.setSpacing(18)
+        title=QLabel('资料与备份');title.setObjectName('section');sl.addWidget(title);path=QLabel(str(self.store.root));path.setWordWrap(True);path.setTextInteractionFlags(Qt.TextSelectableByMouse);path.setObjectName('muted');sl.addWidget(path)
+        row=QHBoxLayout()
+        for text,action in [('打开文件夹',lambda:QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.store.root)))),('导出备份',self.export_backup),('切换资料库',self.switch_library)]:row.addWidget(self.button(text,action))
+        row.addStretch();sl.addLayout(row);caption=QLabel('备份包含笔记和全部附件。卸载会保留资料库。');caption.setObjectName('muted');caption.setWordWrap(True);sl.addWidget(caption)
+        sl.addSpacing(8);title=QLabel('应用');title.setObjectName('section');sl.addWidget(title)
+        self.startup=Toggle('开机自动启动美腻枫');self.startup.setChecked(bool(self.pet and self.pet.settings.autostart));self.startup.setEnabled(self.pet is not None);self.startup.toggled.connect(lambda on:self.pet.toggle_autostart(on) if self.pet else None);sl.addWidget(self.startup)
+        self.update_label=QLabel('版本 '+app_version());sl.addWidget(self.update_label);row=QHBoxLayout();row.addWidget(self.button('检查更新',lambda:self.updates.check(True)));row.addWidget(self.button('下载页面',lambda:QDesktopServices.openUrl(QUrl('https://github.com/Tuan-Space/CuteMaple/releases/latest')),'quiet'));row.addStretch();sl.addLayout(row);self.update_notes=QLabel();self.update_notes.setWordWrap(True);sl.addWidget(self.update_notes)
+        sl.addSpacing(8);title=QLabel('录音');title.setObjectName('section');sl.addWidget(title);text=QLabel('仅在你点击开始录音后使用麦克风。');text.setObjectName('muted');sl.addWidget(text);sl.addWidget(self.button('查看中断时保留的录音',lambda:QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.store.root/'recordings'))),'quiet'));sl.addStretch();scroll.setWidget(content);layout.addWidget(scroll)
+    def update_result(self,result):
+        self.updates.busy=False
+        if result.get('error'):self.update_label.setText('暂时无法检查更新');return
+        if result['new']:self.nav[4].setText('设置 · 更新');self.update_label.setText('发现新版本 '+result['version']);self.update_notes.setText(result['body'][:1200])
+        else:self.update_label.setText('已是最新正式版本 · '+app_version())
+    def refresh_current(self,*_):
+        index=self.tabs.currentIndex();self.nav[index].setChecked(True);self.page_title.setText(['提醒','笔记','月历','统计','设置'][index]);self.today.setText(datetime.now().strftime('%m月%d日'))
+        if index==0:self.refresh_events()
+        elif index==1:self.refresh_notes()
+        elif index==2:self.refresh_calendar()
+        elif index==3:self.refresh_statistics()
 
     @staticmethod
     def selected(widget):
         item=widget.currentItem();return item.data(Qt.UserRole) if item else None
-
-    def reset_events(self,*_):self.event_offset=0;self.refresh_events()
-    def event_page(self,step):self.event_offset=max(0,self.event_offset+step*50);self.refresh_events()
-    def refresh_events(self):
-        self.events_list.clear();kind=[None,'todo','schedule','anniversary'][self.event_kind.currentIndex()]
-        for event in self.store.events(self.event_search.text(),self.history.isChecked(),kind,self.event_offset,50):
-            rule=Rule(**json.loads(event['rule']));item=QListWidgetItem(event['title']+'\n'+rule.describe());item.setData(Qt.UserRole,event);self.events_list.addItem(item)
-        if self.events_list.count()==0:self.events_list.addItem('这一页还没有事件。点击“新提醒”记下第一件事。')
-
-    def edit_event(self,event=None):
-        if EventEditor(self.store,event,self).exec():self.refresh_events()
 
     def archive_event(self):
         event=self.selected(self.events_list)
         if event and QMessageBox.question(self,'删除计划','停止此计划的未来提醒，并保留发生记录到历史？')==QMessageBox.Yes:
             self.store.archive_event(event['id']);self.refresh_events()
 
-    def event_ledger(self):
-        event=self.selected(self.events_list)
+    def event_ledger(self,event=None):
+        event=event or self.selected(self.events_list)
         if not event:return
         dialog=QDialog(self);dialog.setWindowTitle(event['title']+' · 发生记录');dialog.resize(650,420);layout=QVBoxLayout(dialog)
         table=QTableWidget(0,4);table.setHorizontalHeaderLabels(['原到期时间','状态','回应时间','提醒／延期时间']);table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -143,130 +314,22 @@ class JournalWindow(QWidget):
             except Exception as error:QMessageBox.warning(dialog,'尚未保存',str(error))
         layout.addWidget(table);layout.addWidget(self.button('将选中的这一次标记为已完成',complete_selected));layout.addWidget(QLabel('显示最近 1000 次；已完成与错过分别记录，不会把错过的事件算作完成。'));dialog.exec()
 
-    def save_habit(self,kind):
-        check,minutes,start,end=self.habits[kind]
-        self.store.set_habit(kind,check.isChecked(),minutes.value(),start.time().toString('HH:mm'),end.time().toString('HH:mm'));self.status.setText(HABITS[kind][0]+'提醒已保存')
-
-    def make_notes(self):
-        layout=self.page('笔记');bar=QHBoxLayout();self.note_search=QLineEdit();self.note_search.setPlaceholderText('搜索笔记');self.trash=QCheckBox('回收站')
-        bar.addWidget(self.note_search,1);bar.addWidget(self.trash);bar.addWidget(self.button('＋ 新笔记',self.new_note));layout.addLayout(bar)
-        split=QSplitter();left=QWidget();ll=QVBoxLayout(left);ll.setContentsMargins(0,0,0,0);self.notes_list=QListWidget();self.notes_list.setWordWrap(True);ll.addWidget(self.notes_list,1)
-        row=QHBoxLayout();row.addWidget(self.button('上一页',lambda:self.note_page(-1)));row.addWidget(self.button('下一页',lambda:self.note_page(1)));ll.addLayout(row)
-        for text,action in [('移到回收站',self.trash_note),('恢复',self.restore_note),('永久删除',self.purge_note)]:ll.addWidget(self.button(text,action))
-        split.addWidget(left);self.note_editor=NoteEditor(self.store);split.addWidget(self.note_editor);split.setStretchFactor(1,3);split.setSizes([230,600]);layout.addWidget(split,1)
-        self.notes_list.itemClicked.connect(self.load_note);self.note_search.textChanged.connect(self.reset_notes);self.trash.toggled.connect(self.reset_notes)
-        self.note_editor.saved.connect(self.refresh_notes)
-
-    def reset_notes(self,*_):self.note_offset=0;self.refresh_notes()
-    def note_page(self,step):self.note_offset=max(0,self.note_offset+step*50);self.refresh_notes()
-    def refresh_notes(self):
-        self.notes_list.clear()
-        for note in self.store.notes(self.note_search.text(),self.trash.isChecked(),self.note_offset,50):
-            item=QListWidgetItem(note['title']+'\n'+datetime.fromtimestamp(note['created']).strftime('%Y-%m-%d %H:%M'));item.setData(Qt.UserRole,note);self.notes_list.addItem(item)
-    def new_note(self):self.trash.setChecked(False);self.note_editor.setEnabled(True);self.note_editor.load()
-    def load_note(self,item):
-        note=item.data(Qt.UserRole)
-        if note:self.note_editor.load(note);self.note_editor.setEnabled(not self.trash.isChecked())
-    def trash_note(self):
-        note=self.selected(self.notes_list)
-        if note and self.note_editor.finish():self.store.trash_note(note['id']);self.note_editor.load();self.refresh_notes()
-    def restore_note(self):
-        note=self.selected(self.notes_list)
-        if note:self.store.trash_note(note['id'],True);self.refresh_notes()
-    def purge_note(self):
-        note=self.selected(self.notes_list)
-        if note and note['deleted'] and QMessageBox.question(self,'永久删除','永久删除这篇笔记？此操作不能从回收站恢复。')==QMessageBox.Yes:
-            self.store.purge_note(note['id']);self.note_editor.load();self.refresh_notes()
-
-    def make_calendar(self):
-        layout=self.page('月历');bar=QHBoxLayout();bar.addWidget(QLabel('每一页日子，都有一点值得记住的事。'));bar.addStretch();self.calendar_filter=QComboBox();self.calendar_filter.addItems(['全部','事件','笔记','健康统计']);bar.addWidget(self.calendar_filter);layout.addLayout(bar)
-        split=QSplitter();self.calendar=MonthCalendar();self.calendar.setFirstDayOfWeek(Qt.Monday);self.calendar.setVerticalHeaderFormat(QCalendarWidget.NoVerticalHeader);split.addWidget(self.calendar)
-        self.day_items=QListWidget();self.day_items.setWordWrap(True);split.addWidget(self.day_items);split.setSizes([530,300]);layout.addWidget(split,1)
-        self.calendar.currentPageChanged.connect(self.refresh_calendar);self.calendar.selectionChanged.connect(self.reset_day);self.calendar_filter.currentIndexChanged.connect(self.refresh_calendar);self.day_items.itemDoubleClicked.connect(self.open_calendar_item)
-        self.calendar_items={};self.calendar_marks=[];self.day_limit=100
-        layout.addWidget(self.button('显示这一天的更多记录',self.more_day))
-
-    def refresh_calendar(self,*_):
-        from lunar_python import Solar
-        year,month=self.calendar.yearShown(),self.calendar.monthShown();start=datetime(year,month,1);end=(start.replace(day=28)+timedelta(days=4)).replace(day=1)
-        begin,finish=start.timestamp(),end.timestamp();self.calendar_items={};selected=self.calendar_filter.currentIndex()
-        if selected in (0,1):
-            for event in self.store.rows('SELECT * FROM events WHERE archived=0'):
-                rule=Rule(**json.loads(event['rule']))
-                for _,stamp in rule.between(begin,finish-.001,limit=1000):
-                    day=datetime.fromtimestamp(stamp).date().isoformat();self.calendar_items.setdefault(day,[]).append(('event',event,stamp))
-        if selected in (0,2):
-            for note in self.store.rows('SELECT * FROM notes WHERE deleted IS NULL AND created>=? AND created<? ORDER BY created',(begin,finish)):
-                day=datetime.fromtimestamp(note['created']).date().isoformat();self.calendar_items.setdefault(day,[]).append(('note',note,note['created']))
-        if selected in (0,3):
-            for row in self.store.rows('SELECT day,COUNT(*) total,SUM(done=1) done FROM habit_log WHERE day>=? AND day<? GROUP BY day',(start.date().isoformat(),end.date().isoformat())):
-                self.calendar_items.setdefault(row['day'],[]).append(('habit',row,0))
-        for qdate in self.calendar_marks:self.calendar.setDateTextFormat(qdate,QTextCharFormat())
-        self.calendar_marks=[]
-        colors=system_theme()
-        for day in range(1,calendar.monthrange(year,month)[1]+1):
-            qdate=QDate(year,month,day);key=qdate.toString('yyyy-MM-dd');fmt=QTextCharFormat();lunar=Solar.fromYmd(year,month,day).getLunar()
-            fmt.setToolTip(lunar.getMonthInChinese()+'月'+lunar.getDayInChinese()+f' · {len(self.calendar_items.get(key,[]))} 条')
-            if key in self.calendar_items:fmt.setBackground(QColor(colors['status']));fmt.setForeground(QColor(colors['accent']));fmt.setFontWeight(700)
-            self.calendar.setDateTextFormat(qdate,fmt);self.calendar_marks.append(qdate)
-        self.refresh_day()
-
-    def refresh_day(self):
-        from lunar_python import Solar
-        selected=self.calendar.selectedDate();day=selected.toString('yyyy-MM-dd');lunar=Solar.fromYmd(selected.year(),selected.month(),selected.day()).getLunar();self.day_items.clear()
-        heading=QListWidgetItem(day+' · 农历'+lunar.getMonthInChinese()+'月'+lunar.getDayInChinese());self.day_items.addItem(heading)
-        entries=sorted(self.calendar_items.get(day,[]),key=lambda v:v[2])
-        for kind,row,stamp in entries[:self.day_limit]:
-            text=f'健康提醒 · 已完成 {row["done"] or 0} / {row["total"]}' if kind=='habit' else datetime.fromtimestamp(stamp).strftime('%H:%M')+' · '+('笔记 · ' if kind=='note' else '')+row['title']
-            item=QListWidgetItem(text);item.setData(Qt.UserRole,(kind,row));self.day_items.addItem(item)
-        if len(entries)>self.day_limit:self.day_items.addItem(f'另有 {len(entries)-self.day_limit} 条，点击下方按钮继续查看。')
-    def reset_day(self):self.day_limit=100;self.refresh_day()
-    def more_day(self):self.day_limit+=100;self.refresh_day()
-    def open_calendar_item(self,item):
-        data=item.data(Qt.UserRole)
-        if not data:return
-        kind,row=data
-        if kind=='note':self.tabs.setCurrentIndex(1);self.note_editor.setEnabled(True);self.note_editor.load(row)
-        elif kind=='event':self.edit_event(row);self.refresh_calendar()
-        else:self.tabs.setCurrentIndex(3)
-
-    def make_statistics(self):
-        layout=self.page('统计');bar=QHBoxLayout();self.stat_period=QComboBox();self.stat_period.addItems(['日','周','月','年']);self.stat_date=QCalendarWidget();self.stat_date.setMaximumHeight(210)
-        bar.addWidget(QLabel('统计范围'));bar.addWidget(self.stat_period);bar.addStretch();layout.addLayout(bar);layout.addWidget(self.stat_date)
-        self.stat_summary=QLabel();self.stat_summary.setWordWrap(True);self.stat_summary.setObjectName('status');layout.addWidget(self.stat_summary)
-        self.stat_list=QListWidget();layout.addWidget(self.stat_list,1);bar=QHBoxLayout();bar.addWidget(self.button('更正为已完成',lambda:self.correct_stat(True)));bar.addWidget(self.button('更正为未完成',lambda:self.correct_stat(False)));bar.addStretch();layout.addLayout(bar)
-        self.stat_period.currentIndexChanged.connect(self.refresh_statistics);self.stat_date.selectionChanged.connect(self.refresh_statistics)
     def stat_range(self):
-        q=self.stat_date.selectedDate();start=date(q.year(),q.month(),q.day());kind=self.stat_period.currentIndex()
+        q=self.stat_date.date();start=date(q.year(),q.month(),q.day());kind=self.stat_period.currentIndex()
         if kind==1:start-=timedelta(days=start.weekday());end=start+timedelta(days=6)
         elif kind==2:start=start.replace(day=1);end=start.replace(day=calendar.monthrange(start.year,start.month)[1])
         elif kind==3:start=date(start.year,1,1);end=date(start.year,12,31)
         else:end=start
         return start.isoformat(),end.isoformat()
-    def refresh_statistics(self,*_):
-        start,end=self.stat_range();rows={r['kind']:r for r in self.store.statistics(start,end)};lines=[f'{start} — {end}']
-        for kind,(name,_) in HABITS.items():
-            r=rows.get(kind,{});done=r.get('done') or 0;no=r.get('no') or 0;rate=f'{done/(done+no):.0%}' if done+no else '—'
-            lines.append(f'{name}：已完成 {done} · 未完成 {no} · 待回应 {r.get("pending") or 0} · 完成率 {rate}')
-        self.stat_summary.setText('\n'.join(lines));self.stat_list.clear()
-        for row in self.store.rows('SELECT * FROM habit_log WHERE day>=? AND day<=? ORDER BY due DESC LIMIT 1000',(start,end)):
-            state='待回应' if row['done'] is None else '已完成' if row['done'] else '未完成';item=QListWidgetItem(datetime.fromtimestamp(row['due']).strftime('%Y-%m-%d %H:%M')+' · '+HABITS[row['kind']][0]+' · '+state);item.setData(Qt.UserRole,row);self.stat_list.addItem(item)
     def correct_stat(self,done):
         row=self.selected(self.stat_list)
         if row and row['answered'] is not None:self.store.correct_habit(row['id'],done);self.refresh_statistics()
 
-    def make_settings(self):
-        layout=self.page('设置');title=QLabel('你的资料，只留在你选择的地方');title.setObjectName('section');layout.addWidget(title)
-        path=QLabel(str(self.store.root));path.setTextInteractionFlags(Qt.TextSelectableByMouse);path.setWordWrap(True);layout.addWidget(path)
-        for text,callback in [('打开资料库文件夹',lambda:QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.store.root)))),('查看中断时保留的录音',lambda:QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.store.root/'recordings')))),('导出完整备份',self.export_backup),('选择其他资料库（下次启动生效）',self.switch_library),('检查更新',lambda:self.updates.check(True)),('打开 GitHub 下载页面',lambda:QDesktopServices.openUrl(QUrl('https://github.com/Tuan-Space/CuteMaple/releases/latest')))]:layout.addWidget(self.button(text,callback))
-        self.update_label=QLabel('当前版本 '+app_version()+' · 发现更新后由你手动下载安装包');self.update_label.setWordWrap(True);layout.addWidget(self.update_label)
-        self.update_notes=QLabel();self.update_notes.setWordWrap(True);layout.addWidget(self.update_notes);layout.addStretch()
-        privacy=QLabel('录音只在你主动开始后使用麦克风。升级和卸载不会删除资料库。\n回收站不会自动清空；建议定期导出包含附件的完整备份。');privacy.setWordWrap(True);privacy.setObjectName('metricName');layout.addWidget(privacy)
     def export_backup(self):
         if not self.note_editor.finish():return
         path,_=QFileDialog.getSaveFileName(self,'完整备份','美腻枫手账-'+date.today().isoformat()+'.zip','ZIP (*.zip)')
         if path:
-            try:self.store.export_backup(path);self.status.setText('完整备份已保存，解压后可作为已有资料库打开。')
+            try:self.store.export_backup(path);self.notice('备份已保存')
             except Exception as error:QMessageBox.warning(self,'备份未完成',str(error))
     def switch_library(self):
         if not self.note_editor.finish():return
@@ -274,20 +337,6 @@ class JournalWindow(QWidget):
         other=select_library(self)
         if other:
             save_library_pointer(other.root);other.close();self.status.setText('已选择新的资料库，重新打开程序后生效。');self.pet.quit_app()
-    def update_result(self,result):
-        self.updates.busy=False
-        if result.get('error'):self.update_label.setText(result['error']);return
-        if result['new']:
-            self.tabs.setTabText(4,'设置 · 有更新')
-            self.update_label.setText('发现新版 '+result['version']+'，点击下载页面查看并手动安装。');self.update_notes.setText(result['body'][:1200])
-        else:self.update_label.setText('当前已是最新正式版本 · '+app_version())
-    def refresh_current(self,*_):
-        self.today.setText(datetime.now().strftime('%Y 年 %m 月 %d 日'))
-        index=self.tabs.currentIndex()
-        if index==0:self.refresh_events()
-        elif index==1:self.refresh_notes()
-        elif index==2:self.refresh_calendar()
-        elif index==3:self.refresh_statistics()
     def showEvent(self,event):
         super().showEvent(event);self.visibilityChanged.emit(True);self.refresh_current()
     def closeEvent(self,event):

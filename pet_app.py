@@ -1088,7 +1088,7 @@ class PetWindow(QWidget):
         sizes.addSeparator()
         sizes.addAction("恢复默认大小", self.restore_default_size)
 
-        autostart = QAction("开机自动启动", menu)
+        autostart = QAction("开机自动启动美腻枫", menu)
         autostart.setObjectName("autostart_action")
         autostart.setCheckable(True)
         autostart.toggled.connect(self.toggle_autostart)
