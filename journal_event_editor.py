@@ -54,6 +54,10 @@ class EventEditor(QDialog):
     def __init__(self,store,event=None,parent=None,initial_kind='todo',*,read_only=None):
         super().__init__(parent)
         self.store=store;self.event_record=event
+        from journal_queries import QueryRunner
+        self.preview_queries=QueryRunner(store.path,self);self.finished.connect(lambda *_:self.preview_queries.close())
+        self.preview_timer=QTimer(self);self.preview_timer.setSingleShot(True);self.preview_timer.setInterval(180);self.preview_timer.timeout.connect(self._request_preview)
+        self.preview_timer.setProperty('journalDebounce',True)
         self.read_only=bool(event and (event.get('archived') or event.get('deleted') is not None)) if read_only is None else bool(read_only)
         self.theme=ThemeBinding(self,'journal');self._fields={};self._field_labels={}
         self.setWindowTitle('查看提醒' if self.read_only else '编辑提醒' if event else '新建提醒')
@@ -300,14 +304,25 @@ class EventEditor(QDialog):
             (self.end,not milestone and self.period.currentIndex()>0 and self.end_mode.currentIndex()==1),
             (self.count,not milestone and self.period.currentIndex()>0 and self.end_mode.currentIndex()==2)):
             self._fields.get(w,w).setVisible(visible)
+        self.preview_queries.cancel('preview');self.preview_timer.start()
+
+    def _request_preview(self):
+        milestone=self.is_milestone()
         try:
-            rule=self.rule();dates=rule.preview(after=self.store.clock() if milestone else None,count=3);lines=[]
-            for _,stamp in dates:
-                text=datetime.fromtimestamp(stamp,ZoneInfo(rule.zone)).strftime('%Y年%m月%d日 %H:%M:%S')
-                if milestone:text+=' · '+' / '.join(rule.labels(stamp))
-                lines.append(text)
-            self.preview.setText('\n'.join(lines) if lines else '所选提醒日期均已过去')
-            if getattr(self,'_error_target',None) is not self.title:self._clear_error()
+            mapping=self.rule().mapping();now=self.store.clock()
+            def work(reader,cancel):
+                rule=parse_rule(mapping);dates=rule.preview(after=now if milestone else None,count=3,cancel=cancel);lines=[]
+                for _,stamp in dates:
+                    text=datetime.fromtimestamp(stamp,ZoneInfo(rule.zone)).strftime('%Y年%m月%d日 %H:%M:%S')
+                    if milestone:text+=' · '+' / '.join(rule.labels(stamp))
+                    lines.append(text)
+                return '\n'.join(lines) if lines else '所选提醒日期均已过去'
+            def done(text,error):
+                if error:self.preview.setText('请检查提醒设置。');self._show_error(error,self._rule_error_target())
+                else:
+                    self.preview.setText(text)
+                    if getattr(self,'_error_target',None) is not self.title:self._clear_error()
+            self.preview_queries.submit('preview',repr(mapping),work,done)
         except Exception as error:
             self.preview.setText('请检查提醒设置。');self._show_error(str(error),self._rule_error_target())
 

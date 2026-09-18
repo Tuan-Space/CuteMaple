@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def run(args):
-    p=argparse.ArgumentParser();p.add_argument('--profile',required=True,type=Path);p.add_argument('--output',required=True,type=Path);p.add_argument('--theme',choices=['light','dark'],default='light');p.add_argument('--hardware',action='store_true');p.add_argument('--playback',action='store_true',help='Verify generated silent audio playback without using the microphone');a=p.parse_args(args)
+    p=argparse.ArgumentParser();p.add_argument('--profile',required=True,type=Path);p.add_argument('--output',required=True,type=Path);p.add_argument('--theme',choices=['light','dark'],default='light');p.add_argument('--hardware',action='store_true');p.add_argument('--playback',action='store_true',help='Verify generated silent audio playback without using the microphone');p.add_argument('--performance-count',type=int,default=0);a=p.parse_args(args)
     root=a.profile.resolve();personal=(Path(os.environ.get('APPDATA',Path.home()))/'美腻枫').resolve()
     if root==personal or root.is_relative_to(personal) or personal.is_relative_to(root):raise ValueError('Use an isolated verification profile')
     if (root/'library'/'journal.sqlite3').exists():raise ValueError('Use a fresh profile')
@@ -30,20 +30,34 @@ def run(args):
     for n in range(105):
         identity=store.save_note(f'回收站手记 {n+1:03}','可选择复制的只读正文。');store.trash_note(identity)
     trash_event=store.save_event('暂存的计划','todo','',Rule((now+timedelta(days=3)).isoformat(timespec='seconds')));store.archive_event(trash_event)
+    if a.performance_count:
+        rules=[json.dumps(Rule('2000-01-01T10:00:00',period=period,calendar=calendar).mapping()) for period,calendar in [('daily','solar'),('weekly','solar'),('monthly','solar'),('yearly','solar'),('monthly','lunar'),('yearly','lunar')]]
+        with store.db:
+            store.db.executemany('INSERT INTO events(id,title,kind,body,rule,created,updated,cursor,archived,next_check) VALUES(?,?,?,?,?,?,?,?,0,?)',[(f'performance-{n}',f'性能验收安排 {n:05}','schedule','',rules[n%6],now.timestamp(),now.timestamp(),now.timestamp(),9999999999) for n in range(a.performance_count)])
     def observer(app,pet):
         app.styleHints().setColorScheme(Qt.ColorScheme.Dark if a.theme=='dark' else Qt.ColorScheme.Light)
         pet.journal=JournalService(store,pet)
         pet.journal.window.updates.check=lambda *_:None
         window=pet.journal.window
-        tasks=[]
+        tasks=[];performance=[];gaps=[];page_gaps=[];measuring=[False];last=[time.perf_counter()]
+        heartbeat=QTimer(window);heartbeat.setInterval(5)
+        def beat():
+            current=time.perf_counter();gap=max(0,(current-last[0])*1000-5);gaps.append(gap);last[0]=current
+            if measuring[0]:page_gaps.append(gap)
+        heartbeat.timeout.connect(beat)
         def capture(name):
-            app.processEvents();settle=QEventLoop();QTimer.singleShot(100,settle.quit);settle.exec();app.processEvents()
+            app.processEvents();window.wait_for_queries();settle=QEventLoop();QTimer.singleShot(100,settle.quit);settle.exec();app.processEvents()
             path=output/(name+'.png');window.grab().save(str(path));report['screens'].append(name)
         def begin():
             try:
+                last[0]=time.perf_counter();heartbeat.start()
                 window.show();window.note_editor.load(store.rows('SELECT * FROM notes WHERE id=?',(note_id,))[0])
                 for index,name in enumerate(['overview','reminders','notes','statistics','settings']):
-                    def action(i=index,n=name):window.tabs.setCurrentIndex(i);capture(n)
+                    def action(i=index,n=name):
+                        start=time.perf_counter();last[0]=start;measuring[0]=True
+                        window.tabs.setCurrentIndex(i);app.processEvents();feedback=(time.perf_counter()-start)*1000;window.wait_for_queries();app.processEvents()
+                        page_gaps.append(max(0,(time.perf_counter()-last[0])*1000-5));measuring[0]=False
+                        performance.append(dict(page=n,feedbackMs=feedback,contentMs=(time.perf_counter()-start)*1000));capture(n)
                     tasks.append(action)
                 tasks.append(event_dialog);tasks.append(interaction_check)
                 if a.hardware:tasks.append(record)
@@ -57,16 +71,16 @@ def run(args):
             except Exception as error:fail(error);return
             if tasks:QTimer.singleShot(400,next_task)
         def event_dialog():
-            dialog=EventEditor(store,parent=window,initial_kind='anniversary');dialog.title.setText('相识的日子');dialog.hundreds.setChecked(True);dialog.day520.setChecked(True);dialog.show();app.processEvents();dialog.grab().save(str(output/'event-editor.png'));report['screens'].append('event-editor');dialog.close()
+            dialog=EventEditor(store,parent=window,initial_kind='anniversary');dialog.title.setText('相识的日子');dialog.hundreds.setChecked(True);dialog.day520.setChecked(True);dialog.show();app.processEvents();window.wait_for_queries();dialog.grab().save(str(output/'event-editor.png'));report['screens'].append('event-editor');dialog.close()
         def interaction_check():
-            window.tabs.setCurrentIndex(2);window.trash.setChecked(True);window.reset_notes();app.processEvents();capture('notes-trash-readonly')
+            window.tabs.setCurrentIndex(2);window.trash.setChecked(True);window.reset_notes();app.processEvents();window.wait_for_queries();capture('notes-trash-readonly')
             editor=window.note_editor;report['trashReadOnly']=editor.read_only and editor.preview.isReadOnly() and not editor.format_toolbar.isVisible() and not window.note_new.isVisible()
             window.select_all_notes(True);report['selectAllUnloaded']=len(window.note_checked)==105;capture('notes-trash-all')
             window.resize(620,420);capture('small-notes-trash');window.resize(1000,700)
             window.trash.setChecked(False);window.reset_notes();editor.load(store.rows('SELECT * FROM notes WHERE id=?',(note_id,))[0]);editor.mode.setCurrentIndex(1);capture('notes-source-toolbar');editor.mode.setCurrentIndex(0)
             report['vectorIcons']=all(not button.icon().isNull() for button in (editor.plus,editor.undo,editor.redo))
             window.tabs.setCurrentIndex(1);window.event_status.setCurrentIndex(2);window.select_all_events(True);capture('reminders-trash-all');window.event_status.setCurrentIndex(0)
-            dialog=EventEditor(store,store.rows('SELECT * FROM events WHERE id=?',(trash_event,))[0],window);dialog.show();app.processEvents();dialog.grab().save(str(output/'reminder-readonly.png'));report['screens'].append('reminder-readonly');report['reminderReadOnly']=dialog.read_only;dialog.close()
+            dialog=EventEditor(store,store.rows('SELECT * FROM events WHERE id=?',(trash_event,))[0],window);dialog.show();app.processEvents();window.wait_for_queries();dialog.grab().save(str(output/'reminder-readonly.png'));report['screens'].append('reminder-readonly');report['reminderReadOnly']=dialog.read_only;dialog.close()
             dialog=EventEditor(store,parent=window);dialog.resize(620,420);dialog.show();dialog.save();app.processEvents();dialog.grab().save(str(output/'event-error.png'));report['screens'].append('event-error');report['visibleValidation']=dialog.error_label.isVisible();dialog.close()
             store.set_pinned('note',note_id,True);window.tabs.setCurrentIndex(2);window.refresh_notes();capture('notes-pinned')
             report['notePin']=store.notes()[0]['id']==note_id
@@ -147,6 +161,11 @@ def run(args):
         def fail(error):
             report['errors'].append(str(error));finish()
         def finish():
+            heartbeat.stop()
+            report['performance']=dict(extraReminders=a.performance_count,pages=performance,eventLoopP95Ms=sorted(page_gaps)[int(len(page_gaps)*.95)] if page_gaps else 0,eventLoopMaxMs=max(page_gaps,default=0),verificationLoopP95Ms=sorted(gaps)[int(len(gaps)*.95)] if gaps else 0,verificationLoopMaxMs=max(gaps,default=0),scope='Page loading latency excludes synchronous verifier assertions and screenshot encoding; full verifier latency is retained separately.')
+            if a.performance_count:
+                metrics=report['performance'];report['performancePassed']=len(performance)==5 and max(r['feedbackMs'] for r in performance)<=100 and next(r['contentMs'] for r in performance if r['page']=='reminders')<=(3000 if a.performance_count>=10000 else 1000) and metrics['eventLoopP95Ms']<=50 and metrics['eventLoopMaxMs']<=150
+                if not report['performancePassed']:report['errors'].append('编译版页面性能未达标')
             report['passed']=not report['errors'] and (not a.hardware or (report.get('recordingSaved',False) and report.get('audibleOutputDetected',False) and report.get('silenceReleasedSleepLatch',False)))
             report['rendererReady']=pet._presentation_ready
             (output/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')

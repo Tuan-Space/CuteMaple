@@ -171,7 +171,11 @@ class WrappedItem(QStyledItemDelegate):
                 'empty':not bool(index.flags() & Qt.ItemIsEnabled)}
     def document(self,index,width):
         from html import escape
+        from collections import OrderedDict
         data=self.presentation(index);c=colors(self.parent());empty=data.get('empty',False)
+        if not hasattr(self,'_documents'):self._documents=OrderedDict()
+        key=(repr(data),width,repr(c),self.parent().font().toString(),self.parent().logicalDpiX())
+        if key in self._documents:self._documents.move_to_end(key);return self._documents[key]
         doc=QTextDocument();doc.setDefaultFont(journal_font('empty' if empty else 'body',12 if empty else 10));doc.setDocumentMargin(0)
         option=doc.defaultTextOption();option.setWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere);doc.setDefaultTextOption(option)
         title=escape(str(data.get('title',''))).replace('\n','<br>')
@@ -196,7 +200,9 @@ class WrappedItem(QStyledItemDelegate):
             body+=f'<p style="margin:7px 0 0; font-size:9.5pt; color:{c["secondary"]};">{escape(shown)}</p>'
         if subtitle:body+=f'<p style="margin:5px 0 0; font-family:&quot;{load_journal_fonts()["body"]}&quot;; font-size:9pt; color:{c["muted"]};">{subtitle}</p>'
         if data.get('metadata') and not (data.get('emphasis') and self.inline_subtitle(index,width)):body+=f'<p style="margin:10px 0 0; font-size:8.5pt; color:{c["muted"]};">{escape(data["metadata"])}</p>'
-        doc.setHtml(body);doc.setTextWidth(max(24,width-32));return doc
+        doc.setHtml(body);doc.setTextWidth(max(24,width-32));self._documents[key]=doc
+        if len(self._documents)>256:self._documents.popitem(last=False)
+        return doc
     def badges(self,index):
         data=self.presentation(index);c=colors(self.parent());badges=[]
         category=data.get('category','')
@@ -227,6 +233,13 @@ class WrappedItem(QStyledItemDelegate):
         width=self.parent().viewport().width();content_width=width-(36 if index.data(Qt.CheckStateRole) is not None else 0);doc=self.document(index,content_width);_,badges_height=self.badge_layout(index,content_width)
         height=doc.size().height()+28+(badges_height+8 if badges_height else 0)
         return QSize(width,max(64,int(height)))
+    def prime(self,index):
+        # Populate expensive text layouts within the existing row-sized batches,
+        # including the width after the vertical scrollbar appears. Selection
+        # must not trigger the first text layout of the entire page at once.
+        width=self.parent().viewport().width()-(36 if index.data(Qt.CheckStateRole) is not None else 0)
+        extent=self.parent().style().pixelMetric(QStyle.PM_ScrollBarExtent)
+        for value in (width,width-extent):self.document(index,value).size()
     def paint(self,painter,option,index):
         c=colors(self.parent());selected=bool(option.state & QStyle.State_Selected)
         painter.save();painter.setClipRect(option.rect);painter.setRenderHint(QPainter.Antialiasing)

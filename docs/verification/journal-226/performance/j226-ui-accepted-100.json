@@ -1,0 +1,67 @@
+{
+  "count": 100,
+  "constructionMs": 271.9217003323138,
+  "pages": [
+    {
+      "page": 1,
+      "feedbackMs": 25.661699939519167,
+      "contentMs": 313.09109972789884
+    },
+    {
+      "page": 0,
+      "feedbackMs": 32.781200017780066,
+      "contentMs": 77.27300003170967
+    },
+    {
+      "page": 2,
+      "feedbackMs": 9.015200193971395,
+      "contentMs": 85.81600012257695
+    },
+    {
+      "page": 3,
+      "feedbackMs": 5.128900054842234,
+      "contentMs": 39.63849972933531
+    },
+    {
+      "page": 4,
+      "feedbackMs": 8.99569969624281,
+      "contentMs": 9.805199690163136
+    },
+    {
+      "page": 1,
+      "feedbackMs": 14.126900117844343,
+      "contentMs": 15.393999870866537
+    },
+    {
+      "page": 4,
+      "feedbackMs": 2.6976997032761574,
+      "contentMs": 3.0687996186316013
+    },
+    {
+      "page": 1,
+      "feedbackMs": 10.527700185775757,
+      "contentMs": 10.857400018721819
+    },
+    {
+      "page": 4,
+      "feedbackMs": 2.5865999050438404,
+      "contentMs": 2.885699737817049
+    },
+    {
+      "page": 1,
+      "feedbackMs": 10.001400019973516,
+      "contentMs": 10.32850006595254
+    }
+  ],
+  "eventLoopP95Ms": 7.624999973922968,
+  "eventLoopMaxMs": 26.573799904435873,
+  "applyBatchMaxMs": 6.2686000019311905,
+  "cacheEntries": 4,
+  "estimatedCacheBytes": 1114710,
+  "workingSetSamples": [
+    106078208,
+    106237952
+  ],
+  "outliers": [],
+  "passed": true
+}

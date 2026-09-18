@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "theme": "dark",
+  "hardwareRequested": false,
+  "screens": [
+    "overview",
+    "reminders",
+    "notes",
+    "statistics",
+    "settings",
+    "event-editor",
+    "notes-trash-readonly",
+    "notes-trash-all",
+    "small-notes-trash",
+    "notes-source-toolbar",
+    "reminders-trash-all",
+    "reminder-readonly",
+    "event-error",
+    "notes-pinned",
+    "reminders-pinned",
+    "playback-active",
+    "playback-completed",
+    "playback-dismissed"
+  ],
+  "errors": [],
+  "trashReadOnly": true,
+  "selectAllUnloaded": true,
+  "vectorIcons": true,
+  "reminderReadOnly": true,
+  "visibleValidation": true,
+  "notePin": true,
+  "reminderSort": true,
+  "neutralBackground": true,
+  "tenOclockDefault": true,
+  "playbackEnded": true,
+  "playbackDismissed": true,
+  "fallStartY": 150,
+  "journalVisibleDuringFall": true,
+  "fallEndY": 290,
+  "fallContinuesWithJournal": true,
+  "wallWaitBefore": 30.0,
+  "wallWaitAfter": 29.119108099956065,
+  "wallClockContinuesWithJournal": true,
+  "swingContinuesWithJournal": true,
+  "performance": {
+    "extraReminders": 10000,
+    "pages": [
+      {
+        "page": "overview",
+        "feedbackMs": 15.353400260210037,
+        "contentMs": 117.99689987674356
+      },
+      {
+        "page": "reminders",
+        "feedbackMs": 4.819199908524752,
+        "contentMs": 366.2884999066591
+      },
+      {
+        "page": "notes",
+        "feedbackMs": 20.984099712222815,
+        "contentMs": 43.90229983255267
+      },
+      {
+        "page": "statistics",
+        "feedbackMs": 3.3392999321222305,
+        "contentMs": 8.065799716860056
+      },
+      {
+        "page": "settings",
+        "feedbackMs": 4.390599671751261,
+        "contentMs": 5.2733998745679855
+      }
+    ],
+    "eventLoopP95Ms": 12.83959986642003,
+    "eventLoopMaxMs": 91.45440010353923,
+    "verificationLoopP95Ms": 9.811200089752674,
+    "verificationLoopMaxMs": 218.2113997451961,
+    "scope": "Page loading latency excludes synchronous verifier assertions and screenshot encoding; full verifier latency is retained separately."
+  },
+  "performancePassed": true,
+  "rendererReady": true
+}

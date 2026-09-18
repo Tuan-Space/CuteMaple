@@ -63,7 +63,7 @@ def run():
     report={'version':(Path(__file__).resolve().parents[1]/'VERSION').read_text().strip(),'noteFixtureCount':len(s.notes(limit=None))+len(s.notes(trash=True,limit=None)),'theme':a.theme,'scale':os.environ.get('QT_SCALE_FACTOR','1'),'fonts':load_journal_fonts(),'fixedTime':fixed.isoformat(),'recordingStatesSimulated':True,'captures':[],'horizontalOverflow':{}}
     def wait(ms):
         loop=QEventLoop();QTimer.singleShot(ms,loop.quit);loop.exec()
-    def settle():app.processEvents();wait(90);app.processEvents()
+    def settle():app.processEvents();w.wait_for_queries();wait(90);app.processEvents()
     def capture(name,target=None):
         target=target or w;settle()
         if not target.grab().save(str(a.output/(name+'.png'))):raise OSError(name)

@@ -1,0 +1,20 @@
+{
+  "records": 10000,
+  "healthRecords": 30000,
+  "attachmentBytes": 16777216,
+  "totalMs": 496.7299001291394,
+  "phasesMs": {
+    "dailyBackupAndReferenceScan": 170.07050011307,
+    "export": 375.6067999638617
+  },
+  "eventLoopP95Ms": 16.628200076520443,
+  "eventLoopMaxMs": 40.018000062555075,
+  "pendingNotifications": 17,
+  "errors": [],
+  "finished": [
+    "dailyBackupAndReferenceScan",
+    "export",
+    "schedule"
+  ],
+  "passed": true
+}

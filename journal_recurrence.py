@@ -1,12 +1,38 @@
 """Civil-time recurrence, independent of Qt and the scheduler clock."""
 from __future__ import annotations
 import calendar
+from functools import lru_cache
+import threading
+from collections import OrderedDict
 from dataclasses import dataclass, asdict
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 ADVANCES = (604800, 259200, 86400, 18000, 10800, 3600)
 PERIODS = ('once', 'hourly', 'daily', 'weekly', 'monthly', 'yearly')
+
+
+@lru_cache(maxsize=256)
+def lunar_months(year):
+    from lunar_python import LunarYear
+    return tuple((m.getMonth(),m.getDayCount(),m.getFirstJulianDay()) for m in LunarYear.fromYear(year).getMonths() if m.getYear()==year)
+
+
+@lru_cache(maxsize=4096)
+def lunar_date(year,month,day):
+    from lunar_python import Solar
+    jd=Solar.fromYmdHms(year,month,day,12,0,0).getJulianDay()
+    for y in (year,year-1):
+        for m,days,start in lunar_months(y):
+            if start<=jd<start+days:return y,m,int(jd-start)+1
+    raise ValueError('无法转换农历日期')
+
+
+class QueryCancelled(Exception):pass
+
+
+def check_cancel(cancel):
+    if cancel is not None and cancel():raise QueryCancelled()
 
 
 def civil_timestamp(value: datetime, zone: str) -> float:
@@ -54,11 +80,12 @@ class Rule:
         if self.end and datetime.fromisoformat(self.end) < self.base:
             raise ValueError('截止时间不能早于首次时间')
         self._lunar = None
+        self._checkpoints=[]
+        self._month_cursor=None
         if self.calendar == 'lunar':
             if self.period not in ('monthly', 'yearly'):
                 raise ValueError('农历只用于每月或每年重复')
-            from lunar_python import Solar
-            self._lunar = Solar.fromYmd(self.base.year, self.base.month, self.base.day).getLunar()
+            self._lunar = lunar_date(self.base.year,self.base.month,self.base.day)
 
     def mapping(self):
         return asdict(self)
@@ -72,30 +99,35 @@ class Rule:
         if self.period in ('hourly', 'daily', 'weekly'):
             return b + timedelta(seconds=index * {'hourly':3600, 'daily':86400, 'weekly':604800}[self.period])
         if self.calendar == 'lunar':
-            from lunar_python import Lunar, LunarMonth
-            original = self._lunar
-            y, m, d = original.getYear(), original.getMonth(), original.getDay()
+            from lunar_python import Solar
+            y,m,d=self._lunar
             if self.period == 'monthly':
                 if self.include_leap:
-                    month = LunarMonth.fromYm(y, m).next(index)
-                    y, m = month.getYear(), month.getMonth()
+                    cursor=self._month_cursor
+                    if cursor is None or cursor[0]>index:cursor=(0,y,next(i for i,v in enumerate(lunar_months(y)) if v[0]==m))
+                    current,y,position=cursor;remaining=index-current
+                    while remaining>len(lunar_months(y))-position-1:
+                        remaining-=len(lunar_months(y))-position;y+=1;position=0
+                        if y>9999:return None
+                    position+=remaining;self._month_cursor=(index,y,position);m,days,jd=lunar_months(y)[position]
                 else:
                     total = y * 12 + abs(m) - 1 + index
                     y, m = total // 12, total % 12 + 1
             else:
                 y += index
-                if m < 0 and LunarMonth.fromYm(y, m) is None:
+                if y>9999:return None
+                if m < 0 and not any(v[0]==m for v in lunar_months(y)):
                     if self.strict_leap:
                         return None
                     m = abs(m)
-            month = LunarMonth.fromYm(y, m)
-            if month is None:
-                return None
-            if d > month.getDayCount():
+            month=next((v for v in lunar_months(y) if v[0]==m),None)
+            if month is None:return None
+            _,days,jd=month
+            if d > days:
                 if self.missing == 'skip':
                     return None
-                d = month.getDayCount()
-            solar = Lunar.fromYmd(y, m, d).getSolar()
+                d = days
+            solar = Solar.fromJulianDay(jd+d-1)
             return b.replace(year=solar.getYear(), month=solar.getMonth(), day=solar.getDay())
         total = b.year * 12 + b.month - 1 + (index if self.period == 'monthly' else index * 12)
         y, m = total // 12, total % 12 + 1
@@ -106,7 +138,7 @@ class Rule:
             return None
         return b.replace(year=y, month=m, day=min(b.day, last))
 
-    def between(self, lower: float, upper: float, limit: int = 10000):
+    def between(self, lower: float, upper: float, limit: int = 10000, *, cancel=None):
         """Yield (civil index, UTC timestamp); calculate only the requested window.
 
         A finite count counts actual occurrences, including after skipped dates.
@@ -114,7 +146,18 @@ class Rule:
         """
         if upper < lower:
             return
-        start_index = 0
+        start_index = 0;ordinal=0
+        check_cancel(cancel)
+        if self.count is None and self.calendar=='lunar':
+            near=datetime.fromtimestamp(lower,ZoneInfo(self.zone));y,m,_=lunar_date(near.year,near.month,near.day);by,bm,_=self._lunar
+            if self.period=='yearly':start_index=max(0,y-by-1)
+            elif not self.include_leap:start_index=max(0,(y-by)*12+abs(m)-abs(bm)-1)
+            elif y>=by:
+                months=[v[0] for v in lunar_months(by)]
+                distance=-months.index(bm)
+                for year in range(by,y):check_cancel(cancel);distance+=len(lunar_months(year))
+                distance+=[v[0] for v in lunar_months(y)].index(m)
+                start_index=max(0,distance-1)
         if self.count is None and self.calendar == 'solar':
             near = datetime.fromtimestamp(lower, ZoneInfo(self.zone)).replace(tzinfo=None)
             seconds = (near - self.base).total_seconds()
@@ -124,10 +167,14 @@ class Rule:
                 start_index = max(0, (near.year-self.base.year)*12+near.month-self.base.month-2)
             elif self.period == 'yearly':
                 start_index = max(0, near.year-self.base.year-2)
-        emitted, ordinal, index = 0, 0, start_index
+        if self.count is not None:
+            checkpoint=next((v for v in reversed(self._checkpoints) if v[0]<lower),None)
+            if checkpoint:_,start_index,ordinal=checkpoint
+        emitted,index = 0,start_index
         end_stamp = civil_timestamp(datetime.fromisoformat(self.end), self.zone) if self.end else float('inf')
         upper = min(upper, end_stamp)
         while index - start_index < 1000000:
+            check_cancel(cancel)
             try:
                 candidate = self._candidate(index)
             except (OverflowError, ValueError):
@@ -142,6 +189,8 @@ class Rule:
             ordinal += 1
             if self.count is not None and ordinal > self.count:
                 return
+            if self.count is not None and index%64==0:
+                self._checkpoints=sorted({v[1]:v for v in (*self._checkpoints,(stamp,index,ordinal))}.values(),key=lambda v:v[1])[-256:]
             if stamp > upper:
                 return
             if stamp >= lower:
@@ -150,16 +199,17 @@ class Rule:
                 if emitted >= limit:
                     return
 
-    def preview(self, after: float | None = None, count: int = 3):
+    def preview(self, after: float | None = None, count: int = 3, *, cancel=None):
         lower = civil_timestamp(self.base, self.zone) if after is None else after
         upper = min(lower + 366 * 86400 * 150, 253370000000)
-        return list(self.between(lower, upper, count))
+        return list(self.between(lower, upper, count,cancel=cancel))
 
     def describe(self):
         period = dict(zip(PERIODS, ('仅一次','每小时','每天','每周','每月','每年')))[self.period]
         text = f'{period} · {self.base:%Y-%m-%d %H:%M:%S} · {self.zone}'
         if self.calendar == 'lunar':
-            text += ' · 农历' + self._lunar.toString()
+            from lunar_python import Solar
+            text += ' · 农历' + Solar.fromYmd(self.base.year,self.base.month,self.base.day).getLunar().toString()
         if self.period in ('monthly', 'yearly'):
             text += ' · 缺日' + ('顺延至月底' if self.missing == 'last' else '跳过')
         if self.count:
@@ -192,12 +242,12 @@ class MilestoneRule:
 
     def mapping(self):return asdict(self)
 
-    def between(self,lower,upper,limit=10000):
+    def between(self,lower,upper,limit=10000,*,cancel=None):
         import heapq
         if upper<lower:return
         def annual():
             if self.yearly:
-                for index,stamp in self.annual.between(lower,upper,limit+1):
+                for index,stamp in self.annual.between(lower,upper,limit+1,cancel=cancel):
                     if index>0:yield stamp
         def day_stamp(n):
             try:return civil_timestamp(self.base+timedelta(days=n-1),self.zone)
@@ -207,6 +257,7 @@ class MilestoneRule:
             local=datetime.fromtimestamp(lower,ZoneInfo(self.zone)).date();elapsed=(local-self.base.date()).days+1
             n=max(100,((elapsed+99)//100)*100)
             while True:
+                check_cancel(cancel)
                 stamp=day_stamp(n)
                 if stamp is None or stamp>upper:return
                 if stamp>=lower:yield stamp
@@ -217,13 +268,14 @@ class MilestoneRule:
                 if stamp is not None and lower<=stamp<=upper:yield stamp
         last=None;count=0
         for stamp in heapq.merge(annual(),hundreds(),special()):
+            check_cancel(cancel)
             if stamp==last:continue
             last=stamp;yield count,stamp;count+=1
             if count>=limit:return
 
-    def preview(self,after=None,count=3):
+    def preview(self,after=None,count=3,*,cancel=None):
         lower=civil_timestamp(self.base,self.zone) if after is None else after
-        return list(self.between(lower,253370000000,count))
+        return list(self.between(lower,253370000000,count,cancel=cancel))
 
     def labels(self,stamp):
         local=datetime.fromtimestamp(stamp,ZoneInfo(self.zone));n=(local.date()-self.base.date()).days+1;result=[]
@@ -241,7 +293,15 @@ class MilestoneRule:
         return '、'.join(parts)
 
 
+_rules=threading.local()
+
 def parse_rule(value):
     import json
-    data=json.loads(value) if isinstance(value,str) else dict(value)
-    return MilestoneRule(**data) if data.get('schedule_type')=='milestone' else Rule(**data)
+    key=value if isinstance(value,str) else json.dumps(value,sort_keys=True)
+    if not hasattr(_rules,'cache'):_rules.cache=OrderedDict()
+    cache=_rules.cache
+    if key in cache:cache.move_to_end(key);return cache[key]
+    data=json.loads(key);rule=MilestoneRule(**data) if data.get('schedule_type')=='milestone' else Rule(**data)
+    cache[key]=rule
+    if len(cache)>512:cache.popitem(last=False)
+    return rule

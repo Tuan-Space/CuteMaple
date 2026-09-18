@@ -28,7 +28,9 @@ class SafePreview(QTextBrowser):
         if kind==QTextDocument.ImageResource:
             relative=url.toString()
             if relative.startswith('attachments/'):
-                try:return QImage(str(self.store.attachment_path(relative)))
+                try:
+                    path=self.store.attachment_path(relative)
+                    return self.image_loader.get(relative,path,self.viewport().width()) if hasattr(self,'image_loader') else QImage(str(path))
                 except Exception:return QImage()
             return QImage()
         return None
@@ -59,6 +61,8 @@ class RichNote(QTextEdit):
     insertFromMimeData=MarkdownEditor.insertFromMimeData
     def __init__(self,store):
         super().__init__();self.store=store;self.literal=False;self.setAcceptRichText(False);self.setPlaceholderText('从这里开始记录…')
+        from journal_jobs import ImageLoader
+        self.image_loader=ImageLoader(self)
     def insertFromMimeData(self,mime):
         if self.isReadOnly():return
         if mime.hasUrls():
@@ -407,9 +411,15 @@ class NoteEditor(QWidget):
 
     def load(self,note=None):
         if not self.finish():return False
+        if note and self.identity==note['id'] and self.raw_body==note['body'] and self.title.text()==note['title']:
+            self.refresh_files();self.update_format_state();return True
         self.media.record_panel.hide();self.media.update_visibility()
         self.loading=True;self.identity=note['id'] if note else None;self.raw_body=note['body'] if note else '';self.original_body=self.raw_body;self.body_dirty=False
-        self.title.setText(note['title'] if note else '');self.edit.setPlainText(self.raw_body);self.preview.load_markdown(self.raw_body);self.preview.moveCursor(QTextCursor.Start);self.preview.verticalScrollBar().setValue(0);self.edit.moveCursor(QTextCursor.Start);self.edit.verticalScrollBar().setValue(0);self.loading=False;self.dirty=False
+        self.title.setText(note['title'] if note else '')
+        self.title.setCursorPosition(0)
+        if self.active_mode:self.edit.setPlainText(self.raw_body)
+        else:self.preview.load_markdown(self.raw_body)
+        self.preview.moveCursor(QTextCursor.Start);self.preview.verticalScrollBar().setValue(0);self.edit.moveCursor(QTextCursor.Start);self.edit.verticalScrollBar().setValue(0);self.loading=False;self.dirty=False
         self.refresh_files();self.update_format_state();self.show_status('');return True
 
     def save(self):

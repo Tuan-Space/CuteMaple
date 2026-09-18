@@ -38,7 +38,7 @@ if (-not $SkipTests) {
 }
 $RuntimeModules = @("main.py", "pet_app.py", "pet_core.py", "resource_monitor.py", "memory_cleaner.py", "cleanup_check.py",
                     "monitor_ui.py", "interaction_ui.py", "locomotion.py", "live2d_host.py", "desktop_activity.py", "audio_probe.py", "audio_process.py", "pet_reactions.py", "runtime_check.py", "desktop_check.py", "diagnostics.py", "cleanup_protocol.py", "cleanup_process.py", "cleanup_session.py",
-                    "journal_recurrence.py", "journal_store.py", "journal_library.py", "journal_reminders.py", "journal_media.py", "journal_editors.py", "journal_event_editor.py", "journal_ui.py", "journal_design.py", "journal_dates.py", "journal_holidays.py", "journal_jobs.py", "journal_service.py", "journal_install.py", "journal_check.py")
+                    "journal_recurrence.py", "journal_store.py", "journal_library.py", "journal_reminders.py", "journal_media.py", "journal_editors.py", "journal_event_editor.py", "journal_ui.py", "journal_design.py", "journal_dates.py", "journal_holidays.py", "journal_jobs.py", "journal_queries.py", "journal_service.py", "journal_install.py", "journal_check.py")
 foreach ($Module in $RuntimeModules) {
     Copy-Item -LiteralPath (Join-Path $ProjectRoot $Module) -Destination $Stage
 }

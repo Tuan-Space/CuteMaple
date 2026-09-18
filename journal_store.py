@@ -9,6 +9,7 @@ import sqlite3
 import time
 import uuid
 import zipfile
+from collections import OrderedDict
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from pathlib import Path
@@ -60,9 +61,17 @@ class JournalStore:
             self.db.execute('PRAGMA journal_mode=WAL')
             self.db.execute('PRAGMA synchronous=FULL')
             self._schema()
+            self._revisions=dict(events=0,notes=0,statistics=0,files=0)
+            self._presentation_cache=OrderedDict()
+            self.db.create_function('journal_changed',1,self._changed)
+            for table,group,columns in [('events','events','title,kind,body,rule,archived,deleted'),('occurrences','events','state,due'),('occurrence_exclusions','events',None),('notes','notes',None),('habit_log','statistics',None),('files','files',None),('note_files','files',None),('note_originals','files',None),('meta','pins',None)]:
+                for operation in ('INSERT','UPDATE','DELETE'):
+                    condition=" WHEN "+('OLD' if operation=='DELETE' else 'NEW')+".key LIKE 'pinned:%'" if table=='meta' else ''
+                    update=' OF '+columns if operation=='UPDATE' and columns else ''
+                    self.db.execute(f"CREATE TEMP TRIGGER revision_{table}_{operation} AFTER {operation}{update} ON {table}{condition} BEGIN SELECT journal_changed('{group}'); END")
             (self.root / 'attachments').mkdir(exist_ok=True)
             (self.root / 'recordings').mkdir(exist_ok=True)
-            self.backup_daily()
+            (self.root/'backups').mkdir(exist_ok=True)
             self._last_tick = self.clock()
             self.resume_habits()
         except Exception:
@@ -115,6 +124,14 @@ class JournalStore:
                 self.db.execute('INSERT OR IGNORE INTO habits VALUES(?,0,?,?,?,0)', (kind,minutes,'00:00','00:00'))
             self.db.execute('PRAGMA user_version=3')
 
+    def _changed(self,group):
+        if group=='pins':
+            self._revisions['events']+=1;self._revisions['notes']+=1
+        else:self._revisions[group]+=1
+        return 0
+
+    def revision(self,*groups):return tuple(self._revisions[g] for g in groups)
+
     def rows(self, sql, args=()):
         return [dict(x) for x in self.db.execute(sql, args)]
 
@@ -159,14 +176,31 @@ class JournalStore:
 
     def events(self, search='', archived=False, kind=None, offset=0, limit=100, status=None):
         clause='deleted IS NOT NULL' if status=='trash' else 'deleted IS NULL AND archived='+str(int(status=='completed' if status else archived))
+        active=status=='active' or (status is None and not archived)
+        args=('%'+search+'%','%'+search+'%') + ((kind,) if kind else ())
         rows=self.rows('SELECT * FROM events WHERE '+clause+' AND (title LIKE ? OR body LIKE ?)'
-                         + (' AND kind=?' if kind else '') + ' ORDER BY updated DESC,id DESC',
-                         ('%'+search+'%','%'+search+'%') + ((kind,) if kind else ()))
-        if status=='active' or (status is None and not archived):
+                         + (' AND kind=?' if kind else '') + ' ORDER BY updated DESC,id DESC'+('' if active else ' LIMIT ? OFFSET ?'),
+                         args if active else args+(-1 if limit is None else limit,offset))
+        if active:
             now=self.clock();pins=self.pinned_ids('event')
-            for row in rows:row['_presentation']=self.reminder_presentation(row,now,pins)
+            ids={r['id'] for r in rows};states={};excluded={}
+            for r in self.rows('SELECT event_id,due,state FROM occurrences'):
+                if r['event_id'] in ids:states.setdefault(r['event_id'],{})[r['due']]=r['state']
+            for r in self.rows('SELECT event_id,due FROM occurrence_exclusions'):
+                if r['event_id'] in ids:excluded.setdefault(r['event_id'],set()).add(r['due'])
+            if getattr(self,'read_only',False):self.db.commit()
+            for row in rows:
+                from journal_recurrence import check_cancel
+                check_cancel(getattr(self,'cancel',None))
+                row['_presentation']=self.reminder_presentation(row,now,pins,states.get(row['id'],{}),excluded.get(row['id'],set()))
             rows.sort(key=lambda r:(not r['_presentation']['pinned'],r['_presentation']['due'] if r['_presentation']['due'] is not None else float('inf'),r['id']))
-        return rows[offset:None if limit is None else offset+limit]
+            expiry=min((r['_presentation']['valid_until'] for r in rows),default=now+30)
+            page=rows[offset:None if limit is None else offset+limit]
+            for row in page:row['_query_valid_until']=expiry
+            return page
+        completed={r['event_id']:r['due'] for r in self.rows("SELECT event_id,MAX(due) due FROM occurrences WHERE state='completed' GROUP BY event_id")}
+        for row in rows:row['_completed_due']=completed.get(row['id'])
+        return rows
 
     def pinned_ids(self,kind):
         if kind not in ('event','note'):raise ValueError('无效的置顶类型')
@@ -181,21 +215,22 @@ class JournalStore:
             if pinned:self.db.execute('INSERT OR REPLACE INTO meta VALUES(?,?)',(key,'true'))
             else:self.db.execute('DELETE FROM meta WHERE key=?',(key,))
 
-    def reminder_presentation(self,event,now=None,pins=None):
+    def reminder_presentation(self,event,now=None,pins=None,states=None,excluded=None):
         """One effective occurrence for both ordering and display; never schedules alerts."""
         now=self.clock() if now is None else now;rule=parse_rule(event['rule'])
-        states={r['due']:r['state'] for r in self.rows('SELECT due,state FROM occurrences WHERE event_id=?',(event['id'],))}
-        excluded={r['due'] for r in self.rows('SELECT due FROM occurrence_exclusions WHERE event_id=?',(event['id'],))}
+        if states is None:states={r['due']:r['state'] for r in self.rows('SELECT due,state FROM occurrences WHERE event_id=?',(event['id'],))}
+        if excluded is None:excluded={r['due'] for r in self.rows('SELECT due FROM occurrence_exclusions WHERE event_id=?',(event['id'],))}
+        signature=(event['rule'],tuple(sorted(states.items())),tuple(sorted(excluded)))
+        cache=self._presentation_cache;cached=cache.get(signature)
+        if cached and cached[0]<=now<cached[1]:
+            cache.move_to_end(signature)
+            return dict(cached[2],valid_until=cached[1],pinned=event['id'] in (self.pinned_ids('event') if pins is None else pins))
         pending=[due for due,state in states.items() if state=='pending' and due not in excluded]
         overdue=[due for due in pending if due<=now]
         due=max(overdue) if overdue else min(pending,default=None)
         if due is None:
-            lower=now
-            while True:
-                candidates=rule.preview(after=lower,count=128)
-                due=next((stamp for _,stamp in candidates if stamp not in excluded and states.get(stamp) not in ('completed','cancelled')),None)
-                if due is not None or len(candidates)<128:break
-                lower=candidates[-1][1]+.001
+            upper=253370000000 if isinstance(rule,MilestoneRule) else min(now+366*86400*150,253370000000)
+            due=next((stamp for _,stamp in rule.between(now,upper,limit=1000000,cancel=getattr(self,'cancel',None)) if stamp not in excluded and states.get(stamp) not in ('completed','cancelled')),None)
         if due is None:
             due=max((stamp for stamp,state in states.items() if state in ('pending','missed') and stamp not in excluded),default=None)
         if due is None and getattr(rule,'period',None)=='once':
@@ -207,7 +242,12 @@ class JournalStore:
             countdown=f'还有 {days} 天' if days>0 else ('今天 · 待处理' if due<now else '今天') if days==0 else f'已过 {-days} 天'
             date_text=local.strftime('%Y年%m月%d日');tone='warning' if due<now else 'text'
         repeat=rule.describe() if isinstance(rule,MilestoneRule) else {'once':'仅一次','hourly':'每小时','daily':'每天','weekly':'每周','monthly':'每月','yearly':'每年'}[rule.period]
-        return dict(due=due,countdown=countdown,date=date_text,repeat=repeat,tone=tone,pinned=event['id'] in (self.pinned_ids('event') if pins is None else pins))
+        result=dict(due=due,countdown=countdown,date=date_text,repeat=repeat,tone=tone)
+        local_now=datetime.fromtimestamp(now,ZoneInfo(rule.zone));expiry=civil_timestamp(datetime.combine(local_now.date()+timedelta(days=1),datetime.min.time()),rule.zone)
+        if due is not None and due>=now:expiry=min(expiry,due+.001)
+        cache[signature]=(now,expiry,result)
+        if len(cache)>2048:cache.popitem(last=False)
+        return dict(result,valid_until=expiry,pinned=event['id'] in (self.pinned_ids('event') if pins is None else pins))
 
     def reminder_trash(self, search='', kind=None, offset=0, limit=100):
         """One filtered, stable page of deleted plans and deleted occurrences.
@@ -402,13 +442,13 @@ class JournalStore:
         with self.db:
             self.db.execute('UPDATE habits SET next_due=?+minutes*60', (self.clock(),))
 
-    def tick(self, now=None):
+    def tick(self, now=None, *, prepared=None, only_ids=None, process_habits=True):
         now = self.clock() if now is None else now
         if now-self._last_tick > 10 or now < self._last_tick:
             self.resume_habits()
         self._last_tick = now
         with self.db:
-            for h in self.rows('SELECT * FROM habits WHERE enabled=1 AND next_due<=?',(now,)):
+            for h in (self.rows('SELECT * FROM habits WHERE enabled=1 AND next_due<=?',(now,)) if process_habits else []):
                 clock_text = datetime.fromtimestamp(now).strftime('%H:%M')
                 a,b = h['start'],h['end']
                 allowed = a==b or (a<=clock_text<b if a<b else clock_text>=a or clock_text<b)
@@ -419,7 +459,10 @@ class JournalStore:
                     identity=uuid.uuid4().hex
                     self.db.execute("INSERT INTO alerts VALUES(?,NULL,?,0,?,'pending',?,?)",(identity,now,now,h['kind'],now))
                     self.db.execute('INSERT INTO habit_log VALUES(?,?,?,?,NULL,NULL)',(identity,h['kind'],now,datetime.fromtimestamp(now).date().isoformat()))
-            for event in self.rows('SELECT * FROM events WHERE archived=0 AND next_check<=? ORDER BY next_check LIMIT 100',(now,)):
+            restrict=' AND id IN ('+','.join('?' for _ in only_ids)+')' if only_ids else ''
+            for event in self.rows('SELECT * FROM events WHERE archived=0 AND next_check<=?'+restrict+' ORDER BY next_check LIMIT 100',(now,)+tuple(only_ids or ())):
+                plan=prepared.get(event['id']) if prepared is not None else None
+                if prepared is not None and (plan is None or plan['signature']!=(event['rule'],event['updated'],event['cursor'])):continue
                 cached=self._event_wake.get(event['id'])
                 if cached and cached[0]==event['updated'] and now<cached[1]:
                     continue
@@ -429,7 +472,7 @@ class JournalStore:
                 window_start = event['cursor'] - .001
                 if event['cursor'] < event['updated'] and not isinstance(rule,MilestoneRule):
                     window_start=min(window_start,civil_timestamp(rule.base,rule.zone))
-                candidates=list(rule.between(window_start,now+max(rule.advances,default=0),limit=5000))
+                candidates=plan['candidates'] if plan else list(rule.between(window_start,now+max(rule.advances,default=0),limit=5000))
                 # Find occurrences whose current reminder stage is now due. Older
                 # stages coalesce, but never change an occurrence to completed.
                 processed_until=now
@@ -463,9 +506,9 @@ class JournalStore:
                     self.db.execute("UPDATE alerts SET state='superseded' WHERE event_id=? AND due<? AND state='pending'",(event['id'],latest))
                 pending=self.db.execute("SELECT 1 FROM alerts WHERE event_id=? AND state='pending'",(event['id'],)).fetchone()
                 pending=pending or self.db.execute("SELECT 1 FROM occurrences WHERE event_id=? AND state IN ('pending','missed')",(event['id'],)).fetchone()
-                if not pending and not rule.preview(after=now+.001,count=1):
+                future=plan['future'] if plan else rule.preview(after=now+.001,count=2)
+                if not pending and not future:
                     self.db.execute('UPDATE events SET archived=1 WHERE id=?',(event['id'],))
-                future=rule.preview(after=now+.001,count=2)
                 wake_times=[due-a for _,due in future for a in (*rule.advances,0) if due-a>now]
                 self._event_wake[event['id']]=(event['updated'],now if processed_until<now else min(wake_times,default=now+86400))
                 self.db.execute('UPDATE events SET next_check=? WHERE id=?',(self._event_wake[event['id']][1],event['id']))
@@ -589,6 +632,7 @@ class JournalStore:
 
     def collect_attachments(self):
         if getattr(self,'background_backup',False):return
+        if getattr(self,'maintenance_request',None):self.maintenance_request();return
         referenced=self._attachment_references(self.db)
         for backup in (self.root/'backups').glob('*.sqlite3'):
             connection=sqlite3.connect(backup.resolve().as_uri()+'?mode=ro',uri=True)
@@ -661,6 +705,27 @@ class JournalStore:
         for old in sorted(folder.glob('*.sqlite3'))[:-7]:
             old.unlink()
         self.collect_attachments()
+
+    def backup_snapshot(self):
+        """Worker-only I/O. No use of the live connection and no attachment deletion."""
+        folder=self.root/'backups';folder.mkdir(exist_ok=True)
+        dest=folder/(datetime.fromtimestamp(self.clock()).strftime('%Y-%m-%d')+'.sqlite3')
+        source=sqlite3.connect(self.path.resolve().as_uri()+'?mode=ro',uri=True)
+        try:
+            if not dest.exists():
+                partial=dest.with_suffix('.sqlite3.part');target=sqlite3.connect(partial)
+                try:source.backup(target,pages=256)
+                finally:target.close()
+                partial.replace(dest)
+            for old in sorted(folder.glob('*.sqlite3'))[:-7]:old.unlink()
+            source.execute('BEGIN');referenced=self._attachment_references(source);files=list(source.execute('SELECT id,relative FROM files'));source.commit()
+            for backup in folder.glob('*.sqlite3'):
+                connection=sqlite3.connect(backup.resolve().as_uri()+'?mode=ro',uri=True)
+                try:referenced.update(self._attachment_references(connection))
+                finally:connection.close()
+            fingerprint=tuple(sorted((p.name,p.stat().st_mtime_ns,p.stat().st_size) for p in folder.glob('*.sqlite3')))
+            return [(identity,relative) for identity,relative in files if identity not in referenced],fingerprint
+        finally:source.close()
 
     def export_backup(self, destination):
         destination=Path(destination)

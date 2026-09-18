@@ -1,3 +1,4 @@
+from journal_test_support import settle_queries
 import itertools
 import os
 
@@ -138,10 +139,10 @@ def test_month_navigation_details_match_selected_month(app,tmp_path):
     store.save_event('十一月的安排','schedule','',Rule('2026-11-17T09:00:00'))
     window=JournalWindow(store,None)
     window.calendar.setSelectedDate(QDate(2026,10,17))
-    assert any(row['title']=='十月的安排' for _,row,_ in window.calendar_items['2026-10-17'])
+    settle_queries();assert any(row['title']=='十月的安排' for _,row,_ in window.calendar_items['2026-10-17'])
     window.calendar.setCurrentPage(2026,11)
     assert window.calendar.selectedDate()==QDate(2026,11,17)
     assert window.day_heading.text()=='11月17日'
-    assert any(row['title']=='十一月的安排' for _,row,_ in window.calendar_items['2026-11-17'])
+    settle_queries();assert any(row['title']=='十一月的安排' for _,row,_ in window.calendar_items['2026-11-17'])
     assert any('十一月的安排' in window.day_items.item(i).text() for i in range(window.day_items.count()))
     window.close();store.close()
