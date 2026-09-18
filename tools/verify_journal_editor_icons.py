@@ -1,4 +1,4 @@
-"""Recapture the editor subset after the scalable disclosure-icon fix."""
+"""Recapture isolated date/editor views after an appearance or wording correction."""
 import argparse,json,os,sys
 from datetime import datetime
 from pathlib import Path
@@ -14,7 +14,7 @@ from journal_store import JournalStore
 def run():
     parser=argparse.ArgumentParser();parser.add_argument('--output',required=True,type=Path);parser.add_argument('--theme',required=True,choices=['light','dark']);args=parser.parse_args()
     report=json.loads((args.output/'report.json').read_text(encoding='utf-8'))
-    if report.get('version')!='2.2.4':raise ValueError('Expected an isolated 2.2.4 screenshot fixture')
+    if report.get('version')!=(Path(__file__).resolve().parents[1]/'VERSION').read_text().strip():raise ValueError('Expected a screenshot fixture for the current version')
     app=QApplication([]);app.setFont(journal_font());app.styleHints().setColorScheme(Qt.ColorScheme.Dark if args.theme=='dark' else Qt.ColorScheme.Light)
     import monitor_ui
     monitor_ui.system_theme=lambda:monitor_ui.DARK if args.theme=='dark' else monitor_ui.LIGHT
@@ -23,6 +23,7 @@ def run():
         app.processEvents();loop=QEventLoop();QTimer.singleShot(90,loop.quit);loop.exec();app.processEvents()
     def capture(name,dialog):
         settle();assert dialog.scroll.horizontalScrollBar().maximum()==0
+        if hasattr(dialog,'start') and dialog.start.lunar:assert all(not dialog.start.day.itemText(i).endswith('日') for i in range(dialog.start.day.count()))
         assert dialog.grab().save(str(args.output/(name+'.png')));captures.append(name)
     for small in (False,True):
         prefix='small-' if small else ''

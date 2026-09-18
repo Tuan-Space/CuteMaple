@@ -8,7 +8,7 @@ from PySide6.QtCore import Qt,QDateTime,QTimeZone,QTimer,QUrl,Signal,QEvent,QRec
 from PySide6.QtGui import QDesktopServices,QTextDocument,QImage,QTextCursor,QTextCharFormat,QFont,QTextFormat,QTextListFormat,QShortcut,QKeySequence,QIcon,QIconEngine,QPainter,QPainterPath,QPen,QPalette,QPixmap
 from PySide6.QtWidgets import (QDialog,QVBoxLayout,QHBoxLayout,QFormLayout,QLineEdit,QPlainTextEdit,
     QTextBrowser,QComboBox,QDateTimeEdit,QSpinBox,QCheckBox,QPushButton,QLabel,QDialogButtonBox,
-    QMessageBox,QListWidget,QListWidgetItem,QSplitter,QWidget,QFileDialog,QStackedWidget,QScrollArea,QTextEdit,QMenu,QApplication,QLayout,QInputDialog)
+    QMessageBox,QListWidget,QListWidgetItem,QSplitter,QWidget,QFileDialog,QStackedWidget,QScrollArea,QTextEdit,QMenu,QApplication,QLayout,QInputDialog,QToolButton)
 from journal_recurrence import Rule,MilestoneRule,parse_rule,ADVANCES,PERIODS
 from monitor_ui import ThemeBinding
 from monitor_ui import ThemedComboBox as QComboBox
@@ -81,7 +81,7 @@ class RichNote(QTextEdit):
 
 
 class FormatFlow(QLayout):
-    """Keep every formatting action reachable when the editor becomes narrow."""
+    """A single row with whole-group overflow; heading and mode remain reachable."""
     def __init__(self,parent=None):
         super().__init__(parent);self.items=[];self.setContentsMargins(0,0,0,0);self.setSpacing(4)
     def addItem(self,item):self.items.append(item)
@@ -89,26 +89,51 @@ class FormatFlow(QLayout):
     def itemAt(self,index):return self.items[index] if 0<=index<len(self.items) else None
     def takeAt(self,index):return self.items.pop(index) if 0<=index<len(self.items) else None
     def expandingDirections(self):return Qt.Orientations()
-    def hasHeightForWidth(self):return True
-    def heightForWidth(self,width):return self.arrange(QRect(0,0,width,0),False)
+    def hasHeightForWidth(self):return False
+    def heightForWidth(self,width):return 36
     def setGeometry(self,rect):super().setGeometry(rect);self.arrange(rect,True)
     def sizeHint(self):
-        active=[item for item in self.items if not item.isEmpty()]
-        return QSize(sum(item.sizeHint().width() for item in active)+max(0,len(active)-1)*self.spacing(),max((item.sizeHint().height() for item in active),default=0))
+        return QSize(240,36)
     def minimumSize(self):
-        size=QSize()
-        for item in self.items:
-            if not item.isEmpty():size=size.expandedTo(item.minimumSize())
-        return size
+        return QSize(190,36)
     def arrange(self,rect,apply):
-        x=rect.x();y=rect.y();height=0
+        active=[i for i in self.items if i.widget().property('eligible') is not False]
+        sizes={id(i):i.widget().sizeHint() for i in active}
+        essential=[i for i in active if i.widget().property('essential')]
+        normal=[i for i in active if not i.widget().property('essential') and not i.widget().property('overflow')]
+        more=next((i for i in active if i.widget().property('overflow')),None)
+        needed=sum(sizes[id(i)].width()+4 for i in essential+normal)
+        remaining=rect.width()-sum(sizes[id(i)].width()+4 for i in essential)-(34 if needed>rect.width() else 0)
+        shown=list(essential);overflow=[]
+        for item in normal:
+            width=sizes[id(item)].width()+4
+            if width<=remaining and not overflow:shown.append(item);remaining-=width
+            else:overflow.append(item.widget())
+        if overflow and more:shown.append(more)
+        self.overflow_groups=overflow;x=rect.x()
         for item in self.items:
-            if item.isEmpty():continue
-            size=item.sizeHint()
-            if x>rect.x() and x+size.width()>rect.right()+1:x=rect.x();y+=height+self.spacing();height=0
-            if apply:item.setGeometry(QRect(x,y,size.width(),size.height()))
-            x+=size.width()+self.spacing();height=max(height,size.height())
-        return y+height-rect.y()
+            visible=item in shown;item.widget().setVisible(visible)
+            if visible:
+                size=sizes[id(item)];item.setGeometry(QRect(x,rect.y(),size.width(),max(30,min(36,rect.height()))));x+=size.width()+4
+        return 36
+
+
+class EditorModeButton(QToolButton):
+    currentIndexChanged=Signal(int)
+    def __init__(self,parent=None):
+        super().__init__(parent);self.index=0;self.setObjectName('formatButton');self.setFixedSize(34,30);self.setFocusPolicy(Qt.NoFocus)
+        self.setPopupMode(QToolButton.InstantPopup);menu=QMenu(self);self.setMenu(menu);self.choices=[]
+        for i,label in enumerate(('可视编辑','Markdown 源码')):
+            action=menu.addAction(label);action.setCheckable(True);action.triggered.connect(lambda _,n=i:self.setCurrentIndex(n));self.choices.append(action)
+        self.refresh_icon()
+    def currentIndex(self):return self.index
+    def setCurrentIndex(self,index):
+        changed=self.index!=index;self.index=index;self.refresh_icon()
+        if changed:self.currentIndexChanged.emit(index)
+    def refresh_icon(self):
+        self.setIcon(QIcon(NoteToolIcon('source' if self.index else 'visual',self)));self.setIconSize(QSize(19,19))
+        text='编辑模式：'+('Markdown 源码' if self.index else '可视编辑');self.setToolTip(text);self.setAccessibleName(text)
+        for i,action in enumerate(self.choices):action.setChecked(i==self.index)
 
 
 class NoteToolIcon(QIconEngine):
@@ -133,6 +158,18 @@ class NoteToolIcon(QIconEngine):
         path=QPainterPath()
         if self.kind=='attachment':
             path.moveTo(9,16);path.lineTo(16,9);path.cubicTo(19,6,15,2,12,5);path.lineTo(4,13);path.cubicTo(-1,18,6,25,11,20);path.lineTo(20,11);path.cubicTo(25,6,18,-1,13,4)
+        elif self.kind=='quote':
+            path.moveTo(4,4);path.lineTo(4,20)
+            for y,end in ((6,20),(12,20),(18,16)):path.moveTo(9,y);path.lineTo(end,y)
+        elif self.kind=='link':
+            path.moveTo(10,7);path.lineTo(12,5);path.cubicTo(18,-1,25,6,19,12);path.lineTo(17,14)
+            path.moveTo(14,17);path.lineTo(12,19);path.cubicTo(6,25,-1,18,5,12);path.lineTo(7,10);path.moveTo(8,16);path.lineTo(16,8)
+        elif self.kind=='source':
+            path.moveTo(8,6);path.lineTo(2,12);path.lineTo(8,18);path.moveTo(16,6);path.lineTo(22,12);path.lineTo(16,18)
+        elif self.kind=='visual':
+            path.moveTo(2,12);path.cubicTo(8,3,16,3,22,12);path.cubicTo(16,21,8,21,2,12);path.addEllipse(QRectF(9,9,6,6))
+        elif self.kind=='more':
+            for x in (4,11,18):path.addEllipse(QRectF(x,11,2,2))
         else:
             if self.kind=='redo':painter.translate(24,0);painter.scale(-1,1)
             path.moveTo(5,9);path.cubicTo(12,4,21,8,20,15);path.cubicTo(20,18,17,20,14,20)
@@ -162,17 +199,18 @@ class NoteEditor(QWidget):
             row.addWidget(button);setattr(self,name,button);self.format_buttons.append(button)
             if rich:self.rich_buttons.append(button)
             return button
-        heading_group=group(True);self.heading=QComboBox();self.heading.addItems(['正文','一级标题','二级标题','三级标题']);self.heading.setToolTip('段落样式');self.heading.activated.connect(self.set_heading);heading_group.addWidget(self.heading)
+        heading_group=group(True);heading_group.parentWidget().setProperty('essential',True);self.heading=QComboBox();self.heading.addItems(['正文','H1 标题','H2 标题','H3 标题']);self.heading.setFixedWidth(104);self.heading.setToolTip('段落样式');self.heading.activated.connect(self.set_heading);heading_group.addWidget(self.heading)
         emphasis=group(True)
         self.bold=action(emphasis,'bold','B','加粗 · Ctrl+B',self.toggle_bold,True);font=self.bold.font();font.setBold(True);self.bold.setFont(font)
         self.italic=action(emphasis,'italic','I','斜体 · Ctrl+I',self.toggle_italic,True);font=self.italic.font();font.setItalic(True);self.italic.setFont(font)
         self.strike=action(emphasis,'strike','S','删除线',self.toggle_strike,True);font=self.strike.font();font.setStrikeOut(True);self.strike.setFont(font)
         lists=group(True);action(lists,'bullet','•','项目列表',lambda:self.toggle_list(QTextListFormat.ListDisc),True);action(lists,'numbered','1.','编号列表',lambda:self.toggle_list(QTextListFormat.ListDecimal),True)
         action(lists,'indent','→','增加列表层级',lambda:self.indent_list(1));action(lists,'outdent','←','减少列表层级',lambda:self.indent_list(-1))
-        references=group(True);action(references,'quote','引用','引用段落',self.toggle_quote,True);action(references,'link','链接','插入链接 · Ctrl+K',self.insert_link)
+        references=group(True);action(references,'quote','','引用段落',self.toggle_quote,True,icon='quote');action(references,'link','','插入链接 · Ctrl+K',self.insert_link,icon='link')
         common=group();action(common,'plus','','添加附件或录音',self.add_menu,icon='attachment',rich=False)
         history=group();action(history,'undo','','撤销 · Ctrl+Z',self.undo_active,icon='undo',rich=False);action(history,'redo','','重做 · Ctrl+Y',self.redo_active,icon='redo',rich=False)
-        mode_group=group();self.mode=QComboBox();self.mode.addItems(['可视编辑','Markdown 源码']);self.mode.currentIndexChanged.connect(self.mode_changed);mode_group.addWidget(self.mode)
+        mode_group=group();mode_group.parentWidget().setProperty('essential',True);self.mode=EditorModeButton();self.mode.currentIndexChanged.connect(self.mode_changed);mode_group.addWidget(self.mode)
+        overflow=group();overflow.parentWidget().setProperty('overflow',True);self.more_tools=QToolButton();self.more_tools.setObjectName('formatButton');self.more_tools.setFixedSize(30,30);self.more_tools.setIcon(QIcon(NoteToolIcon('more',self.more_tools)));self.more_tools.setToolTip('更多工具');self.more_tools.setAccessibleName('更多工具');self.more_tools.setFocusPolicy(Qt.NoFocus);self.more_tools.setPopupMode(QToolButton.InstantPopup);self.overflow_menu=QMenu(self.more_tools);self.more_tools.setMenu(self.overflow_menu);self.overflow_menu.aboutToShow.connect(self.populate_overflow);overflow.addWidget(self.more_tools)
         self.format_hint=QLabel();self.format_hint.setObjectName('noteFormatHint');self.format_hint.setWordWrap(True);self.format_hint.hide();layout.addWidget(self.format_hint)
         self.pages=QStackedWidget();self.edit=MarkdownEditor();self.edit.setPlaceholderText('Markdown 源码');self.preview=RichNote(store)
         self.pages.addWidget(self.preview);self.pages.addWidget(self.edit);layout.addWidget(self.pages,1);self.raw_body='';self.original_body='';self.body_dirty=False;self.active_mode=0;self.file_job=None
@@ -196,6 +234,13 @@ class NoteEditor(QWidget):
         self.update_format_state()
 
     def can_mutate(self):return not self.read_only and self.isEnabled()
+
+    def populate_overflow(self):
+        self.overflow_menu.clear()
+        for group in getattr(self.tool_flow,'overflow_groups',[]):
+            if self.overflow_menu.actions():self.overflow_menu.addSeparator()
+            for button in group.findChildren(QPushButton):
+                action=self.overflow_menu.addAction(button.icon(),button.toolTip());action.setEnabled(button.isEnabled());action.setCheckable(button.isCheckable());action.setChecked(button.isChecked());action.triggered.connect(lambda _,b=button:b.click())
 
     def set_read_only(self,value):
         value=bool(value)
@@ -259,7 +304,7 @@ class NoteEditor(QWidget):
         return super().eventFilter(obj,event)
     def add_menu(self):
         if not self.can_mutate():return
-        menu=QMenu(self);menu.addAction('添加附件',self.choose_files);menu.addAction('录音',self.show_recording);menu.exec(self.plus.mapToGlobal(self.plus.rect().topLeft()))
+        menu=QMenu(self);menu.addAction('添加附件',self.choose_files);menu.addAction('录音',self.show_recording);anchor=self.plus if self.plus.isVisible() else self.more_tools;menu.exec(anchor.mapToGlobal(anchor.rect().bottomLeft()))
     def toggle_bold(self):
         if not self.can_format():return
         fmt=QTextCharFormat();fmt.setFontWeight(QFont.Normal if self.preview.fontWeight()>=QFont.Bold else QFont.Bold);self.apply_char_format(fmt)
@@ -330,7 +375,8 @@ class NoteEditor(QWidget):
     def update_format_state(self,*_):
         if not hasattr(self,'preview'):return
         available=self.can_format();self.heading.setEnabled(available);self.format_toolbar.setVisible(not self.read_only)
-        for group in self.rich_tool_groups:group.setVisible(not self.active_mode)
+        for group in self.rich_tool_groups:group.setProperty('eligible',not self.active_mode)
+        self.tool_flow.invalidate();self.tool_flow.activate()
         for button in self.rich_buttons:button.setEnabled(available)
         self.plus.setEnabled(self.can_mutate() and not self.file_job)
         self.format_hint.setVisible(not self.read_only and not self.active_mode and self.preview.literal)

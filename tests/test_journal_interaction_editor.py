@@ -135,7 +135,7 @@ def test_source_attachment_job_keeps_progress_and_blocks_identity_clear(editor,t
     assert edit.plus.isEnabled() and not edit.status.isVisible() and not edit.read_only
 
 
-def test_vector_controls_and_group_wrapping_are_font_independent(editor):
+def test_vector_controls_and_single_row_overflow_are_font_independent(editor):
     app,_,edit=editor;edit.resize(330,680);app.processEvents()
     assert edit.width()==330
     for name in ('plus','undo','redo'):
@@ -144,7 +144,10 @@ def test_vector_controls_and_group_wrapping_are_font_independent(editor):
             image=button.icon().pixmap(QSize(24,24),mode).toImage()
             assert any(image.pixelColor(x,y).alpha()>0 for x in range(image.width()) for y in range(image.height()))
     for button in edit.format_buttons:
+        if not button.isVisible():continue
         rect=QRect(button.mapTo(edit.format_actions,QPoint(0,0)),button.size());assert edit.format_actions.rect().contains(rect)
     for group in edit.rich_tool_groups:
+        if not group.isVisible():continue
         assert edit.format_actions.rect().contains(group.geometry())
-    assert edit.format_actions.height()>30
+    assert edit.format_actions.height()==36
+    edit.populate_overflow();assert edit.overflow_menu.actions()

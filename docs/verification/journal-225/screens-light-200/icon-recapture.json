@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "theme": "light",
+  "scale": "2",
+  "captures": [
+    "event",
+    "anniversary",
+    "event-save-error",
+    "small-event",
+    "small-event-bottom",
+    "small-anniversary",
+    "small-anniversary-bottom",
+    "small-event-save-error"
+  ]
+}

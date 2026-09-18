@@ -53,9 +53,9 @@ def test_theme_and_milestone_form(view,monkeypatch):
     from journal_editors import EventEditor
     a,s,w=view;w.tabs.setCurrentIndex(2);w.refresh_calendar()
     old=w.legend.text();monkeypatch.setattr(monitor_ui,'system_theme',lambda:monitor_ui.DARK);w.theme.apply()
-    assert w._theme['background']=='#1d2835';assert w.legend.text()!=old
+    assert w._theme['background']=='#202020';assert w.legend.text()!=old
     d=EventEditor(s,parent=w,initial_kind='anniversary');d.show();a.processEvents()
-    assert d.is_milestone();assert not d.advanced.isVisible();assert d.start.time().hour()==9
+    assert d.is_milestone();assert not d.advanced.isVisible();assert d.start.time().hour()==10
     d.title.setText('相识');d.hundreds.setChecked(True);d.day520.setChecked(True);d.custom_days.setText('30、1000');d.save()
     from journal_recurrence import parse_rule
     r=parse_rule(s.events()[0]['rule']);assert isinstance(r,MilestoneRule);assert r.days==(30,520,1000)

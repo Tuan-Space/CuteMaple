@@ -68,6 +68,14 @@ class JournalWindow(QWidget):
         self.tabs=QStackedWidget();body.addWidget(self.tabs,1);self.status=QLabel();self.status.setWordWrap(True);self.status.setObjectName('muted');self.status.hide();body.addWidget(self.status);outer.addLayout(body,1)
         self.make_calendar();self.make_events();self.make_notes();self.make_statistics();self.make_settings()
         self.tabs.currentChanged.connect(self.refresh_current);self.updates=UpdateCheck(store,self);self.updates.finished.connect(self.update_result);self.refresh_current()
+        self.date_updates=QTimer(self);self.date_updates.setInterval(30000);self.date_updates.timeout.connect(self.refresh_visible_events);self.date_updates.start()
+
+    def refresh_visible_events(self):
+        if self.isVisible() and self.tabs.currentIndex()==1 and self.event_status.currentIndex()==0:self.refresh_events()
+
+    def changeEvent(self,event):
+        super().changeEvent(event)
+        if event.type()==QEvent.ActivationChange and self.isActiveWindow() and hasattr(self,'events_list'):self.refresh_visible_events()
 
     def button(self,text,callback,kind=''):
         b=QPushButton(text);b.clicked.connect(callback);b.setCursor(Qt.PointingHandCursor)
@@ -84,9 +92,9 @@ class JournalWindow(QWidget):
     def prepare_list(self,widget):
         widget.setWordWrap(True);widget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff);widget.setTextElideMode(Qt.ElideNone);widget.setResizeMode(QListWidget.Adjust)
         widget.setVerticalScrollMode(QListWidget.ScrollPerPixel);widget.setItemDelegate(WrappedItem(widget));widget.setMinimumHeight(120)
-    def list_item(self,widget,title,subtitle='',data=None,category='',status='',status_tone=''):
+    def list_item(self,widget,title,subtitle='',data=None,category='',status='',status_tone='',**presentation):
         item=QListWidgetItem(title+('\n'+subtitle if subtitle else ''));item.setData(Qt.UserRole,data)
-        item.setData(ITEM_PRESENTATION_ROLE,dict(title=title,subtitle=subtitle,category=category,status=status,status_tone=status_tone));widget.addItem(item);return item
+        item.setData(ITEM_PRESENTATION_ROLE,dict(title=title,subtitle=subtitle,category=category,status=status,status_tone=status_tone,**presentation));widget.addItem(item);return item
     def empty(self,widget,text,hint=''):
         item=QListWidgetItem(text);item.setFlags(Qt.NoItemFlags);item.setData(ITEM_PRESENTATION_ROLE,dict(title=text,subtitle=hint,empty=True));widget.addItem(item)
     def section_card(self,layout,title,description=''):
@@ -160,6 +168,8 @@ class JournalWindow(QWidget):
         item=self.events_list.itemAt(pos)
         if not item or not item.data(Qt.UserRole):return
         self.events_list.setCurrentItem(item);menu=QMenu(self);menu.addAction('查看发生记录',self.event_ledger)
+        event=item.data(Qt.UserRole)
+        if event.get('deleted') is None and not event['archived']:self.add_pin_action(menu,'event',event)
         self.add_event_actions(menu,item.data(Qt.UserRole))
         menu.exec(self.events_list.mapToGlobal(pos))
     def reset_events(self,*_):
@@ -168,18 +178,12 @@ class JournalWindow(QWidget):
         bar=self.events_list.verticalScrollBar()
         if not self._filling and self.event_more and bar.maximum()>0 and value>=bar.maximum()-20:self.event_limit+=50;self.refresh_events()
     def event_summary(self,event):
-        rule=parse_rule(event['rule']);now=self.store.clock();future=rule.preview(after=now,count=1)
-        parts=[]
-        if isinstance(rule,MilestoneRule):
-            n=(datetime.fromtimestamp(now,ZoneInfo(rule.zone)).date()-rule.base.date()).days+1
-            parts.append(f'已经第 {n} 天' if n>0 else '尚未开始')
-        if future:
-            stamp=future[0][1];due=datetime.fromtimestamp(stamp,ZoneInfo(rule.zone));parts.append(due.strftime('%m月%d日 %H:%M'))
-            if isinstance(rule,MilestoneRule):
-                parts.extend(rule.labels(stamp));remaining=(due.date()-datetime.fromtimestamp(now,ZoneInfo(rule.zone)).date()).days;parts.append('今天' if remaining==0 else f'还有 {remaining} 天')
-            elif rule.period!='once':parts.append({'hourly':'每小时','daily':'每天','weekly':'每周','monthly':'每月','yearly':'每年'}[rule.period])
-        else:parts.append('已删除' if event.get('deleted') is not None else '已完成' if event['archived'] else '等待处理')
-        return ' · '.join(parts)
+        if event.get('archived') and event.get('deleted') is None:
+            rows=self.store.rows("SELECT due FROM occurrences WHERE event_id=? AND state='completed' ORDER BY due DESC LIMIT 1",(event['id'],));rule=parse_rule(event['rule'])
+            stamp=rows[0]['due'] if rows else __import__('journal_recurrence').civil_timestamp(rule.base,rule.zone)
+            return datetime.fromtimestamp(stamp,ZoneInfo(rule.zone)).strftime('%Y年%m月%d日')
+        p=event.get('_presentation') or self.store.reminder_presentation(event)
+        return p['date']+' · '+p['repeat']
     def event_key(self,event):
         return ('occurrence',event['id'],event['due']) if event.get('_occurrence') else ('event',event['id'])
     def event_check_changed(self,item,checked):
@@ -195,9 +199,10 @@ class JournalWindow(QWidget):
         rows=self.store.reminder_trash(self.event_search.text(),kind,0,self.event_limit+1) if trash else self.store.events(self.event_search.text(),False,kind,0,self.event_limit+1,status=['active','completed'][self.event_status.currentIndex()]);self.event_more=len(rows)>self.event_limit
         for event in rows[:self.event_limit]:
             state=['','已完成','单次提醒' if event.get('_occurrence') else '整个计划'][self.event_status.currentIndex()]
-            subtitle=('删除于 '+datetime.fromtimestamp(event['deleted']).strftime('%Y年%m月%d日 %H:%M')) if trash else self.event_summary(event)
-            if trash and event.get('_occurrence'):subtitle=datetime.fromtimestamp(event['due']).strftime('%m月%d日 %H:%M')+' · '+subtitle
-            item=self.list_item(self.events_list,event['title'],subtitle,event,event['kind'],state,'success' if self.event_status.currentIndex()==1 else 'muted')
+            subtitle=('删除于 '+datetime.fromtimestamp(event['deleted']).strftime('%Y年%m月%d日')) if trash else self.event_summary(event)
+            if trash and event.get('_occurrence'):subtitle=datetime.fromtimestamp(event['due']).strftime('%Y年%m月%d日')+' · '+subtitle
+            p=event.get('_presentation',{});active=self.event_status.currentIndex()==0
+            item=self.list_item(self.events_list,event['title'],'',event,event['kind'],state,'success' if self.event_status.currentIndex()==1 else 'muted',metadata=subtitle,emphasis=p.get('countdown','') if active else '',emphasis_tone=p.get('tone','text'),pinned=p.get('pinned',False) if active else False)
             if trash:item.setCheckState(Qt.Checked if self.event_key(event) in self.event_checked else Qt.Unchecked)
             if self.event_key(event)==key:self.events_list.setCurrentItem(item)
         if rows and self.events_list.currentRow()<0:self.events_list.setCurrentRow(max(0,min(position,self.events_list.count()-1)))
@@ -271,9 +276,8 @@ class JournalWindow(QWidget):
         self._filling=True;bar=self.notes_list.verticalScrollBar();value=bar.value();previous=self.selected(self.notes_list);identity=previous['id'] if previous else self.note_editor.identity;position=self.notes_list.currentRow();self.notes_list.clear();trash=self.trash.isChecked()
         rows=self.store.notes(self.note_search.text(),trash,0,self.note_limit+1);self.note_more=len(rows)>self.note_limit
         for note in rows[:self.note_limit]:
-            subtitle=datetime.fromtimestamp(note['deleted'] if trash else note['created']).strftime('%m月%d日 %H:%M')
-            if trash:subtitle='删除于 '+subtitle+'\n'+' '.join(note['body'].split())[:70]
-            item=self.list_item(self.notes_list,note['title'],subtitle,note,category='note')
+            metadata=('删除于 ' if trash else '创建于 ')+datetime.fromtimestamp(note['deleted'] if trash else note['created']).strftime('%Y年%m月%d日')
+            item=self.list_item(self.notes_list,note['title'],'',note,metadata=metadata,summary=self.note_excerpt(note['body']) if trash else '',pinned=bool(note.get('_pinned')) and not trash)
             if trash:item.setCheckState(Qt.Checked if note['id'] in self.note_checked else Qt.Unchecked)
             if note['id']==identity:self.notes_list.setCurrentItem(item)
         if rows and self.notes_list.currentRow()<0 and (trash or getattr(self,'_note_choose_adjacent',False)):
@@ -288,6 +292,15 @@ class JournalWindow(QWidget):
             if current and current.data(Qt.UserRole):self.load_note(current)
             elif trash:self.note_editor.load()
         self._note_choose_adjacent=False;bar.setValue(value);self._filling=False;self.note_actions()
+    @staticmethod
+    def note_excerpt(body):
+        import re
+        from PySide6.QtGui import QTextDocument
+        value=re.sub(r'!\[[^\]]*\]\([^)]*\)','',body)
+        value=re.sub(r'\[[^\]]*\]\(attachments/[^)]*\)','',value)
+        value=re.sub(r'attachments/[^\s)<>]+','',value)
+        doc=QTextDocument();doc.setMarkdown(value,QTextDocument.MarkdownDialectGitHub|QTextDocument.MarkdownNoHTML)
+        return ' '.join(doc.toPlainText().split()) or '无正文内容'
     def new_note(self):
         if self.note_editor.load():
             self.trash.setChecked(False);self._notes_trash_state=False;self.note_checked.clear();self.update_heading();self.note_editor.set_read_only(False);self.refresh_notes();self.note_editor.title.setFocus()
@@ -403,7 +416,7 @@ class JournalWindow(QWidget):
             r=rows.get(kind,{});done=r.get('done') or 0;no=r.get('no') or 0;pending=r.get('pending') or 0;big.setText(f'{done} 次');small.setText(('完成率 '+f'{done/(done+no):.0%}' if done+no else '还没有回应')+f' · 待回应 {pending}')
             self.stat_progress[kind].setValue(round(100*done/(done+no)) if done+no else 0);self.stat_progress[kind].setAccessibleName(HABITS[kind][0]+'完成率')
         for row in self.store.rows('SELECT * FROM habit_log WHERE day>=? AND day<=? ORDER BY due DESC LIMIT 1000',(start,end)):
-            state='待回应' if row['done'] is None else '已完成' if row['done'] else '未完成';self.list_item(self.stat_list,HABITS[row['kind']][0],datetime.fromtimestamp(row['due']).strftime('%m月%d日 %H:%M'),row,'habit',state,'muted' if row['done'] is None else 'success' if row['done'] else 'warning')
+            state='待回应' if row['done'] is None else '已完成' if row['done'] else '未完成';self.list_item(self.stat_list,HABITS[row['kind']][0],datetime.fromtimestamp(row['due']).strftime('%m月%d日 %H:%M'),row,'',state,'muted' if row['done'] is None else 'success' if row['done'] else 'warning')
         if not self.stat_list.count():self.empty(self.stat_list,'这段时间还没有健康记录','在提醒页开启喝水、走动或看远处提醒。')
         self.stat_actions()
     def make_settings(self):
@@ -493,8 +506,15 @@ class JournalWindow(QWidget):
         self.notes_list.setCurrentItem(item);menu=QMenu(self)
         note=item.data(Qt.UserRole)
         if self.trash.isChecked():menu.addAction('恢复',lambda:self.restore_note(note));menu.addAction('永久删除…',lambda:self.purge_note(note))
-        else:menu.addAction('移到回收站',lambda:self.trash_note(note));menu.addAction('永久删除…',lambda:self.purge_note(note))
+        else:self.add_pin_action(menu,'note',note);menu.addAction('移到回收站',lambda:self.trash_note(note));menu.addAction('永久删除…',lambda:self.purge_note(note))
         menu.exec(self.notes_list.mapToGlobal(pos))
+    def add_pin_action(self,menu,kind,row):
+        pinned=row['id'] in self.store.pinned_ids(kind)
+        menu.addAction('取消置顶' if pinned else '置顶',lambda:self.pin_record(kind,row['id'],not pinned))
+    def pin_record(self,kind,identity,pinned):
+        try:self.store.set_pinned(kind,identity,pinned)
+        except Exception as error:QMessageBox.warning(self,'未能更新置顶',str(error));return
+        self.refresh_events() if kind=='event' else self.refresh_notes()
     def calendar_menu(self,day,pos):
         self.calendar.setSelectedDate(day);menu=QMenu(self)
         for title,kind in [('新建待办','todo'),('新建日程','schedule'),('新建纪念日','anniversary')]:menu.addAction(title,lambda _,k=kind:self.create_on_day(day,k))
@@ -529,7 +549,7 @@ class JournalWindow(QWidget):
         from PySide6.QtCore import QDateTime,QTime
         if kind=='note':
             self.tabs.setCurrentIndex(2);self.new_note();return
-        d=EventEditor(self.store,parent=self,initial_kind=kind);d.start.setDateTime(QDateTime(day,QTime(9,0)));d.exec();self.refresh_calendar()
+        d=EventEditor(self.store,parent=self,initial_kind=kind);d.start.setDateTime(QDateTime(day,QTime(10,0)));d.exec();self.refresh_calendar()
 
     def archive_event(self):
         event=self.selected(self.events_list)

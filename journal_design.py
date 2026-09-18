@@ -14,6 +14,11 @@ def load_journal_fonts():
     from pathlib import Path
     app=QApplication.instance()
     if app is None:return {'body':'Microsoft YaHei UI','display':'Microsoft YaHei UI'}
+    if not hasattr(app,'_journal_translation'):
+        from PySide6.QtCore import QTranslator,QLibraryInfo
+        translator=QTranslator(app)
+        if translator.load('qtbase_zh_CN',QLibraryInfo.path(QLibraryInfo.TranslationsPath)):
+            app.installTranslator(translator);app._journal_translation=translator
     cached=getattr(app,'_journal_fonts',None)
     if cached:return cached
     families=QFontDatabase.families()
@@ -43,8 +48,8 @@ def journal_font(role='body',point_size=None):
 
 def palette(dark=False):
     if dark:
-        return dict(background='#1d2835',card='#263544',inset='#21303f',border='#445d73',line='#354b5f',subtle='#8195aa',secondary='#c1d0df',text='#eaf2fa',muted='#a2b7ca',accent='#91bdff',button='#30475e',hover='#354e66',pressed='#40627e',disabled='#2b3948',focus='#91bdff',status='#2c4055',selection='#304d6d',selected='#edf5ff',soft='#293e53',todo='#ffb369',schedule='#81b3ff',anniversary='#c2a0ff',note='#f48cba',habit='#89d098',outside='#71869c',weekend='#aacbff',maple='#f3ac69',success='#89d098',warning='#ffbe78',danger='#ff9f9f')
-    return dict(background='#edf4fc',card='#fbfdff',inset='#f0f5fb',border='#cbd9e8',line='#dee7f1',subtle='#7c8ea1',secondary='#49627c',text='#263e56',muted='#60758b',accent='#326cc1',button='#e4edf9',hover='#dce9fa',pressed='#cbdff6',disabled='#eaf0f7',focus='#326cc1',status='#eaf2fc',selection='#dfebfc',selected='#204f91',soft='#eaf2fb',todo='#bd6518',schedule='#326ed1',anniversary='#8551bd',note='#bf4677',habit='#33854a',outside='#99aaba',weekend='#3974c8',maple='#c87531',success='#33854a',warning='#a86b18',danger='#b54b50')
+        return dict(background='#202020',card='#292929',inset='#303030',border='#505050',line='#414141',subtle='#979797',secondary='#d0d0d0',text='#f0f0f0',muted='#b2b2b2',accent='#91bdff',button='#363636',hover='#424242',pressed='#4c4c4c',disabled='#303030',focus='#91bdff',status='#303030',selection='#404040',selected='#ffffff',soft='#343434',todo='#ffb369',schedule='#81b3ff',anniversary='#c2a0ff',note='#f48cba',habit='#89d098',outside='#858585',weekend='#c2c2c2',maple='#f3ac69',success='#89d098',warning='#ffbe78',danger='#ff9f9f')
+    return dict(background='#f3f3f3',card='#ffffff',inset='#f6f6f6',border='#cecece',line='#e5e5e5',subtle='#777777',secondary='#525252',text='#252525',muted='#696969',accent='#326cc1',button='#eeeeee',hover='#e6e6e6',pressed='#dcdcdc',disabled='#f0f0f0',focus='#326cc1',status='#f5f5f5',selection='#e8e8e8',selected='#202020',soft='#f1f1f1',todo='#bd6518',schedule='#326ed1',anniversary='#8551bd',note='#bf4677',habit='#33854a',outside='#929292',weekend='#555555',maple='#c87531',success='#33854a',warning='#986015',danger='#b54b50')
 
 def style(c):
     fonts=load_journal_fonts()
@@ -70,7 +75,7 @@ QPushButton,QToolButton {{ background:{c['button']}; color:{c['text']}; border:1
 QPushButton:hover,QToolButton:hover {{ background:{c['hover']}; }}
 QPushButton:pressed {{ background:{c['pressed']}; }}
 QPushButton:checked,QToolButton:checked {{ background:{c['selection']}; color:{c['selected']}; border-color:{c['border']}; }}
-QPushButton:disabled {{ color:{c['muted']}; background:{c['disabled']}; }}
+QPushButton:disabled,QToolButton:disabled {{ color:{c['muted']}; background:{c['disabled']}; }}
 QPushButton:focus,QToolButton:focus {{ border-color:{c['focus']}; }}
 QPushButton#primary {{ background:{c['accent']}; color:{c['background']}; font-weight:600; }}
 QPushButton#quiet {{ background:transparent; color:{c['muted']}; }}
@@ -90,10 +95,10 @@ QPushButton#filter:checked {{ background:{c['selection']}; color:{c['selected']}
 QPushButton#calendarDay {{ padding:0; min-width:36px; min-height:58px; border:0; }}
 QSpinBox::up-button,QTimeEdit::up-button,QDateTimeEdit::up-button {{ width:18px; border:0; background:transparent; }}
 QSpinBox::down-button,QTimeEdit::down-button,QDateTimeEdit::down-button {{ width:18px; border:0; background:transparent; }}
-QLineEdit,QComboBox,QSpinBox,QTimeEdit,QDateEdit,QDateTimeEdit {{ background:{c['inset']}; color:{c['text']}; border:1px solid transparent; border-radius:7px; padding:7px 10px; min-height:19px; selection-background-color:{c['selection']}; selection-color:{c['selected']}; }}
+QLineEdit,QComboBox,QSpinBox,QTimeEdit,QDateEdit,QDateTimeEdit {{ background:{c['inset']}; color:{c['text']}; border:1px solid {c['line']}; border-radius:7px; padding:7px 10px; min-height:19px; selection-background-color:{c['selection']}; selection-color:{c['selected']}; }}
 QLineEdit:hover,QComboBox:hover,QSpinBox:hover,QDateEdit:hover,QTimeEdit:hover {{ border-color:{c['line']}; }}
 QLineEdit:focus,QComboBox:focus,QSpinBox:focus,QTimeEdit:focus,QDateEdit:focus,QDateTimeEdit:focus {{ border-color:{c['focus']}; }}
-QLineEdit#noteTitle {{ background:{c['card']}; font-size:15pt; font-weight:600; padding:6px 0; }}
+QLineEdit#noteTitle {{ background:transparent; border:0; font-size:15pt; font-weight:600; padding:6px 0; }}
 QComboBox {{ padding-right:24px; }}
 QComboBox::drop-down {{ border:0; width:22px; }}
 QComboBox::down-arrow {{ image:none; }}
@@ -172,24 +177,45 @@ class WrappedItem(QStyledItemDelegate):
         title=escape(str(data.get('title',''))).replace('\n','<br>')
         subtitle=escape(str(data.get('subtitle',''))).replace('\n','<br>') if not self.inline_subtitle(index,width) else ''
         body=f'<p style="margin:0; font-weight:{400 if empty else 600};">{title}</p>'
+        if data.get('emphasis'):
+            emphasis=f'<span style="font-size:13pt; font-weight:600; color:{c.get(data.get("emphasis_tone"),c["text"])};">{escape(data["emphasis"])}</span>'
+            if width>=350:
+                reserved=int(QFontMetricsF(journal_font('body',13)).horizontalAdvance(data['emphasis'])+28)
+                body=f'<table width="100%" cellspacing="0" cellpadding="0"><tr><td valign="middle"><b>{title}</b></td><td width="{reserved}" align="right" valign="middle">{emphasis}</td></tr></table>'
+            else:body+=f'<p style="margin:7px 0 0;">{emphasis}</p>'
+        if data.get('summary'):
+            # Keep previews to two actual wrapped lines, independently of metadata.
+            from PySide6.QtGui import QTextLayout
+            text=str(data['summary']);layout=QTextLayout(text,journal_font('body',9.5));layout.beginLayout();end=0
+            for _ in range(2):
+                line=layout.createLine()
+                if not line.isValid():break
+                line.setLineWidth(max(24,width-32));end=line.textStart()+line.textLength()
+            layout.endLayout();shown=text[:end]
+            if end<len(text):shown=shown.rstrip()[:-1]+'…'
+            body+=f'<p style="margin:7px 0 0; font-size:9.5pt; color:{c["secondary"]};">{escape(shown)}</p>'
         if subtitle:body+=f'<p style="margin:5px 0 0; font-family:&quot;{load_journal_fonts()["body"]}&quot;; font-size:9pt; color:{c["muted"]};">{subtitle}</p>'
+        if data.get('metadata') and not (data.get('emphasis') and self.inline_subtitle(index,width)):body+=f'<p style="margin:10px 0 0; font-size:8.5pt; color:{c["muted"]};">{escape(data["metadata"])}</p>'
         doc.setHtml(body);doc.setTextWidth(max(24,width-32));return doc
     def badges(self,index):
         data=self.presentation(index);c=colors(self.parent());badges=[]
         category=data.get('category','')
         if category in TYPE_NAMES:badges.append((TYPE_NAMES[category],c[category]))
         if data.get('status'):badges.append((str(data['status']),c.get(data.get('status_tone','muted'),c['muted'])))
+        if data.get('pinned'):badges.append(('置顶',c['secondary']))
         return badges
     def badge_layout(self,index,width):
         metrics=QFontMetricsF(journal_font('body',8.5));x=y=0;result=[];available=max(24,width-32)
         for text,color in self.badges(index):
             text=metrics.elidedText(text,Qt.ElideRight,max(8,int(available-16)))
-            length=min(available,metrics.horizontalAdvance(text)+16)
+            length=min(available,metrics.horizontalAdvance(text)+(30 if text=='置顶' else 16))
             if x and x+length>available:x=0;y+=25
             result.append((text,color,QRectF(x,y,length,21)));x+=length+6
         return result,(y+21 if result else 0)
     def inline_subtitle(self,index,width):
-        subtitle=str(self.presentation(index).get('subtitle',''))
+        data=self.presentation(index)
+        if data.get('summary') or (data.get('metadata') and not data.get('emphasis')):return None
+        subtitle=str(data.get('metadata' if data.get('emphasis') else 'subtitle',''))
         if not subtitle or '\n' in subtitle:return None
         badges,height=self.badge_layout(index,width)
         if not badges or height>21:return None
@@ -222,7 +248,10 @@ class WrappedItem(QStyledItemDelegate):
         for text,color,rect in badges:
             fill=QColor(color);fill.setAlpha(28 if QColor(c['background']).lightness()<128 else 18)
             painter.setPen(Qt.NoPen);painter.setBrush(fill);painter.drawRoundedRect(rect,5,5)
-            painter.setPen(QColor(color));painter.drawText(rect,Qt.AlignCenter,text)
+            painter.setPen(QColor(color))
+            if text=='置顶':
+                x,y=rect.left()+10,rect.top()+5;painter.setPen(QPen(QColor(color),1.2));painter.drawPolyline(QPolygonF([QPointF(x-3,y),QPointF(x+3,y),QPointF(x+2,y+5),QPointF(x+4,y+7),QPointF(x-4,y+7),QPointF(x-2,y+5),QPointF(x-3,y)]));painter.drawLine(QPointF(x,y+7),QPointF(x,y+12));painter.drawText(rect.adjusted(14,0,0,0),Qt.AlignCenter,text)
+            else:painter.drawText(rect,Qt.AlignCenter,text)
         subtitle=self.inline_subtitle(index,content_width)
         if subtitle:
             text,left,width=subtitle;painter.setFont(journal_font('body',9));painter.setPen(QColor(c['muted']))

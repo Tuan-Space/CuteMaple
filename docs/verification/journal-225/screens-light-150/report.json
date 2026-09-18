@@ -1,0 +1,402 @@
+{
+  "version": "2.2.5",
+  "noteFixtureCount": 119,
+  "theme": "light",
+  "scale": "1.5",
+  "fonts": {
+    "body": "Microsoft YaHei UI",
+    "display": "Yuppy SC"
+  },
+  "fixedTime": "2026-10-17T12:00:00",
+  "recordingStatesSimulated": true,
+  "captures": [
+    {
+      "name": "overview",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "reminders",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "notes",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "statistics",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "settings",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "reminders-pinned-countdown",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "notes-pinned",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "note-pin-menu",
+      "width": 117,
+      "height": 108
+    },
+    {
+      "name": "reminder-pin-page",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "reminder-pin-menu",
+      "width": 130,
+      "height": 108
+    },
+    {
+      "name": "toolbar-single-row",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "editor-mode-menu",
+      "width": 167,
+      "height": 76
+    },
+    {
+      "name": "month-10",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "month-11",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "month-12",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "event",
+      "width": 560,
+      "height": 620
+    },
+    {
+      "name": "anniversary",
+      "width": 560,
+      "height": 620
+    },
+    {
+      "name": "notes-trash-none",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "notes-trash-multiple",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "notes-trash-all",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "notes-bulk-confirm",
+      "width": 266,
+      "height": 119
+    },
+    {
+      "name": "notes-source",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "reminders-trash-none",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "reminders-trash-all",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "reminders-bulk-confirm",
+      "width": 266,
+      "height": 153
+    },
+    {
+      "name": "reminders-trash-pending",
+      "width": 1000,
+      "height": 700
+    },
+    {
+      "name": "reminders-pending",
+      "width": 560,
+      "height": 420
+    },
+    {
+      "name": "reminder-readonly",
+      "width": 560,
+      "height": 620
+    },
+    {
+      "name": "event-save-error",
+      "width": 560,
+      "height": 620
+    },
+    {
+      "name": "small-overview",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-overview-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-statistics",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-statistics-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-settings",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-settings-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders-pinned-countdown",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-pinned",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-note-pin-menu",
+      "width": 117,
+      "height": 108
+    },
+    {
+      "name": "small-reminder-pin-page",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminder-pin-menu",
+      "width": 130,
+      "height": 108
+    },
+    {
+      "name": "small-toolbar-single-row",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-editor-mode-menu",
+      "width": 167,
+      "height": 76
+    },
+    {
+      "name": "small-toolbar-more-menu",
+      "width": 180,
+      "height": 176
+    },
+    {
+      "name": "small-month-10",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-month-11",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-month-12",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-event",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-event-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-anniversary",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-anniversary-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-trash-none",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-trash-multiple",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-trash-all",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-bulk-confirm",
+      "width": 266,
+      "height": 119
+    },
+    {
+      "name": "small-notes-trash-preview-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-source",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-notes-toolbar-bottom",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders-trash-none",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders-trash-all",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders-bulk-confirm",
+      "width": 266,
+      "height": 153
+    },
+    {
+      "name": "small-reminders-trash-pending",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-reminders-pending",
+      "width": 560,
+      "height": 420
+    },
+    {
+      "name": "small-reminder-readonly",
+      "width": 620,
+      "height": 420
+    },
+    {
+      "name": "small-event-save-error",
+      "width": 620,
+      "height": 420
+    }
+  ],
+  "horizontalOverflow": {
+    "overview": 0,
+    "reminders": 0,
+    "notes": 0,
+    "statistics": 0,
+    "settings": 0,
+    "reminders-pinned-countdown": 0,
+    "notes-pinned": 0,
+    "reminder-pin-page": 0,
+    "toolbar-single-row": 0,
+    "month-10": 0,
+    "month-11": 0,
+    "month-12": 0,
+    "notes-trash-none": 0,
+    "notes-trash-multiple": 0,
+    "notes-trash-all": 0,
+    "notes-source": 0,
+    "reminders-trash-none": 0,
+    "reminders-trash-all": 0,
+    "reminders-trash-pending": 0,
+    "small-overview": 0,
+    "small-overview-bottom": 0,
+    "small-reminders": 0,
+    "small-reminders-bottom": 0,
+    "small-notes": 0,
+    "small-notes-bottom": 0,
+    "small-statistics": 0,
+    "small-statistics-bottom": 0,
+    "small-settings": 0,
+    "small-settings-bottom": 0,
+    "small-reminders-pinned-countdown": 0,
+    "small-notes-pinned": 0,
+    "small-reminder-pin-page": 0,
+    "small-toolbar-single-row": 0,
+    "small-month-10": 0,
+    "small-month-11": 0,
+    "small-month-12": 0,
+    "small-notes-trash-none": 0,
+    "small-notes-trash-multiple": 0,
+    "small-notes-trash-all": 0,
+    "small-notes-trash-preview-bottom": 0,
+    "small-notes-source": 0,
+    "small-notes-toolbar-bottom": 0,
+    "small-reminders-trash-none": 0,
+    "small-reminders-trash-all": 0,
+    "small-reminders-trash-pending": 0
+  },
+  "passed": true
+}

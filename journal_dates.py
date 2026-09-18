@@ -6,12 +6,18 @@ from monitor_ui import ThemedComboBox as Combo,ThemedSpinBox as Spin
 from lunar_python import Lunar,LunarYear,Solar
 
 
+class TimePart(Spin):
+    def textFromValue(self,value):return f'{value:02d}'
+
+
 class DateTimeFields(QWidget):
     dateTimeChanged=Signal(QDateTime)
     def __init__(self,value=None,parent=None):
         super().__init__(parent);self.lunar=False;self.filling=False
         self.year=Spin();self.year.setRange(1900,2199);self.month=Combo();self.day=Combo()
-        self.hour=Spin();self.hour.setRange(0,23);self.minute=Spin();self.minute.setRange(0,59);self.second=Spin();self.second.setRange(0,59)
+        self.year.setSuffix('年')
+        self.hour=TimePart();self.hour.setRange(0,23);self.minute=TimePart();self.minute.setRange(0,59);self.second=TimePart();self.second.setRange(0,59)
+        for w,unit in ((self.hour,'时'),(self.minute,'分'),(self.second,'秒')):w.setSuffix(unit)
         layout=QGridLayout(self);layout.setContentsMargins(0,0,0,0);layout.setSpacing(8)
         for i,(name,w) in enumerate(zip(('年','月','日','时','分','秒'),(self.year,self.month,self.day,self.hour,self.minute,self.second))):
             cell=QWidget();from PySide6.QtWidgets import QVBoxLayout
@@ -30,7 +36,7 @@ class DateTimeFields(QWidget):
         month=self.month.currentData() or 1
         count=LunarYear.fromYear(self.year.value()).getMonth(month).getDayCount() if self.lunar else calendar.monthrange(self.year.value(),month)[1]
         self.day.clear()
-        for n in range(1,count+1):self.day.addItem(Lunar.fromYmd(self.year.value(),month,n).getDayInChinese() if self.lunar else str(n),n)
+        for n in range(1,count+1):self.day.addItem(Lunar.fromYmd(self.year.value(),month,n).getDayInChinese() if self.lunar else str(n)+'日',n)
         self.day.setCurrentIndex(max(0,min(day,count)-1))
     def year_changed(self,*_):
         if self.filling:return

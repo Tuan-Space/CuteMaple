@@ -1,4 +1,4 @@
-"""2.2.4 interaction and visual audit in an isolated library; no microphone use."""
+"""Journal interaction and visual audit in an isolated library; no microphone use."""
 from __future__ import annotations
 import argparse,json,os,sys,wave
 from datetime import datetime,timedelta
@@ -60,7 +60,7 @@ def run():
     e=w.note_editor
     def note(identity=notes[0]):e.load(s.rows('SELECT * FROM notes WHERE id=?',(identity,))[0])
     note()
-    report={'version':'2.2.4','noteFixtureCount':len(s.notes(limit=None))+len(s.notes(trash=True,limit=None)),'theme':a.theme,'scale':os.environ.get('QT_SCALE_FACTOR','1'),'fonts':load_journal_fonts(),'fixedTime':fixed.isoformat(),'recordingStatesSimulated':True,'captures':[],'horizontalOverflow':{}}
+    report={'version':(Path(__file__).resolve().parents[1]/'VERSION').read_text().strip(),'noteFixtureCount':len(s.notes(limit=None))+len(s.notes(trash=True,limit=None)),'theme':a.theme,'scale':os.environ.get('QT_SCALE_FACTOR','1'),'fonts':load_journal_fonts(),'fixedTime':fixed.isoformat(),'recordingStatesSimulated':True,'captures':[],'horizontalOverflow':{}}
     def wait(ms):
         loop=QEventLoop();QTimer.singleShot(ms,loop.quit);loop.exec()
     def settle():app.processEvents();wait(90);app.processEvents()
@@ -83,6 +83,19 @@ def run():
         for i,name in enumerate(['overview','reminders','notes','statistics','settings']):
             page(i,prefix+name)
             if small:page(i,prefix+name+'-bottom',True)
+        pinned_event=s.save_event('周末去看一场展览','schedule','',Rule('2026-10-19T10:00:00'));s.set_pinned('event',pinned_event,True);page(1,prefix+'reminders-pinned-countdown')
+        s.set_pinned('note',notes[0],True);page(2,prefix+'notes-pinned');note()
+        def popup(name,action):
+            def inspect():
+                menu=app.activePopupWidget()
+                if menu:capture(name,menu);menu.close()
+            QTimer.singleShot(180,inspect);action()
+        popup(prefix+'note-pin-menu',lambda:w.note_menu(w.notes_list.visualItemRect(w.notes_list.item(0)).center()))
+        page(1,prefix+'reminder-pin-page');popup(prefix+'reminder-pin-menu',lambda:w.event_menu(w.events_list.visualItemRect(w.events_list.item(0)).center()))
+        page(2,prefix+'toolbar-single-row')
+        popup(prefix+'editor-mode-menu',e.mode.showMenu)
+        if e.more_tools.isVisible():popup(prefix+'toolbar-more-menu',e.more_tools.showMenu)
+        s.set_pinned('note',notes[0],False);s.archive_event(pinned_event);s.purge_reminders([('event',pinned_event)])
         for month in (10,11,12):
             w.calendar.setCurrentPage(2026,month);page(0,prefix+f'month-{month}')
         w.calendar.setSelectedDate(QDate(2026,10,17));w.calendar.setCurrentPage(2026,10)

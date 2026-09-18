@@ -37,7 +37,7 @@ def test_switching_kind_keeps_type_specific_controls_and_rule_values(environment
     dialog.kind.setCurrentIndex(2);app.processEvents()
     assert dialog.milestone_box.isVisible()
     assert dialog._fields[dialog.period].isHidden()
-    assert dialog.start.time()==QTime(9,0)
+    assert dialog.start.time()==QTime(10,0)
     dialog.hundreds.setChecked(True);dialog.day520.setChecked(True)
     dialog.custom_days.setText('30、1000')
     assert isinstance(dialog.rule(),MilestoneRule)

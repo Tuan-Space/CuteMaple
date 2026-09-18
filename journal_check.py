@@ -68,7 +68,14 @@ def run(args):
             window.tabs.setCurrentIndex(1);window.event_status.setCurrentIndex(2);window.select_all_events(True);capture('reminders-trash-all');window.event_status.setCurrentIndex(0)
             dialog=EventEditor(store,store.rows('SELECT * FROM events WHERE id=?',(trash_event,))[0],window);dialog.show();app.processEvents();dialog.grab().save(str(output/'reminder-readonly.png'));report['screens'].append('reminder-readonly');report['reminderReadOnly']=dialog.read_only;dialog.close()
             dialog=EventEditor(store,parent=window);dialog.resize(620,420);dialog.show();dialog.save();app.processEvents();dialog.grab().save(str(output/'event-error.png'));report['screens'].append('event-error');report['visibleValidation']=dialog.error_label.isVisible();dialog.close()
-            if not all(report.get(k) for k in ('trashReadOnly','selectAllUnloaded','vectorIcons','reminderReadOnly','visibleValidation')):report['errors'].append('2.2.4交互验收失败')
+            store.set_pinned('note',note_id,True);window.tabs.setCurrentIndex(2);window.refresh_notes();capture('notes-pinned')
+            report['notePin']=store.notes()[0]['id']==note_id
+            first=store.events(status='active')[0];store.set_pinned('event',first['id'],True);window.tabs.setCurrentIndex(1);window.refresh_events();capture('reminders-pinned')
+            report['reminderSort']=all(r['_presentation']['due'] is not None for r in store.events(status='active'))
+            report['neutralBackground']=len(set(window._theme['background'][i:i+2] for i in (1,3,5)))==1
+            report['vectorIcons'] &= all(not b.icon().isNull() for b in (editor.quote,editor.link,editor.mode))
+            dialog=EventEditor(store,parent=window);report['tenOclockDefault']=dialog.start.time().toString('HH:mm:ss')=='10:00:00';dialog.close()
+            if not all(report.get(k) for k in ('trashReadOnly','selectAllUnloaded','vectorIcons','reminderReadOnly','visibleValidation','notePin','reminderSort','neutralBackground','tenOclockDefault')):report['errors'].append('2.2.5交互验收失败')
         def check_silent_playback():
             import wave
             tone=root/'playback-check.wav'

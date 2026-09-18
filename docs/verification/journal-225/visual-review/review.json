@@ -1,0 +1,13 @@
+{
+  "method": "All 674 captures reviewed in contact sheets; focused full-size review for reminder/date editors, countdown/pins, note toolbar, trash metadata, attachments and small-window content. This is not a claim that every screenshot was opened full-size.",
+  "corrections": [
+    "Neutral gray hierarchy",
+    "Quote vector icon changed to bar and lines",
+    "Qt confirmation buttons translated to Chinese",
+    "Lunar dates retain natural forms such as 初八, without appended 日; all affected editor captures regenerated"
+  ],
+  "unresolvedVisualIssues": [],
+  "sourceMatrix": "light/dark x 100/125/150/200%, normal and 620x420 logical windows",
+  "compiledScope": "light/dark at system display scale; source matrix covers all four scales",
+  "recordingStates": "Simulated; generated short silent WAV used for actual playback; no microphone access"
+}

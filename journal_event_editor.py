@@ -163,8 +163,9 @@ class EventEditor(QDialog):
         self._field(box,'类型',self.kind)
         self.time_card,box=self._card('日期与时间')
         self.calendar=QComboBox();self.calendar.addItems(['公历','农历']);self._field(box,'历法',self.calendar)
-        self.start=DateTimeFields(QDateTime.currentDateTime().addSecs(3600))
-        if self.kind.currentIndex()==2:self.start.setTime(QTime(9,0))
+        now=QDateTime.fromSecsSinceEpoch(int(self.store.clock()));default=QDateTime(now.date(),QTime(10,0))
+        if default<=now:default=default.addDays(1)
+        self.start=DateTimeFields(default)
         self._field(box,'提醒时间',self.start);self.calendar.currentIndexChanged.connect(self.start.setLunar)
         self.rule_card,box=self._card('重复与提前提醒')
         self.period=QComboBox();self.period.addItems(['不重复','每小时','每天','每周','每月','每年']);self._field(box,'重复',self.period)
@@ -268,7 +269,7 @@ class EventEditor(QDialog):
             self.store.archive_event(self.event_record['id']);self.accept()
 
     def kind_changed(self,index):
-        if index==2 and not self.event_record:self.start.setTime(QTime(9,0))
+        self.update_preview()
 
     def is_milestone(self):return self.kind.currentIndex()==2 and not self._legacy
 

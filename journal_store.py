@@ -10,6 +10,7 @@ import time
 import uuid
 import zipfile
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from journal_recurrence import Rule,MilestoneRule,parse_rule,civil_timestamp
 
@@ -158,9 +159,55 @@ class JournalStore:
 
     def events(self, search='', archived=False, kind=None, offset=0, limit=100, status=None):
         clause='deleted IS NOT NULL' if status=='trash' else 'deleted IS NULL AND archived='+str(int(status=='completed' if status else archived))
-        return self.rows('SELECT * FROM events WHERE '+clause+' AND (title LIKE ? OR body LIKE ?)'
-                         + (' AND kind=?' if kind else '') + ' ORDER BY updated DESC,id DESC LIMIT ? OFFSET ?',
-                         ('%'+search+'%','%'+search+'%') + ((kind,) if kind else ()) + (limit,offset))
+        rows=self.rows('SELECT * FROM events WHERE '+clause+' AND (title LIKE ? OR body LIKE ?)'
+                         + (' AND kind=?' if kind else '') + ' ORDER BY updated DESC,id DESC',
+                         ('%'+search+'%','%'+search+'%') + ((kind,) if kind else ()))
+        if status=='active' or (status is None and not archived):
+            now=self.clock();pins=self.pinned_ids('event')
+            for row in rows:row['_presentation']=self.reminder_presentation(row,now,pins)
+            rows.sort(key=lambda r:(not r['_presentation']['pinned'],r['_presentation']['due'] if r['_presentation']['due'] is not None else float('inf'),r['id']))
+        return rows[offset:None if limit is None else offset+limit]
+
+    def pinned_ids(self,kind):
+        if kind not in ('event','note'):raise ValueError('无效的置顶类型')
+        prefix='pinned:'+kind+':'
+        return {r['key'][len(prefix):] for r in self.rows('SELECT key FROM meta WHERE key LIKE ?',(prefix+'%',))}
+
+    def set_pinned(self,kind,identity,pinned):
+        if kind not in ('event','note'):raise ValueError('无效的置顶类型')
+        table='events' if kind=='event' else 'notes';key=f'pinned:{kind}:{identity}'
+        with self.db:
+            if not self.db.execute(f'SELECT 1 FROM {table} WHERE id=? AND deleted IS NULL'+(' AND archived=0' if kind=='event' else ''),(identity,)).fetchone():raise ValueError('只能置顶进行中的提醒或普通笔记')
+            if pinned:self.db.execute('INSERT OR REPLACE INTO meta VALUES(?,?)',(key,'true'))
+            else:self.db.execute('DELETE FROM meta WHERE key=?',(key,))
+
+    def reminder_presentation(self,event,now=None,pins=None):
+        """One effective occurrence for both ordering and display; never schedules alerts."""
+        now=self.clock() if now is None else now;rule=parse_rule(event['rule'])
+        states={r['due']:r['state'] for r in self.rows('SELECT due,state FROM occurrences WHERE event_id=?',(event['id'],))}
+        excluded={r['due'] for r in self.rows('SELECT due FROM occurrence_exclusions WHERE event_id=?',(event['id'],))}
+        pending=[due for due,state in states.items() if state=='pending' and due not in excluded]
+        overdue=[due for due in pending if due<=now]
+        due=max(overdue) if overdue else min(pending,default=None)
+        if due is None:
+            lower=now
+            while True:
+                candidates=rule.preview(after=lower,count=128)
+                due=next((stamp for _,stamp in candidates if stamp not in excluded and states.get(stamp) not in ('completed','cancelled')),None)
+                if due is not None or len(candidates)<128:break
+                lower=candidates[-1][1]+.001
+        if due is None:
+            due=max((stamp for stamp,state in states.items() if state in ('pending','missed') and stamp not in excluded),default=None)
+        if due is None and getattr(rule,'period',None)=='once':
+            stamp=civil_timestamp(rule.base,rule.zone)
+            if stamp not in excluded and states.get(stamp) not in ('completed','cancelled'):due=stamp
+        countdown='待处理';date_text='暂无下一次安排';tone='muted'
+        if due is not None:
+            local=datetime.fromtimestamp(due,ZoneInfo(rule.zone));today=datetime.fromtimestamp(now,ZoneInfo(rule.zone)).date();days=(local.date()-today).days
+            countdown=f'还有 {days} 天' if days>0 else ('今天 · 待处理' if due<now else '今天') if days==0 else f'已过 {-days} 天'
+            date_text=local.strftime('%Y年%m月%d日');tone='warning' if due<now else 'text'
+        repeat=rule.describe() if isinstance(rule,MilestoneRule) else {'once':'仅一次','hourly':'每小时','daily':'每天','weekly':'每周','monthly':'每月','yearly':'每年'}[rule.period]
+        return dict(due=due,countdown=countdown,date=date_text,repeat=repeat,tone=tone,pinned=event['id'] in (self.pinned_ids('event') if pins is None else pins))
 
     def reminder_trash(self, search='', kind=None, offset=0, limit=100):
         """One filtered, stable page of deleted plans and deleted occurrences.
@@ -270,7 +317,7 @@ class JournalStore:
                         self.db.execute(f'DELETE FROM {table} WHERE event_id=?',(identity,))
                     self.db.execute('DELETE FROM audit WHERE entity=? OR entity LIKE ?',(identity,identity+':%'))
                     self.db.execute('DELETE FROM events WHERE id=?',(identity,))
-                    self.db.execute('DELETE FROM meta WHERE key=?',('event_input_lunar:'+identity,))
+                    self.db.execute('DELETE FROM meta WHERE key IN (?,?)',('event_input_lunar:'+identity,'pinned:event:'+identity))
                 else:
                     due=key[2]
                     changed=self.db.execute('UPDATE occurrence_exclusions SET deleted=NULL,snapshot=NULL WHERE event_id=? AND due=? AND deleted IS NOT NULL',(identity,due)).rowcount
@@ -305,7 +352,7 @@ class JournalStore:
             for table in ('alerts','occurrences','occurrence_exclusions'):self.db.execute(f'DELETE FROM {table} WHERE event_id=?',(identity,))
             self.db.execute('DELETE FROM audit WHERE entity=? OR entity LIKE ?',(identity,identity+':%'))
             self.db.execute('DELETE FROM events WHERE id=?',(identity,))
-            self.db.execute('DELETE FROM meta WHERE key=?',('event_input_lunar:'+identity,))
+            self.db.execute('DELETE FROM meta WHERE key IN (?,?)',('event_input_lunar:'+identity,'pinned:event:'+identity))
         self._event_wake.pop(identity,None);return True
 
     def trash_occurrence(self,identity,due):
@@ -494,12 +541,12 @@ class JournalStore:
         return identity
 
     def notes(self, search='', trash=False, offset=0, limit=100):
-        order='deleted DESC,id DESC' if trash else 'created DESC,id DESC'
-        return self.rows('SELECT * FROM notes WHERE deleted IS '+('NOT NULL' if trash else 'NULL')+' AND (title LIKE ? OR body LIKE ?) ORDER BY '+order+' LIMIT ? OFFSET ?',('%'+search+'%','%'+search+'%',-1 if limit is None else limit,offset))
+        order='deleted DESC,id DESC' if trash else "EXISTS(SELECT 1 FROM meta WHERE key='pinned:note:'||notes.id) DESC,created DESC,id DESC"
+        return self.rows('SELECT *,EXISTS(SELECT 1 FROM meta WHERE key=\'pinned:note:\'||notes.id) AS _pinned FROM notes WHERE deleted IS '+('NOT NULL' if trash else 'NULL')+' AND (title LIKE ? OR body LIKE ?) ORDER BY '+order+' LIMIT ? OFFSET ?',('%'+search+'%','%'+search+'%',-1 if limit is None else limit,offset))
 
     def note_ids(self, search='', trash=False):
         """All matching IDs, including records beyond the loaded UI page."""
-        order='deleted DESC,id DESC' if trash else 'created DESC,id DESC'
+        order='deleted DESC,id DESC' if trash else "EXISTS(SELECT 1 FROM meta WHERE key='pinned:note:'||notes.id) DESC,created DESC,id DESC"
         return [row['id'] for row in self.rows('SELECT id FROM notes WHERE deleted IS '+('NOT NULL' if trash else 'NULL')+' AND (title LIKE ? OR body LIKE ?) ORDER BY '+order,('%'+search+'%','%'+search+'%'))]
 
     def restore_notes(self, identities):
@@ -520,6 +567,7 @@ class JournalStore:
         with self.db:
             for identity in dict.fromkeys(identities):
                 changed=self.db.execute('DELETE FROM notes WHERE id=?'+('' if allow_active else ' AND deleted IS NOT NULL'),(identity,)).rowcount
+                if changed:self.db.execute('DELETE FROM meta WHERE key=?',('pinned:note:'+identity,))
                 result['deleted' if changed else 'missing'].append(identity)
         if result['deleted']:
             try:self.collect_attachments()
@@ -536,6 +584,7 @@ class JournalStore:
         # may reclaim objects after every referencing snapshot has expired.
         with self.db:
             self.db.execute('DELETE FROM notes WHERE id=? AND deleted IS NOT NULL',(identity,))
+            self.db.execute("DELETE FROM meta WHERE key=? AND NOT EXISTS(SELECT 1 FROM notes WHERE id=?)",('pinned:note:'+identity,identity))
         self.collect_attachments()
 
     def collect_attachments(self):

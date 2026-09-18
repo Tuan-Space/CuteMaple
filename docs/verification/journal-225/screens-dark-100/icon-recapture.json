@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "theme": "dark",
+  "scale": "1",
+  "captures": [
+    "event",
+    "anniversary",
+    "event-save-error",
+    "small-event",
+    "small-event-bottom",
+    "small-anniversary",
+    "small-anniversary-bottom",
+    "small-event-save-error",
+    "event-advanced",
+    "event-leap-month",
+    "event-validation-error"
+  ]
+}

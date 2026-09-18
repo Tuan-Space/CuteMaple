@@ -173,14 +173,17 @@ def test_reload_starts_at_top_and_reenable_restores_commands(editor):
     edit.setEnabled(False);edit.setEnabled(True);assert edit.bold.isEnabled() and edit.heading.isEnabled()
 
 
-def test_keyboard_shortcuts_and_toolbar_wrap(editor):
+def test_keyboard_shortcuts_and_toolbar_overflow(editor):
     app,_,edit=editor;edit.preview.setPlainText('快捷键');select(edit,'快捷键');edit.activateWindow();edit.preview.setFocus();app.processEvents()
     QTest.keyClick(edit.preview,Qt.Key_B,Qt.ControlModifier);QTest.keyClick(edit.preview,Qt.Key_I,Qt.ControlModifier)
     assert edit.preview.currentCharFormat().fontItalic() and edit.bold.isChecked()
     edit.resize(330,660);app.processEvents()
     assert edit.width()==330
-    assert edit.format_actions.layout().heightForWidth(280)>32
-    for button in edit.format_buttons:assert edit.format_actions.rect().contains(button.geometry())
+    assert edit.format_actions.layout().heightForWidth(280)==36
+    from PySide6.QtCore import QRect,QPoint
+    for button in edit.format_buttons:
+        if button.isVisible():assert edit.format_actions.rect().contains(QRect(button.mapTo(edit.format_actions,QPoint()),button.size()))
+    edit.populate_overflow();assert edit.overflow_menu.actions()
 
 
 class FakePlayer:
