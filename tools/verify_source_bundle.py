@@ -25,6 +25,7 @@ def check(root):
               'native/cleaner/cleaner.cpp','installer/CuteMaple.iss','third_party/CubismSdkForWeb-5-r.5/Core/live2dcubismcore.min.js'):
   local(root,name)
  layers=json.loads(local(source,'layers.json').read_text(encoding='utf-8'))
+ local(root,layers['source'])
  for layer in layers['layers']:local(source,layer['file'])
  rig=json.loads(local(source,'Maple.rig.json').read_text(encoding='utf-8'))
  for texture in rig['textures']:local(source,texture['path'])

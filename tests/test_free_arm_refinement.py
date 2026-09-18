@@ -133,7 +133,8 @@ def test_pickup_can_interrupt_real_ground_poses_without_leaving_old_hands(setup,
 def test_support_free_fades_keep_every_visible_hand_at_its_cuff(setup, support, phase):
     r, _, motion, point, *_ = setup
     a, b = motion(support, phase), motion('drag_right', .3)
-    assert a['ParamArmSupportBlend'] == pytest.approx(1, abs=1e-12)
+    # Ground brushing now uses the free arm chain; wall/rope states use support.
+    assert a['ParamArmSupportBlend'] == pytest.approx(0 if support=='clean_ground' else 1, abs=1e-12)
     assert b['ParamArmSupportBlend'] == pytest.approx(0, abs=1e-12)
     # Reverse traversal covers free -> support with the same current curves.
     for weight in np.linspace(0, 1, 21):
@@ -168,14 +169,28 @@ def test_land_folds_before_artwork_exchange_and_does_not_reopen_on_idle_fade(set
         assert pose['hand_l_relaxed'][1] == pose['hand_r_relaxed'][1] == 0
 
 
-def test_original_ground_and_source_material_vertices_remain_unchanged(setup, monkeypatch):
+@pytest.fixture(scope='module')
+def before_free_refinement(setup):
+    _, _, _, _, folder, manifest = setup
+    # Brushing depends on the active cuff nodes introduced by free refinement.
+    # Omit both for the historical baseline, keeping production hooks intact.
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(build_v5, 'apply_free_arm_refinement',
+                      lambda b: b.deform('ParamCrouch', 'Body_Weight', crouch_point))
+        def omit_brush(builder):
+            for name in ('ParamCleanBrushL','ParamCleanBrushR','ParamCleanContext',
+                         'ParamCleanPoseL','ParamCleanPoseR','ParamCleanStroke'):
+                builder.params.pop(name, None)
+        patch.setattr(build_v5.brush_refinement, 'apply_brush_refinement', omit_brush)
+        return renderer(build_v5.V5Builder(copy.deepcopy(manifest), folder).build())
+
+
+def test_original_ground_and_source_material_vertices_remain_unchanged(setup, before_free_refinement):
     r, _, _, _, folder, manifest = setup
     # Rebuild without the new active-chain registration. The archived native05
     # is the rollback; this candidate intentionally repairs the active chain.
     # Preserve ground artwork and every original source material vertex.
-    monkeypatch.setattr(build_v5, 'apply_free_arm_refinement',
-                        lambda b: b.deform('ParamCrouch', 'Body_Weight', crouch_point))
-    original = renderer(build_v5.V5Builder(copy.deepcopy(manifest), folder).build())
+    original = before_free_refinement
     fixture = json.loads((ROOT / 'tests/fixtures/v5-native-contact-04.json').read_text(encoding='utf-8'))
     for name, mesh in original.meshes.items():
         actual = r.meshes[name]
@@ -188,7 +203,9 @@ def test_original_ground_and_source_material_vertices_remain_unchanged(setup, mo
             continue
         before, after = original.evaluate(params), r.evaluate(params)
         for name in ('arm_l', 'arm_r', 'hand_l', 'hand_r'):
-            np.testing.assert_allclose(after[name][0], before[name][0], atol=1e-10, rtol=0,
+            # Brushing appends a wrist anchor vertex; compare every original
+            # vertex by its preserved index, not the changed mesh length.
+            np.testing.assert_allclose(after[name][0][:len(before[name][0])], before[name][0], atol=1e-10, rtol=0,
                                        err_msg=f'{label}: {name}')
             assert after[name][1] == pytest.approx(before[name][1], abs=1e-12)
         compared += 1
@@ -276,17 +293,15 @@ def test_painted_free_sleeve_triangles_do_not_reverse_or_collapse(setup):
             assert total_ratio >= total_limit, (name, phase, 'total painted area', total_ratio)
 
 
-def test_closed_free_pose_is_the_original_mesh_not_a_second_folded_painting(setup, monkeypatch):
+def test_closed_free_pose_is_the_original_mesh_not_a_second_folded_painting(setup, before_free_refinement):
     r, _, motion, _, folder, manifest = setup
-    monkeypatch.setattr(build_v5, 'apply_free_arm_refinement',
-                        lambda b: b.deform('ParamCrouch', 'Body_Weight', crouch_point))
-    original = renderer(build_v5.V5Builder(copy.deepcopy(manifest), folder).build())
+    original = before_free_refinement
     for state in ('idle', 'talk', 'sleep_loop', 'happy', 'petting'):
         params = motion(state, .4)
         assert params['ParamFreeArmPose'] == pytest.approx(0, abs=1e-12)
         before, after = original.evaluate(params), r.evaluate(params)
         for name in ('arm_l', 'arm_r', 'hand_l', 'hand_r'):
-            np.testing.assert_allclose(after[name][0], before[name][0], atol=1e-10, rtol=0)
+            np.testing.assert_allclose(after[name][0][:len(before[name][0])], before[name][0], atol=1e-10, rtol=0)
             assert after[name][1] == pytest.approx(before[name][1], abs=1e-12)
 
 

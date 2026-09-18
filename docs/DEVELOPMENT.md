@@ -23,9 +23,9 @@ git lfs pull
 | Python | CPython 3.13；验收使用 3.13.7 | [python.org](https://www.python.org/downloads/windows/) |
 | PowerShell | 7，用于启动和打包脚本 | [Microsoft](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows) |
 | Node.js | 22 或更新；验收使用 24.14.1，仅修改前端时需要 | [nodejs.org](https://nodejs.org/) |
-| MSVC／Windows SDK | Visual Studio 2022 Build Tools，C++ x64 工具与 Windows SDK | [Microsoft](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) |
+| MSVC／Windows SDK | Visual Studio 2022 17.14.37027.9；Windows SDK 10.0.26100.0；安装 C++ x64 工具 | [Microsoft](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) |
 | Inno Setup | 6.7.3，构建安装器 | [jrsoftware.org](https://jrsoftware.org/isdl.php) |
-| Live2D Cubism Editor | 5.3，编辑 CMO/CAN 并原生导出 MOC | [Live2D](https://www.live2d.com/en/cubism/download/editor/) |
+| Live2D Cubism Editor | 5.3.04，编辑 CMO/CAN 并原生导出 MOC | [Live2D](https://www.live2d.com/en/cubism/download/editor/) |
 
 Python 构建及测试依赖固定在 `config/requirements-build.txt`，模型工具依赖固定在 `config/requirements-authoring.txt`；前端依赖锁定在 `web/package-lock.json`。无需下载额外的私人素材。Cubism Editor 的功能与授权按官方许可使用。
 

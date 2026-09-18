@@ -158,7 +158,7 @@ def test_interrupt_preserves_incomplete_evidence(checkout, monkeypatch):
     actual = subprocess.run
 
     def interrupt_child(command, **kwargs):
-        if command[:3] == [sys.executable, '-m', 'pytest']:
+        if command[0] == sys.executable and '-m' in command and command[command.index('-m')+1] == 'pytest':
             raise KeyboardInterrupt
         return actual(command, **kwargs)
 

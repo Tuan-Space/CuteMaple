@@ -105,6 +105,9 @@ def test_actual_cloth_chains_only_add_leaf_nodes_and_preserve_other_fields(cloth
     assert {name:node for name,node in b.nodes.items() if name not in new}==before_nodes
     for old,new_part in zip(before_parts,b.parts):
         assert new_part.model_copy(update={'parent_deformer':old.parent_deformer})==old
+        if b.layer_by_id[old.id].get('pose') == 'climb_drape':
+            assert new_part == old
+            continue
         assert new_part.parent_deformer in new
         assert b.nodes[new_part.parent_deformer].parent==old.parent_deformer
     for pid, parameter in b.params.items():
@@ -134,6 +137,8 @@ def test_actual_cloth_chains_only_add_leaf_nodes_and_preserve_other_fields(cloth
     # this protects ordinary climb/sleep and canonical handoff endpoints.
     sample=np.array([[.43,.545],[.61,.62],[.4,.82]])
     for part in b.parts:
+        if b.layer_by_id[part.id].get('pose') == 'climb_drape':
+            continue
         node=b.nodes[part.parent_deformer]
         parent=b.nodes[node.parent]
         assert (node.grid_rows,node.grid_cols)==(parent.grid_rows,parent.grid_cols)==(17,17)

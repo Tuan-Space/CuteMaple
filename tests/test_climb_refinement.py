@@ -90,7 +90,7 @@ def test_registration_is_explicit_and_nonduplicating(rigs):
 @pytest.mark.parametrize('state', ['idle', 'sleep_loop', 'climb_to_top_left', 'climb_to_top_right',
                                    'clean_ground', 'clean_climb_left', 'clean_top', 'drag_right'])
 def test_disabled_refinement_preserves_existing_entire_pose(rigs, state):
-    folder, _, old, new = rigs
+    folder, builder, old, new = rigs
     for phase in (0, .18, .32/1.8, .85/1.8, .65, 1):
         params = motion_parameters(folder/'runtime/motions'/f'{state}.motion3.json', phase)
         # Current motion inputs opt into refinement; explicitly disable all
@@ -100,7 +100,12 @@ def test_disabled_refinement_preserves_existing_entire_pose(rigs, state):
         for name in before:
             np.testing.assert_allclose(after[name][0], before[name][0], atol=1e-10, rtol=0,
                                        err_msg=f'{state}/{phase}/{name}')
-            assert after[name][1] == before[name][1]
+            if builder.layer_by_id[name].get('pose') == 'climb_drape':
+                # New painted drapery is explicitly hidden with its blend off;
+                # the pre-registration builder has no material switch yet.
+                assert after[name][1] == 0
+            else:
+                assert after[name][1] == before[name][1], (state, phase, name)
 
 
 @pytest.mark.parametrize('direction', ['left', 'right'])
