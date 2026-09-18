@@ -80,7 +80,7 @@ def test_actual_gold_panel_centres_match_after_existing_warp_and_mesh_sampling()
     Model the existing 65x65 bilinear view warp and 17x17 triangle mesh; a
     sharp knot can align mathematical landmarks while moving rendered pixels.
     """
-    root = Path(__file__).resolve().parents[1]/'assets/authoring/revisions/v4/layers'
+    root = Path(__file__).resolve().parents[1]/'assets/authoring/source/layers'
     definitions = {'front': ('', (475, 555)), 'right_mid': ('mid_r_', (480, 570)),
                    'right': ('profile_r_', (500, 590)), 'left_mid': ('mid_l_', (400, 520)),
                    'left': ('profile_l_', (400, 520))}

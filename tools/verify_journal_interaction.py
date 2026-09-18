@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse,json,os,sys,wave
 from datetime import datetime,timedelta
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
 from PySide6.QtCore import QDate,QDateTime,QRect,Qt,QTimer,QEventLoop
 from PySide6.QtGui import QImage,QColor

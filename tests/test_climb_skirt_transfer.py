@@ -58,7 +58,7 @@ def cloth_builder():
     material-anchor contract, not a replacement native leg measurement.
     """
     import build_v5
-    folder = ROOT/'assets/authoring/revisions/v5-contour-fan-20260910'
+    folder = ROOT/'assets/authoring/source'
     manifest = json.loads((folder/'layers.json').read_text('utf-8'))
     originals = {l['id']:l for l in manifest['layers']}
     manifest['layers'] = [l for l in manifest['layers'] if l.get('role')=='clothing'

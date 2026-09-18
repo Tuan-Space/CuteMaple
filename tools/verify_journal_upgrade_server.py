@@ -1,7 +1,7 @@
 """Isolated production save/shutdown server used by installer acceptance."""
 import argparse,json,os,sys
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 p=argparse.ArgumentParser();p.add_argument('--profile',required=True,type=Path);a=p.parse_args()
 root=a.profile.resolve()
 if root.exists():raise ValueError('Use a new isolated profile')

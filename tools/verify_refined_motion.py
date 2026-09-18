@@ -21,7 +21,7 @@ import numpy as np
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT));sys.path.insert(0,str(ROOT/"src"))
 from tools.qa_model_inputs import audit_atlas_files, digest, recheck_input_hashes, verify_native_uv_evidence
 from tools.native_model_contract import declared_native_parameters, declared_native_drawables
 

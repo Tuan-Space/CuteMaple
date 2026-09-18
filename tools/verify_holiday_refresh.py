@@ -1,7 +1,7 @@
 """Exercise a manual holiday refresh in a caller-selected disposable directory."""
 import sys,json,argparse
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 from PySide6.QtCore import QCoreApplication,QTimer
 from journal_holidays import Holidays
 p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);a=p.parse_args()

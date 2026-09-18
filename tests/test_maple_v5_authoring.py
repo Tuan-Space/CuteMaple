@@ -15,7 +15,7 @@ from pet_core import ANIMATIONS
 
 @pytest.fixture(scope='module')
 def source():
-    folder=ROOT/'assets/authoring/revisions/v5'
+    folder=ROOT/'assets/authoring/source'
     if not (folder/'layers.json').exists():
         pytest.skip('v5 source layers are not present')
     builder=V5Builder(json.loads((folder/'layers.json').read_text(encoding='utf8')),folder)

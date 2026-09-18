@@ -41,7 +41,7 @@ def main(argv=None):
         raise ValueError("--runs only applies to explicit --begin")
     if not 65 <= args.timeout <= 120:
         raise ValueError("Observation timeout must be 65–120 seconds")
-    sys.path.insert(0, str(PROJECT))
+    sys.path.insert(0, str(PROJECT));sys.path.insert(0,str(PROJECT/"src"))
     from cleanup_protocol import safe_profile, digest, operation_path, write_json
     profile = safe_profile(args.profile)
     helper = args.helper.resolve(strict=True)

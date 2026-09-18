@@ -28,8 +28,8 @@ ISOLATED_MODULES = (
     "tests/test_native_atlas.py",
     "tests/test_transition_geometry.py",
 )
-CONFIG_INPUTS = ("build.ps1", "pytest.ini", "pyproject.toml", "setup.cfg",
-                 "requirements.txt", "requirements-build.txt",
+CONFIG_INPUTS = ("scripts/build.ps1", "pytest.ini", "pyproject.toml", "setup.cfg",
+                 "config/requirements.txt", "config/requirements-build.txt",
                  "tools/authoring/climb_contact_native08.json")
 EXCLUDED_PARTS = {".build", "dist", ".venv", ".git", "__pycache__"}
 COUNT_KEYS = ("tests", "passed", "failures", "errors", "skipped")
@@ -55,13 +55,18 @@ def write_json(path: Path, data):
 
 def source_snapshot(root: Path):
     # Git lists names only: never walk or open withdrawn build/dist artifacts.
-    result = subprocess.run(
-        ["git", "-C", str(root), "ls-files", "--cached", "--others",
-         "--exclude-standard", "-z", "--", "*.py", "tests/fixtures", *CONFIG_INPUTS],
-        capture_output=True, check=True,
-    )
+    if (root / '.git').exists():
+        result = subprocess.run(
+            ["git", "-C", str(root), "ls-files", "--cached", "--others",
+             "--exclude-standard", "-z", "--", "*.py", "tests/fixtures", *CONFIG_INPUTS],
+            capture_output=True, check=True,
+        )
+        names = sorted(set(os.fsdecode(result.stdout).split("\0")) - {""})
+    else:
+        manifest = json.loads((root / 'FILE-HASHES.json').read_text(encoding='utf-8'))
+        names = sorted(n for n in manifest if n.endswith('.py') or n.startswith('tests/fixtures/') or n in CONFIG_INPUTS)
     hashes = {}
-    for name in sorted(set(os.fsdecode(result.stdout).split("\0")) - {""}):
+    for name in names:
         relative = Path(name)
         if any(part.casefold() in EXCLUDED_PARTS for part in relative.parts):
             continue

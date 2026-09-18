@@ -1,8 +1,0 @@
-{
-  "compiled": true,
-  "version": "2.2.6",
-  "sha256": "63c4d8d83317c007153d93e941ed639299b762131da9fe8764af4e22c3f459c8",
-  "launchAtStartupLabel": "开机自动启动",
-  "wizardInstallPerformed": false,
-  "note": "Compiled with Inno Setup and final verified package. Did not replace an existing installation during verification."
-}

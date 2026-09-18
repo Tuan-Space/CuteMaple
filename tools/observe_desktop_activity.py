@@ -29,7 +29,7 @@ def main():
         parser.error('Output directory already exists; observations are never overwritten.')
     output.mkdir(parents=True)
     os.environ['MEINIFENG_PROFILE_DIRECTORY'] = str(output / 'profile')
-    sys.path.insert(0, str(ROOT))
+    sys.path.insert(0, str(ROOT));sys.path.insert(0,str(ROOT/"src"))
     from PySide6.QtCore import QTimer
     from PySide6.QtWidgets import QApplication, QWidget
     from desktop_activity import DesktopActivity, hardware_activity_allowed

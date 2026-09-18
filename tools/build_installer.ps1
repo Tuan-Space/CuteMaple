@@ -7,8 +7,15 @@ if (-not (Test-Path -LiteralPath (Join-Path $PackageDirectory 'CuteMaple-Live2D.
 if (-not $Compiler) {
     $Available=Get-Command ISCC.exe -ErrorAction SilentlyContinue
     if ($Available) { $Compiler=$Available.Source }
-    else { $Compiler=Join-Path $Root 'artifacts\installer-tools\inno\ISCC.exe' }
+    else {
+        $Candidates = @(
+            (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'),
+            (Join-Path $env:LOCALAPPDATA 'Programs\Inno Setup 6\ISCC.exe')
+        )
+        $Compiler = $Candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    }
 }
+if (-not $Compiler -or -not (Test-Path -LiteralPath $Compiler)) { throw 'Install Inno Setup 6, or pass -Compiler with the absolute path to ISCC.exe. See docs/DEVELOPMENT.md.' }
 if (-not $OutputDirectory) { $OutputDirectory=Join-Path $Root 'dist\installer' }
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
 $Items=Get-ChildItem -LiteralPath $PackageDirectory -Recurse -File | ForEach-Object { [IO.Path]::GetRelativePath($PackageDirectory,$_.FullName) }

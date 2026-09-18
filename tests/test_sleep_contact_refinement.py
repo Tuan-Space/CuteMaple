@@ -46,7 +46,7 @@ def triangle_samples(builder, name):
 
 @pytest.fixture(scope='module')
 def setup():
-    folder = ROOT / 'assets/authoring/revisions/v5-transfer-fixed'
+    folder = ROOT / 'assets/authoring/source'
     manifest = json.loads((folder / 'layers.json').read_text(encoding='utf-8'))
     builder = build_v5.V5Builder(manifest, folder)
     # The owner integrates the public entry point into build_v5. Suppress that

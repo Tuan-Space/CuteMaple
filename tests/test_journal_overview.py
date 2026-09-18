@@ -87,7 +87,7 @@ def test_migration_distinguishes_manual_archive(tmp_path):
 
 def test_journal_has_no_pet_pause_connection():
     root=Path(__file__).resolve().parents[1]
-    settle_queries();assert 'journal_pause_active' not in (root/'pet_app.py').read_text(encoding='utf-8')
+    settle_queries();assert 'journal_pause_active' not in (root/'src/pet_app.py').read_text(encoding='utf-8')
     settle_queries();assert 'visibilityChanged.connect(pet' not in (root/'journal_service.py').read_text(encoding='utf-8')
 
 def test_background_attachment_preserves_owner_and_responsive_ui(ui,tmp_path):

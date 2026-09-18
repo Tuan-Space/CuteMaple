@@ -42,7 +42,7 @@ def point(r, pose, name, uv):
 
 @pytest.fixture(scope='module')
 def rigs():
-    folder = ROOT/'assets/authoring/revisions/v5-transfer-fixed'
+    folder = ROOT/'assets/authoring/source'
     if not (folder/'layers.json').exists():
         pytest.skip('The frozen v5 authoring input is absent')
     b = V5Builder(json.loads((folder/'layers.json').read_text(encoding='utf8')), folder)
@@ -299,7 +299,7 @@ def cloth_rigs():
     from unittest.mock import patch
     from contextlib import ExitStack
     import build_v5
-    folder = ROOT/'assets/authoring/revisions/v5-transfer-fixed'
+    folder = ROOT/'assets/authoring/source'
     manifest = json.loads((folder/'layers.json').read_text(encoding='utf8'))
     manifest['layers'] = [layer for layer in manifest['layers']
                           if layer.get('role') == 'clothing' and layer.get('has_seated_variant')
@@ -500,7 +500,7 @@ def test_refined_leg_visibility_and_airborne_ankle_release(rigs):
     ('climb_to_top_right', .9, 'drag_right')])
 def test_actual_motion_fades_never_resurrect_a_third_leg_family(rigs, source, phase, target, record_property):
     _, _, _, r = rigs
-    motions = ROOT/'assets/authoring/revisions/v5-motion-refined-20260909/runtime/motions'
+    motions = ROOT/'assets/live2d/Maple/motions'
     before = motion_parameters(motions/(source+'.motion3.json'), phase)
     after = motion_parameters(motions/(target+'.motion3.json'), 0.)
     assert before[CONTROL] >= 0 and after[CONTROL] == 0

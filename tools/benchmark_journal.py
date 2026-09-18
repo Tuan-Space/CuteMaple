@@ -27,7 +27,7 @@ def child(a):
         print(json.dumps(dict(count=a.count,coldSeconds=cold,warmSeconds=warm,coldQueries=before,warmQueries=len(queries)-before,coldCandidates=cold_calculations,warmCandidates=calculations[0]-cold_calculations,rows=len(rows))),flush=True);store.close()
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--modules',type=Path,default=Path(__file__).resolve().parents[1]);p.add_argument('--output',type=Path);p.add_argument('--count',type=int);p.add_argument('--timeout',type=int,default=30);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--modules',type=Path,default=Path(__file__).resolve().parents[1]/"src");p.add_argument('--output',type=Path);p.add_argument('--count',type=int);p.add_argument('--timeout',type=int,default=30);a=p.parse_args()
     if a.count is not None:return child(a)
     results=[]
     for n in (0,100,1000,10000):

@@ -25,7 +25,7 @@ from climb_refinement import (CYCLE_DURATION, RISE, climb_metadata,
 
 SOURCES = {'l': ((.434,.390),(.439,.465),(.495,.518)),
            'r': ((.568,.390),(.572,.463),(.526,.518))}
-ART = ROOT/'assets/authoring/revisions/v5-head-coverage-20260910/layers'
+ART = ROOT/'assets/authoring/source/layers'
 
 
 @pytest.mark.parametrize('side', ['l','r'])

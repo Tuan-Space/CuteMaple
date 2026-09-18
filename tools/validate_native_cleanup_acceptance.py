@@ -4,7 +4,7 @@ import argparse
 import json
 import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 from cleanup_protocol import STEPS, digest
 from cleanup_process import identity_alive
 from tools.validate_cleanup_evidence import validate_native_calls

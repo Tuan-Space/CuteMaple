@@ -1,7 +1,7 @@
 """Exercise the real Qt/WebEngine startup and all retained native states in an isolated profile."""
 from pathlib import Path
 import os,sys,json,time,argparse
-root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root))
+root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root));sys.path.insert(0,str(root/"src"))
 parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);args=parser.parse_args()
 out=args.output.resolve();out.mkdir(parents=True,exist_ok=True)
 os.environ['MEINIFENG_PROFILE_DIRECTORY']=str(out/'profile');os.environ['MEINIFENG_DISABLE_AUTOSTART']='1';os.environ['MEINIFENG_DISABLE_CLEAN_TASK']='1'

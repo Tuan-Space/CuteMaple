@@ -1,8 +1,0 @@
-{
-  "version": "2.2.3",
-  "autostartLabelVerified": true,
-  "label": "开机自动启动",
-  "installed": false,
-  "scope": "installer task page only",
-  "accessibility": "Window: \"安装 - 美腻枫 CuteMaple 版本 2.2.3\", App: cutemaple-2.2.3-setup-x64.tmp.\n\t0 窗口 安装 - 美腻枫 CuteMaple 版本 2.2.3 Secondary Actions: Raise\n\t\t1 窗格 ID: 7275780\n\t\t\t2 窗格 ID: 11277144\n\t\t\t\t3 窗格 ID: 42077248\n\t\t\t\t\t4 文本 选择附加任务 ID: 5380024\n\t\t\t\t\t5 文本 您想要安装程序执行哪些附加任务？ ID: 2231240\n\t\t\t\t6 窗格 ID: 3345628\n\t\t\t\t\t75 窗格 ID: 246616246\n\t\t\t\t\t\t76 文本 选择您想要安装程序在安装 美腻枫 CuteMaple 时执行的附加任务，然后点击“下一步”。 ID: 236457978\n\t\t\t\t\t\t77 树 选择您想要安装程序在安装 美腻枫 CuteMaple 时执行的附加任务，然后点击“下一步”。 ID: 14422040\n\t\t\t\t\t\t\t78 文本 快捷方式：\n\t\t\t\t\t\t\t79 复选框 创建桌面快捷方式\n\t\t\t\t\t\t\t80 文本 启动选项：\n\t\t\t\t\t\t\t81 复选框 开机自动启动\n\t\t82 按钮 上一步(B) ID: 8259916\n\t\t13 按钮 下一步(N) ID: 2755116\n\t\t14 按钮 取消 ID: 15339240\n\t\t15 标题栏\n\t\t\t16 菜单栏 系统 ID: MenuBar\n\t\t\t\t67 菜单项目 系统\n\t\t\t18 按钮 最小化\n\t\t\t19 按钮 (disabled) 最大化\n\t\t\t20 按钮 关闭\n\nThe focused UI element is 77 树 选择您想要安装程序在安装 美腻枫 CuteMaple 时执行的附加任务，然后点击“下一步”。 ID: 14422040."
-}

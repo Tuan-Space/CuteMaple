@@ -1,7 +1,7 @@
 """Explicit 2-second microphone check in a fresh disposable library."""
 import sys,json,argparse
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QTimer,Qt,QEvent
 from PySide6.QtGui import QMouseEvent

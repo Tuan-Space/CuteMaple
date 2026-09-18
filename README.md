@@ -57,4 +57,15 @@
 
 ## 🛠️ 想自己修改？
 
-下载 Release 中的完整 Source.zip，参阅 [开发与模型编辑指南](docs/DEVELOPMENT.md)。✨
+下载 [Release 中的完整 Source.zip](https://github.com/Tuan-Space/CuteMaple/releases/latest)，包含程序源码、完整素材、可编辑模型和构建工具，参阅 [开发与模型编辑指南](docs/DEVELOPMENT.md)。✨
+
+也可以安装 Git LFS 后克隆仓库，再执行 `git lfs pull`。GitHub 自动生成的 “Source code (zip)” 可能只有大文件指针，请优先下载我们提供的完整 Source.zip。
+
+| 目录 | 内容 |
+| --- | --- |
+| `src/`、`web/`、`native/` | 桌面程序、Live2D 播放器和原生助手源码 |
+| `assets/` | 运行素材、可编辑模型、分层源画和字体 |
+| `scripts/`、`config/` | 启动与构建脚本、固定依赖清单 |
+| `tools/`、`tests/` | 模型制作、完整性检查与回归测试 |
+| `installer/`、`third_party/` | 安装器源码、必要 SDK 和第三方许可 |
+| `docs/` | 开发、模型编辑与复现说明 |

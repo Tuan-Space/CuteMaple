@@ -15,7 +15,7 @@ from head_view_exchange import apply_head_view_exchange,natural_far_family,group
 from build_rig import Parameter,Keyform,Part,Texture,Deformer,DeformerType,Meta,Rig,grid_mesh,corrected_project
 from image2live2d.backends.live2d.cmo3 import unpack_caff
 
-MANIFEST=ROOT/'assets/authoring/revisions/v5-contour-fan-20260910/layers.json'
+MANIFEST=ROOT/'assets/authoring/source/layers.json'
 LAYERS=json.loads(MANIFEST.read_text(encoding='utf-8'))['layers']
 CHANGED={'ribbon_l','ribbon_r','profile_l_ribbon_l','profile_r_ribbon_r','ornament_l','ornament_r'}
 

@@ -17,3 +17,6 @@ __pycache__/
 /tools/authoring/image2live2d/
 /.venv-authoring/
 *.io.lock
+
+# Generated acceptance outputs belong in artifacts/, not source releases.
+/docs/verification/

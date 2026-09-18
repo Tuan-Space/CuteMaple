@@ -56,7 +56,7 @@ def test_sleep_extent_measurement_ignores_translation_rotation_but_detects_stret
 
 
 def test_v5_probes_use_actual_authored_support_phases_and_do_not_require_visual_hash_on_planted_hand():
-    folder = Path(__file__).resolve().parents[1]/'assets/authoring/revisions/v5/runtime'
+    folder = Path(__file__).resolve().parents[1]/'assets/live2d/Maple'
     metadata = json.loads((folder/'Maple.pet.json').read_text(encoding='utf-8-sig'))
     endpoints = {path.name.removesuffix('.motion3.json'): {'start': {curve['Id']: curve['Segments'][1]
                  for curve in json.loads(path.read_bytes())['Curves']}} for path in (folder/'motions').glob('*.motion3.json')}

@@ -31,7 +31,7 @@ guard keys distinct during the Editor interpolation and export steps.
 `UPSTREAM.json` preserves the original upstream hashes and
 records separate hashes and descriptions for these modified source files.
 
-The application never imports this directory, and `build.ps1` excludes it
+The application never imports this directory, and `scripts/build.ps1` excludes it
 from runtime packages. Produce runtime `.moc3` files using Live2D Cubism
 Editor, then verify the exported model with the real Cubism SDK.
 

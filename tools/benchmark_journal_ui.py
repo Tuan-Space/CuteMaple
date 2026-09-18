@@ -2,7 +2,7 @@
 import os,sys,json,time,tempfile,argparse,statistics
 from pathlib import Path
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QTimer,QEventLoop,QEvent,QObject
 from journal_store import JournalStore

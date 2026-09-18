@@ -13,6 +13,17 @@ def check(root):
   with path.open('rb') as stream:
    if stream.read(100).startswith(b'version https://git-lfs.github.com/spec'):raise ValueError(f'LFS pointer instead of file: {path}')
   return path
+ manifest_path=root/'FILE-HASHES.json'
+ if manifest_path.exists():
+  manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
+  for name,expected in manifest.items():
+   path=local(root,name)
+   with path.open('rb') as stream:actual=hashlib.file_digest(stream,'sha256').hexdigest()
+   if actual!=expected:raise ValueError(f'Source archive hash mismatch: {name}')
+ for name in ('main.py','src/main.py','scripts/build.ps1','config/requirements-build.txt',
+              'assets/authoring/Maple.psd','web/package-lock.json','web/dist/app.js',
+              'native/cleaner/cleaner.cpp','installer/CuteMaple.iss','third_party/CubismSdkForWeb-5-r.5/Core/live2dcubismcore.min.js'):
+  local(root,name)
  layers=json.loads(local(source,'layers.json').read_text(encoding='utf-8'))
  for layer in layers['layers']:local(source,layer['file'])
  rig=json.loads(local(source,'Maple.rig.json').read_text(encoding='utf-8'))

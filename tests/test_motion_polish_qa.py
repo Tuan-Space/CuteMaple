@@ -178,7 +178,7 @@ def test_brush_measures_actual_topology_and_preserves_existing_contact_limits(mu
 
 
 def test_climb_cycle_probes_branch_to_one_second_and_add_real_brush_and_recovery_samples():
-    folder = Path(__file__).resolve().parents[1]/'assets/authoring/revisions/v5/runtime'
+    folder = Path(__file__).resolve().parents[1]/'assets/live2d/Maple'
     data = json.loads((folder/'Maple.pet.json').read_bytes())
     endpoints = {path.name.removesuffix('.motion3.json'): {'start': {curve['Id']: curve['Segments'][1]
         for curve in json.loads(path.read_bytes())['Curves']}} for path in (folder/'motions').glob('*.motion3.json')}

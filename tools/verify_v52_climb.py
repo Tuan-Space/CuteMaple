@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse, base64, io, json, os, sys, time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT))
+sys.path.insert(0,str(ROOT));sys.path.insert(0,str(ROOT/"src"))
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__); parser.add_argument('--output',type=Path,required=True)

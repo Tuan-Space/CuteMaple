@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools/authoring"))
 from diagnose_rig import DiagnosticRenderer, Rig, motion_parameters
 
-ASSETS = ROOT / "assets/authoring/revisions/v4"
+ASSETS = ROOT / "assets/authoring/source"
 RESOLUTION = 384
 
 
@@ -54,7 +54,7 @@ def transition_ir():
     assert {part.id for part in parts} == selected
     textures = [texture for texture in rig.textures
                 if texture.id in {part.texture_id for part in parts}]
-    motions = {side: ASSETS / f"runtime/motions/climb_to_top_{side}.motion3.json"
+    motions = {side: ROOT / f"assets/live2d/Maple/motions/climb_to_top_{side}.motion3.json"
                for side in ("left", "right")}
     paths = [rig_path, manifest_path, *motions.values(),
              *(ASSETS / texture.path for texture in textures)]

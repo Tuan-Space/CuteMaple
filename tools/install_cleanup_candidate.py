@@ -48,7 +48,7 @@ def main(argv=None):
     args = parser().parse_args(argv)
     if args.install:
         raise ValueError("Persistent installation was removed; authorize this session from the running desktop pet.")
-    sys.path.insert(0, str(PROJECT))
+    sys.path.insert(0, str(PROJECT));sys.path.insert(0,str(PROJECT/"src"))
     from cleanup_protocol import safe_profile, digest, write_json
     if not args.helper.is_absolute() or not args.output.is_absolute():
         raise ValueError("Helper and output must be explicit absolute paths")

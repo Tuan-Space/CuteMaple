@@ -1,7 +1,7 @@
 """Render both monitor themes at a requested Qt scale; no OS theme/settings writes."""
 import argparse,os,sys,json
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
+ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT));sys.path.insert(0,str(ROOT/"src"))
 p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--scale',default='1');a=p.parse_args()
 os.environ['QT_QPA_PLATFORM']='offscreen';os.environ['QT_SCALE_FACTOR']=a.scale
 from PySide6.QtWidgets import QApplication,QLabel,QPushButton

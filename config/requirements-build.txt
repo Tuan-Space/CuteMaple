@@ -1,0 +1,27 @@
+# Tested CPython 3.13 build and regression environment.
+annotated-types==0.8.0
+attrs==26.1.0
+colorama==0.4.6
+iniconfig==2.3.0
+lunar_python==1.4.8
+Nuitka==2.8.10
+numpy==2.5.3
+opencv-python-headless==5.0.0.93
+ordered-set==4.1.0
+packaging==26.3
+pillow==12.3.0
+pluggy==1.6.0
+psd-tools==1.19.0
+psutil==7.2.2
+pydantic==2.13.5
+pydantic_core==2.46.5
+Pygments==2.21.0
+PySide6==6.8.3
+PySide6_Addons==6.8.3
+PySide6_Essentials==6.8.3
+pytest==9.1.1
+shiboken6==6.8.3
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+tzdata==2025.2
+zstandard==0.25.0

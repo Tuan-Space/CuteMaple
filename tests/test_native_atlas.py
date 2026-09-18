@@ -70,8 +70,8 @@ def packed(tmp_path_factory):
     directory = tmp_path_factory.mktemp('native-atlas')
     source = directory / 'source.cmo3'
     # Snapshot the editable fixture so parallel authoring cannot change this test.
-    source.write_bytes((ROOT / 'assets/authoring/revisions/v4/Maple.cmo3').read_bytes())
-    template = ROOT / 'assets/authoring/revisions/v3/Maple.cmo3'
+    source.write_bytes((ROOT / 'assets/authoring/model/Maple.cmo3').read_bytes())
+    template = ROOT / 'assets/authoring/model/Maple.cmo3'
     output = directory / 'packed.cmo3'
     before = hashlib.sha256(source.read_bytes()).hexdigest()
     audit = run(source, template, output)

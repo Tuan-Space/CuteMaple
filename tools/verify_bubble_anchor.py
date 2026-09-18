@@ -7,7 +7,7 @@ import argparse, base64, io, json, os, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT));sys.path.insert(0,str(ROOT/"src"))
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output', type=Path, required=True)
 a = p.parse_args(); out = a.output.resolve(); out.mkdir(parents=True, exist_ok=True)

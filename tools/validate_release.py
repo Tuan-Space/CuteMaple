@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 from pet_core import ANIMATIONS
 from tools.authoring.animation_specs import ANIMATIONS as AUTHORING_ANIMATIONS
 from tools.native_model_contract import (declared_native_parameters, declared_native_drawables, free_motion_contacts,

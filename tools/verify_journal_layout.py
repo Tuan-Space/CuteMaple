@@ -1,7 +1,7 @@
 """Deterministic widget screenshots at independent Qt scale factors."""
 import argparse,json,os,sys
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 p=argparse.ArgumentParser();p.add_argument('--output',required=True,type=Path);p.add_argument('--theme',choices=['light','dark'],required=True);a=p.parse_args()
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
 from PySide6.QtWidgets import QApplication

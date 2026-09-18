@@ -658,7 +658,7 @@ def relink_project(existing: Path, model: Path, output: Path | None = None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", type=Path, default=ROOT / "assets/authoring/revisions/v3/Maple.cmo3")
+    parser.add_argument("--model", type=Path, default=ROOT / "assets/authoring/model/Maple.cmo3")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--relink", type=Path, help="Move an existing CAN3 link without regenerating edited curves")
     parser.add_argument("--motions", type=Path, default=ROOT / "assets/live2d/Maple/motions")

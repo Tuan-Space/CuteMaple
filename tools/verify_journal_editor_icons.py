@@ -2,7 +2,7 @@
 import argparse,json,os,sys
 from datetime import datetime
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]));sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
 from PySide6.QtCore import Qt,QDateTime,QEventLoop,QTimer
 from PySide6.QtWidgets import QApplication

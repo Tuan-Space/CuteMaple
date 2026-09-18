@@ -25,7 +25,7 @@ os.environ.setdefault("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu-compositing -
 os.environ.setdefault("QT_QUICK_BACKEND", "software")
 os.environ.setdefault("QT_OPENGL", "software")
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT));sys.path.insert(0,str(ROOT/"src"))
 
 from PIL import Image, ImageDraw
 from PySide6.QtCore import QTimer

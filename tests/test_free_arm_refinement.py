@@ -35,7 +35,7 @@ def renderer(rig):
 
 @pytest.fixture(scope='module')
 def setup(tmp_path_factory):
-    folder = ROOT / 'assets/authoring/revisions/v5-transfer-fixed'
+    folder = ROOT / 'assets/authoring/source'
     manifest = json.loads((folder / 'layers.json').read_text(encoding='utf-8'))
     rig = build_v5.V5Builder(copy.deepcopy(manifest), folder).build()
     result = renderer(rig)

@@ -12,7 +12,7 @@ from tools.authoring.head_material_registration import (ORNAMENT_BEADS, SCALP_PA
     material_sources, head_sampling_correction, ornament_targets, refine_ornament_material_meshes)
 from tools.authoring.native_warp_sampling import warp_points, triangle_lattice_weights
 
-SOURCE=Path(__file__).resolve().parents[1]/'assets/authoring/revisions/v5-painted-climb-rope-20260910/layers'
+SOURCE=Path(__file__).resolve().parents[1]/'assets/authoring/source/layers'
 PREFIX={'front':'','left':'profile_l_','left_mid':'mid_l_','right':'profile_r_','right_mid':'mid_r_'}
 TURNS=[-1.,-.8,-.7999,-.75,-.7001,-.7,-.5,-.3,-.2999,-.25,-.2001,-.2,0.,.2,.2001,.25,.2999,.3,.5,.7,.7001,.75,.7999,.8,1.]
 GRID=np.array([(x/64,y/64) for y in range(65) for x in range(65)])
