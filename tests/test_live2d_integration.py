@@ -503,6 +503,8 @@ def test_attached_interactions_keep_native_pose_token_and_motion(pet, monkeypatc
     plays = sum(message['type'] == 'play' for message in host.messages)
     clock = [100.0]
     monkeypatch.setattr(pet_app.time, 'monotonic', lambda: clock[0])
+    opened = []
+    monkeypatch.setattr(pet, 'open_journal', lambda: opened.append(True))
     if interaction == 'double_click':
         def safe_choice(options):
             assert 'glasses' not in options and 'fan' not in options
@@ -519,7 +521,10 @@ def test_attached_interactions_keep_native_pose_token_and_motion(pet, monkeypatc
     assert before == (pet.state, pet._renderer_token, pet.motion_mode, pet.motion_timer.isActive(), pet.animation_cycles)
     assert pet._top_transition is transition
     assert sum(message['type'] == 'play' for message in host.messages) == plays
-    assert pet._applied_expressions <= {'smile', 'blush', 'maple'} and pet._applied_expressions
+    if interaction == 'double_click':
+        assert opened == [True]
+    else:
+        assert pet._applied_expressions <= {'smile', 'blush', 'maple'} and pet._applied_expressions
     if transition:
         for marker in ('top_grab', 'wall_release', 'settled'):
             pet._on_renderer_event({"generation": pet._renderer_generation, 'type': 'marker', 'name': transition['name'], 'token': before[1], 'marker': marker})
@@ -555,7 +560,8 @@ def test_attached_ambient_and_explicit_expression_sources_expire_independently(p
 def test_ground_accessories_and_actions_remain_available_but_clear_on_attachment(pet, monkeypatch, accessory):
     activate(pet)
     monkeypatch.setattr(pet_app.random, 'choice', lambda choices: accessory if accessory in choices else choices[0])
-    pet.mouseDoubleClickEvent(DoubleClick())
+    pet._start_temporary('happy')
+    pet._show_effect(accessory, 3500)
     assert pet.state == 'happy' and accessory in pet._applied_expressions
     pet._attach_side('left')
     assert pet._explicit_effect is None and accessory not in pet._applied_expressions

@@ -180,9 +180,17 @@ def test_brush_measures_actual_topology_and_preserves_existing_contact_limits(mu
 def test_climb_cycle_probes_branch_to_one_second_and_add_real_brush_and_recovery_samples():
     folder = Path(__file__).resolve().parents[1]/'assets/live2d/Maple'
     data = json.loads((folder/'Maple.pet.json').read_bytes())
+    from test_motion_polish_qa import metadata as authoring_contract
+    data['states'].update(authoring_contract()['states'])
     endpoints = {path.name.removesuffix('.motion3.json'): {'start': {curve['Id']: curve['Segments'][1]
         for curve in json.loads(path.read_bytes())['Curves']}} for path in (folder/'motions').glob('*.motion3.json')}
-    assert len(v5_probe_definitions(data, endpoints)[0]) == 27
+    from tools.authoring.animation_specs import ANIMATIONS
+    from tools.authoring.maple_motions import build_motion
+    for name, spec in ANIMATIONS.items():
+        if name not in endpoints:
+            motion = build_motion(name, spec, endpoints['idle']['start'])
+            endpoints[name] = {'start': {c['Id']: c['Segments'][1] for c in motion['Curves']}}
+    assert len(v5_probe_definitions(data, endpoints)[0]) == 35
     modern = metadata(); data['refinement'] = modern['refinement']; data['states'] = modern['states']
     data['locomotion']['climb'].update(refinementParameter='ParamClimbRefine', cycleDuration=1., risePerCycle=.12)
     for side in ('left', 'right'):

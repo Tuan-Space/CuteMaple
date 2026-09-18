@@ -149,7 +149,7 @@ def run(executable, output):
     p = start('success')
     try:
         payload = json.dumps(session._client.process.identity)
-        code = "import sys,json;sys.path.insert(0,sys.argv[1]);from cleanup_session import SessionClient;from cleanup_process import ObservedProcess;c=SessionClient(sys.argv[2],ObservedProcess(json.loads(sys.argv[3])));c.request('status',timeout=.3)"
+        code = "import sys,json;sys.path.insert(0,str(__import__('pathlib').Path(sys.argv[1])/'src'));from cleanup_session import SessionClient;from cleanup_process import ObservedProcess;c=SessionClient(sys.argv[2],ObservedProcess(json.loads(sys.argv[3])));c.request('status',timeout=.3)"
         stranger = subprocess.run([sys.executable, '-c', code, str(ROOT), session._client.token, payload], capture_output=True, timeout=5)
         assert stranger.returncode != 0
         assert session._client.request('status')['ok']
@@ -160,7 +160,7 @@ def run(executable, output):
     owner_evidence = output / 'owner-probe.json'
     owner_script.write_text('''import json,os,subprocess,sys,uuid
 from pathlib import Path
-sys.path.insert(0,sys.argv[1])
+sys.path.insert(0,str(__import__('pathlib').Path(sys.argv[1])/'src'))
 from cleanup_process import current_identity,ObservedProcess,creation_time,kernel
 from cleanup_session import SessionClient
 owner=current_identity();token=uuid.uuid4().hex

@@ -1,8 +1,9 @@
 """New model identity remains exact when authoring adds independent pose axes."""
+from tools.authoring.animation_specs import ANIMATIONS
 import pytest
 
 from tools.native_model_contract import REFINED_MOTION_REVISION, declared_native_parameters, free_motion_contacts
-from tools.verify_maple_model import record_native_identity, V5_PARAMETERS, V5_DRAWABLES, ANIMATIONS, TRANSITIONS, V5_CLEAN_SEGMENTS
+from tools.verify_maple_model import record_native_identity, V5_PARAMETERS, V5_DRAWABLES, TRANSITIONS, V5_CLEAN_SEGMENTS
 
 
 @pytest.mark.parametrize('mutation', ['none', 'renamed-axis', 'missing-axis', 'duplicate-declaration', 'unknown-revision'])

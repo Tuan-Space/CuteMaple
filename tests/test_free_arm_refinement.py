@@ -19,7 +19,7 @@ import build_v5
 from diagnose_rig import DiagnosticRenderer, motion_parameters
 from free_arm_refinement import crouch_point
 from maple_motions import build_motion, TRANSITIONS, V5_CLEAN_TRANSITIONS
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 
 UV = {'l': ((.495, .518), (.274, .390)),
       'r': ((.526, .518), (.728, .390))}

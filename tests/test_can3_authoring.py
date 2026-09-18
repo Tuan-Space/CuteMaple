@@ -14,7 +14,7 @@ from build_can3 import (FPS, ROOT_GROUP, CaffEntry, create_project, decode_curve
                         field, findfield, model_parameters, pack_caff, validate_xml, relink_project,
                         Project)
 from native_caff import read_project
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 from maple_motions import build_motion, TRANSITIONS, V5_CLEAN_TRANSITIONS
 
 # Explicit synthetic parameter contracts keep this serializer test independent

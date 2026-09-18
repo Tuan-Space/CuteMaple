@@ -10,7 +10,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools/authoring'))
 from build_v5 import V5Builder, PHASE_KEYS, RISE as LEGACY_RISE, climb_travel
-from climb_refinement import (CONTROL, HANDOFF, WALL_X, MIRROR_X, RISE, apply_climb_refinement,
+from climb_refinement import (CONTROL, HANDOFF, DRAPE_BLEND, WALL_X, MIRROR_X, RISE, apply_climb_refinement,
     body_shift, climb_metadata, refined_arm_joints, original_arm_joints,
     refined_leg_joints, _leg_mapping, hand_reach, skirt_fold_point, transfer_refinement,
     AIRBORNE_RETRACTION)
@@ -49,6 +49,14 @@ def rigs():
     # After integration the production builder calls this module itself.
     # Disable ONLY that hook while constructing the historical comparison.
     import build_v5
+    brush_hook = build_v5.brush_refinement.apply_brush_refinement
+    def omit_brush(builder):
+        # This before/after fixture intentionally predates brush geometry.
+        # Remove only brush axes whose keyforms were omitted with the hook.
+        for name in tuple(builder.params):
+            if name in {'ParamCleanBrushL','ParamCleanBrushR','ParamCleanContext','ParamCleanPoseL','ParamCleanPoseR','ParamCleanStroke'}:
+                del builder.params[name]
+    build_v5.brush_refinement.apply_brush_refinement = omit_brush
     hook = getattr(build_v5, 'apply_climb_refinement', None)
     contact_hook = getattr(build_v5, 'apply_climb_contact_refinement', None)
     if hook is not None:
@@ -58,6 +66,7 @@ def rigs():
     try:
         original = copy.deepcopy(b.build())
     finally:
+        build_v5.brush_refinement.apply_brush_refinement = brush_hook
         if hook is not None:
             build_v5.apply_climb_refinement = hook
         if contact_hook is not None:
@@ -70,7 +79,7 @@ def rigs():
 
 def test_registration_is_explicit_and_nonduplicating(rigs):
     _, b, old, new = rigs
-    assert set(p.id for p in new.rig.parameters) - set(p.id for p in old.rig.parameters) == {CONTROL, HANDOFF}
+    assert set(p.id for p in new.rig.parameters) - set(p.id for p in old.rig.parameters) == {CONTROL, HANDOFF, DRAPE_BLEND}
     assert b.params[CONTROL].default == 0
     assert [m for m in new.rig.meshes if m.part_id in old.meshes] == old.rig.meshes
     assert len(new.rig.meshes) == len(old.rig.meshes)+4
@@ -84,6 +93,9 @@ def test_disabled_refinement_preserves_existing_entire_pose(rigs, state):
     folder, _, old, new = rigs
     for phase in (0, .18, .32/1.8, .85/1.8, .65, 1):
         params = motion_parameters(folder/'runtime/motions'/f'{state}.motion3.json', phase)
+        # Current motion inputs opt into refinement; explicitly disable all
+        # refinement axes for this backwards-compatibility comparison.
+        params.update({CONTROL: 0, HANDOFF: 0, DRAPE_BLEND: 0})
         before, after = old.evaluate(params), new.evaluate(params)
         for name in before:
             np.testing.assert_allclose(after[name][0], before[name][0], atol=1e-10, rtol=0,
@@ -308,6 +320,7 @@ def cloth_rigs():
     # These unrelated late hooks require actual arms/legs. The production
     # layer loader still creates every real profile, fabric and body parent.
     with ExitStack() as stack:
+        stack.enter_context(patch.object(build_v5.brush_refinement,'apply_brush_refinement',lambda builder:None))
         for name in ('apply_free_arm_refinement','apply_climb_refinement',
                      'finish_free_arm_refinement','apply_sleep_contact_refinement',
                      'apply_climb_contact_refinement'):

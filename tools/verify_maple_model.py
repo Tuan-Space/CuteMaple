@@ -32,7 +32,7 @@ from tools.native_model_contract import (declared_native_parameters, declared_na
     motion_polish_enabled, brush_contract, physics_resource_contract, climb_drape_exchange)
 from tools.native_material_geometry import native_uv_point, source_point, measure_brush_sweep, measure_brush_transitions, measure_free_brace, measure_climb_materials, continuous_swing_targets, cleanup_endpoint_parameters, brush_forearm
 from live2d_host import Live2DHost, register_live2d_scheme
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 from tools.qa_resource_snapshot import resource_snapshot, changed_resources
 from tools.qa_model_inputs import (audit_atlas_files, atlas_coordinate_mapping_audit,
                                    verify_native_uv_evidence, recheck_input_hashes)

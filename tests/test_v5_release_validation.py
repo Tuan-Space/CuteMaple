@@ -9,6 +9,8 @@ from test_release_validation import synthetic_release, synthetic_desktop_evidenc
 from tools.validate_release import (validate_model_evidence, validate, V5_PARAMETERS, V5_DRAWABLES,
                                     V5_CLEAN_SEGMENTS, V4_TRANSITIONS, ANIMATIONS, V5_NATIVE_CHECKS,
                                     V5_REST_CONTACT_POSES, V5_REST_CONTACT_PROBES, V5_ACTIVE_CONTACT_CAPTURES)
+from tools.authoring.animation_specs import ANIMATIONS
+from pet_core import ANIMATIONS as RUNTIME_ANIMATIONS
 from tools.finalize_release import read, digest
 from tools.qa_resource_snapshot import resource_snapshot
 from tools.qa_model_inputs import verify_native_uv_evidence
@@ -45,6 +47,7 @@ def v5_release(synthetic_release):
         native['finished'][name] = True
         native['captures'][name] = {}
         endpoints[name] = {'start': {'ParamSynthetic0': 0}, 'end': {'ParamSynthetic0': 0}, 'sha256': digest(folder/relative)}
+    model['FileReferences']['Motions'] = {k:v for k,v in model['FileReferences']['Motions'].items() if k in RUNTIME_ANIMATIONS or k in V4_TRANSITIONS}
     write(folder/'Maple.model3.json', model)
     uv_path = Path(native['nativeUvAudit']['path'])
     uv = read(uv_path)
@@ -229,11 +232,11 @@ def test_explicit_synthetic_native_model_evidence_is_rejected_for_v5(v5_release)
         validate_model_evidence(e['source'], e['native'], e['assets'], e['source']['fullReportSha256'], 5))
 
 
-def test_v5_cannot_skip_internal_cleanup_motion_inventory(v5_release):
+def test_shipping_inventory_rejects_missing_transition_motion(v5_release):
     folder = v5_release['args']['bundle']/'assets/live2d/Maple'
-    model = read(folder/'Maple.model3.json'); del model['FileReferences']['Motions']['clean_top_enter']
+    model = read(folder/'Maple.model3.json'); del model['FileReferences']['Motions']['climb_to_top_left']
     write(folder/'Maple.model3.json', model)
-    assert any('clean_top_enter' in error for error in validate(v5_release['args']['bundle']))
+    assert any('climb_to_top_left' in error for error in validate(v5_release['args']['bundle']))
 
 
 def test_v5_finalizer_rejects_bare_passed_desktop_even_with_complete_model(v5_release):

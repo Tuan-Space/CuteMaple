@@ -12,7 +12,7 @@ pytest.importorskip("pydantic", reason="Optional editable-model authoring depend
 sys.path.insert(0,str(ROOT/"tools/authoring"))
 from build_rig import MapleBuilder, audit_rig, corrected_project, metadata_for
 from maple_motions import build_motion
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 from image2live2d.backends.live2d.cmo3 import unpack_caff
 
 

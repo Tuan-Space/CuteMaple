@@ -141,7 +141,7 @@ def run_regression(root: Path, output: Path, *, pytest_command=None):
         if not (root / module).is_file():
             raise ValueError(f"Missing isolated module: {module}")
     # Never reuse a pytest basetemp: pytest recursively removes it on startup.
-    pytest_command = list(pytest_command or [sys.executable, "-m", "pytest"])
+    pytest_command = list(pytest_command or [sys.executable, "-u", "-m", "pytest"])
     plan = make_plan(root, output, pytest_command)
     output.mkdir(parents=True, exist_ok=False)
     summary = {"status": "preparing", "complete": False, "startedAt": utc_now(),

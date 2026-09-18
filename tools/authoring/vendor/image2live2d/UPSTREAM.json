@@ -43,8 +43,8 @@
       "source": "src/image2live2d/backends/live2d/cmo3/model_xml.py",
       "path": "backends/live2d/cmo3/model_xml.py",
       "upstream_sha256": "c35d250583668a49845be1a7114052ad0e6bbf21b9178e15dfebd7c102bddfc5",
-      "vendored_sha256": "60c3fa4abf934dee9b8888edde5a66a9fd7d3a68482eca017b3e95b2fe6c91b2",
-      "modification": "Replace binary-emitter module dependency with four source-extracted pure IR helpers; serialize clipGuidList, inverse clipping and keyed drawOrder; include opacity-only deformer drivers and native ACDeformerForm opacity so shared view warps control child visibility without multiplying mesh axes. Add authoring-only deformer_offset_weights, expanded into standard native multi-parameter keyform coordinate arrays without new native XML fields. Set native parameter snapEpsilon from minimum serialized key spacing and decimal precision accordingly; reject precision-colliding keys to preserve dense material guards during Editor interpolation/export."
+      "vendored_sha256": "110f6d720b9156c2dde81e74747f5517d68d32572de6f4897744ff57f62e2a50",
+      "modification": "Replace binary-emitter module dependency with four source-extracted pure IR helpers; serialize clipGuidList, inverse clipping and keyed drawOrder; include opacity-only deformer drivers and native ACDeformerForm opacity so shared view warps control child visibility without multiplying mesh axes. Add authoring-only deformer_offset_weights, expanded into standard native multi-parameter keyform coordinate arrays without new native XML fields. Set native parameter snapEpsilon from minimum serialized key spacing and decimal precision accordingly; reject precision-colliding keys to preserve dense material guards during Editor interpolation/export. Preserve the continuous-swing parameter snapEpsilon of 0.00001 introduced in commit 6d09524 (ParamSwing, ParamAngleZ, ParamLegLA, ParamLegRA)."
     },
     {
       "source": "src/image2live2d/backends/live2d/moc3_emit.py",

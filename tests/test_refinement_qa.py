@@ -4,6 +4,7 @@ from tools.verify_maple_model import (inspect_refinement, inspect_contacts, insp
                                      V5_PARAMETERS, V5_DRAWABLES, V5_CLEAN_SEGMENTS, capture_binding_valid,
                                      mesh_scale_ratio, mesh_principal_scales, v5_probe_definitions, inspect_v5)
 from PIL import Image
+from tools.authoring.animation_specs import ANIMATIONS
 import pytest
 import json
 from pathlib import Path
@@ -58,10 +59,18 @@ def test_sleep_extent_measurement_ignores_translation_rotation_but_detects_stret
 def test_v5_probes_use_actual_authored_support_phases_and_do_not_require_visual_hash_on_planted_hand():
     folder = Path(__file__).resolve().parents[1]/'assets/live2d/Maple'
     metadata = json.loads((folder/'Maple.pet.json').read_text(encoding='utf-8-sig'))
+    from test_motion_polish_qa import metadata as authoring_contract
+    metadata['states'].update(authoring_contract()['states'])
     endpoints = {path.name.removesuffix('.motion3.json'): {'start': {curve['Id']: curve['Segments'][1]
                  for curve in json.loads(path.read_bytes())['Curves']}} for path in (folder/'motions').glob('*.motion3.json')}
+    from tools.authoring.maple_motions import build_motion
+    defaults = endpoints['idle']['start']
+    for name, spec in ANIMATIONS.items():
+        if name not in endpoints:
+            motion = build_motion(name, spec, defaults)
+            endpoints[name] = {'start': {c['Id']: c['Segments'][1] for c in motion['Curves']}}
     probes, support = v5_probe_definitions(metadata, endpoints)
-    assert len(support) == 16 and len(probes) == 27
+    assert len(support) == 16 and len(probes) == 35
     for name, case in support.items():
         assert case['phases'] == [sample['ParamClimbPhase'] for sample in probes[name]]
         near = metadata['locomotion']['climb']['nearHand'][case['direction']]

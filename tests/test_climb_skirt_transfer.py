@@ -65,6 +65,7 @@ def cloth_builder():
         and l.get('has_seated_variant') and l.get('pose','rest')=='rest']
     b = V5Builder(manifest,folder)
     with ExitStack() as stack:
+        stack.enter_context(patch.object(build_v5.brush_refinement,'apply_brush_refinement',lambda builder:None))
         for name in ('apply_free_arm_refinement','apply_climb_refinement','finish_free_arm_refinement',
                      'apply_sleep_contact_refinement','apply_climb_contact_refinement'):
             stack.enter_context(patch.object(build_v5,name,lambda builder:None))

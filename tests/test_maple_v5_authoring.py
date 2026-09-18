@@ -10,7 +10,7 @@ sys.path.insert(0,str(ROOT/'tools/authoring'))
 from build_v5 import V5Builder, PHASE_KEYS, RISE, climb_travel
 from diagnose_rig import DiagnosticRenderer, motion_parameters
 from maple_motions import build_motion
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 
 
 @pytest.fixture(scope='module')

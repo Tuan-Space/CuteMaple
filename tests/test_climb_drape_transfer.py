@@ -17,7 +17,7 @@ from climb_refinement import (_apply_drape_transfer, transfer_refinement, DRAPE_
 from climb_skirt_transfer import NativeClothParents, motion_settings
 from maple_motions import build_motion,TRANSITIONS,V5_CLEAN_TRANSITIONS
 from diagnose_rig import interpolate_keys
-from pet_core import ANIMATIONS
+from tools.authoring.animation_specs import ANIMATIONS
 from native_warp_sampling import warp_points
 
 ART = ROOT/'assets/authoring/source/layers'
